@@ -1,0 +1,222 @@
+@import "./Reset.scss";
+@import "./FlexGrid.scss";
+
+
+html, body {
+  height: 100%;
+}
+#root {
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+section {
+  background-color: $background-primary;
+
+  &.purple-bg {
+    background-color: $background-secondary;
+  }
+}
+
+p, li, a, h1, h2, h3, h4, h5, h6 {
+  font-family: $font-primary;
+  line-height: $height-1;
+  font-weight: $weight-4;
+  font-size: $size-3;
+  color: $gray-1;
+
+  &.white {
+    color: $white;
+  }
+}
+
+a,
+input[type="submit"],
+[role="button"]:not(.ignore-global) {
+  transition: $ease-flash;
+
+  @media (min-width: 769px) {
+    &:hover {
+      opacity: 0.8;
+    }
+    &:active {
+      opacity: 0.65;
+    }
+  }
+
+  &[aria-current="page"] {
+    pointer-events: none;
+  }
+}
+
+h1:not(.def) {
+  font-size: $size-8;
+  font-weight: $weight-4;
+  line-height: $height-1;
+}
+
+h2:not(.def) {
+  font-size: $size-7;
+  font-weight: $weight-7;
+  line-height: $height-2;
+}
+
+h3:not(.def) {
+  font-size: $size-6;
+  font-weight: $weight-7;
+  line-height: $height-1;
+}
+
+h4:not(.def) {
+  font-size: $size-5;
+  font-weight: $weight-4;
+  line-height: $height-1;
+}
+
+p, li, a {
+  font-weight: $weight-3;
+  font-size: $size-4;
+  line-height: $height-2;
+
+  &.small {
+    font-size: $size-3;
+  }
+}
+
+.underline-el{
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 20px);
+    left: 0;
+    width: 20px;
+    height: 5px;
+    background-color: $purple;
+  }
+
+  &.light {
+    &::after {
+      background-color: $lighter-purple;
+      width: 17px;
+      height: 3px;
+      top: calc(100% + 3px);
+    }
+  }
+  &.no-margin {
+    &::after {
+      bottom: -8px;
+      top: auto;
+    }
+  }
+  &.admin {
+    color: $seagreen;
+
+    &::after {
+      background-color: $seagreen;
+    }
+  }
+  &.green {
+    &::after {
+      background-color: $seagreen;
+    }
+  }
+}
+
+.default-style {
+  padding-top: $padding-5;
+  padding-bottom: $padding-5;
+
+  .heading-paragraph {
+    & + .heading-paragraph {
+      margin-top: 3.125rem;
+      
+    }
+    p, ul {
+      margin-top: $margin-2;
+    }
+    a {
+      color: $purple;
+    }
+    h1, h2 {
+      span {
+        text-decoration: none;
+        font-size: $size-7;
+        color: $purple;
+      }
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: $weight-4;
+    }
+    ul.dashed {
+      list-style-type: none;
+
+      & > li {
+        & :before {
+          content: "-";
+          font-weight: $weight-4;
+          margin-right: 7px;
+        }
+        & + li {
+          margin-top: $margin-1;
+        }
+      }
+    }
+  }
+}
+
+.is-loading {
+  background-color: rgba(93, 93, 93, 1);
+  width: 100%;
+  height: 100px;
+  display: inline-block;
+
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(211,223,232,.5) 20%,rgba(145, 165, 182, 0.5) 38%,rgba(168,182,193,.6) 41%,rgba(168,182,193,.6) 50%,rgba(168,182,193,.6) 50%,rgba(169,184,197,.6) 51%,rgba(211,223,232,.6) 57%,rgba(211,223,232,.6) 80%,rgba(211,223,232,.6) 90%);
+  background-size: 1200% 1200%;
+  transition: 0.8s ease-in-out;
+
+  &.error {
+    filter: blur(8px);
+    // background: rgba(93, 93, 93, 0);
+    // background-color: rgba(211, 223, 232, 0.5);
+    animation-play-state: paused;
+    opacity: 0.3;
+    position: relative;
+  }
+
+  animation: loadingPlaceholder 2.4s ease-in infinite reverse;
+}
+
+@keyframes loadingPlaceholder { 
+  0%{background-position:0% 91%; opacity: 0.8}
+  50%{background-position:100% 9%; opacity: 0.4}
+  50%{background-position:100% 9%; opacity: 0.4}
+  100%{background-position:0% 91%; opacity: 0.8}
+  // 100%{background-position:100% 9%}
+}
+.ld-1 {
+  .is-loading {
+    width: 240px;
+    height: 9px;
+  }
+}
+.ld-2 {
+  .is-loading {
+    width: 120px;
+    height: 55px;
+  }
+}
+.ld-3 {
+  .is-loading {
+    width: 100px;
+    height: 60px;
+  }
+}

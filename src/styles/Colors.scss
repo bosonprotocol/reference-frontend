@@ -1,0 +1,30 @@
+// natural colors
+$white: #fff;
+$black: #000;
+$white-transparent: rgba($white, 0.3);
+
+// general colors
+$text-1: $white;
+$text-2: #C1C7CE; 
+$text-3 : #4C6581;
+$text-semi: #5D6F84;
+$text-dark: #1C2835;
+
+$accent : #80F0BE;
+$notification: #FF457D;
+
+$background-dark: #151E27; // Onboarding, Offer Voucher
+
+// Onboarding
+$color-placeholder-1: rgba(#393939, 0.22);
+$dots-1: $white-transparent;
+
+// Offer Voucher
+$color-placeholder-2: #32383E;
+$control-background: #132C3D; 
+$control-color: #3C8FBD;
+$label-background: rgba(#00A7FF, 0.15);
+$label-color: #4DC0FD;
+$input-background: rgba($white, 0.03);
+$input-color: $white;
+$dots-2: #C4C4C4; 
