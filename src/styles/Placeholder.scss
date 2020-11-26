@@ -1,0 +1,48 @@
+.is-loading {
+  background-color: rgba(93, 93, 93, 1);
+  width: 100%;
+  height: 100px;
+  display: inline-block;
+
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(211,223,232,.5) 20%,rgba(145, 165, 182, 0.5) 38%,rgba(168,182,193,.6) 41%,rgba(168,182,193,.6) 50%,rgba(168,182,193,.6) 50%,rgba(169,184,197,.6) 51%,rgba(211,223,232,.6) 57%,rgba(211,223,232,.6) 80%,rgba(211,223,232,.6) 90%);
+  background-size: 1200% 1200%;
+  transition: 0.8s ease-in-out;
+
+  &.error {
+    filter: blur(8px);
+    // background: rgba(93, 93, 93, 0);
+    // background-color: rgba(211, 223, 232, 0.5);
+    animation-play-state: paused;
+    opacity: 0.3;
+    position: relative;
+  }
+
+  animation: loadingPlaceholder 2.4s ease-in infinite reverse;
+}
+
+@keyframes loadingPlaceholder { 
+  0%{background-position:0% 91%; opacity: 0.8}
+  50%{background-position:100% 9%; opacity: 0.4}
+  50%{background-position:100% 9%; opacity: 0.4}
+  100%{background-position:0% 91%; opacity: 0.8}
+  // 100%{background-position:100% 9%}
+}
+.ld-1 {
+  .is-loading {
+    width: 240px;
+    height: 9px;
+  }
+}
+.ld-2 {
+  .is-loading {
+    width: 120px;
+    height: 55px;
+  }
+}
+.ld-3 {
+  .is-loading {
+    width: 100px;
+    height: 60px;
+  }
+}

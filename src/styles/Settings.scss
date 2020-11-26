@@ -23,13 +23,19 @@ $gd-breakpoints: (
 );
 
 // ----- padding -----
-$padding-0: 6px;
+$padding-col-side: 6px;
 
 // ----- margin -----
-$margin-1: 10px;
+$margin-safe-gap: 6px;
+$margin-safe-gap-large: 6px;
+
+$margin-gap-small: 6px;
+$margin-gap: 6px;
+$margin-gap-large: 6px;
 
 // ----- font-size -----
-$size-1: 12px;
+$size-regular: 16px;
+$size-regular: 16px;
 
 // ----- line-height -----
 $height-1: 1.15;
@@ -38,10 +44,12 @@ $height-1: 1.15;
 $spacing-1: 0.05em;
 
 // ----- font-family -----
-$font-primary: "Gilroy", sans-serif;
+$font-primary: 'Exo', sans-serif;
+$font-secondary: 'Barlow', sans-serif;
 
 // ----- font color -----
-$color-primary: $gray-1;
+$color-primary: $text-1;
+$color-secondary: $text-2;
 
 // ----- font weight -----
 
@@ -55,7 +63,7 @@ $weight-5: 500;
 
 // ----- background -----
 $background-primary: $white;
-$background-secondary: $darkest-purple;
+// $background-secondary: $darkest-purple;
 
 // ----- borders -----
 $border-1: 1px solid $black;

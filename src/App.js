@@ -1,6 +1,10 @@
+import "./styles/Global.scss"
+
 function App() {
   return (
-    <div>flex</div>
+    <div className="simulate-mobile">
+      flex
+    </div>
   );
 }
 
