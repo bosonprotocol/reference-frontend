@@ -1,0 +1,184 @@
+@import "../styles/Settings.scss";
+@use "sass:map";
+
+.diagram-content {
+  &.slide-2 {
+    margin: #{'min(8vh, 70px)'} 0;
+  }
+  .title {
+    margin-bottom: 8px;
+    p {
+      text-align: center;
+    }
+  }
+  .block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgba($labels-background, 0.5);
+    padding: 7px 11px;
+    border-radius: 8px;
+    width: calc(100% - 3px);
+    position: relative;
+    
+    // &:not(.empty) {
+    //   transform: scale(0.4);
+    //   opacity: 0;
+    //   transition: 0.8s all ease-in-out;
+    // }
+
+    &:not(.empty) + .block {
+      margin-top: 6px;
+    }
+
+    p {
+      text-align: center;
+      &.name {
+        font-size: $size-small;
+      }
+      &.value {
+        font-size: $size-tiny;
+      }
+    }
+    &.non {
+      opacity: 0;
+    }
+  }
+
+  .seller {
+    z-index: 2;
+    .block {
+      &::after {
+        content: '';
+        background-image: url('../images/diagram-arrow.svg');
+        display: block;
+        position: absolute;
+        top: calc(50% - 9px);
+        right: -15px;
+        background-repeat: no-repeat;
+        width: 17px;
+        height: 20px;
+        z-index: 2;
+        // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      }
+      p.value {
+        &.value {
+          color: $labels-accent-1;
+        }
+      }
+    }
+  }
+  .buyer {
+    z-index: 2;
+    .block {
+      &::before {
+        content: '';
+        background-image: url('../images/diagram-arrow-2.svg');
+        display: block;
+        position: absolute;
+        top: calc(50% - 9px);
+        left: -15px;
+        background-repeat: no-repeat;
+        width: 17px;
+        height: 20px;
+        z-index: 2;
+        // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      }
+      p.value {
+        &.value {
+          color: $labels-accent-2;
+        }
+      }
+    }
+  }
+
+  .field {
+    background-color: rgba($labels-background, 0.5);
+    border-radius: 8px;
+    width: calc(100% - 3px);
+    z-index: 1;
+    // position: relative;
+
+    .block {
+      width: calc(50% - 3px);
+      height: calc(50% - 3px);
+
+      background: rgba($white, 0.02);
+      border: 1px dashed rgba($white, 0.08);
+
+      &:nth-child(3),
+      &:nth-child(4) {
+        align-self: flex-end;
+      }
+    }
+  }
+
+  &.animate {
+    $sequence: (
+      "left-arrow": 700ms,
+      "left-block": 1300ms,
+      "left-border": 2100ms,
+      "right-arrow": 2500ms,
+      "right-block": 3000ms,
+      "right-border": 3800ms,
+      "seal": 4300ms,
+    );
+    .block:not(.empty) {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .seller .block {
+      animation: blockForward 1.4s map-get($sequence, "left-block") ease-in-out forwards;
+
+      &::after {
+        animation: fadeOut 0.8s map-get($sequence, "left-arrow") ease-in-out forwards;
+      }
+    }
+    .buyer .block {
+      animation: blockBackwards 1.4s map-get($sequence, "right-block") ease-in-out forwards;
+
+      &::before {
+        animation: fadeOut2 0.8s map-get($sequence, "right-arrow") ease-in-out forwards;
+      }
+    }
+    .block.empty {
+      &.seller {
+        animation: fadeIn 0.8s map-get($sequence, "left-border") ease-in-out forwards;
+      }
+      &.buyer {
+        animation: fadeIn2 0.8s map-get($sequence, "right-border") ease-in-out forwards;
+      }
+    }
+  }
+}
+
+@keyframes blockForward {
+  60% {transform: translateX(calc(100% + 8px)); opacity: 1}
+  100% {transform: translateX(calc(100% + 8px)); opacity: 0.4}
+}
+
+@keyframes blockBackwards {
+  60% {transform: translateX(calc(-100% - 8px)); opacity: 1}
+  100% {transform: translateX(calc(-100% - 8px)); opacity: 0.4}
+}
+
+@keyframes fadeOut {
+  100% {opacity: 0; transform: translateX(5px)}
+}
+
+@keyframes fadeOut2 {
+  100% {opacity: 0; transform: translateX(-5px)}
+}
+
+@keyframes fadeIn { 
+  100% {border: 1px dashed rgba($labels-accent-1, 1)}
+}
+
+@keyframes fadeIn2 {
+  100% {border: 1px dashed rgba($labels-accent-2, 1)}
+}
+
+@keyframes seal {
+  100% {opacity: 1}
+}

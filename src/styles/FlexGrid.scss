@@ -9,9 +9,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   max-width: $container;
   margin: 0 auto;
   padding: 0 $container-padding;
-  &.layout {
-    max-width: 1280px;
-  }
+  flex: auto;
 }
 .new-row {
   margin-left: -#{$container-padding};
@@ -69,6 +67,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     &.jc-sb#{$selector} {
       justify-content: space-between;
     }
+    &.jc-sa#{$selector} {
+      justify-content: space-around;
+    }
     &.jc-start#{$selector} {
       justify-content: flex-start;
     }
@@ -77,6 +78,13 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     }
     &.jc-stretch#{$selector} {
       justify-content: stretch;
+    }
+    &.exists {
+      flex: 1;
+    }
+    &.center {
+      align-items: center;
+      justify-content: center;
     }
   }
 }
@@ -95,6 +103,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     .col-2#{$selector} {
       flex: 0 0 50%;
       max-width: 50%;
+
+      &.reduce-1 {
+        max-width: calc(50% - #{$margin-gap-small});
+      }
     }
     .col-3#{$selector} {
       flex: 0 0 calc(100% / 3);
@@ -103,6 +115,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       &.rest {
         flex: 0 0 calc(100% - (100% / 3));
         max-width: calc(100% - (100% / 3));
+      }
+      &.reduce-1 {
+        max-width: calc((100% / 3) - #{$margin-gap-small});
       }
     }
     .col-4#{$selector} {
@@ -113,6 +128,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
         flex: 0 0 75%;
         max-width: 75%;
       }
+      &.reduce-1 {
+        max-width: calc(25% - #{$margin-gap-small});
+      }
     }
     .col-5#{$selector} {
       flex: 0 0 20%;
@@ -122,10 +140,17 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
         flex: 0 0 80%;
         max-width: 80%;
       }
+      &.reduce-1 {
+        max-width: calc(20% - #{$margin-gap-small});
+      }
     }
     .col-6#{$selector} {
       flex: 0 0 calc(100% - (100% / 6));
       max-width: calc(100% - (100% / 6));
+
+      &.reduce-1 {
+        max-width: calc((100% - (100% / 6)) - #{$margin-gap-small});
+      }
     }
   }
 }
@@ -217,21 +242,12 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   position: relative;
 }
 
-.image,
-img {
-  &.auto {
-    height: auto;
+img:not(.def) {
+  height: auto;
+  max-width: 100%;
 
-    img {
-      height: auto;
-    }
-  }
   &.full {
-    max-width: 100%;
-
-    img {
-      max-width: 100%;
-    }
+    width: 100%;
   }
 }
 
@@ -248,6 +264,14 @@ img {
   text-decoration: none;
 }
 
+.h-100 {
+  height: 100%;
+}
+
+.ta-center {
+  text-align: center;
+}
+
 
 // ----------------------------------------------------------------
 // DRAW GRID
@@ -261,17 +285,17 @@ img {
 @include pad-last($load-default);
 @include gap($load-default);
 
-@each $selector, $break-point in $gd-breakpoints {
-  @media screen and(max-width: $break-point) {
+// @each $selector, $break-point in $gd-breakpoints {
+//   @media screen and(max-width: $break-point) {
 
-    @include d-none(#{$selector});
-    @include width(#{$selector});
-    @include max-width(#{$selector});
-    @include col-grid(#{$selector});
-    @include flex-grid(#{$selector});
-    @include gap(#{$selector});    
-  }
-}
+//     @include d-none(#{$selector});
+//     @include width(#{$selector});
+//     @include max-width(#{$selector});
+//     @include col-grid(#{$selector});
+//     @include flex-grid(#{$selector});
+//     @include gap(#{$selector});    
+//   }
+// }
 
 // ----------------------------------------------------------------
 // END OF DOCUMENT - GRID SETTINGS

@@ -1,6 +1,7 @@
 @import "./Reset.scss";
 @import "./FlexGrid.scss";
 @import "./Placeholder.scss";
+@import "./Settings.scss";
 
 
 html, body {
@@ -13,25 +14,21 @@ html, body {
   display: flex;
   flex-direction: column;
 
+  font-family: $font-secondary;
+  line-height: $height-regular;
+  font-weight: $weight-5;
+  color: $text-1;
+  font-size: $size-regular;
+
   // simulate mobile
   align-items: center;
   justify-content: center;
-}
-
-.content {
-  flex: 1 0 auto;
+  background: rgb(47, 55, 62);
+  background: linear-gradient(90deg, rgb(47, 55, 62) 0%, #1c222b 100%);
 }
 
 section {
   background-color: $background-primary;
-}
-
-p, li, a, h1, h2, h3, h4, h5, h6 {
-  // font-family: $font-primary;
-  // line-height: $height-1;
-  // font-weight: $weight-4;
-  // font-size: $size-3;
-  // color: $gray-1;
 }
 
 a,
@@ -53,17 +50,17 @@ input[type="submit"],
   }
 }
 
-// h1:not(.def) {
-//   font-size: $size-8;
-//   font-weight: $weight-4;
-//   line-height: $height-1;
-// }
+h1:not(.def) {
+  font-size: $size-title;
+  font-weight: $weight-6;
+  line-height: $height-small;
+}
 
-// h2:not(.def) {
-//   font-size: $size-7;
-//   font-weight: $weight-7;
-//   line-height: $height-2;
-// }
+h2:not(.def) {
+  font-size: $size-semi-title;
+  font-weight: $weight-6;
+  line-height: $height-small;
+}
 
 // h3:not(.def) {
 //   font-size: $size-6;
@@ -90,7 +87,16 @@ input[type="submit"],
 .simulate-mobile {
   width: 375px;
   height: 812px;
+  max-height: 90vh;
   display: block;
-  box-shadow: 2px 2px 7px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 2px 16px 2px rgba(0, 0, 0, 0.23);
   border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+
+  background-color: $background-primary;
+}
+
+.color-secondary {
+  color: $color-secondary;
 }
