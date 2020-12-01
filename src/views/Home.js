@@ -9,10 +9,20 @@ function Home() {
   const productListSettings = {
     dots: false,
     arrows: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 2
+  };
+
+  const cardListSettings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    centerMode: true,
+    centerPadding: '25px',
   };
   return (
     <section className="home">
@@ -44,6 +54,30 @@ function Home() {
             <ProductBlock />
             <ProductBlock />
             <ProductBlock />
+          </Slider>
+        </div>
+        <div className="card-list">
+          <Slider {...cardListSettings}>
+            <div className="card-block">
+              <div className="card-container flex jc-sb ai-center" style={{backgroundColor: '#7DB4EE'}}>
+                <div className="text">
+                  <h2>Cell Phones &#38; Smartphones</h2>
+                </div>
+                <div className="image">
+                  <img src="images/card-block-image-temp.png" alt="{Category}"/>
+                </div>
+              </div>
+            </div>
+            <div className="card-block">
+              <div className="card-container flex jc-sb ai-center" style={{backgroundColor: '#7DB4EE'}}>
+                <div className="text">
+                  <h2>Cell Phones &#38; Smartphones</h2>
+                </div>
+                <div className="image">
+                  <img src="images/card-block-image-temp.png" alt="{Category}"/>
+                </div>
+              </div>
+            </div>
           </Slider>
         </div>
       </div>
