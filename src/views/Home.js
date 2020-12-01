@@ -2,7 +2,18 @@ import React from 'react'
 
 import "./Home.scss"
 
+import Slider from "react-slick";
+import ProductBlock from "../components/ProductBlock";
+
 function Home() {
+  const productListSettings = {
+    dots: false,
+    arrows: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 2
+  };
   return (
     <section className="home">
       <div className="container">
@@ -24,6 +35,16 @@ function Home() {
               <li>Shoes</li>
             </ul>
           </div>
+        </div>
+        <div className="product-list">
+          <Slider {...productListSettings}>
+            <ProductBlock />
+            <ProductBlock />
+            <ProductBlock />
+            <ProductBlock />
+            <ProductBlock />
+            <ProductBlock />
+          </Slider>
         </div>
       </div>
     </section>

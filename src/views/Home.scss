@@ -21,7 +21,7 @@
   }
   .category-menu {
     margin-top: 27px;
-    
+
     .selected-item {
       font-family: $font-third;
       font-weight: $weight-6;
@@ -61,5 +61,8 @@
         }
       }
     }
+  }
+  .product-list {
+    margin-top: 20px;
   }
 }
