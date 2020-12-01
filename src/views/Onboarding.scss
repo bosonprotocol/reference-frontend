@@ -2,10 +2,15 @@
 
 .onboarding-modal {
   height: 100%;
+  transition: 0.3s ease-in-out;
+
+  &.fade-out {
+    opacity: 0;
+  }
 }
 
 .onboarding {
-  height: calc(100% - 130px);
+  height: 100%;
 
   .awssld__content {
     align-items: flex-start;
@@ -13,7 +18,15 @@
   }
 
   .screen {
+    padding-bottom: 130px;
     height: 100%;
+
+    .button {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 70px;
+    }
   }
 
   h1, p {
@@ -21,6 +34,9 @@
   }
 
   .text {
+    .button {
+      position: absolute;
+    }
     .number {
       font-size: 183px;
       font-weight: $weight-3;
@@ -108,7 +124,7 @@
   }
 
   .slick-dots {
-    bottom: -95px;
+    bottom: 35px;
 
     li {
       button {
