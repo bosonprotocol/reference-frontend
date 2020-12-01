@@ -1,17 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Web3ReactProvider, createWeb3ReactRoot } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import { Provider } from "react-redux";
+
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import { NetworkContextName } from "./constants";
+// import Web3ReactManager from "./components/web3-react-manager";
+import reduxStore from "./redux";
+import ListUpdater from "./redux/lists/updater";
+import ApplicationUpdater from "./redux/application/updater";
+import MulticallUpdater from "./redux/multicall/updater";
+
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+
+function getLibrary(provider) {
+    const library = new Web3Provider(provider);
+    library.pollingInterval = 8000;
+    return library;
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Web3ReactProvider getLibrary={ getLibrary }>
+            <Web3ProviderNetwork getLibrary={ getLibrary }>
+                <Provider store={ reduxStore }>
+                    <App/>
+                </Provider>
+            </Web3ProviderNetwork>
+        </Web3ReactProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
