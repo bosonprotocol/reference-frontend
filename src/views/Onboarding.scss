@@ -1,10 +1,7 @@
 @import "../styles/Settings.scss";
 
 .onboarding {
-  // .container {
-  //   height: calc(100% - 215px);
-  //   margin-top: 85px;
-  // }
+  height: calc(100% - 130px);
 
   .awssld__content {
     align-items: flex-start;
@@ -14,6 +11,7 @@
   .screen {
     height: 100%;
   }
+
   h1, p {
     z-index: 2;
   }
@@ -53,10 +51,155 @@
     }
   }
 
+  .qr-display {
+    .show {
+      position: absolute;
+      top: 14%;
+      left: 30%;
+      animation: show-move 4.9s ease-in-out infinite;
+    }
+    .scan {
+      position: absolute;
+      top: 22%;
+      left: 49%;
+      z-index: 3;
+      animation: scan-move 4.9s 180ms ease-in-out infinite;
+
+      .phone-bg {
+        width: 76px;
+        height: 150px;
+        border-radius: 12px;
+        background: rgba(29, 40, 53, 0.8);
+        border: 2px solid #506377;
+        
+        p {
+          font-weight: 600;
+          font-size: 8.5px;
+          line-height: 111.4%;
+          text-align: center;
+          font-family: $font-primary;
+          position: absolute;
+          max-width: 78%;
+          top: 9%;
+        }
+
+        img {
+          animation: qr-scan 4.9s 180ms ease-in-out infinite;
+        }
+      }
+    }
+  }
+
   .slick-slider,
   .slick-list,
   .slick-track,
   .slick-slide > div {
     height: 100%;
   }
+
+  .slick-dots {
+    bottom: -95px;
+
+    li {
+      button {
+        padding: 0;
+
+        &::before {
+          content: '';
+          background: rgba(255, 255, 255, 0.3);
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          top: calc(50% - 3px);
+          left: calc(50% - 3px);
+          transition: 0.3s all ease-in-out;
+        }
+      }
+
+      &.slick-active {
+        button {
+          &::before {
+            background-color: #80F0BE;
+            width: 21px;
+            border-radius: 57.68px;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
 }
+
+@keyframes scan-move {
+  0% {
+    opacity: 0.5;
+    transform: translate(5px, 15px);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  80% {
+    opacity: 0.5;
+    transform: translate(5px, 15px);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(5px, 15px);
+  }
+}
+
+@keyframes show-move {
+  0% {
+    opacity: 0.5;
+    transform: translate(-5px);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(0);
+  }
+  80% {
+    opacity: 0.5;
+    transform: translate(-5px);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(-5px);
+  }
+}
+
+@keyframes qr-scan {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.1;
+  }
+  30% {
+    opacity: 0.1;
+  }
+  35% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.3;
+  }
+  45% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+

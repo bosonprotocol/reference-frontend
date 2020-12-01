@@ -21,12 +21,6 @@
     border-radius: 8px;
     width: calc(100% - 3px);
     position: relative;
-    
-    // &:not(.empty) {
-    //   transform: scale(0.4);
-    //   opacity: 0;
-    //   transition: 0.8s all ease-in-out;
-    // }
 
     &:not(.empty) + .block {
       margin-top: 6px;
