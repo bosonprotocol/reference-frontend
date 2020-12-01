@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Onboarding from './views/Onboarding'
+import Home from './views/Home'
 
 function App() {
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
@@ -27,6 +28,7 @@ function App() {
       }
       <Router>
         <Switch>
+          <Home />
         </Switch>
       </Router>
     </div>
