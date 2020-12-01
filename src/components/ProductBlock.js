@@ -2,16 +2,18 @@ import React from 'react'
 
 import "./ProductBlock.scss"
 
-function ProductBlock() {
+function ProductBlock(props) {
+  const {title, image, price, deposit} = props
+
   return (
     <div className="product-block">
       <div className="product-image flex center">
-        <img src="images/product-block-image-temp.png" alt="{Title}"/>
+        <img src={image} alt={title}/>
       </div>
-      <h3>Nike Air</h3>
+      <h3>{title}</h3>
       <div className="price flex ai-center">
-        <span><img src="images/eth-icon.svg" alt="Ethers"/> 0.3 ETH</span>
-        <span><img src="images/deposit-icon.svg" alt="Deposit"/> 0.02 ETH</span>
+        <span><img src="images/eth-icon.svg" alt="Ethers"/> {price} ETH</span>
+        <span><img src="images/deposit-icon.svg" alt="Deposit"/> {deposit} ETH</span>
       </div>
     </div>
   )

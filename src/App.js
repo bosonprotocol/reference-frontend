@@ -16,7 +16,7 @@ function App() {
 
     setTimeout(() => {
       setNewUser(false)
-    }, 300);
+    }, 800);
   }
 
   return (
