@@ -8,10 +8,11 @@ import Onboarding from './views/Onboarding'
 function App() {
   return (
     <div className="simulate-mobile">
+      <div className="onboarding-modal">
+        <Onboarding />
+      </div>
       <Router>
         <Switch>
-          <Route path="/onboarding" component={Onboarding} />
-          {/* modal */}
         </Switch>
       </Router>
     </div>

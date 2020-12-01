@@ -1,5 +1,9 @@
 @import "../styles/Settings.scss";
 
+.onboarding-modal {
+  height: 100%;
+}
+
 .onboarding {
   height: calc(100% - 130px);
 
@@ -56,14 +60,12 @@
       position: absolute;
       top: 14%;
       left: 30%;
-      animation: show-move 4.9s ease-in-out infinite;
     }
     .scan {
       position: absolute;
       top: 22%;
       left: 49%;
       z-index: 3;
-      animation: scan-move 4.9s 180ms ease-in-out infinite;
 
       .phone-bg {
         width: 76px;
@@ -82,11 +84,19 @@
           max-width: 78%;
           top: 9%;
         }
-
-        img {
-          animation: qr-scan 4.9s 180ms ease-in-out infinite;
-        }
       }
+    }
+  }
+
+  .animate {
+    .show {
+      animation: show-move 4.9s ease-in-out infinite;
+    }
+    .scan {
+      animation: scan-move 4.9s 180ms ease-in-out infinite;
+    }
+    .phone-bg img {
+      animation: qr-scan 4.9s 180ms ease-in-out infinite;
     }
   }
 

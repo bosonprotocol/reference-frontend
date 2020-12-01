@@ -49,6 +49,7 @@ function slide2(id) {
 
 function slide3(id) {
   return(
+    // animate
     <div key={id} className="container h-100">
       <div className="screen flex column jc-sa">
         <div className="top">
