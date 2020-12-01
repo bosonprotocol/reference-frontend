@@ -13,6 +13,18 @@ function Home() {
             <div className="qr-icon" role="button"><img src="images/qr-icon.svg" alt="Scan QR"/></div>
           </nav>
         </header>
+        <div className="category-menu flex ai-center">
+          <p className="selected-item">New</p>
+          <div className="category-container">
+            <ul className="flex ai-center">
+              <li>Electronics</li>
+              <li>Shoes</li>
+              <li>Health &#38; Beauty- internal link</li>
+              <li>Electronics</li>
+              <li>Shoes</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -19,4 +19,47 @@
       }
     }
   }
+  .category-menu {
+    margin-top: 27px;
+    
+    .selected-item {
+      font-family: $font-third;
+      font-weight: $weight-6;
+      font-size: 28px;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 29px;
+        height: 2px;
+        background-color: $white;
+      }
+    }
+    .category-container {
+      margin-left: 25px;
+
+      ul {
+        overflow-x: auto;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        margin-bottom: -5px;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        li {
+          flex-shrink: 0;
+          font-family: $font-third;
+
+          & + li {
+            margin-left: 24px;
+          }
+        }
+      }
+    }
+  }
 }
