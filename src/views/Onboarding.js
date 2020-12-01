@@ -47,11 +47,11 @@ function slide2(id) {
   )
 }
 
-function slide3(id) {
+function slide3(id, completeOnboarding) {
   return(
     // animate
     <div key={id} className="container h-100">
-      <div className="screen flex column jc-sa">
+      <div className="screen relative flex column jc-sa">
         <div className="top">
           <div className="logo flex jc-center"><img src="images/boson-logo.png" alt="Boson Protocol Logo" className="pe-none" /></div>
           <h2 className="ta-center">Welcome to Boson Protocol</h2>
@@ -73,12 +73,13 @@ function slide3(id) {
           <h1>Offer items for sale</h1>
           <p className="ta-center color-secondary">Lorem Ipsum is simply dummied text of the printing and typesetting industry.</p>
         </div>
+        <div className="button primary" role="button" onClick={completeOnboarding}>START</div>
       </div>
     </div>
   )
 }
 
-function Onboarding() {
+function Onboarding(props) {
   const slider = useRef()
   const currentSlideMemo = localStorage.getItem('onboarding-slide')
 
@@ -108,7 +109,7 @@ function Onboarding() {
   return (
     <section className="onboarding relative">
       <Slider ref={slider} {...settings}>
-        {sequence.map((slide, id) => slide(id))}
+        {sequence.map((slide, id) => slide(id, props.completeOnboarding))}
       </Slider>
     </section>
   )

@@ -1,6 +1,6 @@
 import "./styles/Global.scss"
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Onboarding from './views/Onboarding'
@@ -12,15 +12,27 @@ import ModalWalletConnect, {
 } from "./components/modals/WalletConnect";
 
 function App() {
+    const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
+    const [modalControl, setModalControl] = useState("onboarding-modal")
+
+    const completeOnboarding = () => {
+        localStorage.setItem('onboarding-completed', '1')
+        setModalControl(modalControl + ' fade-out')
+
+        setTimeout(() => {
+            setNewUser(false)
+        }, 300);
+    };
+
     const [modal, setModal] = useStore(["modal"]);
 
-
     return (
-        // <div className="simulate-mobile">
-        <div>
-            {/*<div className="onboarding-modal">*/ }
-            {/*    <Onboarding/>*/ }
-            {/*</div>*/ }
+        <div className="simulate-mobile">
+            { newUser &&
+            <div className={ modalControl }>
+                <Onboarding completeOnboarding={ completeOnboarding }/>
+            </div>
+            }
             <Router>
                 <Switch>
                     <Route exact strict path="/connect" component={ Connect }/>
