@@ -10,9 +10,6 @@ import * as serviceWorker from "./serviceWorker";
 import { NetworkContextName } from "./constants";
 // import Web3ReactManager from "./components/web3-react-manager";
 import reduxStore from "./redux";
-import ListUpdater from "./redux/lists/updater";
-import ApplicationUpdater from "./redux/application/updater";
-import MulticallUpdater from "./redux/multicall/updater";
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 

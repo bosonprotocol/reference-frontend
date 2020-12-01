@@ -19,7 +19,6 @@ export default function Layout({ children, autoPopup = true, status = true }) {
     return (
         <div className="home-bg-image">
             <div className="db flex center justify-between items-center pa3 pa4-l mw7 mw8-l">
-                <h1 className="f4">Boson</h1>
                 { status ? <Web3Status/> : null }
             </div>
             { children }
