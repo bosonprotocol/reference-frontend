@@ -1,0 +1,22 @@
+@import "../styles/Settings.scss";
+
+.home {
+  header {
+    margin-top: 45px;
+
+    nav {
+      .qr-icon {
+        margin-left: 45px;
+      }
+      .search {
+        img {
+          margin-right: 15px;
+        }
+        p {
+          font-family: $font-third;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

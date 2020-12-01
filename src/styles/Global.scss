@@ -50,6 +50,10 @@ input[type="submit"] {
   }
 }
 
+[role="button"] {
+  cursor: pointer;
+}
+
 h1:not(.def) {
   font-size: $size-title;
   font-weight: $weight-6;
