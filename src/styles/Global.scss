@@ -7,6 +7,8 @@
 
 html, body {
   height: 100%;
+  touch-action: manipulation;
+  background-color: $background-primary;
 }
 
 #root {
@@ -50,6 +52,10 @@ input[type="submit"] {
   }
 }
 
+[role="button"] {
+  cursor: pointer;
+}
+
 h1:not(.def) {
   font-size: $size-title;
   font-weight: $weight-6;
@@ -69,12 +75,39 @@ h2:not(.def) {
   display: block;
   box-shadow: 2px 2px 16px 2px rgba(0, 0, 0, 0.23);
   border-radius: 20px;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
 
   background-color: $background-primary;
+
+  @media (max-width: 375px) {
+    border-radius: 0;
+    height: 100vh;
+    max-height: 100vh;
+  }
+
+  @media (min-width: 376px) {
+    nav.navigation-bar {
+      bottom: calc((100% - 812px) / 2)
+    }
+  }
+}
+
+.screens {
+  &.new-user {
+    opacity: 0;
+    transition: 0.7s 400ms ease-in-out;
+  }
+
+  &.fade-in {
+    opacity: 1;
+  }
 }
 
 .color-secondary {
   color: $color-secondary;
+}
+
+ul {
+  list-style: none;
 }
