@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import "./Home.scss"
 
@@ -10,9 +10,11 @@ import CardBlock from "../components/CardBlock";
 import CategoryMenu from "../components/CategoryMenu"
 import NavigationBar from "../components/NavigationBar"
 
-import { productBlocks, cardBlocks } from "../PlaceholderAPI"
+import { productBlocks, cardBlocks, homeProducts } from "../PlaceholderAPI"
 
 function Home() {
+  const [homeProductsState, setHomeProductsState] = useState(homeProducts)
+
   const productListSettings = {
     dots: false,
     arrows: false,
@@ -31,6 +33,13 @@ function Home() {
     centerMode: true,
     centerPadding: '25px',
   };
+
+  const getHomeProductSplice = (part) => {
+    return part === 1 ?
+    homeProductsState.splice(0,Math.ceil(homeProductsState.length / 2)) :
+    homeProductsState.splice(Math.ceil(homeProductsState.length / 2) - 1,homeProductsState.length)
+  }
+
   return (
     <div className="home">
       <div className="container">
@@ -49,6 +58,18 @@ function Home() {
           <Slider {...cardListSettings}>
             {cardBlocks.map(block => <CardBlock {...block} />)}
           </Slider>
+        </div>
+      </section>
+      <section className="home-products">
+        <div className="container">
+          <div className="home-products-listing col-grid">
+            <div className="col-2">
+            {/* {getHomeProductSplice(1)} */}
+            </div>
+            <div className="col-2">
+
+            </div>
+          </div>
         </div>
       </section>
       <NavigationBar />

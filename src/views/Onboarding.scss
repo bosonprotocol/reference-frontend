@@ -104,8 +104,8 @@
     }
     .scan {
       position: absolute;
-      top: 22%;
-      left: 49%;
+      top: 20%;
+      left: 45%;
       z-index: 3;
 
       .phone-bg {
@@ -231,22 +231,26 @@
   0% {
     opacity: 1;
   }
+  10% {
+    opacity: 1;
+  }
   20% {
     opacity: 0.1;
-  }
-  30% {
-    opacity: 0.1;
+    transform: scale(0.8);
   }
   35% {
-    opacity: 1;
+    opacity: 0.1;
   }
   40% {
-    opacity: 0.3;
-  }
-  45% {
     opacity: 1;
   }
-  70% {
+  45% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  55% {
     opacity: 1;
   }
   100% {

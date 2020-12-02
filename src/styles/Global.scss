@@ -7,6 +7,8 @@
 
 html, body {
   height: 100%;
+  touch-action: manipulation;
+  background-color: $background-primary;
 }
 
 #root {
