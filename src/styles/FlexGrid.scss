@@ -249,7 +249,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   position: relative;
 }
 
-img:not(.def) {
+.img:not(.def) {
   height: auto;
   max-width: 100%;
 
