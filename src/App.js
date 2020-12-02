@@ -6,6 +6,8 @@ import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Onboarding from './views/Onboarding'
 import Home from './views/Home'
 
+import FastClick from "fastclick"
+
 function App() {
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
   const screensRef = useRef()
@@ -20,6 +22,12 @@ function App() {
     setTimeout(() => {
       setNewUser(false)
     }, 900);
+  }
+
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', () => {
+        FastClick.attach(document.body);
+    }, false);
   }
 
   return (
