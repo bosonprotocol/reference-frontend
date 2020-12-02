@@ -1,0 +1,17 @@
+nav.navigation-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  .nav-container {
+    background-color: #1D2834;
+    border-radius: 71px;
+    padding: 10px 21px;
+
+    .control {
+      + .control {
+        margin-left: 25px;
+      }
+    }
+  }
+}

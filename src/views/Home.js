@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import ProductBlock from "../components/ProductBlock";
 import CardBlock from "../components/CardBlock";
 import CategoryMenu from "../components/CategoryMenu"
+import NavigationBar from "../components/NavigationBar"
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
@@ -50,6 +51,7 @@ function Home() {
           </Slider>
         </div>
       </section>
+      <NavigationBar />
     </div>
   )
 }

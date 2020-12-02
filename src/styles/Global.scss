@@ -105,6 +105,12 @@ h2:not(.def) {
     height: 100vh;
     max-height: 100vh;
   }
+
+  @media (min-width: 376px) {
+    nav.navigation-bar {
+      bottom: calc((100% - 812px) / 2)
+    }
+  }
 }
 
 .screens {
