@@ -3,11 +3,12 @@ import React from 'react'
 import "./ProductBlock.scss"
 
 function ProductBlock(props) {
-  const {title, image, price, deposit} = props
+  const {title, image, price, deposit, col} = props
+  const productType = col ? "col" : ""
 
   return (
-    <div className="product-block">
-      <div className="product-image flex center">
+    <div className={`product-block ${productType}`}>
+      <div className={`product-image flex center ${productType}`}>
         <img src={image} alt={title}/>
       </div>
       <h3>{title}</h3>

@@ -12,7 +12,7 @@ html, body {
 }
 
 #root {
-  min-height: 100%;
+  max-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -22,12 +22,11 @@ html, body {
   font-weight: $weight-5;
   color: $text-1;
   font-size: $size-regular;
+  background: #181A29;
 
   // simulate mobile
   align-items: center;
   justify-content: center;
-  background: rgb(47, 55, 62);
-  background: linear-gradient(90deg, rgb(47, 55, 62) 0%, #1c222b 100%);
 }
 
 section {
@@ -68,13 +67,9 @@ h2:not(.def) {
   line-height: $height-small;
 }
 
-.simulate-mobile {
-  width: 375px;
-  height: 812px;
-  max-height: 90vh;
+.emulate-mobile {
+  width: 100%;
   display: block;
-  box-shadow: 2px 2px 16px 2px rgba(0, 0, 0, 0.23);
-  border-radius: 20px;
   overflow-x: hidden;
   position: relative;
 
@@ -85,21 +80,22 @@ h2:not(.def) {
     height: 100vh;
     max-height: 100vh;
   }
-
-  @media (min-width: 376px) {
-    nav.navigation-bar {
-      bottom: calc((100% - 812px) / 2)
-    }
-  }
 }
 
 .screens {
+  max-height: none;
+  overflow-y: auto;
+
   &.new-user {
     opacity: 0;
+    max-height: 100%;
+    overflow-y: auto;
     transition: 0.7s 400ms ease-in-out;
+    max-height: 100vh;
+    overflow-y: hidden;
   }
 
-  &.fade-in {
+  &.onboarding-done {
     opacity: 1;
   }
 }

@@ -17,7 +17,7 @@ function App() {
     localStorage.setItem('onboarding-completed', '1')
 
     onboardingModalRef.current.classList.add('fade-out')
-    screensRef.current.classList.add('fade-in')
+    screensRef.current.classList.add('onboarding-done')
 
     setTimeout(() => {
       setNewUser(false)
@@ -25,13 +25,13 @@ function App() {
   }
 
   return (
-    <div className="simulate-mobile">
+    <div className="emulate-mobile">
       {newUser &&
         <div className="onboarding-modal" ref={onboardingModalRef}>
           <Onboarding completeOnboarding={completeOnboarding} />
         </div>
       }
-      <div className={`screens ${newUser && 'new-user'}`} ref={screensRef}>
+      <div className={`screens ${newUser ? 'new-user' : ''}`} ref={screensRef}>
         <Router>
           <Switch>
             <Home />
