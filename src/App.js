@@ -11,6 +11,8 @@ function App() {
   const screensRef = useRef()
   const onboardingModalRef = useRef()
 
+  const modalCloseTimeout = 900
+
   const completeOnboarding = () => {
     localStorage.setItem('onboarding-completed', '1')
 
@@ -19,7 +21,7 @@ function App() {
 
     setTimeout(() => {
       setNewUser(false)
-    }, 900);
+    }, modalCloseTimeout);
   }
 
   return (
