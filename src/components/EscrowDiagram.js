@@ -5,7 +5,7 @@ import './EscrowDiagram.scss'
 function EscrowDiagram() {
   return (
     // animate
-    <div className='diagram-content flex col-grid jc-sb slide-2'>
+    <div className='diagram-content flex col-grid jc-sb slide-2 animate'>
       <div className="seller col-4 reduce-1">
         <div className="title"><p>Seller</p></div>
         <div className="block">
