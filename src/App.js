@@ -9,7 +9,7 @@ function App() {
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
   const [modalControl, setModalControl] = useState("onboarding-modal")
 
-  const modalCloseTimeout = 900
+  const modalCloseTimeout = 300
 
   const completeOnboarding = () => {
     localStorage.setItem('onboarding-completed', '1')

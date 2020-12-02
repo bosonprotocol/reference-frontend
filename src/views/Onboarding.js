@@ -50,7 +50,7 @@ function slide2(id) {
 function slide3(id, completeOnboarding) {
   return(
     // animate
-    <div key={id} className="container h-100">
+    <div key={id} className="container h-100 animate">
       <div className="screen relative flex column jc-sa">
         <div className="top">
           <div className="logo flex jc-center"><img src="images/boson-logo.png" alt="Boson Protocol Logo" className="pe-none" /></div>
