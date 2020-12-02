@@ -1,6 +1,37 @@
+import "./styles/Global.scss"
+
+import React, { useState, useEffect } from 'react'
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+import Onboarding from './views/Onboarding'
+
 function App() {
+  const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
+  const [modalControl, setModalControl] = useState("onboarding-modal")
+
+  const modalCloseTimeout = 300
+
+  const completeOnboarding = () => {
+    localStorage.setItem('onboarding-completed', '1')
+    setModalControl(modalControl + ' fade-out')
+
+    setTimeout(() => {
+      setNewUser(false)
+    }, modalCloseTimeout);
+  }
+
   return (
-    <div>flex</div>
+    <div className="simulate-mobile">
+      {newUser &&
+        <div className={modalControl}>
+          <Onboarding completeOnboarding={completeOnboarding} />
+        </div>
+      }
+      <Router>
+        <Switch>
+        </Switch>
+      </Router>
+    </div>
   );
 }
 

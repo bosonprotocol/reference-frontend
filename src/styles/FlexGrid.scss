@@ -9,9 +9,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   max-width: $container;
   margin: 0 auto;
   padding: 0 $container-padding;
-  &.layout {
-    max-width: 1280px;
-  }
+  flex: auto;
 }
 .new-row {
   margin-left: -#{$container-padding};
@@ -22,34 +20,6 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 // flex standard
 .flex {
   display: flex;
-}
-
-// col grid
-.col-grid {
-  display: flex;
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  max-width: 100%;
-
-  .sidebar {
-    flex: 0 0 $sidebar-width;
-    max-width: $sidebar-width;
-    padding-left: $padding-1;
-    padding-right: $padding-1;
-  }
-  .content {
-    flex: 0 0 calc(100% - #{$sidebar-width});
-    max-width: calc(100% - #{$sidebar-width});
-    padding-left: $padding-1;
-    padding-right: $padding-1;
-  }
-
-}
-
-.content {
-  flex: 0 0 $content-full;
-  max-width: $content-full;
 }
 
 
@@ -97,6 +67,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     &.jc-sb#{$selector} {
       justify-content: space-between;
     }
+    &.jc-sa#{$selector} {
+      justify-content: space-around;
+    }
     &.jc-start#{$selector} {
       justify-content: flex-start;
     }
@@ -106,6 +79,13 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     &.jc-stretch#{$selector} {
       justify-content: stretch;
     }
+    &.exists {
+      flex: 1;
+    }
+    &.center {
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
@@ -113,8 +93,8 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 @mixin col-grid($selector) {
   .col-grid {
     .side-padding#{$selector} {
-      padding-left: $padding-1;
-      padding-right: $padding-1;
+      padding-left: $padding-col-side;
+      padding-right: $padding-col-side;
     }
     .col-1#{$selector} {
       flex: 0 0 100%;
@@ -123,6 +103,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     .col-2#{$selector} {
       flex: 0 0 50%;
       max-width: 50%;
+
+      &.reduce-1 {
+        max-width: calc(50% - #{$margin-gap-small});
+      }
     }
     .col-3#{$selector} {
       flex: 0 0 calc(100% / 3);
@@ -131,6 +115,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       &.rest {
         flex: 0 0 calc(100% - (100% / 3));
         max-width: calc(100% - (100% / 3));
+      }
+      &.reduce-1 {
+        max-width: calc((100% / 3) - #{$margin-gap-small});
       }
     }
     .col-4#{$selector} {
@@ -141,6 +128,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
         flex: 0 0 75%;
         max-width: 75%;
       }
+      &.reduce-1 {
+        max-width: calc(25% - #{$margin-gap-small});
+      }
     }
     .col-5#{$selector} {
       flex: 0 0 20%;
@@ -150,10 +140,17 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
         flex: 0 0 80%;
         max-width: 80%;
       }
+      &.reduce-1 {
+        max-width: calc(20% - #{$margin-gap-small});
+      }
     }
     .col-6#{$selector} {
       flex: 0 0 calc(100% - (100% / 6));
       max-width: calc(100% - (100% / 6));
+
+      &.reduce-1 {
+        max-width: calc((100% - (100% / 6)) - #{$margin-gap-small});
+      }
     }
   }
 }
@@ -161,14 +158,14 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 //gap
 @mixin gap($selector) {
   .gap#{$selector} {
-    margin-top: $margin-1;    
+    margin-top: $margin-gap;    
   }
   .gap-small#{$selector} {
-    margin-top: $margin-2;
+    margin-top: $margin-gap-small;
   }
 
   .gap-large#{$selector} {
-    margin-top: $margin-3;
+    margin-top: $margin-gap-large;
   }
 }
 
@@ -226,11 +223,11 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 @mixin pad-last($selector) {
   &.pad-last {
     & > *:last-child {
-      margin-left: $margin-0;
+      margin-left: $margin-safe-gap;
     }
     &.bigger {
       & > *:last-child {
-        margin-left: $margin-1;
+        margin-left: $margin-safe-gap-large;
       }
     }
   }
@@ -245,21 +242,12 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   position: relative;
 }
 
-.image,
-img {
-  &.auto {
-    height: auto;
+img:not(.def) {
+  height: auto;
+  max-width: 100%;
 
-    img {
-      height: auto;
-    }
-  }
   &.full {
-    max-width: 100%;
-
-    img {
-      max-width: 100%;
-    }
+    width: 100%;
   }
 }
 
@@ -276,6 +264,14 @@ img {
   text-decoration: none;
 }
 
+.h-100 {
+  height: 100%;
+}
+
+.ta-center {
+  text-align: center;
+}
+
 
 // ----------------------------------------------------------------
 // DRAW GRID
@@ -287,7 +283,7 @@ img {
 @include col-grid($load-default);
 @include flex-grid($load-default);
 @include pad-last($load-default);
-// @include gap($load-default);
+@include gap($load-default);
 
 // @each $selector, $break-point in $gd-breakpoints {
 //   @media screen and(max-width: $break-point) {

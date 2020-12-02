@@ -1,0 +1,231 @@
+@import "../styles/Settings.scss";
+
+.onboarding-modal {
+  height: 100%;
+  transition: 0.3s ease-in-out;
+
+  &.fade-out {
+    opacity: 0;
+  }
+}
+
+.onboarding {
+  height: 100%;
+
+  .awssld__content {
+    align-items: flex-start;
+    background-color: $background-primary;
+  }
+
+  .screen {
+    padding-bottom: 130px;
+    height: 100%;
+
+    .button {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 70px;
+    }
+  }
+
+  h1, p {
+    z-index: 2;
+  }
+
+  .text {
+    .button {
+      position: absolute;
+    }
+    .number {
+      font-size: 183px;
+      font-weight: $weight-3;
+      font-family: $font-secondary;
+      line-height: 0.5;
+      transform: translateY(50%);
+      position: relative;
+      opacity: 0.2;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: -18%;
+        right: 0;
+        bottom: -34%;
+        left: 0;
+
+        background: rgba($background-primary, 0.4);
+        background: linear-gradient(to top, $background-primary 0%, transparent 100%)
+        
+      }
+    }
+    p:not(.number) {
+      margin-top: 12px;
+    }
+  }
+
+  .top {
+    margin-top: #{'min(5vh, 86px)'};
+    h2 {
+      margin-top: 33px;
+    }
+  }
+
+  .qr-display {
+    .show {
+      position: absolute;
+      top: 14%;
+      left: 30%;
+    }
+    .scan {
+      position: absolute;
+      top: 22%;
+      left: 49%;
+      z-index: 3;
+
+      .phone-bg {
+        width: 76px;
+        height: 150px;
+        border-radius: 12px;
+        background: rgba(29, 40, 53, 0.8);
+        border: 2px solid #506377;
+        
+        p {
+          font-weight: 600;
+          font-size: 8.5px;
+          line-height: 111.4%;
+          text-align: center;
+          font-family: $font-primary;
+          position: absolute;
+          max-width: 78%;
+          top: 9%;
+        }
+      }
+    }
+  }
+
+  .animate {
+    .show {
+      animation: show-move 4.9s ease-in-out infinite;
+    }
+    .scan {
+      animation: scan-move 4.9s 180ms ease-in-out infinite;
+    }
+    .phone-bg img {
+      animation: qr-scan 4.9s 180ms ease-in-out infinite;
+    }
+  }
+
+  .slick-slider,
+  .slick-list,
+  .slick-track,
+  .slick-slide > div {
+    height: 100%;
+  }
+
+  .slick-dots {
+    bottom: 35px;
+
+    li {
+      button {
+        padding: 0;
+
+        &::before {
+          content: '';
+          background: rgba(255, 255, 255, 0.3);
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          top: calc(50% - 3px);
+          left: calc(50% - 3px);
+          transition: 0.3s all ease-in-out;
+        }
+      }
+
+      &.slick-active {
+        button {
+          &::before {
+            background-color: #80F0BE;
+            width: 21px;
+            border-radius: 57.68px;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes scan-move {
+  0% {
+    opacity: 0.5;
+    transform: translate(5px, 15px);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  80% {
+    opacity: 0.5;
+    transform: translate(5px, 15px);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(5px, 15px);
+  }
+}
+
+@keyframes show-move {
+  0% {
+    opacity: 0.5;
+    transform: translate(-5px);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(0);
+  }
+  80% {
+    opacity: 0.5;
+    transform: translate(-5px);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(-5px);
+  }
+}
+
+@keyframes qr-scan {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.1;
+  }
+  30% {
+    opacity: 0.1;
+  }
+  35% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.3;
+  }
+  45% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
