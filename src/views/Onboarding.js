@@ -99,13 +99,6 @@ function Onboarding(props) {
     slide3,
   ]
 
-  // let sliderMemo;
-
-  // useEffect(() => {
-  //   sliderMemo = localStorage.getItem('onboarding-slide'); 
-  //   sliderMemo && slider.current.slickGoTo(parseInt(sliderMemo))
-  // }, [])
-
   return (
     <section className="onboarding relative">
       <Slider ref={slider} {...settings}>

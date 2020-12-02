@@ -62,28 +62,6 @@ h2:not(.def) {
   line-height: $height-small;
 }
 
-// h3:not(.def) {
-//   font-size: $size-6;
-//   font-weight: $weight-7;
-//   line-height: $height-1;
-// }
-
-// h4:not(.def) {
-//   font-size: $size-5;
-//   font-weight: $weight-4;
-//   line-height: $height-1;
-// }
-
-// p, li, a {
-//   font-weight: $weight-3;
-//   font-size: $size-4;
-//   line-height: $height-2;
-
-//   &.small {
-//     font-size: $size-3;
-//   }
-// }
-
 .simulate-mobile {
   width: 375px;
   height: 812px;
