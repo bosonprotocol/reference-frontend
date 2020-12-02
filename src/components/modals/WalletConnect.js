@@ -8,8 +8,10 @@ import Modal from "../Modal";
 import { injected, walletconnect, walletlink } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
 import MetaMaskLogo from "../../images/metamask.png";
+import WalletConnectLogo from "../../images/walletconnect.svg";
 import Identicon from "../Identicon";
 import CopyHelper from "../../copyHelper";
+import './WalletConnect.scss'
 
 export const MODAL_WALLET_CONNECT = "modal_wallet_connect";
 
@@ -22,20 +24,20 @@ export const WALLET_VIEWS = {
 
 export function getWalletTitle({ account, walletView, setWalletView }) {
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-        return <h1 className="f5 ma0">Account</h1>;
+        return <h1 className="account-title">Account</h1>;
     }
     if (account && walletView === WALLET_VIEWS.OPTIONS) {
         return (
             <button
                 onClick={ () => setWalletView(WALLET_VIEWS.ACCOUNT) }
-                className="outline-0 primary5 fw5"
+                className=""
             >
                 Back
             </button>
         );
     }
     if (!account) {
-        return <h1 className="f5 ma0">Connect to a wallet</h1>;
+        return <h1 className="account-title">Connect to a wallet</h1>;
     }
 }
 
@@ -216,13 +218,13 @@ export function WalletConnect({
         <>
             <WalletListItem
                 name={ "MetaMask" }
-                imageName={ "metamask.png" }
+                imageName={ MetaMaskLogo}
                 isActive={ connector === injected }
                 onClick={ () => onConnectionClicked("MetaMask") }
             />
             <WalletListItem
                 name={ "WalletConnect" }
-                imageName={ "walletconnect.svg" }
+                imageName={ WalletConnectLogo }
                 isActive={ connector === walletconnect }
                 onClick={ () => {
                     // if the user has already tried to connect, manually reset the connector
@@ -252,18 +254,18 @@ function WalletListItem({
         <div
             onClick={ onClick ? onClick : null }
             className={ classNames(
-                "br3 mb3 ph3 pv2 ba b--black-10 flex justify-between items-center pointer",
+                "wallet-list-item",
                 {
                     "hover-b--primary5": !isActive,
                     "bg-gray8": isActive,
                 }
             ) }
         >
-            <div className="f5 flex items-center">
+            <div className="">
                 { isActive ? (
-                    <div className="flex items-center justify-center green">
+                    <div className="">
                         <div
-                            className="mr2 bg-green br-100"
+                            className=""
                             style={ { height: "8px", width: "8px" } }
                         >
                             <div/>
@@ -272,9 +274,9 @@ function WalletListItem({
                 ) : null }
                 { name }
             </div>
-            <div className="w2 h2">
+            <div className="wallet-list-item-image-holder">
                 <img
-                    src={ MetaMaskLogo }
+                    src={ imageName }
                     alt={ name + "-" + imageName }
                     style={ imageStyle }
                 />
@@ -291,7 +293,7 @@ function WalletAccount({ setWalletView }) {
             return <Identicon/>;
         } else if (connector === walletconnect) {
             return (
-                <div className="h1 w1 ml3">
+                <div className="">
                     <img src={ WalletConnectIcon } alt={ "walletconnect logo" }/>
                 </div>
             );
@@ -307,21 +309,21 @@ function WalletAccount({ setWalletView }) {
     }
 
     return (
-        <div className="br3 pa3 ba b--black-10">
-            <div className="flex justify-between items-center mb3">
-                <div className="f6 gray3">Connected with { getName() }</div>
+        <div className="connected-account">
+            <div className="">
+                <div className="">Connected with { getName() }</div>
                 <button
-                    className="outline-0 f6 link br4 ba ph2 pv1 dib primary5 bg-primary9 underline-hover pointer"
+                    className=""
                     onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }
                 >
                     Change
                 </button>
             </div>
-            <div className="flex items-center mb3">
+            <div className="">
                 { getStatusIcon() }
-                <span className="ml2 f4 fw5">{ shortenAddress(account) }</span>
+                <span className="">{ shortenAddress(account) }</span>
             </div>
-            <div className="flex items-center">
+            <div className="">
                 <CopyHelper toCopy={ account }>
                     <span style={ { marginLeft: "4px" } }>Copy Address</span>
                 </CopyHelper>

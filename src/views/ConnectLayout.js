@@ -17,8 +17,8 @@ export default function Layout({ children, autoPopup = true, status = true }) {
     }, [autoPopup, account]);
 
     return (
-        <div className="home-bg-image">
-            <div className="db flex center justify-between items-center pa3 pa4-l mw7 mw8-l">
+        <div className="">
+            <div className="">
                 { status ? <Web3Status/> : null }
             </div>
             { children }
@@ -28,8 +28,8 @@ export default function Layout({ children, autoPopup = true, status = true }) {
 
 export function CenterBox({ children }) {
     return (
-        <div className="db flex center justify-between items-center mv5 pa3 pa4-l mw6 mw7-ns">
-            <div className="center w-100 w-60-ns pa3 pa4-ns bg-white br4 shadow-4">
+        <div className="">
+            <div className="">
                 { children }
             </div>
         </div>

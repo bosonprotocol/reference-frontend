@@ -35,7 +35,7 @@ function App() {
             }
             <Router>
                 <Switch>
-                    <Route exact strict path="/connect" component={ Connect }/>
+                    <Route exact strict path="/" component={ Connect }/>
                 </Switch>
                 { modal && modal.type === MODAL_WALLET_CONNECT ? (
                     <ModalWalletConnect setModal={ setModal } modal={ modal }/>

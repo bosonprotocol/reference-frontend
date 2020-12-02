@@ -14,5 +14,5 @@ export default function Identicon() {
         }
     }, [account]);
 
-    return <div className="h1 w1 br-100" ref={ ref }/>;
+    return <div className="" ref={ ref }/>;
 }

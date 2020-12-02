@@ -20,7 +20,7 @@ export default function Web3Status() {
             return <Identicon/>;
         } else if (connector === walletconnect) {
             return (
-                <div className="h1 w1 ml3">
+                <div className="">
                     <img src={ WalletConnectIcon } alt={ "walletconnect logo" }/>
                 </div>
             );
@@ -31,9 +31,9 @@ export default function Web3Status() {
         return (
             <div
                 onClick={ onOpenWalletConnectModal }
-                className="flex justify-center hover-bg-white bg-light-gray br3 pa2 f6 fw5 pointer"
+                className="r"
             >
-                <span className="mr2">{ shortenAddress(account) }</span>
+                <span className="">{ shortenAddress(account) }</span>
                 { getStatusIcon() }
             </div>
         );

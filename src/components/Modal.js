@@ -13,17 +13,17 @@ export default function Modal({
     }
 
     return (
-        <div className="flex items-center justify-center bg-black-80 fixed absolute--fill z-2">
-            <div className="fixed absolute--fill" onClick={ onClose }/>
+        <div className="">
+            <div className="" onClick={ onClose }/>
             <div
-                className="modal relative flex flex-column items-center mw6 mw7-ns mb7 mb4-ns"
+                className=""
                 style={ { width: size } }
             >
-                <div className="br0 shadow-4 bg-white br4-ns center w-100">
+                <div className="">
                     { title ? (
-                        <div className="flex items-center justify-between pa3">
-                            <div className="di f5 fw5">{ title }</div>
-                            <a className="gray4 hover-gray2" onClick={ onClose }>
+                        <div className="">
+                            <div className="">{ title }</div>
+                            <a className="" onClick={ onClose }>
                                 <Icon name="x"/>
                             </a>
                         </div>

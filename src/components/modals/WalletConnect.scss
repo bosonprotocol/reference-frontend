@@ -1,0 +1,29 @@
+@import "../../styles/Settings.scss";
+
+.account-title {
+  text-align: center;
+  padding: 50px;
+}
+
+.wallet-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  cursor: pointer;
+
+  .wallet-list-item-image-holder {
+    height: 40px;
+    width: 40px;
+
+    img {
+      height: 35px;
+      width: 35px;
+    }
+  }
+}
+
+.connected-account {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+}

@@ -34,7 +34,7 @@ export default function Connect() {
     return (
         <Layout autoPopup={ false } status={ false }>
             <CenterBox>
-                <div className="mb4">
+                <div className="">
                     { getWalletTitle({ account, walletView, setWalletView }) }
                 </div>
                 <WalletConnect walletView={ walletView } setWalletView={ setWalletView }/>
