@@ -54,15 +54,15 @@ export const homeProducts = [
     deposit: 0.02,
   },
   {
-    title: 'Macbook Pro 13” 2019',
-    image: 'images/temp/home-product-temp-2.png',
-    price: 0.4,
-    deposit: 0.02,
-  },
-  {
     title: 'Nike Air',
     image: 'images/temp/home-product-temp-3.png',
     price: 0.3,
+    deposit: 0.02,
+  },
+  {
+    title: 'Macbook Pro 13” 2019',
+    image: 'images/temp/home-product-temp-2.png',
+    price: 0.4,
     deposit: 0.02,
   },
   {
