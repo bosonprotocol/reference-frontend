@@ -94,15 +94,17 @@ function Onboarding(props) {
 
   return (
     <section className="onboarding relative">
-      <Slider ref={slider} {...settings}>
-        {sequence.map((slide, id) => 
-          <div key={id} className="container atomic-scoped animate">
-            <div className="screen relative flex column jc-sa">
-              {slide(props.completeOnboarding)}
+      <div className="container">
+        <Slider ref={slider} {...settings}>
+          {sequence.map((slide, id) => 
+            <div key={id} className="container atomic-scoped animate">
+              <div className="screen relative flex column jc-sa">
+                {slide(props.completeOnboarding)}
+              </div>
             </div>
-          </div>
-        )}
-      </Slider>
+          )}
+        </Slider>
+      </div>
     </section>
   )
 }

@@ -31,7 +31,7 @@ function App() {
           <Onboarding completeOnboarding={completeOnboarding} />
         </div>
       }
-      <div className={`screens ${newUser && 'new-user'}`} ref={screensRef}>
+      <div className={`screens ${newUser ? 'new-user' : ''}`} ref={screensRef}>
         <Router>
           <Switch>
             <Home />
