@@ -2,10 +2,35 @@
 
 .onboarding-modal {
   height: 100%;
-  transition: 0.3s ease-in-out;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  transition: 0.9s ease-in-out;
+
+  &::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $background-primary;
+    opacity: 0;
+    transition: 0.9s ease-in-out;
+  }
 
   &.fade-out {
-    opacity: 0;
+    animation: close-modal 0.9s ease-in-out forwards;
+
+    &::after {
+      opacity: 1;
+    }
   }
 }
 
@@ -79,8 +104,8 @@
     }
     .scan {
       position: absolute;
-      top: 22%;
-      left: 49%;
+      top: 20%;
+      left: 45%;
       z-index: 3;
 
       .phone-bg {
@@ -206,22 +231,26 @@
   0% {
     opacity: 1;
   }
+  10% {
+    opacity: 1;
+  }
   20% {
     opacity: 0.1;
-  }
-  30% {
-    opacity: 0.1;
+    transform: scale(0.8);
   }
   35% {
-    opacity: 1;
+    opacity: 0.1;
   }
   40% {
-    opacity: 0.3;
-  }
-  45% {
     opacity: 1;
   }
-  70% {
+  45% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  55% {
     opacity: 1;
   }
   100% {
@@ -229,3 +258,17 @@
   }
 }
 
+@keyframes close-modal {
+  0% {
+    // opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+  30% {
+    // opacity: 1;
+    transform: translateX(20px) scaleX(1.09);
+  }
+  100% {
+    // opacity: 0;
+    transform: translateX(-55vh) scaleX(0.1);
+  }
+}

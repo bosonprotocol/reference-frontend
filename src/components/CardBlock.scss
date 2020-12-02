@@ -1,0 +1,24 @@
+@import "../styles/Settings.scss";
+
+.card-block {
+  padding: 0 4px;
+  
+  .card-container {
+    height: 171px;
+    border-radius: 10px;
+    padding: 0 18px;
+
+    .image {
+      flex-shrink: 0;
+    }
+    .text {
+      padding-right: 10px;
+
+      h2 {
+        font-weight: $weight-7;
+        font-size: 21px;
+        font-family: $font-fourth;
+      }
+    }
+  }
+}
