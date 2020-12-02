@@ -1,6 +1,6 @@
 import "./styles/Global.scss"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Onboarding from './views/Onboarding'
@@ -8,29 +8,34 @@ import Home from './views/Home'
 
 function App() {
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
-  const [modalControl, setModalControl] = useState("onboarding-modal")
+  const screensRef = useRef()
+  const onboardingModalRef = useRef()
 
   const completeOnboarding = () => {
     localStorage.setItem('onboarding-completed', '1')
-    setModalControl(modalControl + ' fade-out')
+
+    onboardingModalRef.current.classList.add('fade-out')
+    screensRef.current.classList.add('fade-in')
 
     setTimeout(() => {
       setNewUser(false)
-    }, 800);
+    }, 900);
   }
 
   return (
     <div className="simulate-mobile">
       {newUser &&
-        <div className={modalControl}>
+        <div className="onboarding-modal" ref={onboardingModalRef}>
           <Onboarding completeOnboarding={completeOnboarding} />
         </div>
       }
-      <Router>
-        <Switch>
-          <Home />
-        </Switch>
-      </Router>
+      <div className={`screens ${newUser && 'new-user'}`} ref={screensRef}>
+        <Router>
+          <Switch>
+            <Home />
+          </Switch>
+        </Router>
+      </div>
     </div>
   );
 }

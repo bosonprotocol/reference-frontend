@@ -10,7 +10,7 @@
   left: 0;
   z-index: 1;
 
-  transition: 0.8s 400ms ease-in-out;
+  transition: 0.9s ease-in-out;
 
   &::after {
     content: '';
@@ -22,11 +22,11 @@
     left: 0;
     background-color: $background-primary;
     opacity: 0;
-    transition: 0.4s ease-in-out;
+    transition: 0.9s ease-in-out;
   }
 
   &.fade-out {
-    // opacity: 0;
+    animation: close-modal 0.9s ease-in-out forwards;
 
     &::after {
       opacity: 1;
@@ -254,3 +254,17 @@
   }
 }
 
+@keyframes close-modal {
+  0% {
+    // opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+  30% {
+    // opacity: 1;
+    transform: translateX(20px) scaleX(1.07);
+  }
+  100% {
+    // opacity: 0;
+    transform: translateX(-40vh) scaleX(0.5);
+  }
+}

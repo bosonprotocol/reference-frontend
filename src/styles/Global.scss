@@ -107,6 +107,17 @@ h2:not(.def) {
   }
 }
 
+.screens {
+  &.new-user {
+    opacity: 0;
+    transition: 0.7s 400ms ease-in-out;
+  }
+
+  &.fade-in {
+    opacity: 1;
+  }
+}
+
 .color-secondary {
   color: $color-secondary;
 }
