@@ -10,6 +10,13 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   margin: 0 auto;
   padding: 0 $container-padding;
   flex: auto;
+
+  &.erase-right {
+    padding-right: 0;
+  }
+  &.erase-left {
+    padding-left: 0;
+  }
 }
 .new-row {
   margin-left: -#{$container-padding};

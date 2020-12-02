@@ -31,22 +31,26 @@ function Home() {
     centerPadding: '25px',
   };
   return (
-    <section className="home">
+    <div className="home">
       <div className="container">
         <Header />
         <CategoryMenu />
-        <div className="product-list">
+      </div>
+      <section className="product-list">
+        <div className="container">
           <Slider {...productListSettings}>
             {productBlocks.map(block => <ProductBlock {...block} />)}
           </Slider>
         </div>
-        <div className="card-list">
+      </section>
+      <section className="card-list">
+        <div className="container erase-right">
           <Slider {...cardListSettings}>
             {cardBlocks.map(block => <CardBlock {...block} />)}
           </Slider>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }
 

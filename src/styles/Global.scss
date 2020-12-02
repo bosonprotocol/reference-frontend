@@ -95,10 +95,16 @@ h2:not(.def) {
   display: block;
   box-shadow: 2px 2px 16px 2px rgba(0, 0, 0, 0.23);
   border-radius: 20px;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
 
   background-color: $background-primary;
+
+  @media (max-width: 375px) {
+    border-radius: 0;
+    height: 100vh;
+    max-height: 100vh;
+  }
 }
 
 .color-secondary {
