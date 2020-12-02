@@ -99,6 +99,8 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 //col-grid
 @mixin col-grid($selector) {
   .col-grid {
+    display: flex;
+
     .side-padding#{$selector} {
       padding-left: $padding-col-side;
       padding-right: $padding-col-side;
@@ -249,15 +251,6 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   position: relative;
 }
 
-.img:not(.def) {
-  height: auto;
-  max-width: 100%;
-
-  &.full {
-    width: 100%;
-  }
-}
-
 .ls-none {
   list-style: none;
 }
@@ -277,6 +270,17 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 
 .ta-center {
   text-align: center;
+}
+
+.atomic-scoped {
+  img:not(.def) {
+    height: auto;
+    max-width: 100%;
+  
+    &.full {
+      width: 100%;
+    }
+  }
 }
 
 
