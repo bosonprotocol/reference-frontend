@@ -30,7 +30,7 @@ export function getWalletTitle({ account, walletView, setWalletView }) {
         return (
             <button
                 onClick={ () => setWalletView(WALLET_VIEWS.ACCOUNT) }
-                className=""
+                className="button primary"
             >
                 Back
             </button>
@@ -218,7 +218,7 @@ export function WalletConnect({
         <>
             <WalletListItem
                 name={ "MetaMask" }
-                imageName={ MetaMaskLogo}
+                imageName={ MetaMaskLogo }
                 isActive={ connector === injected }
                 onClick={ () => onConnectionClicked("MetaMask") }
             />
@@ -257,7 +257,7 @@ function WalletListItem({
                 "wallet-list-item",
                 {
                     "hover-b--primary5": !isActive,
-                    "bg-gray8": isActive,
+                    "active-connector": isActive,
                 }
             ) }
         >
@@ -310,23 +310,26 @@ function WalletAccount({ setWalletView }) {
 
     return (
         <div className="connected-account">
-            <div className="">
-                <div className="">Connected with { getName() }</div>
+            <div className="connected-with">
+                <div className="connected-with-title">Connected with { getName() }</div>
                 <button
-                    className=""
+                    className="button primary change-connector-button"
+                    role="button"
                     onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }
                 >
                     Change
                 </button>
             </div>
-            <div className="">
-                { getStatusIcon() }
-                <span className="">{ shortenAddress(account) }</span>
-            </div>
-            <div className="">
-                <CopyHelper toCopy={ account }>
-                    <span style={ { marginLeft: "4px" } }>Copy Address</span>
-                </CopyHelper>
+            <div className="connected-account-address-holder">
+                <div className="connected-account-address">
+                    { getStatusIcon() }
+                    <span className="">{ shortenAddress(account) }</span>
+                </div>
+                <div className="copy-account-address">
+                    <CopyHelper toCopy={ account }>
+                        <span style={ { marginLeft: "4px" } }>Copy Address</span>
+                    </CopyHelper>
+                </div>
             </div>
         </div>
     );

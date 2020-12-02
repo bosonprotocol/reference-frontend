@@ -10,6 +10,19 @@
   justify-content: space-between;
   padding: 40px;
   cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  margin: 15px;
+
+  &:hover {
+    border: 1px solid gray;
+  }
+
+  &.active-connector {
+    border: 1px solid $accent;
+    border-radius: 10px;
+    margin: 15px;
+  }
 
   .wallet-list-item-image-holder {
     height: 40px;
@@ -26,4 +39,21 @@
   display: flex;
   flex-direction: column;
   padding: 40px;
+
+  .connected-with {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .connected-account-address-holder {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+
+    .connected-account-address {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
