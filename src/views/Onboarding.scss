@@ -35,7 +35,7 @@
 }
 
 .onboarding {
-  height: 100%;
+  height: 100vh;
 
   .awssld__content {
     align-items: flex-start;
@@ -43,14 +43,29 @@
   }
 
   .screen {
-    padding-bottom: 130px;
-    height: 100%;
+    padding-bottom: 128px;
+    padding-bottom: clamp(128px, 10vh, 130px);
+    // height: 100%;
 
     .button {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
       bottom: 70px;
+    }
+    .top {
+      min-height: 125px;
+    }
+    .slide-image {
+      height: calc(100% - (125px + 175px + min(5vh, 86px)));
+      min-height: 250px;
+
+      & > * {
+        max-height: 100%;
+      }
+    }
+    .text {
+      min-height: 175px;
     }
   }
 
@@ -145,7 +160,7 @@
   .slick-list,
   .slick-track,
   .slick-slide > div {
-    height: 100%;
+    min-height: 100%;
   }
 
   .slick-dots {
