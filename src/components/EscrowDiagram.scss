@@ -4,6 +4,9 @@
 .diagram-content {
   &.slide-2 {
     margin: #{'min(8vh, 70px)'} 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .title {
     margin-bottom: 8px;

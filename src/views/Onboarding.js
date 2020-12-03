@@ -79,7 +79,7 @@ function Onboarding(props) {
   const settings = {
     dots: true,
     infinite: false,
-    arrows: false,
+    arrows: window.innerWidth <= 960 ? false : true,
     accessibility: true,
     initialSlide: currentSlideMemo ? parseInt(currentSlideMemo) : 0,
     afterChange: (currentSlide) => localStorage.setItem('onboarding-slide', (currentSlide).toString()),
