@@ -1,17 +1,35 @@
 .home {
   padding: 55px 0;
+
+  @media (min-width: 961px) {
+    padding-bottom: 112px;
+  }
   
   .product-list {
     margin-top: 20px;
+
+    @media (min-width: 961px) {
+      margin-top: 50px;
+    }
   }
   .card-list {
     margin-top: 35px;
 
+    @media (min-width: 961px) {
+      margin-top: 50px;
+    }
+
     .slick-track {
-      margin-left: -25px;
+      @media (max-width: 960px) {
+        margin-left: -25px;
+      }
     }
   }
-  .home-products-listing {
+  .home-products {
     margin-top: 25px;
+
+    @media (min-width: 961px) {
+      margin-top: 50px;
+    }
   }
 }

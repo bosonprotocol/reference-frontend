@@ -1,24 +1,27 @@
 import React from 'react'
 
 import ProductBlock from "../components/ProductBlock";
+
+import Masonry from 'react-masonry-css'
+import "./ProductListing.scss"
+
 import { homeProducts } from "../PlaceholderAPI"
 
 function ProductListing() {
 
-  const getHomeProductSplice= (part) => {
-    return part === 1 ?
-    homeProducts.slice(0, Math.ceil(homeProducts.length / 2)) :
-    homeProducts.slice(Math.ceil(homeProducts.length / 2), homeProducts.length)
-  }
+  const breakpointColumns = {
+    default: 3,
+    960: 2,
+  };
 
   return (
-    <div className="home-products-listing col-grid">
-      <div className="col-2">
-        {getHomeProductSplice(1).map(block => <ProductBlock {...block} col />)}
-      </div>
-      <div className="col-2">
-        {getHomeProductSplice(2).map(block => <ProductBlock {...block} col />)}
-      </div>
+    <div className="home-products-listing">
+      <Masonry
+        breakpointCols={breakpointColumns}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column">
+        {homeProducts.map(block => <ProductBlock {...block} col />)}
+      </Masonry>
     </div>
   )
 }

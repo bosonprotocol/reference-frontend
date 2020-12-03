@@ -283,6 +283,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   }
 }
 
+.o-hidden {
+  overflow: hidden;
+}
+
 
 // ----------------------------------------------------------------
 // DRAW GRID

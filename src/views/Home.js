@@ -19,7 +19,7 @@ function Home() {
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: window.innerWidth <= 960 ? 2 : 4,
     slidesToScroll: 2
   };
 
@@ -28,14 +28,14 @@ function Home() {
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
-    centerMode: true,
+    slidesToShow: window.innerWidth <= 960 ? 1 : 2,
+    centerMode: window.innerWidth <= 960 ? true : false,
     centerPadding: '25px',
   };
 
   return (
     <div className="home atomic-scoped">
-      <div className="container">
+      <div className="container o-hidden">
         <Header />
         <CategoryMenu />
       </div>
