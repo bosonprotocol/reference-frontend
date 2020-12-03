@@ -3,7 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useStore } from "../hooks";
 import { shortenAddress } from "../utils";
 import { MODAL_WALLET_CONNECT } from "./modals/WalletConnect";
-import { injected, walletconnect, walletlink } from "../connectors";
+import { injected, walletconnect } from "../connectors";
 import WalletConnectIcon from "../images/walletconnect.svg";
 import Identicon from "./Identicon";
 

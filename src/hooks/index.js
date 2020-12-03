@@ -1,6 +1,5 @@
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { Token } from "@uniswap/sdk";
 import { parseBytes32String } from "@ethersproject/strings";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
@@ -9,7 +8,6 @@ import { NetworkContextName } from "../constants";
 import { injected } from "../connectors";
 import { isAddress, parseLocalStorage } from "../utils";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
-import { NEVER_RELOAD, useSingleCallResult } from "../redux/multicall/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
 export function useLocalStorage(key, defaultValue, didChange = []) {

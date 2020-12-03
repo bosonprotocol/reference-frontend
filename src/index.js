@@ -2,14 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Web3ReactProvider, createWeb3ReactRoot } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { Provider } from "react-redux";
 
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { NetworkContextName } from "./constants";
-// import Web3ReactManager from "./components/web3-react-manager";
-import reduxStore from "./redux";
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
@@ -23,9 +20,7 @@ ReactDOM.render(
     <React.StrictMode>
         <Web3ReactProvider getLibrary={ getLibrary }>
             <Web3ProviderNetwork getLibrary={ getLibrary }>
-                <Provider store={ reduxStore }>
-                    <App/>
-                </Provider>
+                <App/>
             </Web3ProviderNetwork>
         </Web3ReactProvider>
     </React.StrictMode>,

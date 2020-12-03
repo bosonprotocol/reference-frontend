@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useStore, usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
 import Modal from "../Modal";
-import { injected, walletconnect, walletlink } from "../../connectors";
+import { injected, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
 import MetaMaskLogo from "../../images/metamask.png";
 import WalletConnectLogo from "../../images/walletconnect.svg";
