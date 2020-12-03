@@ -20,7 +20,7 @@ function ProductListing() {
         breakpointCols={breakpointColumns}
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column">
-        {homeProducts.map(block => <ProductBlock {...block} col />)}
+        {homeProducts.map((block, id) => <ProductBlock col key={id} {...block} delay={`${(id + 5) * 50}ms`} animate={id < 6} />)}
       </Masonry>
     </div>
   )

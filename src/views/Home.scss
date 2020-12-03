@@ -32,4 +32,63 @@
       margin-top: 50px;
     }
   }
+
+  // init animations
+
+  // before
+  .product-list {
+    .product-block.animate {
+      img {
+        transform: scale(1.1);
+        opacity: 0;
+        transition: 0.45s ease-in-out;
+      }
+    }
+  }
+  .card-list {
+    .card-block.animate {
+      img {
+        transform: translateX(-10px);
+        opacity: 0;
+        transition: 0.45s ease-in-out;
+      }
+    }
+  }
+  .home-products {
+    .product-block.animate {
+      img {
+        transform: scale(1.1);
+        opacity: 0;
+        transition: 0.45s ease-in-out;
+      }
+    }
+  }
+  
+  // play
+  &.init {
+    .product-list {
+      .product-block {
+        img {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    }
+    .card-list {
+      .card-block.animate {
+        img {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    }
+    .home-products {
+      .product-block.animate {
+        img {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import "./Home.scss"
 
@@ -14,6 +14,8 @@ import ProductListing from "../components/ProductListing"
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 function Home() {
+  const homepage = useRef()
+
   const productListSettings = {
     dots: false,
     arrows: false,
@@ -33,8 +35,14 @@ function Home() {
     centerPadding: '25px',
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      homepage.current.classList.add('init')
+    }, 100);
+  }, [])
+
   return (
-    <div className="home atomic-scoped">
+    <div ref={homepage} className="home atomic-scoped">
       <div className="container o-hidden">
         <Header />
         <CategoryMenu />
@@ -42,14 +50,14 @@ function Home() {
       <section className="product-list">
         <div className="container">
           <Slider {...productListSettings}>
-            {productBlocks.map(block => <ProductBlock {...block} />)}
+            {productBlocks.map((block, id) => <ProductBlock key={id} {...block} delay={`${(id + 1) * 50}ms`} animate={id < 4}/>)}
           </Slider>
         </div>
       </section>
       <section className="card-list">
         <div className="container erase-right">
           <Slider {...cardListSettings}>
-            {cardBlocks.map(block => <CardBlock {...block} />)}
+            {cardBlocks.map((block, id) => <CardBlock key={id} {...block} delay={`${(id + 7) * 50}ms`} animate={id < 2} />)}
           </Slider>
         </div>
       </section>
