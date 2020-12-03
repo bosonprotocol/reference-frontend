@@ -97,7 +97,7 @@ function Onboarding(props) {
         <Slider ref={slider} {...settings}>
           {sequence.map((slide, id) => 
             <div key={id} className="container atomic-scoped animate">
-              <div className="screen relative flex column jc-sa">
+              <div className="screen relative flex column jc-sb">
                 {slide(props.completeOnboarding)}
               </div>
             </div>

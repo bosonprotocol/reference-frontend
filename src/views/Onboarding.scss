@@ -39,6 +39,9 @@
 }
 
 .onboarding {
+  max-width: 100%;
+  max-height: 100vh;
+
   .awssld__content {
     align-items: flex-start;
     background-color: $background-primary;
@@ -229,7 +232,7 @@
   }
 
   .slick-dots {
-    bottom: 35px;
+    bottom: 50px;
 
     li {
       button {
