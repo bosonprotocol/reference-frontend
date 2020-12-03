@@ -45,6 +45,7 @@ function Home() {
     'PL': 1,
     'CL': 7,
     'HP': 5,
+    'NAV': 400,
   }
 
   useEffect(() => {
@@ -78,7 +79,7 @@ function Home() {
           <ProductListing animateEl={animateEl.HP} animateDel={animateDel.HP} />
         </div>
       </section>
-      <NavigationBar />
+      <NavigationBar delay={animateDel.NAV} />
     </div>
   )
 }

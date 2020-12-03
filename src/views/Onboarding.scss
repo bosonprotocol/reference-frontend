@@ -60,6 +60,7 @@
     }
     .top {
       min-height: 125px;
+      margin-bottom: 20px;
     }
     .slide-image {
       height: calc(100% - (125px + 175px + min(5vh, 86px)));
@@ -121,12 +122,15 @@
       position: absolute;
       top: 14%;
       left: 30%;
+      transform: translate(-5px);
+      opacity: 0.5;
     }
     .scan {
       position: absolute;
       top: 20%;
       left: 45%;
       z-index: 3;
+      transform: translate(5px, 15px);
 
       .phone-bg {
         width: 76px;
@@ -151,13 +155,78 @@
 
   .animate {
     .show {
-      animation: show-move 4.9s ease-in-out infinite;
+      animation: show-move 3.8s ease-in-out infinite;
     }
     .scan {
-      animation: scan-move 4.9s 180ms ease-in-out infinite;
+      animation: scan-move 3.8s 180ms ease-in-out infinite;
     }
     .phone-bg img {
-      animation: qr-scan 4.9s 180ms ease-in-out infinite;
+      animation: qr-scan 3.8s 180ms ease-in-out infinite;
+    }
+    .diagram-content {
+      .field {
+        animation: success 6s  ease-in-out infinite;
+      }
+      .seller .block {
+        animation: blockForward 6s  ease-in-out infinite;
+  
+        &::after {
+          animation: fadeOut 6s  ease-in-out infinite;
+        }
+      }
+      .buyer .block {
+        animation: blockBackwards 6s  ease-in-out infinite;
+  
+        &::before {
+          animation: fadeOut2 6s  ease-in-out infinite;
+        }
+      }
+      .block.empty {
+        &.seller {
+          animation: fadeIn 6s  ease-in-out infinite;
+        }
+        &.buyer {
+          animation: fadeIn2 6s  ease-in-out infinite;
+        }
+      }
+    }
+    &.pause {
+      .show {
+        animation-play-state: paused;
+      }
+      .scan {
+        animation-play-state: paused;
+      }
+      .phone-bg img {
+        animation-play-state: paused;
+      }
+      .diagram-content {
+        .field {
+          animation-play-state: paused;
+        }
+        .seller .block {
+          animation-play-state: paused;
+    
+          &::after {
+            animation-play-state: paused;
+          }
+        }
+        .buyer .block {
+          animation-play-state: paused;
+    
+          &::before {
+            animation-play-state: paused;
+          }
+        }
+        .block.empty {
+          &.seller {
+            animation-play-state: paused;
+          }
+          &.buyer {
+            animation-play-state: paused;
+          }
+        }
+      }
     }
   }
 
@@ -264,29 +333,6 @@
   }
 }
 
-@keyframes scan-move {
-  0% {
-    opacity: 0.5;
-    transform: translate(5px, 15px);
-  }
-  20% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  80% {
-    opacity: 0.5;
-    transform: translate(5px, 15px);
-  }
-  100% {
-    opacity: 0.5;
-    transform: translate(5px, 15px);
-  }
-}
-
 @keyframes show-move {
   0% {
     opacity: 0.5;
@@ -310,49 +356,79 @@
   }
 }
 
+@keyframes scan-move {
+  0% {
+    transform: translate(5px, 15px);
+  }
+  20% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  80% {
+    transform: translate(5px, 15px);
+  }
+  100% {
+    transform: translate(5px, 15px);
+  }
+}
+
 @keyframes qr-scan {
   0% {
     opacity: 1;
+    transform: scale(1);
   }
-  10% {
+  15% {
     opacity: 1;
+    transform: scale(1);
   }
-  20% {
-    opacity: 0.1;
-    transform: scale(0.8);
+  25% {
+    opacity: 0.2;
+    transform: scale(0.95);
+  }
+  30% {
+    opacity: 0.2;
+    transform: scale(0.95);
   }
   35% {
-    opacity: 0.1;
+    opacity: 1;
+    transform: scale(0.95);
   }
   40% {
-    opacity: 1;
+    opacity: 0.5;
+    transform: scale(0.95);
   }
   45% {
-    opacity: 0.3;
-  }
-  50% {
     opacity: 1;
+    transform: scale(0.95);
   }
-  55% {
+  80% {
     opacity: 1;
+    transform: scale(1);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes close-modal {
   0% {
-    transform: translateX(0) scaleX(1);
+    transform: translateY(0);
+    opacity: 1;
   }
   25% {
-    transform: translateX(20px) scaleX(1.09);
+    transform: translateY(30px);
+    opacity: 1;
   }
-  70% {
-    transform: translateX(-55vh) scaleX(0.1);
+  45% {
+    transform: translateY(-5vh);
+    opacity: 0;
   }
   100% {
-    transform: translateX(-55vh) scaleX(0.1);
+    transform: translateY(-5vh);
+    opacity: 0;
   }
 }
 
@@ -366,4 +442,57 @@
   100% {
     opacity: 0;
   }
+}
+
+@keyframes blockForward {
+  0% {transform: translateX(0); opacity: 1}
+  20% {transform: translateX(calc(100% + 8px)); opacity: 1}
+  30% {transform: translateX(calc(100% + 8px)); opacity: 0.4}
+  70% {transform: translateX(calc(100% + 8px)); opacity: 0.4}
+  85% {transform: translateX(0); opacity: 1}
+}
+
+@keyframes blockBackwards {
+  30% {transform: translateX(0); opacity: 1}
+  50% {transform: translateX(calc(-100% - 8px)); opacity: 1}
+  60% {transform: translateX(calc(-100% - 8px)); opacity: 0.4}
+  70% {transform: translateX(calc(-100% - 8px)); opacity: 0.4}
+  85% {transform: translateX(0); opacity: 1}
+}
+
+@keyframes fadeOut {
+  0% {opacity: 1; transform: translateX(0)}
+  10% {opacity: 0; transform: translateX(16px)}
+  80% {opacity: 0; transform: translateX(16px)}
+  95% {opacity: 1; transform: translateX(0)}
+}
+
+@keyframes fadeOut2 {
+  30% {opacity: 1; transform: translateX(0)}
+  40% {opacity: 0; transform: translateX(-10px)}
+  80% {opacity: 0; transform: translateX(-10px)}
+  95% {opacity: 1; transform: translateX(0)}
+}
+
+@keyframes fadeIn { 
+  20% {border: 1px dashed rgba($white, 0.08)}
+  30% {border: 1px dashed rgba($labels-accent-1, 1)}
+  70% {border: 1px dashed rgba($labels-accent-1, 1)}
+  80% {border: 1px dashed rgba($white, 0.08)}
+}
+
+@keyframes fadeIn2 { 
+  50% {border: 1px dashed rgba($white, 0.08)}
+  60% {border: 1px dashed rgba($labels-accent-2, 1)}
+  70% {border: 1px dashed rgba($labels-accent-2, 1)}
+  80% {border: 1px dashed rgba($white, 0.08)}
+}
+
+@keyframes success {
+  50% {opacity: 1; border: 1px solid rgba($accent, 0)}
+  59% {opacity: 0.8; border: 1px solid rgba($accent, 1)}
+  63% {opacity: 0.8; border: 1px solid rgba($accent, 0.3)}
+  68% {opacity: 0.8; border: 1px solid rgba($accent, 1)}
+  70% {opacity: 0.8; border: 1px solid rgba($accent, 1)}
+  83% {opacity: 1; border: 1px solid rgba($accent, 0)}
 }

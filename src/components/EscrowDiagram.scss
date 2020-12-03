@@ -95,6 +95,7 @@
     border-radius: 8px;
     width: calc(100% - 3px);
     z-index: 1;
+    border: 1px solid rgba($accent, 0);
     // position: relative;
 
     .block {
@@ -110,72 +111,4 @@
       }
     }
   }
-
-  &.animate {
-    $sequence: (
-      "left-arrow": 700ms,
-      "left-block": 1300ms,
-      "left-border": 2100ms,
-      "right-arrow": 2500ms,
-      "right-block": 3000ms,
-      "right-border": 3800ms,
-      "seal": 4300ms,
-    );
-    .block:not(.empty) {
-      transform: scale(1);
-      opacity: 1;
-    }
-    .seller .block {
-      animation: blockForward 1.4s map-get($sequence, "left-block") ease-in-out forwards;
-
-      &::after {
-        animation: fadeOut 0.8s map-get($sequence, "left-arrow") ease-in-out forwards;
-      }
-    }
-    .buyer .block {
-      animation: blockBackwards 1.4s map-get($sequence, "right-block") ease-in-out forwards;
-
-      &::before {
-        animation: fadeOut2 0.8s map-get($sequence, "right-arrow") ease-in-out forwards;
-      }
-    }
-    .block.empty {
-      &.seller {
-        animation: fadeIn 0.8s map-get($sequence, "left-border") ease-in-out forwards;
-      }
-      &.buyer {
-        animation: fadeIn2 0.8s map-get($sequence, "right-border") ease-in-out forwards;
-      }
-    }
-  }
-}
-
-@keyframes blockForward {
-  60% {transform: translateX(calc(100% + 8px)); opacity: 1}
-  100% {transform: translateX(calc(100% + 8px)); opacity: 0.4}
-}
-
-@keyframes blockBackwards {
-  60% {transform: translateX(calc(-100% - 8px)); opacity: 1}
-  100% {transform: translateX(calc(-100% - 8px)); opacity: 0.4}
-}
-
-@keyframes fadeOut {
-  100% {opacity: 0; transform: translateX(5px)}
-}
-
-@keyframes fadeOut2 {
-  100% {opacity: 0; transform: translateX(-5px)}
-}
-
-@keyframes fadeIn { 
-  100% {border: 1px dashed rgba($labels-accent-1, 1)}
-}
-
-@keyframes fadeIn2 {
-  100% {border: 1px dashed rgba($labels-accent-2, 1)}
-}
-
-@keyframes seal {
-  100% {opacity: 1}
 }

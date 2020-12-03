@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import './Onboarding.scss'
 
 import Slider from "react-slick";
@@ -82,8 +82,25 @@ function Onboarding(props) {
     arrows: window.innerWidth <= 960 ? false : true,
     accessibility: true,
     initialSlide: currentSlideMemo ? parseInt(currentSlideMemo) : 0,
-    afterChange: (currentSlide) => localStorage.setItem('onboarding-slide', (currentSlide).toString()),
+    afterChange: (currentSlide) => slideChanged(currentSlide),
   };
+
+  const slideChanged = (currentSlide) => {
+    localStorage.setItem('onboarding-slide', (currentSlide).toString())
+
+    playSlide(currentSlide)
+  }
+
+  const playSlide = (currentSlide) => {
+    document.querySelectorAll(`.onboarding [data-slide]`).forEach(slide => {
+      slide.classList.add('pause')
+    });
+    document.querySelector(`.onboarding [data-slide="${currentSlide}"]`).classList.remove('pause');
+  }
+
+  useEffect(() => {
+    playSlide(currentSlideMemo ? parseInt(currentSlideMemo) : 0)
+  }, [])
 
   const sequence = [
     slide1,
@@ -96,7 +113,7 @@ function Onboarding(props) {
       <div className="container">
         <Slider ref={slider} {...settings}>
           {sequence.map((slide, id) => 
-            <div key={id} className="container atomic-scoped animate">
+            <div key={id} data-slide={id} className="container atomic-scoped animate pause">
               <div className="screen relative flex column jc-sb">
                 {slide(props.completeOnboarding)}
               </div>
