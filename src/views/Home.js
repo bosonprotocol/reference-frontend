@@ -35,6 +35,18 @@ function Home() {
     centerPadding: '25px',
   };
 
+  const animateEl = {
+    'PL': window.innerWidth <= 960 ? 2 : 4,
+    'CL': window.innerWidth <= 960 ? 1 : 2,
+    'HP': window.innerWidth <= 960 ? 2 : 6,
+  }
+
+  const animateDel = {
+    'PL': 1,
+    'CL': 7,
+    'HP': 5,
+  }
+
   useEffect(() => {
     setTimeout(() => {
       homepage.current.classList.add('init')
@@ -50,20 +62,20 @@ function Home() {
       <section className="product-list">
         <div className="container">
           <Slider {...productListSettings}>
-            {productBlocks.map((block, id) => <ProductBlock key={id} {...block} delay={`${(id + 1) * 50}ms`} animate={id < 4}/>)}
+            {productBlocks.map((block, id) => <ProductBlock key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
           </Slider>
         </div>
       </section>
       <section className="card-list">
         <div className="container erase-right">
           <Slider {...cardListSettings}>
-            {cardBlocks.map((block, id) => <CardBlock key={id} {...block} delay={`${(id + 7) * 50}ms`} animate={id < 2} />)}
+            {cardBlocks.map((block, id) => <CardBlock key={id} {...block} delay={`${(id + animateDel.CL) * 50}ms`} animate={id < animateEl.CL} />)}
           </Slider>
         </div>
       </section>
       <section className="home-products">
         <div className="container">
-          <ProductListing />
+          <ProductListing animateEl={animateEl.HP} animateDel={animateDel.HP} />
         </div>
       </section>
       <NavigationBar />
