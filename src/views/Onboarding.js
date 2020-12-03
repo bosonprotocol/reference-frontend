@@ -79,7 +79,6 @@ function Onboarding(props) {
   const settings = {
     dots: true,
     infinite: false,
-    adaptiveHeight: true,
     arrows: false,
     accessibility: true,
     initialSlide: currentSlideMemo ? parseInt(currentSlideMemo) : 0,
