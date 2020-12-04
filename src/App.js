@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="emulate-mobile">
       {newUser &&
-        <div className="onboarding-modal" ref={onboardingModalRef}>
+        <div className="onboarding-modal flex center" ref={onboardingModalRef}>
           <Onboarding completeOnboarding={completeOnboarding} />
         </div>
       }
