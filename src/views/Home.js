@@ -22,7 +22,9 @@ function Home() {
     infinite: true,
     speed: 500,
     slidesToShow: window.innerWidth <= 960 ? 2 : 4,
-    slidesToScroll: 2
+    slidesToScroll: 2,
+    autoplay: window.innerWidth <= 960 ? false : true,
+    autoplaySpeed: 5000,
   };
 
   const cardListSettings = {
@@ -33,6 +35,8 @@ function Home() {
     slidesToShow: window.innerWidth <= 960 ? 1 : 2,
     centerMode: window.innerWidth <= 960 ? true : false,
     centerPadding: '25px',
+    autoplay: window.innerWidth <= 960 ? false : true,
+    autoplaySpeed: 5000,
   };
 
   const animateEl = {
