@@ -13,36 +13,38 @@ import ProductListing from "../components/ProductListing"
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
+const isMobile = window.innerWidth <= 960
+
 function Home() {
   const homepage = useRef()
 
   const productListSettings = {
     dots: false,
-    arrows: false,
+    arrows: isMobile ? false : true,
     infinite: true,
     speed: 500,
-    slidesToShow: window.innerWidth <= 960 ? 2 : 4,
+    slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 2,
-    autoplay: window.innerWidth <= 960 ? false : true,
+    autoplay: isMobile ? false : true,
     autoplaySpeed: 5000,
   };
 
   const cardListSettings = {
     dots: false,
-    arrows: false,
+    arrows: isMobile ? false : true,
     infinite: true,
     speed: 500,
-    slidesToShow: window.innerWidth <= 960 ? 1 : 2,
-    centerMode: window.innerWidth <= 960 ? true : false,
+    slidesToShow: isMobile ? 1 : 2,
+    centerMode: isMobile ? true : false,
     centerPadding: '25px',
-    autoplay: window.innerWidth <= 960 ? false : true,
+    autoplay: isMobile ? false : true,
     autoplaySpeed: 5000,
   };
 
   const animateEl = {
-    'PL': window.innerWidth <= 960 ? 2 : 4,
-    'CL': window.innerWidth <= 960 ? 1 : 2,
-    'HP': window.innerWidth <= 960 ? 2 : 6,
+    'PL': isMobile ? 2 : 4,
+    'CL': isMobile ? 1 : 2,
+    'HP': isMobile ? 2 : 6,
   }
 
   const animateDel = {
