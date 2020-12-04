@@ -155,13 +155,13 @@
 
   .animate {
     .show {
-      animation: show-move 3.8s ease-in-out infinite;
+      animation: show-move 3.8s 100ms ease-in-out infinite;
     }
     .scan {
-      animation: scan-move 3.8s 180ms ease-in-out infinite;
+      animation: scan-move 3.8s 280ms ease-in-out infinite;
     }
     .phone-bg img {
-      animation: qr-scan 3.8s 180ms ease-in-out infinite;
+      animation: qr-scan 3.8s 280ms ease-in-out infinite;
     }
     .diagram-content {
       .field {
