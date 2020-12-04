@@ -170,6 +170,12 @@ export function WalletConnect({
 
     const previousAccount = usePrevious(account);
 
+    console.log("Library ---------------");
+    console.log(library);
+
+    console.log("Account ----------------");
+    console.log(account);
+
     // close on connection, when logged out before
     useEffect(() => {
         if (isMounted.current && account && !previousAccount) {
