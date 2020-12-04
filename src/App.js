@@ -1,7 +1,7 @@
 import "./styles/Global.scss"
 
 import React, { useState, useRef } from 'react'
-import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import Onboarding from './views/Onboarding'
 import Home from './views/Home'
