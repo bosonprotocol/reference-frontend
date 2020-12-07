@@ -2,19 +2,21 @@ import React from 'react'
 
 import "./NavigationBar.scss"
 
+import { IconAccount, IconAdd, IconList } from "./Icons"
+
 function NavigationBar(props) {
   const {delay} = props
   return (
     <nav className="navigation-bar flex">
       <div className="nav-container flex center">
         <div className="control list flex center" role="button">
-          <img src="images/navbar-icon-list.svg" alt=""/>
+          <IconList />
         </div>
-        <div className="control add-product flex center animate" role="button">
-          <img src="images/navbar-icon-add.svg" alt="" style={{transitionDelay: delay}} />
+        <div className="control add-product flex center animate" role="button" style={{transitionDelay: delay}}>
+          <IconAdd />
         </div>
         <div className="control account flex center" role="button">
-          <img src="images/navbar-icon-account.svg" alt=""/>
+          <IconAccount />
         </div>
       </div>
     </nav>
