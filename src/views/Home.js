@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import "./Home.scss"
 
@@ -10,6 +10,7 @@ import CardBlock from "../components/CardBlock";
 import CategoryMenu from "../components/CategoryMenu"
 import NavigationBar from "../components/NavigationBar"
 import ProductListing from "../components/ProductListing"
+import ProductView from "../components/ProductView"
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
@@ -17,6 +18,7 @@ const isMobile = window.innerWidth <= 960
 
 function Home() {
   const homepage = useRef()
+  const [productViewToggle, setProductViewToggle] = useState(false)
 
   const productListSettings = {
     dots: false,
@@ -54,6 +56,10 @@ function Home() {
     'NAV': 400,
   }
 
+  const openProductView = () => {
+    setProductViewToggle(true)
+  }
+
   useEffect(() => {
     setTimeout(() => {
       homepage.current.classList.add('init')
@@ -69,7 +75,7 @@ function Home() {
       <section className="product-list">
         <div className="container">
           <Slider {...productListSettings}>
-            {productBlocks.map((block, id) => <ProductBlock key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
+            {productBlocks.map((block, id) => <ProductBlock openProductView={openProductView} key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
           </Slider>
         </div>
       </section>
@@ -85,6 +91,7 @@ function Home() {
           <ProductListing animateEl={animateEl.HP} animateDel={animateDel.HP} />
         </div>
       </section>
+      <ProductView productViewToggle={productViewToggle} />
       <NavigationBar delay={animateDel.NAV} />
     </div>
   )

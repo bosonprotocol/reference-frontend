@@ -3,11 +3,11 @@ import React from 'react'
 import "./ProductBlock.scss"
 
 function ProductBlock(props) {
-  const {title, image, price, deposit, col, delay, animate} = props
+  const {title, image, price, deposit, col, delay, animate, openProductView} = props
   const productType = col ? "col" : ""
 
   return (
-    <div className={`product-block ${productType} ${animate ? 'animate' : ''}`}>
+    <div onClick={() => openProductView()} className={`product-block ${productType} ${animate ? 'animate' : ''}`}>
       <div className={`product-image flex center ${productType}`}>
         <img style={{transitionDelay: delay}} src={image} alt={title}/>
       </div>

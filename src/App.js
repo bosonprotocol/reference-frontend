@@ -5,7 +5,6 @@ import {BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import Onboarding from './views/Onboarding'
 import Home from './views/Home'
-import ProductSingle from './views/ProductSingle'
 
 import "./styles/Animations.scss"
 

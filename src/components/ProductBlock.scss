@@ -2,6 +2,7 @@
 
 .product-block {
   padding:  0 3.5px;
+  cursor: pointer;
 
   &.col {
     @media (min-width: 961px) {

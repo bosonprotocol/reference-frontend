@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 
-import "./ProductSingle.scss"
+import "./ProductView.scss"
 
-import { IconCalendar, IconLocation, IconDeposit, IconEth } from "../components/Icons"
+import { IconCalendar, IconLocation, IconDeposit, IconEth } from "./Icons"
 
 
 const tableRow = (title, value) => {
@@ -80,7 +80,7 @@ const closePoint = window.innerHeight / 2
 function ProductSingle(props) {
   const productWindow = useRef()
   const windowContainer = useRef()
-  let {image, title, description} = props
+  let {image, title, description, productViewToggle} = props
 
   image = 'images/temp/product-single-thumbnail.png'
   title = 'Nike Adapt Self-Lacing Smart Sneaker'
@@ -129,7 +129,7 @@ function ProductSingle(props) {
   }, [])
 
   return (
-    <section ref={windowContainer} className="product-single"
+    <section ref={windowContainer} className={`product-view ${productViewToggle && 'open'}`}
       onMouseLeave={dragControlerDisable}
       onMouseUp={dragControlerDisable}
     >

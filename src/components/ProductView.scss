@@ -1,11 +1,20 @@
 @import "../styles/Settings.scss";
 
-.product-single {
+.product-view {
   max-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.6s ease-in-out;
 
   .container {
     padding-top: 80px;
   }
+
   .window {
     min-height: calc(100vh - 80px);
     margin: 0 auto;
@@ -13,10 +22,13 @@
     position: relative;
     max-width: 450px;
     z-index: 5;
+    transform: translateY(100vh);
     
     background-color: #212C39;
     border-top-right-radius: 16.3398px;;
     border-top-left-radius: 16.3398px;
+
+    transition: 0.6s ease-in-out;
 
     .drag-controler {
       position: absolute;
@@ -126,6 +138,7 @@
       }
     }
   }
+
   .overlay {
     width: 100%;
     position: absolute;
@@ -134,5 +147,14 @@
     bottom: 0;
     left: 0;
     background-color: rgba($black, 0.5)
+  }
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+
+    .window {
+      transform: translateY(0);
+    }
   }
 }
