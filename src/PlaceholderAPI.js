@@ -1,36 +1,36 @@
 export const productBlocks = [
   {
-    title: 'Oculus Quest',
+    title: 'Nike Air',
     image: 'images/temp/product-block-image-temp.png',
     price: 0.3,
     deposit: 0.02,
   },
   {
-    title: 'Nike Air',
+    title: 'Oculus Quest',
     image: 'images/temp/product-block-image-temp-2.png',
     price: 0.3,
     deposit: 0.02,
   },
   {
-    title: 'Oculus Quest',
+    title: 'Nike Air',
     image: 'images/temp/product-block-image-temp.png',
     price: 0.3,
     deposit: 0.02,
   },
   {
-    title: 'Nike Air',
+    title: 'Oculus Quest',
     image: 'images/temp/product-block-image-temp-2.png',
     price: 0.3,
     deposit: 0.02,
   },
   {
-    title: 'Oculus Quest',
+    title: 'Nike Air',
     image: 'images/temp/product-block-image-temp.png',
     price: 0.3,
     deposit: 0.02,
   },
   {
-    title: 'Nike Air',
+    title: 'Oculus Quest',
     image: 'images/temp/product-block-image-temp-2.png',
     price: 0.3,
     deposit: 0.02,

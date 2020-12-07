@@ -1,0 +1,138 @@
+@import "../styles/Settings.scss";
+
+.product-single {
+  max-height: 100vh;
+
+  .container {
+    padding-top: 80px;
+  }
+  .window {
+    min-height: calc(100vh - 80px);
+    margin: 0 auto;
+    padding-top: 100px;
+    position: relative;
+    max-width: 450px;
+    z-index: 5;
+    
+    background-color: #212C39;
+    border-top-right-radius: 16.3398px;;
+    border-top-left-radius: 16.3398px;
+
+    .drag-controler {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 25px;
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+  
+        max-width: 44px;
+        width: 50%;
+        height: 4px;
+  
+        border-radius: 53px;
+        background-color: rgba($white, 0.13);
+      }
+    }
+
+    .content {
+      padding: 0 25px;
+
+      .product-info {
+        h2 {
+          font-family: $font-primary;
+          font-weight: 600; 
+          font-size: 26px;
+        }
+        & > p {
+          margin-top: 16px;
+
+          font-family: $font-secondary;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: $height-regular;
+        }
+      }
+
+      .table {
+        & + .table {
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        &.location {
+          padding-bottom: 38px;
+          padding-top: 30px;
+
+          p {
+            font-family: $font-secondary;
+            font-size: 16px;
+            line-height: $height-regular;
+
+            svg {
+              margin-right: 11px;
+            }
+          }
+        }
+        &.product-info {
+          padding: 33px 0;
+
+          .row {
+            margin-top: 14px;
+          }
+
+          p {
+            font-family: $font-secondary;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: $height-regular;
+
+            &.title {
+              color: #C1C7CE;
+            }
+            &.value {
+              color: #FFFFFF;
+            }
+          }
+        }
+        &.price,
+        &.date {
+          padding: 34px 0 41px 0;
+          
+          .row {
+            & + .row {
+              margin-top: 20px;
+            }
+          }
+
+          .block {
+            .icon {
+              margin-right: 10px;
+            }
+            .text {
+              .title {
+                font-family: $font-secondary;
+                color: #C1C7CE;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .overlay {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($black, 0.5)
+  }
+}

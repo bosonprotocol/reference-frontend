@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import Onboarding from './views/Onboarding'
 import Home from './views/Home'
-import ProductView from './components/ProductView'
+import ProductSingle from './views/ProductSingle'
 
 import "./styles/Animations.scss"
 
@@ -37,7 +37,7 @@ function App() {
       <div className={`screens ${newUser ? 'new-user' : ''}`} ref={screensRef}>
         <Router>
           <Switch>
-            <ProductView />
+            <Home />
           </Switch>
         </Router>
       </div>
