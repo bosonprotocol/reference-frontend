@@ -5,9 +5,9 @@ export const IconCalendar = (props) => (
 )
 
 export const IconEth = (props) => (
-  <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6.52902 6.52905L3.32178 8.4763L0 6.52905L3.32178 11.2254L6.52902 6.52905Z" fill={props.color ? props.color : '#80F0BE'}/>
-    <path d="M3.32178 7.44537L0 5.49812L3.32178 0L6.52902 5.49812L3.32178 7.44537Z" fill={props.color ? props.color : '#80F0BE'}/>
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
+    <path d="M9.83673 9.83667L5.00465 12.7704L0 9.83667L5.00465 16.9122L9.83673 9.83667Z" fill={props.color ? props.color : '#80F0BE'}/>
+    <path d="M5.00465 11.2173L0 8.28357L5.00465 0L9.83673 8.28357L5.00465 11.2173Z" fill={props.color ? props.color : '#80F0BE'}/>
   </svg>
 )
 

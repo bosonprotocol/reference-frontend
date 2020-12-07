@@ -18,6 +18,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   &.erase-left {
     padding-left: 0;
   }
+  &.erase {
+    padding: 0;
+  }
 }
 .new-row {
   margin-left: -#{$container-padding};
@@ -206,22 +209,22 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 }
 
 @mixin max-width($selector) {
-  .max-w100#{$selector} {
+  .mw100#{$selector} {
     max-width: 100%;
   }
-  .max-w50#{$selector} {
+  .mw50#{$selector} {
     max-width: 50%;
   }
-  .max-w33#{$selector} {
+  .mw33#{$selector} {
     max-width: calc(100% / 3);
   }
-  .max-w25#{$selector} {
+  .mw25#{$selector} {
     max-width: 25;
   }
-  .max-w20#{$selector} {
+  .mw20#{$selector} {
     max-width: 20%;
   }
-  .max-w10#{$selector} {
+  .mw10#{$selector} {
     max-width: 10%;
   }
 }
