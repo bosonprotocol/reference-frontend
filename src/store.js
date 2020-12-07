@@ -10,5 +10,6 @@ export const store = new Store({
         MetaMask: injected,
         WalletConnect: walletconnect,
     },
+    qrReaderActivated: false,
 });
 window.store = store;

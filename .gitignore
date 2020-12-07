@@ -20,11 +20,8 @@
 .env.production.local
 .idea/
 .eslintcache
-eslintcache
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-./.idea
-./.eslintcache
+package-lock.json
