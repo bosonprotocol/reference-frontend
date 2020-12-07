@@ -5,12 +5,13 @@ import {
     WalletConnect,
     WALLET_VIEWS,
     getWalletTitle,
-    signMessage,
+    // signMessage,
 } from "../components/modals/WalletConnect";
 
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
-    const { account, library, chainId } = useWeb3React();
+    // const { account, library, chainId } = useWeb3React();
+    const { account } = useWeb3React();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

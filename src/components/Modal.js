@@ -23,7 +23,7 @@ export default function Modal({
                     { title ? (
                         <div className="">
                             <div className="">{ title }</div>
-                            <a className="" onClick={ onClose }>
+                            <a className="" href="onClose" onClick={ onClose }>
                                 <Icon name="x"/>
                             </a>
                         </div>

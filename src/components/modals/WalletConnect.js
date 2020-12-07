@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import Web3 from "web3";
+// import Web3 from "web3";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { useStore, usePrevious } from "../../hooks";
@@ -320,7 +320,6 @@ function WalletAccount({ setWalletView }) {
                 <div className="connected-with-title">Connected with { getName() }</div>
                 <button
                     className="button primary change-connector-button"
-                    role="button"
                     onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }
                 >
                     Change

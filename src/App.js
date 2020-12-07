@@ -42,8 +42,8 @@ function App() {
             <div className={ `screens ${ newUser ? 'new-user' : '' }` } ref={ screensRef }>
                 <Router>
                     <Switch>
-                        <Home/>
                         <Route exact strict path="/connect" component={ Connect }/>
+                        <Home/>
                     </Switch>
                     { modal && modal.type === MODAL_WALLET_CONNECT ? (
                         <ModalWalletConnect setModal={ setModal } modal={ modal }/>

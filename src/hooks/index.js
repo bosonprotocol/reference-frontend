@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { parseBytes32String } from "@ethersproject/strings";
+// import { parseBytes32String } from "@ethersproject/strings";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
 import { store } from "../store";
 import { NetworkContextName } from "../constants";
 import { injected } from "../connectors";
-import { isAddress, parseLocalStorage } from "../utils";
+import { parseLocalStorage } from "../utils";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
@@ -21,7 +21,8 @@ export function useLocalStorage(key, defaultValue, didChange = []) {
             initialValue = defaultValue;
         }
         setStateValue(initialValue);
-    }, didChange);
+        // eslint-disable-next-line
+    }, [didChange]);
     useEffect(() => {
         function onStorageUpdate(e) {
             if (e.detail.key !== key) return;
@@ -51,6 +52,7 @@ export function useStore(path, defaultValue = undefined) {
     const [value, setValue] = useState({
         value: store.get(path) || defaultValue,
     });
+
     useEffect(() => {
         let value = store.get(path);
         if (!value && typeof defaultValue !== "undefined") value = defaultValue;
@@ -58,6 +60,7 @@ export function useStore(path, defaultValue = undefined) {
         return store.subscribe(path, (newValue) => {
             setValue({ value: newValue });
         });
+        // eslint-disable-next-line
     }, [JSON.stringify(path)]);
 
     function set(value) {
@@ -210,15 +213,15 @@ export function useActiveWeb3React() {
 // }
 
 // parse a name or symbol from a token response
-const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
+// const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
 
-function parseStringOrBytes32(str, bytes32, defaultValue) {
-    return str && str.length > 0
-        ? str
-        : bytes32 && BYTES32_REGEX.test(bytes32)
-            ? parseBytes32String(bytes32)
-            : defaultValue;
-}
+// function parseStringOrBytes32(str, bytes32, defaultValue) {
+//     return str && str.length > 0
+//         ? str
+//         : bytes32 && BYTES32_REGEX.test(bytes32)
+//             ? parseBytes32String(bytes32)
+//             : defaultValue;
+// }
 
 // // undefined if invalid or does not exist
 // // null if loading

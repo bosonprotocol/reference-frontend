@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
 import Web3Status from "../components/Web3Status";
-import { useStore, useLocalStorage } from "../hooks";
+import { useStore } from "../hooks";
 import { MODAL_WALLET_CONNECT } from "../components/modals/WalletConnect";
 
 export default function Layout({ children, autoPopup = true, status = true }) {
@@ -14,6 +14,7 @@ export default function Layout({ children, autoPopup = true, status = true }) {
             setModal({ type: MODAL_WALLET_CONNECT });
             return;
         }
+        // eslint-disable-next-line
     }, [autoPopup, account]);
 
     return (
