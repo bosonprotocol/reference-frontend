@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 import "./ProductView.scss"
 
@@ -80,7 +80,10 @@ const closePoint = window.innerHeight / 2
 function ProductSingle(props) {
   const productWindow = useRef()
   const windowContainer = useRef()
-  let {image, title, description, productViewToggle} = props
+  const [deltaOffset, setDeltaOffset] = useState()
+  const [deltaState, setDeltaState] = useState()
+  const [deltaEnd, setDeltaEnd] = useState()
+  let {image, title, description, productViewToggle, setProductViewToggle} = props
 
   image = 'images/temp/product-single-thumbnail.png'
   title = 'Nike Adapt Self-Lacing Smart Sneaker'
@@ -91,36 +94,35 @@ function ProductSingle(props) {
     ['Remaining Quantity', 1],
   ]
 
-  const delta = {
-    offset: 0,
-    state: 0,
-    end: 0
-  }
-
   const dragControlerEnable = (e) => {
     productWindow.current.style.transition = 'none'
-    delta.offset = e.clientY
-    delta.state = 1
+    console.log(e.clientY)
+    setDeltaOffset(e.clientY)
+    setDeltaState(1)
+    console.log('state in open', deltaState)
   }
 
   const dragControlerDisable = () => {
     productWindow.current.style.transition = '0.4s ease-in-out'
-    delta.state = 0
+    setDeltaState(0)
+    console.log('close')
 
-    productWindow.current.style.transform = delta.end > closePoint ?
+    productWindow.current.style.transform = deltaEnd > closePoint ?
     `translateY(100vh)` :
     `translateY(0px)`
 
-    if(delta.end > closePoint) {
-      //close modal
+    if(deltaEnd > closePoint) {
+      setProductViewToggle(false)
     }
   }
 
   const dragControler = (e) => {
-    delta.end = e.clientY - delta.offset
-
-    if(delta.state)
-      productWindow.current.style.transform = `translateY(${delta.end}px)`
+    setDeltaEnd(e.clientY - deltaOffset)
+    console.log('state', deltaState)
+    
+    if(deltaState)
+      console.log(deltaOffset)
+      // productWindow.current.style.transform = `translateY(${delta.end}px)`
   }
 
   useEffect(() => {
@@ -129,7 +131,7 @@ function ProductSingle(props) {
   }, [])
 
   return (
-    <section ref={windowContainer} className={`product-view ${productViewToggle && 'open'}`}
+    <section ref={windowContainer} className={`product-view no-bg ${productViewToggle && 'open'}`}
       onMouseLeave={dragControlerDisable}
       onMouseUp={dragControlerDisable}
     >

@@ -91,7 +91,7 @@ function Home() {
           <ProductListing animateEl={animateEl.HP} animateDel={animateDel.HP} />
         </div>
       </section>
-      <ProductView productViewToggle={productViewToggle} />
+      <ProductView setProductViewToggle={setProductViewToggle} productViewToggle={productViewToggle} />
       <NavigationBar delay={animateDel.NAV} />
     </div>
   )
