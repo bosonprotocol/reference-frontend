@@ -3,10 +3,10 @@ import React from 'react'
 import "./CardBlock.scss"
 
 function CardBlock(props) {
-  const {category, image, background} = props
+  const {category, image, background, animate} = props
 
   return (
-    <div className="card-block">
+    <div className={`card-block ${animate ? 'animate' : ''}`}>
       <div className="card-container flex jc-sb ai-center" style={{backgroundColor: background}}>
         <div className="text">
           <h2>{category}</h2>

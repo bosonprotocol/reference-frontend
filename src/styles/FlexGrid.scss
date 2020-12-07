@@ -10,6 +10,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   margin: 0 auto;
   padding: 0 $container-padding;
   flex: auto;
+  width: 100%;
 
   &.erase-right {
     padding-right: 0;
@@ -281,6 +282,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       width: 100%;
     }
   }
+}
+
+.o-hidden {
+  overflow: hidden;
 }
 
 

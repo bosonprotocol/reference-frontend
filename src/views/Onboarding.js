@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import './Onboarding.scss'
 
 import Slider from "react-slick";
@@ -74,17 +74,33 @@ function slide3(completeOnboarding) {
 
 function Onboarding(props) {
   const slider = useRef()
-  const currentSlideMemo = localStorage.getItem('onboarding-slide')
+  const [currentSlide, setCurrentSlide] = useState(localStorage.getItem('onboarding-slide'))
 
   const settings = {
     dots: true,
     infinite: false,
-    adaptiveHeight: true,
-    arrows: false,
+    arrows: window.innerWidth <= 960 ? false : true,
     accessibility: true,
-    initialSlide: currentSlideMemo ? parseInt(currentSlideMemo) : 0,
-    afterChange: (currentSlide) => localStorage.setItem('onboarding-slide', (currentSlide).toString()),
+    initialSlide: currentSlide ? parseInt(currentSlide) : 0,
+    afterChange: (currentSlide) => slideChanged(currentSlide),
   };
+
+  const slideChanged = (currentSlide) => {
+    localStorage.setItem('onboarding-slide', (currentSlide).toString())
+    setCurrentSlide(currentSlide)
+  }
+
+  const playSlide = (currentSlide) => {
+    // reactize later
+    document.querySelectorAll(`.onboarding [data-slide]`).forEach(slide => {
+      slide.classList.add('pause')
+    });
+    document.querySelector(`.onboarding [data-slide="${currentSlide}"]`).classList.remove('pause');
+  }
+
+  useEffect(() => {
+    playSlide(currentSlide ? parseInt(currentSlide) : 0)
+  }, [currentSlide])
 
   const sequence = [
     slide1,
@@ -97,8 +113,8 @@ function Onboarding(props) {
       <div className="container">
         <Slider ref={slider} {...settings}>
           {sequence.map((slide, id) => 
-            <div key={id} className="container atomic-scoped animate">
-              <div className="screen relative flex column jc-sa">
+            <div key={id} data-slide={id} className="container atomic-scoped animate pause">
+              <div className="screen relative flex column jc-sb">
                 {slide(props.completeOnboarding)}
               </div>
             </div>
