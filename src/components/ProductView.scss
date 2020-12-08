@@ -9,6 +9,11 @@
   bottom: 0;
   z-index: 2;
   pointer-events: none;
+  background-color: rgba($background-primary, 0);
+  min-height:100%;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  transition: 0.5s ease-in-out;
 
   .container {
     padding-top: 80px;
@@ -138,24 +143,11 @@
       }
     }
   }
-  .overlay {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba($background-primary, 0.8);
-    opacity: 0;
-    transition: 0.5s ease-in-out;
-  }
 
   &.open {
     pointer-events: all;
+    background-color: rgba($background-primary, 0.8);
 
-    .overlay {
-      opacity: 1;
-    }
     .window {
       transform: translateY(0);
       box-shadow: 8px 11px 45px rgba(0, 0, 0, 0.2);

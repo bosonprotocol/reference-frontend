@@ -67,7 +67,7 @@ function Home() {
   }, [])
 
   return (
-    <div ref={homepage} className="home atomic-scoped">
+    <div ref={homepage} className="home relative atomic-scoped">
       <div className="container o-hidden">
         <Header />
         <CategoryMenu />
@@ -92,8 +92,9 @@ function Home() {
         </div>
       </section>
       {
-        productViewState &&
-        <ProductView setProductViewState={setProductViewState} />
+        productViewState ?
+        <ProductView setProductViewState={setProductViewState} /> :
+        null
       }
       <NavigationBar delay={animateDel.NAV} />
     </div>

@@ -8,7 +8,7 @@ import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 const closePoint = window.innerHeight / 2
 
-function ProductSingle(props) {
+function ProductView(props) {
   const productWindow = useRef()
   const windowContainer = useRef()
   const { setProductViewState } = props
@@ -71,7 +71,7 @@ function ProductSingle(props) {
     }, 100)
 
     windowContainer.current.addEventListener('mousemove', dragControler)
-    return windowContainer.current.removeEventListener('mousemove', dragControlerEnable)
+    windowContainer.current.addEventListener('touchmove', dragControler)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -81,10 +81,16 @@ function ProductSingle(props) {
       className="product-view no-bg"
       onMouseLeave={dragControlerDisable}
       onMouseUp={dragControlerDisable}
+
+      onTouchStart={dragControlerDisable}
+      onTouchEnd={dragControlerDisable}
     >
       <div className="container erase">
         <div className="window" ref={productWindow}>
-          <div className="drag-controler" onMouseDown={(e) => dragControlerEnable(e)}></div>
+          <div className="drag-controler"
+          onMouseDown={(e) => dragControlerEnable(e)}
+          onTouchStart={(e) => dragControlerEnable(e)}
+          ></div>
           <div className="thumbnail flex center">
             <img className="mw100" src={image} alt={title} />
           </div>
@@ -109,9 +115,8 @@ function ProductSingle(props) {
           </div>
         </div>
       </div>
-      <div className="overlay"></div>
     </section>
   )
 }
 
-export default ProductSingle
+export default ProductView
