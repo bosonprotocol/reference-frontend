@@ -2,6 +2,9 @@ import React from 'react'
 
 import "./ProductBlock.scss"
 
+import { IconEth, IconDeposit } from "./Icons"
+
+
 function ProductBlock(props) {
   const {title, image, price, deposit, col, delay, animate} = props
   const productType = col ? "col" : ""
@@ -13,8 +16,8 @@ function ProductBlock(props) {
       </div>
       <h3>{title}</h3>
       <div className="price flex ai-center">
-        <span><img src="images/eth-icon.svg" alt="Ethers"/> {price} ETH</span>
-        <span><img src="images/deposit-icon.svg" alt="Deposit"/> {deposit} ETH</span>
+        <span><IconEth />{price} ETH</span>
+        <span><IconDeposit /> {deposit} ETH</span>
       </div>
     </div>
   )
