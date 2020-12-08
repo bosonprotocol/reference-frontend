@@ -11,6 +11,7 @@ import { useStore } from "./hooks";
 import ModalWalletConnect, {
     MODAL_WALLET_CONNECT,
 } from "./components/modals/WalletConnect"
+import QRCodeScanner from "./components/QRCodeScanner";
 
 function App() {
     const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'));
@@ -20,6 +21,7 @@ function App() {
     const modalCloseTimeout = 900;
 
     const [modal, setModal] = useStore(["modal"]);
+    const [qrReaderActivated] = useStore(["qrReaderActivated"]);
 
     const completeOnboarding = () => {
         localStorage.setItem('onboarding-completed', '1');
@@ -42,6 +44,7 @@ function App() {
             <div className={ `screens ${ newUser ? 'new-user' : '' }` } ref={ screensRef }>
                 <Router>
                     <Switch>
+                        { qrReaderActivated ? (<QRCodeScanner/>) : null }
                         <Route exact strict path="/connect" component={ Connect }/>
                         <Home/>
                     </Switch>
