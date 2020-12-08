@@ -233,7 +233,7 @@
   .slick-slider {
     @media (min-width: 961px) {
       box-shadow: $container-shadow;
-      border-radius: 25px;
+      border-radius: $container-radius;
       padding: 90px 0;
     }
   }

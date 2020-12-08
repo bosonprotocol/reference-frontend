@@ -6,7 +6,7 @@ function ConnectToMetamask() {
   return (
     <section className="connect-to-metamask flex ai-center">
       <div className="container l">
-        <div className="wrap w100 relative flex column ai-center jc-sb">
+        <div className="wrapper w100 relative flex column ai-center jc-sb">
           <div className="cancel"><span className="icon"></span></div>
           <div className="info flex column ai-center">
             <div className="metamask-logo">

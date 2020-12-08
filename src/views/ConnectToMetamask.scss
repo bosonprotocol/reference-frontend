@@ -1,22 +1,21 @@
 @import "../styles/Settings.scss";
 
 .connect-to-metamask {
-  height: 100vh;
+  min-height: 100vh;
 
   .container {
-    height: 100%;
+    height: 100vh;
     padding-top: 40px;
     padding-bottom: 70px;
 
     @media (min-width: 961px) {
       box-shadow: $container-shadow;
+      border-radius: $container-radius;
+      max-height: 800px;
     }
 
-    .wrap {
-      height: 100%;
-    }
-    @media (min-width: 961px) {
-      max-height: 800px;
+    .wrapper {
+      min-height: 100%;
     }
   }
   .info {
@@ -24,6 +23,7 @@
     margin-top: clamp(0px, 17vh, 17vh);
     
     p {
+      margin-bottom: 37px;
       margin-top: 37px;
       font-family: $font-primary;
       font-style: normal;
