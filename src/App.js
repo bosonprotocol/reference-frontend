@@ -1,6 +1,6 @@
 import "./styles/Global.scss"
 
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Home from './views/Home'
@@ -22,18 +22,20 @@ function App() {
     const [qrReaderActivated] = useStore(["qrReaderActivated"]);
 
     return (
-          <Router>
-              <Switch>
-                  { qrReaderActivated ? (<QRCodeScanner/>) : null }
-                  <Route exact strict path="/connect" component={ Connect }/>
-                  <Route exact path="/" component={Home}/>
-                  <Route path="/onboarding" component={OnboardingReset}/>
-                  <Route path="/metamask" component={ConnectToMetamask}/>
-              </Switch>
-              { modal && modal.type === MODAL_WALLET_CONNECT ? (
-                  <ModalWalletConnect setModal={ setModal } modal={ modal }/>
-              ) : null }
-          </Router>
+      <div className="emulate-mobile">
+        <Router>
+          <Switch>
+              { qrReaderActivated ? (<QRCodeScanner/>) : null }
+              <Route exact strict path="/connect" component={ Connect }/>
+              <Route exact path="/" component={Home}/>
+              <Route path="/onboarding" component={OnboardingReset}/>
+              <Route path="/metamask" component={ConnectToMetamask}/>
+          </Switch>
+          { modal && modal.type === MODAL_WALLET_CONNECT ? (
+              <ModalWalletConnect setModal={ setModal } modal={ modal }/>
+          ) : null }
+        </Router>
+      </div>
     );
 }
 

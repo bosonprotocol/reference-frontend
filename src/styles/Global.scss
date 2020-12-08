@@ -84,7 +84,7 @@ h2:not(.def) {
 
 .screens {
   max-height: none;
-  overflow-y: auto;
+  // overflow-y: auto;
 
   &.new-user {
     opacity: 0;
