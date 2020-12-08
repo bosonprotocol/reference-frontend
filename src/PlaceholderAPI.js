@@ -64,7 +64,7 @@ export const categoryMenu = [
   'New',
   'Electronics',
   'Shoes',
-  'Health & Beauty- internal link',
+  'Health & Beauty',
   'Electronics',
 ]
 

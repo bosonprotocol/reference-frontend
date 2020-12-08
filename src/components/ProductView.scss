@@ -30,7 +30,7 @@
     min-height: calc(100vh - 80px);
     margin: 0 auto;
     padding-top: 100px;
-    padding-bottom: 57px;
+    padding-bottom: 90px;
     position: relative;
     max-width: 450px;
     z-index: 5;
@@ -70,6 +70,18 @@
 
     .content {
       padding: 0 25px;
+
+      .escrow-container {
+        padding-top: 25px;
+        padding-bottom: 33px;
+        margin-bottom: 33px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+        .diagram-content {
+          margin: 0;
+        }
+      }
 
       .product-info {
         h2 {
@@ -149,6 +161,10 @@
             }
           }
         }
+      }
+
+      .button.refund {
+        margin-top: 15px;
       }
     }
   }
