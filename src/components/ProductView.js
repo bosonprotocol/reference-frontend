@@ -29,6 +29,16 @@ function ProductView(props) {
     end: 0
   }
 
+  const clearDialog = () => {
+    productWindow.current.removeAttribute('style');
+    productWindow.current.style.transition = '0.4s ease-in-out'
+    windowContainer.current.classList.remove('open')
+
+    setTimeout(() => {
+      setProductViewState(0)
+    }, 400);
+  }
+
   const dragControlerEnable = (e) => {
     productWindow.current.style.transition = 'none'
     delta.offset = e.clientY
@@ -48,11 +58,7 @@ function ProductView(props) {
     `translateY(0px)`
 
     if(delta.end > closePoint) {
-      windowContainer.current.classList.remove('open')
-
-      setTimeout(() => {
-        setProductViewState(0)
-      }, 400);
+      clearDialog()
     }
 
     productWindow.current.classList.remove('noselect')
@@ -115,6 +121,7 @@ function ProductView(props) {
           </div>
         </div>
       </div>
+      <div className="hide-dialog" onClick={clearDialog}></div>
     </section>
   )
 }

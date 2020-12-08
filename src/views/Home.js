@@ -12,49 +12,14 @@ import NavigationBar from "../components/NavigationBar"
 import ProductListing from "../components/ProductListing"
 import ProductView from "../components/ProductView"
 
-import { productBlocks, cardBlocks } from "../PlaceholderAPI"
+import { animateEl, animateDel } from "../helpers/AnimationMap"
+import { productListSettings, cardListSettings } from "../helpers/SliderSettings"
 
-const isMobile = window.innerWidth <= 960
+import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 function Home() {
   const homepage = useRef()
   const [productViewState, setProductViewState] = useState(0)
-
-  const productListSettings = {
-    dots: false,
-    arrows: isMobile ? false : true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: isMobile ? 2 : 4,
-    slidesToScroll: 2,
-    autoplay: isMobile ? false : true,
-    autoplaySpeed: 5000,
-  };
-
-  const cardListSettings = {
-    dots: false,
-    arrows: isMobile ? false : true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: isMobile ? 1 : 2,
-    centerMode: isMobile ? true : false,
-    centerPadding: '25px',
-    autoplay: isMobile ? false : true,
-    autoplaySpeed: 5000,
-  };
-
-  const animateEl = {
-    'PL': isMobile ? 2 : 4,
-    'CL': isMobile ? 1 : 2,
-    'HP': isMobile ? 2 : 6,
-  }
-
-  const animateDel = {
-    'PL': 1,
-    'CL': 7,
-    'HP': 5,
-    'NAV': 400,
-  }
 
   useEffect(() => {
     setTimeout(() => {

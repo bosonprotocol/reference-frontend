@@ -1,17 +1,58 @@
+@import "../styles/Settings.scss";
+
 nav.navigation-bar {
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
+
+  transition: 0.3s ease-in-out;
+
   .nav-container {
-    background-color: #1D2834;
+    background-color: rgba(#1D2834, 1);
     border-radius: 71px;
     padding: 10px 21px;
     box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.4);
+    min-height: 57px;
+    transition: 0.3s ease-in-out;
 
     .control {
       + .control {
         margin-left: 25px;
+      }
+
+      &.commit {
+        background: #358EF5;
+        border-radius: 8px;
+
+        font-family: $font-primary;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 19px;
+
+        text-align: center;
+
+        color: #FFFFFF;
+        padding: 13px;
+
+        @media (min-width: 961px) {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  &.special {
+    background: rgba(#1D2834, 0);
+
+    .nav-container {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+
+      @media (max-width: 960px) {
+        min-height: auto;
       }
     }
   }

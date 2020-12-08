@@ -15,6 +15,14 @@
   overflow-x:hidden;
   transition: 0.5s ease-in-out;
 
+  .hide-dialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
   .container {
     padding-top: 80px;
   }
@@ -22,6 +30,7 @@
     min-height: calc(100vh - 80px);
     margin: 0 auto;
     padding-top: 100px;
+    padding-bottom: 57px;
     position: relative;
     max-width: 450px;
     z-index: 5;
@@ -29,7 +38,7 @@
     background-color: #212C39;
     border-top-right-radius: 16.3398px;;
     border-top-left-radius: 16.3398px;
-    box-shadow: 8px 11px 2px rgba(0, 0, 0, 0);
+    box-shadow: 12px 11px 33px rgba(0, 0, 0, 0);
 
     transform: translateY(100vh);
 
@@ -150,7 +159,7 @@
 
     .window {
       transform: translateY(0);
-      box-shadow: 8px 11px 45px rgba(0, 0, 0, 0.2);
+      box-shadow: 12px 11px 33px rgba(0, 0, 0, 0.3);
     }
   }
 }
