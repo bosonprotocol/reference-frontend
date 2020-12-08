@@ -85,7 +85,7 @@
     }
     .number {
       font-size: 183px;
-      font-weight: $weight-3;
+      font-weight: 300;
       font-family: $font-secondary;
       line-height: 0.5;
       transform: translateY(50%);
@@ -232,7 +232,7 @@
 
   .slick-slider {
     @media (min-width: 961px) {
-      box-shadow: 1px 1px 45px rgba(0, 0, 0, 0.2);
+      box-shadow: $container-shadow;
       border-radius: 25px;
       padding: 90px 0;
     }

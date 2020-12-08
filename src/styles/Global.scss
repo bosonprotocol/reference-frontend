@@ -19,9 +19,9 @@ html, body {
 
   font-family: $font-secondary;
   line-height: $height-regular;
-  font-weight: $weight-5;
+  font-weight: 500;
   color: $text-1;
-  font-size: $size-regular;
+  font-size: 16px;
   background: #181A29;
 
   // simulate mobile
@@ -56,14 +56,14 @@ input[type="submit"] {
 }
 
 h1:not(.def) {
-  font-size: $size-title;
-  font-weight: $weight-6;
+  font-size: 26px;
+  font-weight: 600;
   line-height: $height-small;
 }
 
 h2:not(.def) {
-  font-size: $size-semi-title;
-  font-weight: $weight-6;
+  font-size: 18px;
+  font-weight: 600;
   line-height: $height-small;
 }
 

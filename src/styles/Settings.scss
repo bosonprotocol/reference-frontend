@@ -12,14 +12,6 @@ $container-high-end: 70%;
 
 
 // ----- breakpoints -----
-$screen-desktop: 1440px;
-$screen-tablet: 960px;
-
-// ----- breakpoints for grid drawer -----
-$gd-breakpoints: (
-  "-desktop": $screen-desktop,
-  "-tablet": $screen-tablet,
-);
 
 // ----- padding -----
 $padding-col-side: 6px;
@@ -29,15 +21,8 @@ $margin-safe-gap: 6px;
 $margin-safe-gap-large: 6px;
 
 $margin-gap-small: 3px;
-$margin-gap: 6px;
-$margin-gap-large: 6px;
 
 // ----- font-size -----
-$size-tiny: 11.5px;
-$size-small: 14px;
-$size-regular: 16px;
-$size-semi-title: 18px; 
-$size-title: 26px;
 
 // ----- line-height -----
 $height-small: 1.11;
@@ -57,25 +42,14 @@ $color-secondary: $text-2;
 
 // ----- font weight -----
 
-// $weight-1: 100; 
-// $weight-2: 200;
-$weight-3: 300;
-$weight-4: 400;
-$weight-5: 500;
-$weight-6: 600;
-$weight-7: 700;
-
 // ----- background -----
 $background-primary: $color-background-primary;
-// $background-secondary: $darkest-purple;
 
 // ----- borders -----
-
 
 // ----- transitions -----
 $ease-flash: 0.05s all ease-in-out;
 $ease-quick: 0.2s all ease-in-out;
-$ease-quick-d: 0.2s 50ms all ease-in-out;
-$ease-slow: 0.35s all ease-in-out;
 
 // ----- shadows -----
+$container-shadow: 1px 1px 45px rgba(0, 0, 0, 0.2);

@@ -9,7 +9,7 @@
     padding-bottom: 70px;
 
     @media (min-width: 961px) {
-      box-shadow: 1px 1px 45px rgba(0, 0, 0, 0.2);
+      box-shadow: $container-shadow;
     }
 
     .wrap {
