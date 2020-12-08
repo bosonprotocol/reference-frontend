@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import "./Home.scss"
 
@@ -10,6 +10,7 @@ import CardBlock from "../components/CardBlock";
 import CategoryMenu from "../components/CategoryMenu"
 import NavigationBar from "../components/NavigationBar"
 import ProductListing from "../components/ProductListing"
+import ProductView from "../components/ProductView"
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
@@ -17,6 +18,7 @@ const isMobile = window.innerWidth <= 960
 
 function Home() {
   const homepage = useRef()
+  const [productViewState, setProductViewState] = useState(0)
 
   const productListSettings = {
     dots: false,
@@ -58,6 +60,10 @@ function Home() {
     setTimeout(() => {
       homepage.current.classList.add('init')
     }, 100);
+
+    setTimeout(() => {
+      setProductViewState(1)
+    }, 1000);
   }, [])
 
   return (
@@ -85,6 +91,10 @@ function Home() {
           <ProductListing animateEl={animateEl.HP} animateDel={animateDel.HP} />
         </div>
       </section>
+      {
+        productViewState &&
+        <ProductView setProductViewState={setProductViewState} />
+      }
       <NavigationBar delay={animateDel.NAV} />
     </div>
   )

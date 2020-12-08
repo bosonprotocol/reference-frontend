@@ -1,89 +1,18 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import "./ProductView.scss"
 
-import { IconCalendar, IconLocation, IconDeposit, IconEth } from "./Icons"
+import { IconLocation } from "./Icons"
 
-
-const tableRow = (title, value) => {
-  return <div className="row flex jc-sb ai-center">
-    <p className="title">{title}</p>
-    <p className="value">{value}</p>
-  </div>
-}
-
-const priceTable = (objPrices) => {
-  const {payment, buyerD, sellerD} = objPrices
-
-  return <>
-    <div className="row flex ai-center jc-sb">
-      <div className="block flex">
-        <div className="icon">
-          <IconEth color="#5D6F84" />
-        </div>
-        <div className="text">
-          <p className="title">Payment Price</p>
-          <p className="value">{payment} ETH</p>
-        </div>
-      </div>
-      <div className="block flex">
-        <div className="icon">
-          <IconDeposit color="#5D6F84" />
-        </div>
-        <div className="text">
-          <p className="title">Buyer’s deposit</p>
-          <p className="value">{buyerD} ETH</p>
-        </div>
-      </div>
-    </div>
-    <div className="row">
-      <div className="block flex">
-        <div className="icon">
-          <IconDeposit color="#5D6F84" />
-        </div>
-        <div className="text">
-          <p className="title">Seller’s deposit</p>
-          <p className="value">{sellerD} ETH</p>
-        </div>
-      </div>
-    </div>
-  </>
-}
-
-const dateTable = (objPrices) => {
-  const {start, expiry} = objPrices
-
-  return <>
-    <div className="block flex">
-      <div className="icon">
-        <IconCalendar />
-      </div>
-      <div className="text">
-        <p className="title">Start Date</p>
-        <p className="value">{start}</p>
-      </div>
-    </div>
-    <div className="block flex">
-      <div className="icon">
-        <IconCalendar />
-      </div>
-      <div className="text">
-        <p className="title">Start Date</p>
-        <p className="value">{expiry}</p>
-      </div>
-    </div>
-  </>
-}
+import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 const closePoint = window.innerHeight / 2
 
 function ProductSingle(props) {
   const productWindow = useRef()
   const windowContainer = useRef()
-  const [deltaOffset, setDeltaOffset] = useState()
-  const [deltaState, setDeltaState] = useState()
-  const [deltaEnd, setDeltaEnd] = useState()
-  let {image, title, description, productViewToggle, setProductViewToggle} = props
+  const { setProductViewState } = props
+  let {image, title, description} = props
 
   image = 'images/temp/product-single-thumbnail.png'
   title = 'Nike Adapt Self-Lacing Smart Sneaker'
@@ -94,44 +23,62 @@ function ProductSingle(props) {
     ['Remaining Quantity', 1],
   ]
 
+  const delta = {
+    offset: 0,
+    state: 0,
+    end: 0
+  }
+
   const dragControlerEnable = (e) => {
     productWindow.current.style.transition = 'none'
-    console.log(e.clientY)
-    setDeltaOffset(e.clientY)
-    setDeltaState(1)
-    console.log('state in open', deltaState)
+    delta.offset = e.clientY
+    delta.state = 1
+    productWindow.current.classList.add('noselect')
   }
 
   const dragControlerDisable = () => {
-    productWindow.current.style.transition = '0.4s ease-in-out'
-    setDeltaState(0)
-    console.log('close')
+    if(!delta.state)
+      return
 
-    productWindow.current.style.transform = deltaEnd > closePoint ?
+    productWindow.current.style.transition = '0.4s ease-in-out'
+    delta.state = 0
+
+    productWindow.current.style.transform = delta.end > closePoint ?
     `translateY(100vh)` :
     `translateY(0px)`
 
-    if(deltaEnd > closePoint) {
-      setProductViewToggle(false)
+    if(delta.end > closePoint) {
+      windowContainer.current.classList.remove('open')
+
+      setTimeout(() => {
+        setProductViewState(0)
+      }, 400);
     }
+
+    productWindow.current.classList.remove('noselect')
   }
 
   const dragControler = (e) => {
-    setDeltaEnd(e.clientY - deltaOffset)
-    console.log('state', deltaState)
-    
-    if(deltaState)
-      console.log(deltaOffset)
-      // productWindow.current.style.transform = `translateY(${delta.end}px)`
+    delta.end = e.clientY - delta.offset
+
+    if(delta.state)
+      productWindow.current.style.transform = `translateY(${delta.end}px)`
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      windowContainer.current.classList.add('open')
+    }, 100)
+
     windowContainer.current.addEventListener('mousemove', dragControler)
     return windowContainer.current.removeEventListener('mousemove', dragControlerEnable)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <section ref={windowContainer} className={`product-view no-bg ${productViewToggle && 'open'}`}
+    <section
+      ref={windowContainer}
+      className="product-view no-bg"
       onMouseLeave={dragControlerDisable}
       onMouseUp={dragControlerDisable}
     >
@@ -151,13 +98,13 @@ function ProductSingle(props) {
               <div className="arrow expand"></div>
             </div>
             <div className="table product-info flex column">
-              {tableContent.map(row => tableRow(row[0], row[1]))}
+              {tableContent.map(row => TableRow(row[0], row[1]))}
             </div>
             <div className="table price flex column">
-              {priceTable({payment: 0.1, buyerD: 0.02, sellerD: 0.01})}
+              {PriceTable({payment: 0.1, buyerD: 0.02, sellerD: 0.01})}
             </div>
             <div className="table date flex jc-sb ai-center">
-              {dateTable({start: '15/11/2020', expiry: '15/12/2020'})}
+              {DateTable({start: '15/11/2020', expiry: '15/12/2020'})}
             </div>
           </div>
         </div>
