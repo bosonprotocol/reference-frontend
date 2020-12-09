@@ -6,6 +6,8 @@ import { IconLocation } from "./Icons"
 
 import { TableRow, DateTable, PriceTable } from "./TableContent"
 
+import EscrowDiagram from "./EscrowDiagram"
+
 const closePoint = window.innerHeight / 2
 
 function ProductView(props) {
@@ -21,6 +23,11 @@ function ProductView(props) {
   const tableContent = [
     ['Category', 'Clothing'],
     ['Remaining Quantity', 1],
+  ]
+
+  const tableSeller = [
+    ['Seller', 'David'],
+    ['Phone', '1-415-542-5050'],
   ]
 
   const delta = {
@@ -71,13 +78,24 @@ function ProductView(props) {
       productWindow.current.style.transform = `translateY(${delta.end}px)`
   }
 
+  const touchHandler = (e) => {
+    e.preventDefault()
+    delta.state = 2
+    productWindow.current.style.transition = 'none'
+    productWindow.current.classList.add('noselect')
+
+    delta.end = e.touches[0].clientY - productWindow.current.offsetTop
+
+    productWindow.current.style.transform = `translateY(${delta.end}px)`
+  }
+
   useEffect(() => {
     setTimeout(() => {
       windowContainer.current.classList.add('open')
     }, 100)
 
-    windowContainer.current.addEventListener('mousemove', dragControler)
-    windowContainer.current.addEventListener('touchmove', dragControler)
+    windowContainer.current.addEventListener('mousemove', dragControler, {passive: true})
+    windowContainer.current.addEventListener('touchmove', touchHandler, {passive: false})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -95,12 +113,14 @@ function ProductView(props) {
         <div className="window" ref={productWindow}>
           <div className="drag-controler"
           onMouseDown={(e) => dragControlerEnable(e)}
-          onTouchStart={(e) => dragControlerEnable(e)}
           ></div>
           <div className="thumbnail flex center">
             <img className="mw100" src={image} alt={title} />
           </div>
           <div className="content">
+            <div className="escrow-container">
+              <EscrowDiagram status={'commited'} />
+            </div>
             <div className="product-info">
               <h2>{title}</h2>
               <p>{description}</p>
@@ -118,6 +138,10 @@ function ProductView(props) {
             <div className="table date flex jc-sb ai-center">
               {DateTable({start: '15/11/2020', expiry: '15/12/2020'})}
             </div>
+            <div className="table product-info flex column">
+              {tableSeller.map(row => TableRow(row[0], row[1]))}
+            </div>
+            <div className="button refund" role="button">REFUND</div>
           </div>
         </div>
       </div>
