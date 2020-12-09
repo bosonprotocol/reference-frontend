@@ -6,11 +6,17 @@ import { IconEth, IconDeposit } from "./Icons"
 
 
 function ProductBlock(props) {
-  const {title, image, price, deposit, col, delay, animate} = props
+  const {title, image, price, deposit, col, delay, animate, setProductViewState} = props
   const productType = col ? "col" : ""
 
   return (
-    <div className={`product-block ${productType} ${animate ? 'animate' : ''}`}>
+    <div 
+      onClick={
+        setProductViewState?
+        () => setProductViewState(1) : undefined
+      }
+      className={`product-block ${productType}  ${animate ? 'animate' : ''}`}
+    >
       <div className={`product-image flex center ${productType}`}>
         <img style={{transitionDelay: delay}} src={image} alt={title}/>
       </div>
