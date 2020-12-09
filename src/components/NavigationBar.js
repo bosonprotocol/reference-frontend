@@ -5,7 +5,7 @@ import "./NavigationBar.scss"
 import { IconAccount, IconAdd, IconList } from "./Icons"
 
 function NavigationBar(props) {
-  const [control] = useState('commit')
+  const [control] = useState(false)
   const {delay} = props
 
   return (

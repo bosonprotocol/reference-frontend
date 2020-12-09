@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 
 import "./Home.scss"
 
@@ -18,6 +18,9 @@ import { productListSettings, cardListSettings } from "../helpers/SliderSettings
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
+import { RedeemContext } from "../contexts/Redeem"
+
+
 function Home() {
   const homepage = useRef()
   const [productViewState, setProductViewState] = useState(0)
@@ -25,17 +28,16 @@ function Home() {
   const screensRef = useRef()
   const onboardingModalRef = useRef()
 
+  const redeemContext = useContext(RedeemContext)
+
   const modalCloseTimeout = 900
 
   useEffect(() => {
+    console.log(redeemContext.redeemState.counter)
     setTimeout(() => {
       homepage.current.classList.add('init')
     }, 100);
-
-    setTimeout(() => {
-      setProductViewState(1)
-    }, 1000);
-  }, [])
+  }, [redeemContext.redeemState])
 
   const completeOnboarding = () => {
     localStorage.setItem('onboarding-completed', '1')
@@ -64,7 +66,7 @@ function Home() {
           <section className="product-list">
             <div className="container">
               <Slider {...productListSettings}>
-                {productBlocks.map((block, id) => <ProductBlock key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
+                {productBlocks.map((block, id) => <ProductBlock setProductViewState={setProductViewState} key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
               </Slider>
             </div>
           </section>

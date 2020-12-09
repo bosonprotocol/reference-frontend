@@ -8,7 +8,7 @@ import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 import EscrowDiagram from "./EscrowDiagram"
 
-const closePoint = window.innerHeight / 2
+const closePoint = window.innerHeight / 4
 
 function ProductView(props) {
   const productWindow = useRef()
