@@ -78,7 +78,7 @@ function ProductView(props) {
       productWindow.current.style.transform = `translateY(${delta.end}px)`
   }
 
-  const pipeMove = (e) => {
+  const touchHandler = (e) => {
     e.preventDefault()
     delta.state = 2
     productWindow.current.style.transition = 'none'
@@ -95,7 +95,7 @@ function ProductView(props) {
     }, 100)
 
     windowContainer.current.addEventListener('mousemove', dragControler, {passive: true})
-    windowContainer.current.addEventListener('touchmove', pipeMove, {passive: false})
+    windowContainer.current.addEventListener('touchmove', touchHandler, {passive: false})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -113,7 +113,6 @@ function ProductView(props) {
         <div className="window" ref={productWindow}>
           <div className="drag-controler"
           onMouseDown={(e) => dragControlerEnable(e)}
-          // onTouchMove={(e) => pipeMove(e)}
           ></div>
           <div className="thumbnail flex center">
             <img className="mw100" src={image} alt={title} />
