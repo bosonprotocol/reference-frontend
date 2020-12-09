@@ -13,6 +13,7 @@ const closePoint = window.innerHeight / 2
 function ProductView(props) {
   const productWindow = useRef()
   const windowContainer = useRef()
+  const touchControl = useRef()
   const { setProductViewState } = props
   let {image, title, description} = props
 
@@ -95,7 +96,7 @@ function ProductView(props) {
     }, 100)
 
     windowContainer.current.addEventListener('mousemove', dragControler, {passive: true})
-    windowContainer.current.addEventListener('touchmove', touchHandler, {passive: false})
+    touchControl.current.addEventListener('touchmove', touchHandler, {passive: false})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -113,6 +114,7 @@ function ProductView(props) {
         <div className="window" ref={productWindow}>
           <div className="drag-controler"
           onMouseDown={(e) => dragControlerEnable(e)}
+          ref={touchControl}
           ></div>
           <div className="thumbnail flex center">
             <img className="mw100" src={image} alt={title} />
