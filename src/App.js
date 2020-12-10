@@ -41,19 +41,15 @@ function App() {
         <WalletContext.Provider value={walletContextValue}>
           <Router>
             <Switch>
-                { qrReaderActivated ? (<QRCodeScanner/>) : null }
                 <Route exact strict path="/connect" component={ Connect }/>
                 <Route exact path="/" component={Home}/>
                 <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
                 <Route path="/metamask" component={ConnectToMetamask}/>
             </Switch>
-            { modal && modal.type === MODAL_WALLET_CONNECT ? (
-                <ModalWalletConnect setModal={ setModal } modal={ modal }/>
-            ) : null }
           </Router>
+        </WalletContext.Provider>
         </GlobalContext.Provider>
         </RedeemContext.Provider>
-        </WalletContext.Provider>
       </div>
     );
 }
