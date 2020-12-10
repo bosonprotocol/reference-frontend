@@ -4,7 +4,7 @@ import "./NavigationBar.scss"
 
 import { IconAccount, IconAdd, IconList } from "./Icons"
 
-import { GlobalContext, Action } from "../contexts/Global"
+import { GlobalContext } from "../contexts/Global"
 import { BuyerContext, Buyer } from "../contexts/Buyer"
 import { DIC } from "../contexts/Dictionary"
 
