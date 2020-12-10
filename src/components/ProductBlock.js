@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import "./ProductBlock.scss"
 
 import { IconEth, IconDeposit } from "./Icons"
 
+import { GlobalContext, Action } from "../contexts/Global"
+
 
 function ProductBlock(props) {
-  const {title, image, price, deposit, col, delay, animate, setProductViewState} = props
+  const {id, title, image, price, deposit, col, delay, animate} = props
   const productType = col ? "col" : ""
+
+  const globalContext = useContext(GlobalContext)
 
   return (
     <div 
       onClick={
-        setProductViewState?
-        () => setProductViewState(1) : undefined
+        () => globalContext.dispatch(Action.openProduct(id))
       }
       className={`product-block ${productType}  ${animate ? 'animate' : ''}`}
     >

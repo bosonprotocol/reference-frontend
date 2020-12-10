@@ -18,19 +18,29 @@ import OnboardingReset from "./views/OnboardingReset"
 import ConnectToMetamask from "./views/ConnectToMetamask"
 
 import { RedeemContext, RedeemInitialState, RedeemReducer } from "./contexts/Redeem"
+import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 
 function App() {
     const [modal, setModal] = useStore(["modal"]);
     const [qrReaderActivated] = useStore(["qrReaderActivated"]);
 
     const [redeemState, redeemDispatch] = useReducer(RedeemReducer, RedeemInitialState);
+    const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
+
+    const redeemContextValue = {
+      state: redeemState,
+      dispatch: redeemDispatch
+    }
+
+    const globalContextValue = {
+      state: globalState,
+      dispatch: globalDispatch
+    }
 
     return (
       <div className="emulate-mobile">
-        <RedeemContext.Provider value={{
-          redeemState: redeemState,
-          redeemDispatch: redeemDispatch
-        }}>
+        <RedeemContext.Provider value={redeemContextValue}>
+        <GlobalContext.Provider value={globalContextValue}>
           <Router>
             <Switch>
                 { qrReaderActivated ? (<QRCodeScanner/>) : null }
@@ -43,6 +53,7 @@ function App() {
                 <ModalWalletConnect setModal={ setModal } modal={ modal }/>
             ) : null }
           </Router>
+        </GlobalContext.Provider>
         </RedeemContext.Provider>
       </div>
     );

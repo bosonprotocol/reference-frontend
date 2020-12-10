@@ -19,25 +19,25 @@ import { productListSettings, cardListSettings } from "../helpers/SliderSettings
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 import { RedeemContext } from "../contexts/Redeem"
-
+import { GlobalContext } from "../contexts/Global"
 
 function Home() {
   const homepage = useRef()
-  const [productViewState, setProductViewState] = useState(0)
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
   const screensRef = useRef()
   const onboardingModalRef = useRef()
 
   const redeemContext = useContext(RedeemContext)
+  const globalContext = useContext(GlobalContext)
 
   const modalCloseTimeout = 900
 
   useEffect(() => {
-    console.log(redeemContext.redeemState.counter)
+    console.log(redeemContext.state.counter)
     setTimeout(() => {
       homepage.current.classList.add('init')
     }, 100);
-  }, [redeemContext.redeemState])
+  }, [redeemContext.state])
 
   const completeOnboarding = () => {
     localStorage.setItem('onboarding-completed', '1')
@@ -66,7 +66,7 @@ function Home() {
           <section className="product-list">
             <div className="container">
               <Slider {...productListSettings}>
-                {productBlocks.map((block, id) => <ProductBlock setProductViewState={setProductViewState} key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
+                {productBlocks.map((block, id) => <ProductBlock key={id} {...block} delay={`${(id + animateDel.PL) * 50}ms`} animate={id < animateEl.PL}/>)}
               </Slider>
             </div>
           </section>
@@ -83,8 +83,8 @@ function Home() {
             </div>
           </section>
           {
-            productViewState ?
-            <ProductView setProductViewState={setProductViewState} /> :
+            globalContext.state.productView ?
+            <ProductView /> :
             null
           }
           <NavigationBar delay={animateDel.NAV} />
