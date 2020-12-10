@@ -167,10 +167,8 @@ export function WalletConnect({
         active,
         error,
     } = context;
-    // const [connectorsByName] = useStore(["connectorsByName"]);
+
     const walletContext = useContext(WalletContext);
-    console.log("udri");
-    console.log(walletContext.walletState.connectorsByName);
     const connectorsByName = walletContext.walletState.connectorsByName;
 
     const previousAccount = usePrevious(account);
