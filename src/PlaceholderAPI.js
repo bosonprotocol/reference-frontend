@@ -74,7 +74,49 @@ export const categoryMenu = [
   'Electronics',
 ]
 
-export const homeProducts = [
+export const productAPI = [
+  {
+    id: 0,
+    title: 'Oculus Quest',
+    image: 'images/temp/product-block-image-temp.png',
+    price: 0.3,
+    deposit: 0.02,
+  },
+  {
+    id: 1,
+    title: 'Nike Air',
+    image: 'images/temp/product-block-image-temp-2.png',
+    price: 0.3,
+    deposit: 0.02,
+  },
+  {
+    id: 2,
+    title: 'Oculus Quest 2.0',
+    image: 'images/temp/product-block-image-temp.png',
+    price: 0.3,
+    deposit: 0.02,
+  },
+  {
+    id: 3,
+    title: 'Nike Air 2.0',
+    image: 'images/temp/product-block-image-temp-2.png',
+    price: 0.3,
+    deposit: 0.02,
+  },
+  {
+    id: 4,
+    title: 'Oculus Quest 3.0',
+    image: 'images/temp/product-block-image-temp.png',
+    price: 0.3,
+    deposit: 0.02,
+  },
+  {
+    id: 5,
+    title: 'Nike Air 3.0',
+    image: 'images/temp/product-block-image-temp-2.png',
+    price: 0.3,
+    deposit: 0.02,
+  },
   {
     id: 6,
     title: 'XBox One S',
@@ -87,13 +129,6 @@ export const homeProducts = [
     title: 'Macbook Pro 13” 2019',
     image: 'images/temp/home-product-temp-2.png',
     price: 0.4,
-    deposit: 0.02,
-  },
-  {
-    id: 1,
-    title: 'Nike Air',
-    image: 'images/temp/home-product-temp-3.png',
-    price: 0.3,
     deposit: 0.02,
   },
   {

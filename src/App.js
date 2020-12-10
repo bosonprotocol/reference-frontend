@@ -12,12 +12,12 @@ import OnboardingReset from "./views/OnboardingReset"
 import ConnectToMetamask from "./views/ConnectToMetamask"
 
 import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wallet"
-import { RedeemContext, RedeemInitialState, RedeemReducer } from "./contexts/Redeem"
+import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
-    const [redeemState, redeemDispatch] = useReducer(RedeemReducer, RedeemInitialState);
+    const [redeemState, redeemDispatch] = useReducer(BuyerReducer, BuyerInitialState);
     const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
 
     const redeemContextValue = {
@@ -36,8 +36,8 @@ function App() {
 
     return (
       <div className="emulate-mobile">
-        <RedeemContext.Provider value={redeemContextValue}>
         <GlobalContext.Provider value={globalContextValue}>
+        <BuyerContext.Provider value={redeemContextValue}>
         <WalletContext.Provider value={walletContextValue}>
           <Router>
             <Switch>
@@ -48,8 +48,8 @@ function App() {
             </Switch>
           </Router>
         </WalletContext.Provider>
+        </BuyerContext.Provider>
         </GlobalContext.Provider>
-        </RedeemContext.Provider>
       </div>
     );
 }

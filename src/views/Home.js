@@ -18,8 +18,9 @@ import { productListSettings, cardListSettings } from "../helpers/SliderSettings
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
-import { RedeemContext } from "../contexts/Redeem"
-import { GlobalContext } from "../contexts/Global"
+import { BuyerContext } from "../contexts/Buyer"
+import { GlobalContext, Action } from "../contexts/Global"
+
 
 function Home() {
   const homepage = useRef()
@@ -27,13 +28,21 @@ function Home() {
   const screensRef = useRef()
   const onboardingModalRef = useRef()
 
-  const redeemContext = useContext(RedeemContext)
+  const redeemContext = useContext(BuyerContext)
   const globalContext = useContext(GlobalContext)
 
   const modalCloseTimeout = 900
 
   useEffect(() => {
-    console.log(redeemContext.state.counter)
+    let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
+    let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
+
+    if(parseInt(openProductView))
+      globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) 
+
+  useEffect(() => {
     setTimeout(() => {
       homepage.current.classList.add('init')
     }, 100);
@@ -83,7 +92,7 @@ function Home() {
             </div>
           </section>
           {
-            globalContext.state.productView ?
+            globalContext.state.productView.open ?
             <ProductView /> :
             null
           }

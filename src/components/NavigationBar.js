@@ -1,17 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useContext } from 'react'
 
 import "./NavigationBar.scss"
 
 import { IconAccount, IconAdd, IconList } from "./Icons"
 
+import { GlobalContext } from "../contexts/Global"
+import { BuyerContext, Buyer } from "../contexts/Buyer"
+import { DIC } from "../contexts/Dictionary"
+
+
 function NavigationBar(props) {
-  const [control] = useState(false)
   const {delay} = props
+  const globalContext = useContext(GlobalContext)
+  const buyerContext = useContext(BuyerContext)
+
+  useEffect(() => {
+    
+  }, [globalContext.state.buyerStep, globalContext.state.productView.open])
 
   return (
-    <nav className={`navigation-bar flex ${control && 'special'}`}>
+    <nav className={`navigation-bar flex ${globalContext.state.productView.open && 'special'}`}>
       <div className="nav-container flex center">
-        {!control ?
+        {!globalContext.state.productView.open ?
           <>
             <div className="control list flex center" role="button">
             <IconList />
@@ -24,14 +34,16 @@ function NavigationBar(props) {
             </div>
           </> : null
         }
-        {control === 'commit' ?
-          <div className="control commit flex center" role="button">
+        {globalContext.state.productView.open && !buyerContext.state.buyerStep ?
+          <div className="control commit flex center" role="button"
+            onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
+          >
             <p>COMMIT TO BUY 0.1 ETH</p>
           </div> : null
         }
-        {control === 'redeem' ?
+        {globalContext.state.productView.open && buyerContext.state.buyerStep === DIC.COMMITED ?
           <div className="control list flex center" role="button">
-          <IconList />
+          COMMITED
           </div> : null
         }
       </div>
@@ -39,4 +51,4 @@ function NavigationBar(props) {
   )
 }
 
-export default NavigationBar
+export default NavigationBar 
