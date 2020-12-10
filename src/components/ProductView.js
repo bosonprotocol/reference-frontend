@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useContext } from 'react'
 
 import "./ProductView.scss"
 
@@ -6,19 +6,27 @@ import { IconLocation } from "./Icons"
 
 import { TableRow, DateTable, PriceTable } from "./TableContent"
 
+import { GlobalContext, Action } from "../contexts/Global"
+
 import EscrowDiagram from "./EscrowDiagram"
 
+import { productBlocks } from "../PlaceholderAPI"
+
+
 const closePoint = window.innerHeight / 4
+
+
 
 function ProductView(props) {
   const productWindow = useRef()
   const windowContainer = useRef()
   const touchControl = useRef()
-  const { setProductViewState } = props
-  let {image, title, description} = props
+  let { description } = props
 
-  image = 'images/temp/product-single-thumbnail.png'
-  title = 'Nike Adapt Self-Lacing Smart Sneaker'
+  const globalContext = useContext(GlobalContext)
+
+  const selectedProduct = productBlocks[globalContext.state.productViewId]
+
   description = 'A breakthrough lacing system that electronically adjusts to the shape of your foot. Get the right fit, every game, every step.'
 
   const tableContent = [
@@ -43,7 +51,7 @@ function ProductView(props) {
     windowContainer.current.classList.remove('open')
 
     setTimeout(() => {
-      setProductViewState(0)
+      globalContext.dispatch(Action.closeProduct())
     }, 400);
   }
 
@@ -91,6 +99,7 @@ function ProductView(props) {
   }
 
   useEffect(() => {
+    console.log(globalContext.state)
     setTimeout(() => {
       windowContainer.current.classList.add('open')
     }, 100)
@@ -117,14 +126,14 @@ function ProductView(props) {
           ref={touchControl}
           ></div>
           <div className="thumbnail flex center">
-            <img className="mw100" src={image} alt={title} />
+            <img className="mw100" src={selectedProduct.image} alt={selectedProduct.title} />
           </div>
           <div className="content">
             <div className="escrow-container">
               <EscrowDiagram status={'commited'} />
             </div>
             <div className="product-info">
-              <h2>{title}</h2>
+              <h2>{selectedProduct.title}</h2>
               <p>{description}</p>
             </div>
             <div className="table location flex ai-center jc-sb">
