@@ -3,18 +3,24 @@ import { createContext } from 'react'
 export const GlobalContext = createContext()
 
 export const GlobalInitialState = {
-  productView: 0,
-  productViewId: 0
+  productView: {
+    open: 0,
+    id: 0
+  }
 };
 
 export const Action = {
-  openProduct: id => ({
-    productView: 1,
-    productViewId: id
+  openProduct: newId => ({
+    productView: {
+      open: 1,
+      id: newId
+    }
   }),
   
   closeProduct: () => ({
-    productView: 0
+    productView: {
+      open: 0,
+    }
   }),
 }
 

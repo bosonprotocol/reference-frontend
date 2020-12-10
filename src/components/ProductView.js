@@ -25,7 +25,7 @@ function ProductView(props) {
 
   const globalContext = useContext(GlobalContext)
 
-  const selectedProduct = productAPI[globalContext.state.productViewId]
+  const selectedProduct = productAPI[globalContext.state.productView.id]
 
   description = 'A breakthrough lacing system that electronically adjusts to the shape of your foot. Get the right fit, every game, every step.'
 

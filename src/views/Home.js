@@ -18,7 +18,7 @@ import { productListSettings, cardListSettings } from "../helpers/SliderSettings
 
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
-import { RedeemContext } from "../contexts/Redeem"
+import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext } from "../contexts/Global"
 
 function Home() {
@@ -27,7 +27,7 @@ function Home() {
   const screensRef = useRef()
   const onboardingModalRef = useRef()
 
-  const redeemContext = useContext(RedeemContext)
+  const redeemContext = useContext(BuyerContext)
   const globalContext = useContext(GlobalContext)
 
   const modalCloseTimeout = 900
@@ -83,7 +83,7 @@ function Home() {
             </div>
           </section>
           {
-            globalContext.state.productView ?
+            globalContext.state.productView.open ?
             <ProductView /> :
             null
           }
