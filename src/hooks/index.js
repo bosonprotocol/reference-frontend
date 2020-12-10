@@ -3,7 +3,6 @@ import { useWeb3React } from "@web3-react/core";
 // import { parseBytes32String } from "@ethersproject/strings";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
-import { store } from "../store";
 import { NetworkContextName } from "../constants";
 import { injected } from "../connectors";
 import { parseLocalStorage } from "../utils";
@@ -46,28 +45,6 @@ export function useLocalStorage(key, defaultValue, didChange = []) {
     }
 
     return [value, setValue];
-}
-
-export function useStore(path, defaultValue = undefined) {
-    const [value, setValue] = useState({
-        value: store.get(path) || defaultValue,
-    });
-
-    useEffect(() => {
-        let value = store.get(path);
-        if (!value && typeof defaultValue !== "undefined") value = defaultValue;
-        setValue({ value });
-        return store.subscribe(path, (newValue) => {
-            setValue({ value: newValue });
-        });
-        // eslint-disable-next-line
-    }, [JSON.stringify(path)]);
-
-    function set(value) {
-        store.set(path, value);
-    }
-
-    return [value.value, set];
 }
 
 export function usePrevious(value) {
