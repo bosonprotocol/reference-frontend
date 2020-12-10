@@ -2,15 +2,12 @@ import * as React from "react";
 import QrReader from "react-qr-reader";
 import "./QRCodeScanner.scss";
 import { useState } from "react";
-import { useStore } from "../hooks";
 
 function QRCodeScanner() {
-    const [, setQrReaderActivated] = useStore(["qrReaderActivated"]);
     const [delay, setDelay] = useState(300);
 
     const stopRecording = () => {
         setDelay(false)
-        setQrReaderActivated(false)
     };
 
     const handleScan = (data) => {

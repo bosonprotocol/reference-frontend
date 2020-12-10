@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 // import Web3 from "web3";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
-import { useStore, usePrevious } from "../../hooks";
+import { usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
 import Modal from "../Modal";
 import { injected, walletconnect } from "../../connectors";
