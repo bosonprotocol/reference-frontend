@@ -48,7 +48,6 @@ const UpdateReviewedProducts = (id) => {
       update.productsReviewed.push(id)
     } else {
       (update.productsReviewed).shift()
-      console.log(update.productsReviewed)
       update.productsReviewed.push(id)
     }
   

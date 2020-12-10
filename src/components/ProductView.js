@@ -99,7 +99,6 @@ function ProductView(props) {
   }
 
   useEffect(() => {
-    console.log(globalContext.state)
     setTimeout(() => {
       windowContainer.current.classList.add('open')
     }, 100)

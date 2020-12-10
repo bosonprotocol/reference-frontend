@@ -15,7 +15,7 @@ function NavigationBar(props) {
   const buyerContext = useContext(BuyerContext)
 
   useEffect(() => {
-    
+    console.log('change')
   }, [globalContext.state.buyerStep, globalContext.state.productView.open])
 
   return (
