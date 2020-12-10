@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 // import Web3 from "web3";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
@@ -12,6 +12,7 @@ import WalletConnectLogo from "../../images/walletconnect.svg";
 import Identicon from "../Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
+import { WalletContext } from "../../contexts/Wallet";
 
 export const MODAL_WALLET_CONNECT = "modal_wallet_connect";
 
@@ -166,7 +167,11 @@ export function WalletConnect({
         active,
         error,
     } = context;
-    const [connectorsByName] = useStore(["connectorsByName"]);
+    // const [connectorsByName] = useStore(["connectorsByName"]);
+    const walletContext = useContext(WalletContext);
+    console.log("udri");
+    console.log(walletContext.walletState.connectorsByName);
+    const connectorsByName = walletContext.walletState.connectorsByName;
 
     const previousAccount = usePrevious(account);
 
