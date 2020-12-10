@@ -1,42 +1,25 @@
-import { createContext, useContext } from 'react'
-
-// import { GlobalContext } from "../contexts/Global"
+import { createContext } from 'react'
 import { DIC } from "./Dictionary"
 
 export const BuyerContext = createContext()
 
 export const BuyerInitialState = {
-  productView: 0,
-  productViewId: 0,
-  buyerStep: null
+  buyerStep: 0
 };
 
+// payload resolver
 export const Buyer = {
-  buyerCOMMITED: () => dispatched.type = DIC.COMMITED
-}
-
-const dispatched = {
-  type: null,
-  payload: null
+  commitToBuy: () => ({
+    type: DIC.COMMITED,
+  })
 }
 
 export const BuyerReducer = (state, action) => {
-  // const globalContext = useContext(GlobalContext)
-
-  
-  dispatched.payload = action
-
-
-
   const actionList = {
-    [DIC.COMMITED]: () => {
-      localStorage.setItem('buyerStep', DIC.COMMITED)
-
-      return {
-        buyerStep: DIC.COMMITED
-      }
-    },
+    [DIC.COMMITED]: () => ({
+      buyerStep: DIC.COMMITED
+    }),
   };
 
-  return {...state, ...actionList[action]()};
+  return {...state, ...actionList[action.type]()};
 }

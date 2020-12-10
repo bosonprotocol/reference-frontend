@@ -1,3 +1,4 @@
 export const DIC = {
-  COMMITED: 'commited'
+  COMMITED: 'commited',
+  OPEN_PRODUCT: 'open_product'
 }

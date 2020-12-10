@@ -5,12 +5,14 @@ import "./NavigationBar.scss"
 import { IconAccount, IconAdd, IconList } from "./Icons"
 
 import { GlobalContext, Action } from "../contexts/Global"
+import { BuyerContext, Buyer } from "../contexts/Buyer"
 import { DIC } from "../contexts/Dictionary"
 
 
 function NavigationBar(props) {
   const {delay} = props
   const globalContext = useContext(GlobalContext)
+  const buyerContext = useContext(BuyerContext)
 
   useEffect(() => {
     
@@ -32,14 +34,14 @@ function NavigationBar(props) {
             </div>
           </> : null
         }
-        {globalContext.state.productView.open && !globalContext.state.buyerStep ?
+        {globalContext.state.productView.open && !buyerContext.state.buyerStep ?
           <div className="control commit flex center" role="button"
-            onClick={() => globalContext.dispatch(Action.buyerCOMMITED())}
+            onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
           >
             <p>COMMIT TO BUY 0.1 ETH</p>
           </div> : null
         }
-        {globalContext.state.productView.open && globalContext.state.buyerStep === DIC.COMMITED ?
+        {globalContext.state.productView.open && buyerContext.state.buyerStep === DIC.COMMITED ?
           <div className="control list flex center" role="button">
           COMMITED
           </div> : null

@@ -19,7 +19,8 @@ import { productListSettings, cardListSettings } from "../helpers/SliderSettings
 import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 import { BuyerContext } from "../contexts/Buyer"
-import { GlobalContext } from "../contexts/Global"
+import { GlobalContext, Action } from "../contexts/Global"
+
 
 function Home() {
   const homepage = useRef()
@@ -33,7 +34,15 @@ function Home() {
   const modalCloseTimeout = 900
 
   useEffect(() => {
-    console.log(redeemContext.state.counter)
+    let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
+    let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
+
+    if(parseInt(openProductView))
+      globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) 
+
+  useEffect(() => {
     setTimeout(() => {
       homepage.current.classList.add('init')
     }, 100);
