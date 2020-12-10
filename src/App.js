@@ -6,24 +6,17 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './views/Home'
 import Connect from "./views/Connect";
 
-import { useStore } from "./hooks";
-import ModalWalletConnect, {
-    MODAL_WALLET_CONNECT,
-} from "./components/modals/WalletConnect"
-import QRCodeScanner from "./components/QRCodeScanner";
-  
 import "./styles/Animations.scss"
 
 import OnboardingReset from "./views/OnboardingReset"
 import ConnectToMetamask from "./views/ConnectToMetamask"
 
+import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wallet"
 import { RedeemContext, RedeemInitialState, RedeemReducer } from "./contexts/Redeem"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 
 function App() {
-    const [modal, setModal] = useStore(["modal"]);
-    const [qrReaderActivated] = useStore(["qrReaderActivated"]);
-
+    const [walletState] = useReducer(WalletReducer, WalletInitialState);
     const [redeemState, redeemDispatch] = useReducer(RedeemReducer, RedeemInitialState);
     const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
 
@@ -36,11 +29,16 @@ function App() {
       state: globalState,
       dispatch: globalDispatch
     }
+    
+    const walletContextValue = {
+       walletState: walletState
+    }
 
     return (
       <div className="emulate-mobile">
         <RedeemContext.Provider value={redeemContextValue}>
         <GlobalContext.Provider value={globalContextValue}>
+        <WalletContext.Provider value={walletContextValue}>
           <Router>
             <Switch>
                 { qrReaderActivated ? (<QRCodeScanner/>) : null }
@@ -55,6 +53,7 @@ function App() {
           </Router>
         </GlobalContext.Provider>
         </RedeemContext.Provider>
+        </WalletContext.Provider>
       </div>
     );
 }
