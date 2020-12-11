@@ -5,6 +5,7 @@ import "./ProductBlock.scss"
 import { IconEth, IconDeposit } from "./Icons"
 
 import { GlobalContext, Action } from "../contexts/Global"
+import { DIC } from "../contexts/Dictionary"
 
 
 function ProductBlock(props) {
@@ -13,11 +14,14 @@ function ProductBlock(props) {
 
   const globalContext = useContext(GlobalContext)
 
+  const openProduct = () => {
+    globalContext.dispatch(Action.openProduct(id))
+    globalContext.dispatch(Action.navigationControl(DIC.NAV.COMMIT))
+  }
+
   return (
     <div 
-      onClick={
-        () => globalContext.dispatch(Action.openProduct(id))
-      }
+      onClick={openProduct}
       className={`product-block ${productType}  ${animate ? 'animate' : ''}`}
     >
       <div className={`product-image flex center ${productType}`}>
