@@ -36,23 +36,28 @@ nav.navigation-bar {
     }
   }
   &.in {
-    .control-wrap {
-      animation: scale-up #{$animation-timing + 150}#{$unit} ease-in-out forwards; 
+    &:not(.default_view) {
+      .control-wrap {
+        animation: scale-up #{$animation-timing + 150}#{$unit} ease-in-out forwards; 
+      }
     }
 
     &.default_view {
+      .nav-container {
+        animation: scale-up #{$animation-timing + 150}#{$unit} ease-in-out forwards; 
+      }
       .control-wrap {
         .control {
-          animation: pop-up #{$animation-timing + 100}#{$unit} ease-in-out forwards;
+          animation: pop-up #{$animation-timing + 50}#{$unit} ease-in-out forwards;
 
           &:nth-child(1) {
-            animation-delay: 300ms;
+            animation-delay: 200ms;
           }
           &:nth-child(2) {
-            animation-delay: 380ms;
+            animation-delay: 280ms;
           }
           &:nth-child(3) {
-            animation-delay: 460ms;
+            animation-delay: 360ms;
           }
         }
       }
