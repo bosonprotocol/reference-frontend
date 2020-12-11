@@ -20,6 +20,7 @@ function NavigationBar(props) {
 
   useEffect(() => {
     
+    // use this to compare {previus} screen and {current} screen
     // setTransitionTrigger(transitionState)
     setTransitionTrigger('out')
 

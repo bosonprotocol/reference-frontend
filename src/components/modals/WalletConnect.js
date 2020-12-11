@@ -161,7 +161,7 @@ export function WalletConnect({
     const {
         chainId,
         connector,
-        library,
+        // library, // eslint warning
         account,
         activate,
         active,
