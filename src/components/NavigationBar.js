@@ -10,6 +10,8 @@ import { GlobalContext } from "../contexts/Global"
 import { BuyerContext, Buyer } from "../contexts/Buyer"
 import { DIC } from "../contexts/Dictionary"
 
+import { IconQR } from "./Icons"
+
 function NavigationBar(props) {
   const globalContext = useContext(GlobalContext)
   const buyerContext = useContext(BuyerContext)
@@ -20,7 +22,7 @@ function NavigationBar(props) {
   const aniamtionTimout = 300
 
   useEffect(() => {
-    
+    console.log(globalContext.state.navigation.state)
     // use this to compare {previus} screen and {current} screen
     // setTransitionTrigger(transitionState)
     setTransitionTrigger('out')
@@ -58,8 +60,8 @@ function NavigationBar(props) {
         }
         {transitionState === DIC.NAV.REDEEM ? 
           <div className="control-wrap">
-            <div className="control list flex center" role="button">
-            <Link to="/connect-to-metamask">REDEEM</Link>
+            <div className="control redeem list flex center" role="button">
+            <IconQR size="21" color="#FFFFFF"/> <Link to="/show-qr-code">REDEEM</Link>
             </div>
           </div> : null
         }

@@ -3,6 +3,7 @@ export const DIC = {
   CONNECTED: 'connected',
   OPEN_PRODUCT: 'open_product',
   CLOSE_PRODUCT: 'close_product',
+  ACTIVATE_QR_READER: 'activate_qr_reader',
   NAV: {
     CONTROL: 'navigationControl',
     DEF: 'default_view',

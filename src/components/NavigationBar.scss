@@ -76,7 +76,8 @@ nav.navigation-bar {
         margin-left: 25px;
       }
 
-      &.commit {
+      &.commit,
+      &.redeem {
         background: #358EF5;
         border-radius: 8px;
         padding: 13px;
@@ -91,6 +92,10 @@ nav.navigation-bar {
   
           color: #FFFFFF;
           text-decoration: none;
+        }
+
+        svg {
+          margin-right: 15px;
         }
 
         @media (min-width: 961px) {

@@ -2,6 +2,9 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import { BuyerContext, Buyer } from "../contexts/Buyer"
+import { GlobalContext, Action } from "../contexts/Global"
+
+import { DIC } from "../contexts/Dictionary"
 
 
 import "./ConnectToMetamask.scss"
@@ -9,6 +12,12 @@ import "./ConnectToMetamask.scss"
 function ConnectToMetamask() {
 
   const buyerContext = useContext(BuyerContext)
+  const globalContext = useContext(GlobalContext)
+
+  const updateStatus = () => {
+    globalContext.dispatch(Action.navigationControl(DIC.NAV.REDEEM))
+    buyerContext.dispatch(Buyer.connectToMetamask())
+  }
 
   return (
     <section className="connect-to-metamask flex ai-center">
@@ -23,8 +32,8 @@ function ConnectToMetamask() {
           </div>
           <div className="button orange" role="button">
             <Link
-            onClick={() => buyerContext.dispatch(Buyer.connectToMetamask())}
-             exact to="/">CONNECT TO METAMASK</Link>
+            onClick={updateStatus}
+            to="/">CONNECT TO METAMASK</Link>
           </div>
         </div>
       </div>
