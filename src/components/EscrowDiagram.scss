@@ -14,9 +14,11 @@
         background-color: rgba(255, 255, 255, 0.02);
         border: 1px dashed rgba(255, 255, 255, 0.08);
 
-        &::after,
-        &::before {
-          display: none;
+        .block {
+          &::after,
+          &::before {
+            display: none;
+          }
         }
       }
     }
@@ -92,22 +94,24 @@
   .seller {
     z-index: 2;
     .slot {
-      &::after {
-        content: '';
-        background-image: url('../images/diagram-arrow.svg');
-        display: slot;
-        position: absolute;
-        top: calc(50% - 9px);
-        right: -15px;
-        background-repeat: no-repeat;
-        width: 17px;
-        height: 20px;
-        z-index: 2;
-        // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      }
-      p.value {
-        &.value {
-          color: $labels-accent-1;
+      .block {
+        &::after {
+          content: '';
+          background-image: url('../images/diagram-arrow.svg');
+          display: slot;
+          position: absolute;
+          top: calc(50% - 9px);
+          right: -15px;
+          background-repeat: no-repeat;
+          width: 17px;
+          height: 20px;
+          z-index: 2;
+          // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        p.value {
+          &.value {
+            color: $labels-accent-1;
+          }
         }
       }
     }
@@ -115,22 +119,24 @@
   .buyer {
     z-index: 2;
     .slot {
-      &::before {
-        content: '';
-        background-image: url('../images/diagram-arrow-2.svg');
-        display: slot;
-        position: absolute;
-        top: calc(50% - 9px);
-        left: -15px;
-        background-repeat: no-repeat;
-        width: 17px;
-        height: 20px;
-        z-index: 2;
-        // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      }
-      p.value {
-        &.value {
-          color: $labels-accent-2;
+      .block {
+        &::before {
+          content: '';
+          background-image: url('../images/diagram-arrow-2.svg');
+          display: slot;
+          position: absolute;
+          top: calc(50% - 9px);
+          left: -15px;
+          background-repeat: no-repeat;
+          width: 17px;
+          height: 20px;
+          z-index: 2;
+          // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        p.value {
+          &.value {
+            color: $labels-accent-2;
+          }
         }
       }
     }
