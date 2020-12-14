@@ -16,7 +16,7 @@ function QRCodeScanner() {
 
     const handleScan = (data) => {
         if (data) {
-            // console.log(data);
+            console.log(data);
             //ToDo: Should validate the result
             // const { result, error } = validate(data);
             stopRecording();
