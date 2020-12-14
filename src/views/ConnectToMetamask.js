@@ -7,7 +7,7 @@ import { GlobalContext, Action } from "../contexts/Global"
 import { DIC } from "../contexts/Dictionary"
 
 
-import "./ConnectToMetamask.scss"
+import "./StaticPage.scss"
 
 function ConnectToMetamask() {
 
@@ -20,11 +20,13 @@ function ConnectToMetamask() {
   }
 
   return (
-    <section className="connect-to-metamask flex ai-center">
+    <section className="connect-to-metamask static-page flex ai-center">
       <div className="container l">
         <div className="wrapper w100 relative flex column ai-center jc-sb">
-          <div className="cancel"><span className="icon"></span></div>
-          <div className="info flex column ai-center">
+          <Link to="/">
+            <div className="cancel"><span className="icon"></span></div>
+          </Link>
+          <div className="info connect flex column ai-center">
             <div className="metamask-logo">
               <img src="images/metamask-logo.png" alt="MetaMask"/>
             </div>

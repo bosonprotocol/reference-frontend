@@ -1,4 +1,5 @@
-.button {
+.button,
+.button a {
   padding: 13px 22px;
   font-family: $font-primary;
   font-style: normal;
@@ -25,9 +26,11 @@
     }
   }
 
-  &.orange {
+  &.orange,
+  &.orange a {
     background: #F68C24;
     color: #ffffff;
+    text-decoration: none;
 
     &:hover {
       color: #F68C24;
