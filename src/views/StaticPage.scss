@@ -11,7 +11,7 @@
     @media (min-width: 961px) {
       box-shadow: $container-shadow;
       border-radius: $container-radius;
-      
+
       &:not(.infinite) {
         max-height: 800px;
       }
@@ -19,14 +19,20 @@
 
     .wrapper {
       min-height: 100%;
+
+      .top-nav {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+      }
     }
   }
   .info {
     max-width: 350px;
-    margin-top: clamp(0px, 17vh, 17vh);
-  
 
     &.connect {
+      margin-top: clamp(0px, 17vh, 17vh);
+
       p {
         margin-bottom: 37px;
         margin-top: 37px;

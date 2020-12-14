@@ -61,7 +61,7 @@ function NavigationBar(props) {
         {transitionState === DIC.NAV.REDEEM ? 
           <div className="control-wrap">
             <div className="control redeem list flex center" role="button">
-            <IconQR size="21" color="#FFFFFF"/> <Link to="/show-qr-code">REDEEM</Link>
+            <Link to="/show-qr-code"><IconQR size="21" color="#FFFFFF"/> REDEEM</Link>
             </div>
           </div> : null
         }

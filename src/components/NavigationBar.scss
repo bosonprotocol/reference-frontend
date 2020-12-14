@@ -78,24 +78,26 @@ nav.navigation-bar {
 
       &.commit,
       &.redeem {
-        background: #358EF5;
-        border-radius: 8px;
-        padding: 13px;
-
         a {
+          background: #358EF5;
+          border-radius: 8px;
+          padding: 13px;
           font-family: $font-primary;
           font-weight: bold;
           font-size: 14px;
           line-height: 19px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
   
           text-align: center;
   
           color: #FFFFFF;
           text-decoration: none;
-        }
 
-        svg {
-          margin-right: 15px;
+          svg {
+            margin-right: 15px;
+          }
         }
 
         @media (min-width: 961px) {

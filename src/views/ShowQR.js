@@ -13,10 +13,12 @@ function ShowQR() {
   return (
     <section className="show-qr-code static-page atomic-scoped flex ai-center">
     <div className="container l infinite">
-      <div className="wrapper w100 relative flex column ai-center jc-sb">
-        <Link to="/">
-          <div className="cancel"><span className="icon"></span></div>
-        </Link>
+      <div className="wrapper w100 relative flex column center">
+        <div className="top-nav">
+          <Link to="/">
+            <div className="cancel"><span className="icon"></span></div>
+          </Link>
+        </div>
         <div className="info show-qr flex column ai-center">
           <div className="thumbnail">
             <img src={productAPI[imageThumbId].image} alt=""/>
