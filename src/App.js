@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Home from './views/Home'
 import Connect from "./views/Connect";
+import ShowQR from "./views/ShowQR"
 
 import "./styles/Animations.scss"
 
@@ -44,7 +45,8 @@ function App() {
                 <Route exact strict path="/connect" component={ Connect }/>
                 <Route exact path="/" component={Home}/>
                 <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
-                <Route path="/metamask" component={ConnectToMetamask}/>
+                <Route path="/connect-to-metamask" component={ConnectToMetamask}/>
+                <Route path="/show-qr-code" component={ShowQR}/>
             </Switch>
           </Router>
         </WalletContext.Provider>

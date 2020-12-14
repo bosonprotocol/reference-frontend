@@ -1,6 +1,6 @@
 @import "../styles/Settings.scss";
 
-.connect-to-metamask {
+.static-page {
   min-height: 100vh;
 
   .container {
@@ -11,7 +11,10 @@
     @media (min-width: 961px) {
       box-shadow: $container-shadow;
       border-radius: $container-radius;
-      max-height: 800px;
+      
+      &:not(.infinite) {
+        max-height: 800px;
+      }
     }
 
     .wrapper {
@@ -21,19 +24,58 @@
   .info {
     max-width: 350px;
     margin-top: clamp(0px, 17vh, 17vh);
-    
-    p {
-      margin-bottom: 37px;
-      margin-top: 37px;
-      font-family: $font-primary;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 26px;
-      line-height: 111.4%;
-    
-      text-align: center;
-    
-      color: #FFFFFF;
+  
+
+    &.connect {
+      p {
+        margin-bottom: 37px;
+        margin-top: 37px;
+        font-family: $font-primary;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 26px;
+        line-height: 111.4%;
+      
+        text-align: center;
+      
+        color: #FFFFFF;
+      }
+    }
+
+    &.show-qr {
+      h1 {
+        font-family: $font-primary;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 26px;
+        line-height: $height-small;
+
+        text-align: center;
+
+        color: #FFFFFF;
+
+        margin-top: 58px;
+      }
+      p {
+        font-family: $font-secondary;
+        font-size: 13px;
+        line-height: $height-regular;
+        /* or 19px */
+
+        text-align: center;
+
+        color: #C1C7CE;
+        margin-top: 20px;
+      }
+      .qr-container {
+        margin-top: 64px;
+        overflow: hidden;
+        max-width: 200px;
+
+        img {
+          border-radius: 10%;
+        }
+      }
     }
   }
   .cancel {

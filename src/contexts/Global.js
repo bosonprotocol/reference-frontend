@@ -10,7 +10,8 @@ export const GlobalInitialState = {
   },
   navigation: {
     state: DIC.NAV.DEF
-  }
+  },
+  qrReaderActivated: 0
 };
 
 export const Action = {
@@ -27,6 +28,11 @@ export const Action = {
     type: DIC.NAV.CONTROL,
     payload: nav
   }),
+
+  toggleQRReader: (state) => ({
+    type: DIC.ACTIVATE_QR_READER,
+    payload: state
+  })
 }
 
 export const GlobalReducer = (state, action) => {
@@ -58,6 +64,11 @@ export const GlobalReducer = (state, action) => {
         }
       }
     },
+    [DIC.ACTIVATE_QR_READER]: () => {
+      return {
+        qrReaderActivated: action.payload
+      }
+    }
   };
 
   return {...state, ...actionList[action.type]()};
@@ -68,7 +79,7 @@ const update = {
   productIsOpen: 0
 }
 
-const Constant = {
+const Settings = {
   maxReviewedProducts: 3
 }
 
@@ -86,7 +97,7 @@ const UpdateReviewedProducts = (id) => {
   }
   
   if(!update.productsReviewed.length || !update.productsReviewed.includes(id)) {
-    if(update.productsReviewed.length < Constant.maxReviewedProducts) {
+    if(update.productsReviewed.length < Settings.maxReviewedProducts) {
       update.productsReviewed.push(id)
     } else {
       (update.productsReviewed).shift()

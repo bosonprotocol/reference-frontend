@@ -1,12 +1,16 @@
 import * as React from "react";
 import QrReader from "react-qr-reader";
 import "./QRCodeScanner.scss";
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { GlobalContext, Action} from '../contexts/Global'
 
 function QRCodeScanner() {
+    const globalContext = useContext(GlobalContext)
     const [delay, setDelay] = useState(300);
 
     const stopRecording = () => {
+        globalContext.dispatch(Action.toggleQRReader(0))
         setDelay(false)
     };
 

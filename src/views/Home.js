@@ -12,6 +12,7 @@ import NavigationBar from "../components/NavigationBar"
 import ProductListing from "../components/ProductListing"
 import ProductView from "../components/ProductView"
 import Onboarding from '../views/Onboarding'
+import QRCodeScanner from "../components/QRCodeScanner"
 
 import { animateEl, animateDel } from "../helpers/AnimationMap"
 import { productListSettings, cardListSettings } from "../helpers/SliderSettings"
@@ -61,6 +62,7 @@ function Home() {
 
   return (
     <>
+      { globalContext.state.qrReaderActivated ? (<QRCodeScanner/>) : null }
       {newUser &&
         <div className="onboarding-modal flex center" ref={onboardingModalRef}>
           <Onboarding completeOnboarding={completeOnboarding} />

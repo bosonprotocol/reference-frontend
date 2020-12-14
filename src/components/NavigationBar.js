@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
+
 
 import "./NavigationBar.scss"
 
@@ -8,6 +10,7 @@ import { GlobalContext } from "../contexts/Global"
 import { BuyerContext, Buyer } from "../contexts/Buyer"
 import { DIC } from "../contexts/Dictionary"
 
+import { IconQR } from "./Icons"
 
 function NavigationBar(props) {
   const globalContext = useContext(GlobalContext)
@@ -19,7 +22,7 @@ function NavigationBar(props) {
   const aniamtionTimout = 300
 
   useEffect(() => {
-    
+    console.log(globalContext.state.navigation.state)
     // use this to compare {previus} screen and {current} screen
     // setTransitionTrigger(transitionState)
     setTransitionTrigger('out')
@@ -51,14 +54,14 @@ function NavigationBar(props) {
             <div className="control commit flex center" role="button"
               onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
             >
-              <p>COMMIT TO BUY 0.1 ETH</p>
+              <Link to="/connect-to-metamask">COMMIT TO BUY 0.1 ETH</Link>
             </div>
           </div> : null
         }
-        {transitionState === 'add later' ?
+        {transitionState === DIC.NAV.REDEEM ? 
           <div className="control-wrap">
-            <div className="control list flex center" role="button">
-              COMMITED
+            <div className="control redeem list flex center" role="button">
+            <IconQR size="21" color="#FFFFFF"/> <Link to="/show-qr-code">REDEEM</Link>
             </div>
           </div> : null
         }
