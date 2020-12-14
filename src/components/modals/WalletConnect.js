@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-// import Web3 from "web3";
+import Web3 from "web3";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
-import { shortenAddress } from "../../utils";
+import { shortenAddress, getSigner, formatEIP712Data } from "../../utils";
 import Modal from "../Modal";
 import { injected, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
@@ -13,8 +13,11 @@ import Identicon from "../Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
+import { splitSignature } from 'ethers/lib/utils'
 
-export const MODAL_WALLET_CONNECT = "modal_wallet_connect";
+// ToDo: Move next imports in util files
+import apiService from "../../utils/api";
+import * as ethers from 'ethers'
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -64,92 +67,254 @@ export default function ModalWalletConnect({ modal, setModal }) {
     );
 }
 
-// export async function signMessage({ library, account, chainId }, connector) {
-//     const skipSignatureVerification = true;
-//     // let isSigningRequired = true;
-//
-//     const web3 = new Web3(library.provider);
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const id = urlParams.get("id");
-//     const callbackURL = urlParams.get("callbackURL");
-//     const isNotRedirect =
-//         urlParams.get("redirect") === "false" || !urlParams.get("redirect");
-//     const fetch = require("node-fetch");
-//     // if (connector.walletLink) {
-//     // if false that means request is from node-red
-//     if (isNotRedirect || connector.walletLink) {
-//         const result = {
-//             account,
-//         };
-//         processResponse(undefined, result, "all");
-//         return;
-//     }
-//
-//     const msgParams = JSON.stringify(
-//         formatEIP712Data(
-//             {
-//                 from: account,
-//                 id,
-//                 callbackURL: "",
-//             },
-//             chainId
-//         )
-//     );
-//     const params = [account, msgParams];
-//     const method = "eth_signTypedData_v4";
-//     web3.currentProvider.sendAsync(
-//         {
-//             method,
-//             params,
-//             account,
-//         },
-//         async (err, result) => {
-//             processResponse(err, result);
-//         }
-//     );
-//
-//     async function processResponse(err, result, authType) {
-//         const reqType = urlParams.get("req_type");
-//         if (reqType === 'kchannel_connect' || reqType === 'kchannel_send') {
-//             return;
-//         }
-//         if (err) {
-//             return console.dir(err);
-//         }
-//         if (result.error) {
-//             alert(result.error.message);
-//         }
-//         if (result.error) return console.error("ERROR", result);
-//         if (!isNotRedirect && callbackURL) {
-//             window.location.href =
-//                 callbackURL +
-//                 window.location.search +
-//                 `&signature=${ result.result }&account=${ account }`;
-//         }
-//         // callback wallet connect only if mode is tpc or airdrop
-//         if (isNotRedirect && callbackURL) {
-//             const data = {
-//                 id,
-//                 signature: result.result,
-//                 account: account,
-//                 authType,
-//             };
-//             try {
-//                 const response = await fetch(callbackURL, {
-//                     method: "POST",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify(data),
-//                 });
-//                 const responseData = await response.json();
-//                 // console.log("response", responseData);
-//                 if (responseData.status)
-//                     alert(responseData.status);
-//             } catch (error) {
-//                 alert(error);
-//             }
-//         }
-//     }
-// }
+export async function signMessage(library, account, chainId) {
+
+    const web3 = new Web3(library.provider);
+
+    const msgParams = JSON.stringify(
+        formatEIP712Data()
+    );
+    const params = [account, msgParams];
+    const method = "eth_signTypedData_v4";
+    web3.currentProvider.sendAsync(
+        {
+            method,
+            params,
+            account,
+        },
+        async (err, result) => {
+            console.log(err);
+            console.log(result);
+
+            const domain = {
+                name: 'Boson Protocol',
+                version: '1',
+                chainId: '4',
+                verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+            };
+
+            const types = {
+                Message: [
+                    { name: 'content', type: 'string' }
+                ]
+            };
+
+            const message = {
+                content: 'udri'
+            };
+
+            let verifiedAddress = ethers.utils.verifyTypedData(domain, types, message, result.result)
+            console.log(verifiedAddress);
+        }
+    );
+}
+
+// ToDo: Move below util functions to separate files
+const authenticateUser = async (library, account) => {
+    const signer = getSigner(library, account);
+    const signerAddress = await signer.getAddress();
+    console.log("udri");
+    console.log(signerAddress);
+
+    const nonce = (await apiService.generateNonce(signerAddress)).data;
+    console.log(nonce);
+
+    const signature = await signMessage(signer, nonce);
+    console.log(signature);
+
+    const verified = ethers.utils.verifyMessage('\x19Ethereum Signed Message:\n' + nonce, signature);
+
+    console.log(verified);
+
+    console.log(verified === signerAddress);
+
+    // const jwt = (await apiService.verifySignature(signerAddress, signature)).data;
+
+    // console.log(jwt);
+    //
+    // updateAuthToken(signerAddress, jwt)
+};
+
+const authenticateUserWalletConnect = async (library, account) => {
+    const signer = getSigner(library, account);
+    console.log("Wallet connect signer:");
+    console.log(signer);
+    const signerAddress = await signer.getAddress();
+
+    const rawMessage = "Hello World";
+    const rawMessageLength = new Blob([rawMessage]).size;
+    let message = ethers.utils.toUtf8Bytes("\x19Ethereum Signed Message:\n" + rawMessageLength + rawMessage);
+    message = ethers.utils.keccak256(message);
+    const params = [
+        signerAddress,
+        message
+    ];
+    const signature = await library.provider.connector.signMessage(params);
+    console.log(signature);
+
+    const verified = ethers.utils.verifyMessage(rawMessage, signature);
+
+    console.log(verified);
+
+    console.log(verified === signerAddress);
+};
+
+const signMessageMetaMask = async (signer, nonce) => {
+    const msg = '\x19Ethereum Signed Message:\n' + nonce
+    return await signer.signMessage(ethers.utils.toUtf8Bytes(msg));
+};
+
+const updateAuthToken = (userAddress, token, active = true) => {
+    const AUTH_ADDRESSES_KEY = "authAddresses"
+
+    let allAddresses = JSON.parse(localStorage.getItem(AUTH_ADDRESSES_KEY));
+
+    const addressToLower = userAddress.toLowerCase();
+    let updatedUserInfo = {
+        address: addressToLower,
+        authToken: token,
+        activeToken: active
+    };
+
+    if (!Array.isArray(allAddresses)) {
+        allAddresses = [updatedUserInfo]
+    }
+
+    let updatedLS = [...allAddresses.filter(e => e.address != addressToLower)];
+    updatedLS.push(updatedUserInfo);
+
+    localStorage.setItem(AUTH_ADDRESSES_KEY, JSON.stringify(updatedLS))
+};
+
+const ethersVersionOfSigning = async (library, account) => {
+    const signer = getSigner(library, account);
+
+    const test = {
+        name: "EIP712 example",
+        domain: {
+            name: 'Ether Mail',
+            version: '1',
+            chainId: 4,
+            verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+        },
+        primaryType: "Mail",
+        types: {
+            Person: [
+                { name: 'name', type: 'string' },
+                { name: 'wallet', type: 'address' }
+            ],
+            Mail: [
+                { name: 'from', type: 'Person' },
+                { name: 'to', type: 'Person' },
+                { name: 'contents', type: 'string' }
+            ]
+        },
+        data: {
+            from: {
+                name: 'Cow',
+                wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826'
+            },
+            to: {
+                name: 'Bob',
+                wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB'
+            },
+            contents: 'Hello, Bob!'
+        },
+        encoded: "0xa0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8",
+        digest: "0xbe609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
+        privateKey: "0xc85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4",
+        signature: "0x4355c47d63924e8a72e509b65029052eb6c299d53a04e167c5775fd466751c9d07299936d304c153f6443dfa05f40ff007d72911b6f72307f996231605b915621c"
+    };
+
+    const wallet = new ethers.Wallet(test.privateKey);
+    console.log(wallet);
+    const signature = await wallet._signTypedData(test.domain, test.types, test.data);
+    console.log(signature);
+    console.log("^^^walet --- signer");
+    let verifiedWalletAddress = ethers.utils.verifyTypedData(test.domain, test.types, test.data, signature);
+    console.log("@@@@@@@@@@@@@@@@@@@@@");
+    console.log(verifiedWalletAddress);
+
+    await signer.getAddress();
+    console.log(signer);
+    const signatureMeta = await signer._signTypedData(test.domain, test.types, test.data);
+    console.log(signatureMeta);
+
+    let verifiedAddress = ethers.utils.verifyTypedData(test.domain, test.types, test.data, signatureMeta);
+
+    console.log("#########################");
+    console.log(verifiedAddress);
+
+    // wallet._signTypedData(test.domain, test.types, test.data)
+    //     .then(signature => {
+    //         console.log(signature);
+    //         console.log(test.signature);
+    //
+    //         let verifiedAddress = ethers.utils.verifyTypedData(test.domain, test.types, test.data, signature);
+    //         console.log(verifiedAddress);
+    //         console.log("-------");
+    //         console.log("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
+    //     });
+
+
+    // signer.getAddress().then(walletAddress => {
+    //     signer._signTypedData(test.domain, test.types, test.data)
+    //         .then(signature => {
+    //             console.log(signature);
+    //             console.log(test.signature);
+    //             // let verifiedAddress = ethers.utils.verifyTypedData(test.domain, test.types, test.data, signature);
+    //             // if (verifiedAddress !== walletAddress) {
+    //             //     alert(`Signed by: ${ verifiedAddress }\r\nExpected: ${ walletAddress }`)
+    //             // }
+    //         })
+    // })
+};
+
+const uniSwapVersion = async (library, account) => {
+    const EIP712Domain = [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' }
+    ];
+    const domain = {
+        name: 'Uniswap V2',
+        version: '1',
+        chainId: 4,
+        verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+    };
+    const Permit = [
+        { name: 'value', type: 'string' },
+    ];
+    const message = {
+        value: "idri"
+    };
+    const data = JSON.stringify({
+        types: {
+            EIP712Domain,
+            Permit
+        },
+        domain,
+        primaryType: 'Permit',
+        message
+    });
+
+    library
+        .send('eth_signTypedData_v4', [account, data])
+        .then(splitSignature)
+        .then(signature => {
+            console.log(signature);
+            let verifiedWalletAddress = ethers.utils.verifyTypedData(domain, {
+                Permit
+            }, message, signature);
+            console.log(verifiedWalletAddress);
+            console.log("WALLET CONNECT ADDRESS -- 0x8b17E8e83ddFd7F825f90a8FED1Dd3c9e384Fdc7");
+
+        })
+        .catch(error => {
+            console.log(error);
+        })
+};
 
 export function WalletConnect({
                                   onSuccess,
@@ -175,6 +340,8 @@ export function WalletConnect({
 
     console.log("Library ---------------");
     console.log(library);
+    console.log(library?.provider.connector);
+    console.log(connector);
 
     console.log("Account ----------------");
     console.log(account);
@@ -220,9 +387,22 @@ export function WalletConnect({
         activate(current);
     }
 
+    useEffect(async () => {
+        if (library && account) {
+            // await authenticateUser(library, account);
+            // await authenticateUserWalletConnect(library, account);
+            // await signMessage(library, account, chainId)
+            // ethersVersionOfSigning(library, account);
+            uniSwapVersion(library, account)
+        }
+    }, [library, account]);
+
+
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
         return <WalletAccount setWalletView={ setWalletView }/>;
     }
+
+
     return (
         <>
             <WalletListItem
