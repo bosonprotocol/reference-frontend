@@ -280,22 +280,22 @@ const uniSwapVersion = async (library, account) => {
     const domain = {
         name: 'Uniswap V2',
         version: '1',
-        chainId: 4,
+        chainId: 4, //ToDo: get chain id
         verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
     };
-    const Permit = [
+    const AuthSignature = [
         { name: 'value', type: 'string' },
     ];
     const message = {
-        value: "idri"
+        value: "Sign message: 92292"
     };
     const data = JSON.stringify({
         types: {
             EIP712Domain,
-            Permit
+            AuthSignature
         },
         domain,
-        primaryType: 'Permit',
+        primaryType: 'AuthSignature',
         message
     });
 
@@ -305,10 +305,10 @@ const uniSwapVersion = async (library, account) => {
         .then(signature => {
             console.log(signature);
             let verifiedWalletAddress = ethers.utils.verifyTypedData(domain, {
-                Permit
+                AuthSignature
             }, message, signature);
+            console.log("Verified wallet address:");
             console.log(verifiedWalletAddress);
-            console.log("WALLET CONNECT ADDRESS -- 0x8b17E8e83ddFd7F825f90a8FED1Dd3c9e384Fdc7");
 
         })
         .catch(error => {
