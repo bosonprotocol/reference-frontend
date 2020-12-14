@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+
+import { BuyerContext, Buyer } from "../contexts/Buyer"
+
 
 import "./ConnectToMetamask.scss"
 
 function ConnectToMetamask() {
+
+  const buyerContext = useContext(BuyerContext)
+
   return (
     <section className="connect-to-metamask flex ai-center">
       <div className="container l">
@@ -14,7 +21,11 @@ function ConnectToMetamask() {
             </div>
             <p>Connect your Ethereum wallet to Boson Protocol</p>
           </div>
-          <div className="button orange" role="button">CONNECT TO METAMASK</div>
+          <div className="button orange" role="button">
+            <Link
+            onClick={() => buyerContext.dispatch(Buyer.connectToMetamask())}
+             exact to="/">CONNECT TO METAMASK</Link>
+          </div>
         </div>
       </div>
     </section>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
+
 
 import "./NavigationBar.scss"
 
@@ -7,7 +9,6 @@ import { IconAccount, IconAdd, IconList } from "./Icons"
 import { GlobalContext } from "../contexts/Global"
 import { BuyerContext, Buyer } from "../contexts/Buyer"
 import { DIC } from "../contexts/Dictionary"
-
 
 function NavigationBar(props) {
   const globalContext = useContext(GlobalContext)
@@ -51,14 +52,14 @@ function NavigationBar(props) {
             <div className="control commit flex center" role="button"
               onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
             >
-              <p>COMMIT TO BUY 0.1 ETH</p>
+              <Link to="/connect-to-metamask">COMMIT TO BUY 0.1 ETH</Link>
             </div>
           </div> : null
         }
-        {transitionState === 'add later' ?
+        {transitionState === DIC.NAV.REDEEM ? 
           <div className="control-wrap">
             <div className="control list flex center" role="button">
-              COMMITED
+            <Link to="/connect-to-metamask">REDEEM</Link>
             </div>
           </div> : null
         }

@@ -68,7 +68,7 @@ const update = {
   productIsOpen: 0
 }
 
-const Constant = {
+const Settings = {
   maxReviewedProducts: 3
 }
 
@@ -86,7 +86,7 @@ const UpdateReviewedProducts = (id) => {
   }
   
   if(!update.productsReviewed.length || !update.productsReviewed.includes(id)) {
-    if(update.productsReviewed.length < Constant.maxReviewedProducts) {
+    if(update.productsReviewed.length < Settings.maxReviewedProducts) {
       update.productsReviewed.push(id)
     } else {
       (update.productsReviewed).shift()

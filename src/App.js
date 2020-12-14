@@ -44,7 +44,7 @@ function App() {
                 <Route exact strict path="/connect" component={ Connect }/>
                 <Route exact path="/" component={Home}/>
                 <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
-                <Route path="/metamask" component={ConnectToMetamask}/>
+                <Route path="/connect-to-metamask" component={ConnectToMetamask}/>
             </Switch>
           </Router>
         </WalletContext.Provider>
