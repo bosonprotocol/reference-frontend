@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
 import "./NavigationBar.scss"
 
@@ -10,19 +10,31 @@ import { DIC } from "../contexts/Dictionary"
 
 
 function NavigationBar(props) {
-  const {delay} = props
   const globalContext = useContext(GlobalContext)
   const buyerContext = useContext(BuyerContext)
+  const [transitionState, setTransitionState] = useState(0)
+  const [transitionTrigger, setTransitionTrigger] = useState(0)
+
+  const {delay} = props
+  const aniamtionTimout = 300
 
   useEffect(() => {
     
-  }, [globalContext.state.buyerStep, globalContext.state.productView.open])
+    // use this to compare {previus} screen and {current} screen
+    // setTransitionTrigger(transitionState)
+    setTransitionTrigger('out')
+
+    setTimeout(() => {
+      setTransitionState(globalContext.state.navigation.state)
+      setTransitionTrigger('in')
+    }, aniamtionTimout);
+  }, [globalContext.state.navigation.state])
 
   return (
-    <nav className={`navigation-bar flex ${globalContext.state.productView.open && 'special'}`}>
+    <nav className={`navigation-bar flex ${transitionState} ${transitionTrigger}`}>
       <div className="nav-container flex center">
-        {!globalContext.state.productView.open ?
-          <>
+        {transitionState === DIC.NAV.DEF ?
+          <div className={`control-wrap flex center ${DIC.NAV.DEF}`}>
             <div className="control list flex center" role="button">
             <IconList />
             </div>
@@ -32,18 +44,22 @@ function NavigationBar(props) {
             <div className="control account flex center" role="button">
               <IconAccount />
             </div>
-          </> : null
-        }
-        {globalContext.state.productView.open && !buyerContext.state.buyerStep ?
-          <div className="control commit flex center" role="button"
-            onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
-          >
-            <p>COMMIT TO BUY 0.1 ETH</p>
           </div> : null
         }
-        {globalContext.state.productView.open && buyerContext.state.buyerStep === DIC.COMMITED ?
-          <div className="control list flex center" role="button">
-          COMMITED
+        {transitionState === DIC.NAV.COMMIT ?
+          <div className={`control-wrap ${DIC.NAV.COMMIT}`}>
+            <div className="control commit flex center" role="button"
+              onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
+            >
+              <p>COMMIT TO BUY 0.1 ETH</p>
+            </div>
+          </div> : null
+        }
+        {transitionState === 'add later' ?
+          <div className="control-wrap">
+            <div className="control list flex center" role="button">
+              COMMITED
+            </div>
           </div> : null
         }
       </div>

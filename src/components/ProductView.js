@@ -7,6 +7,7 @@ import { IconLocation } from "./Icons"
 import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 import { GlobalContext, Action } from "../contexts/Global"
+import { DIC } from "../contexts/Dictionary"
 
 import EscrowDiagram from "./EscrowDiagram"
 
@@ -49,6 +50,7 @@ function ProductView(props) {
     productWindow.current.removeAttribute('style');
     productWindow.current.style.transition = '0.4s ease-in-out'
     windowContainer.current.classList.remove('open')
+    globalContext.dispatch(Action.navigationControl(DIC.NAV.DEF))
 
     setTimeout(() => {
       globalContext.dispatch(Action.closeProduct())
@@ -99,7 +101,6 @@ function ProductView(props) {
   }
 
   useEffect(() => {
-    console.log(globalContext.state)
     setTimeout(() => {
       windowContainer.current.classList.add('open')
     }, 100)
