@@ -69,3 +69,10 @@ export const IconLocation = (props) => (
     <path fillRule="evenodd" clipRule="evenodd" d="M6.15385 16C6.15385 16 12.3077 9.8039 12.3077 6.31579C12.3077 2.82768 9.55252 0 6.15385 0C2.75517 0 0 2.82768 0 6.31579C0 9.8039 6.15385 16 6.15385 16ZM6.15385 8.61539C7.51332 8.61539 8.61539 7.51332 8.61539 6.15385C8.61539 4.79438 7.51332 3.69231 6.15385 3.69231C4.79438 3.69231 3.69231 4.79438 3.69231 6.15385C3.69231 7.51332 4.79438 8.61539 6.15385 8.61539Z" fill={props.color ? props.color : '#5D6F84'}/>
   </svg>
 )
+
+export const IconPlus = (props) => (
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.99951 13.0019L7.99951 1" stroke="#77F2BC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M14 7.00149L1.99805 7.00149" stroke="#77F2BC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)

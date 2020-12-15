@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Categories from "../components/Categories"
+import UploadPhoto from "../components/UploadPhoto"
 
 function NewOffer(props) {
   return (
@@ -8,7 +9,10 @@ function NewOffer(props) {
       <div className="container">
         <div className="top-navigation"></div>
         <div className="screen">
-          <Categories />
+          <form>
+            {/* <Categories /> */}
+            <UploadPhoto />
+          </form>
         </div>
         <div className="bottom-navigation"></div>
       </div>
