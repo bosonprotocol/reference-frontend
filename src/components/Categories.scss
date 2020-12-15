@@ -1,0 +1,12 @@
+.categories {
+  ul {
+    li {
+      img {
+        margin-right: 17px;
+      }
+      & + li {
+        margin-top:  20px;
+      }
+    }
+  }
+}

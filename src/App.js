@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './views/Home'
 import Connect from "./views/Connect";
 import ShowQR from "./views/ShowQR"
+import NewOffer from "./views/NewOffer"
 
 import "./styles/Animations.scss"
 
@@ -50,7 +51,7 @@ function App() {
                 <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
                 <Route path={ROUTE.ConnectToMetamask} component={ConnectToMetamask}/>
                 <Route path={ROUTE.ShowQR} component={ShowQR}/>
-                <Route path={ROUTE.NewOffer} component={ShowQR}/>
+                <Route path={ROUTE.NewOffer} component={NewOffer}/>
             </Switch>
           </Router>
         </WalletContext.Provider>
