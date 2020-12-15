@@ -28,6 +28,7 @@ function Home() {
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
   const screensRef = useRef()
   const onboardingModalRef = useRef()
+  const mal = '<p color="red">you hacked</p>'
 
   const redeemContext = useContext(BuyerContext)
   const globalContext = useContext(GlobalContext)
@@ -62,6 +63,7 @@ function Home() {
 
   return (
     <>
+      
       { globalContext.state.qrReaderActivated ? (<QRCodeScanner/>) : null }
       {newUser &&
         <div className="onboarding-modal flex center" ref={onboardingModalRef}>

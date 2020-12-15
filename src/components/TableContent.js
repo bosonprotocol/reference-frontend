@@ -64,8 +64,8 @@ export const DateTable = (objPrices) => {
   </>
 }
 
-export const TableRow = (title, value) => {
-  return <div className="row flex jc-sb ai-center">
+export const TableRow = (title, value, id) => {
+  return <div key={id} className="row flex jc-sb ai-center">
     <p className="title">{title}</p>
     <p className="value">{value}</p>
   </div>

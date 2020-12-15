@@ -58,9 +58,11 @@ function ProductView(props) {
   }
 
   const dragControlerEnable = (e) => {
+    console.log(delta)
     productWindow.current.style.transition = 'none'
     delta.offset = e.clientY
     delta.state = 1
+    console.log(delta)
     productWindow.current.classList.add('noselect')
   }
 
@@ -142,7 +144,7 @@ function ProductView(props) {
               <div className="arrow expand"></div>
             </div>
             <div className="table product-info flex column">
-              {tableContent.map(row => TableRow(row[0], row[1]))}
+              {tableContent.map((row, id) => TableRow(row[0], row[1], id))}
             </div>
             <div className="table price flex column">
               {PriceTable({payment: 0.1, buyerD: 0.02, sellerD: 0.01})}
@@ -151,7 +153,7 @@ function ProductView(props) {
               {DateTable({start: '15/11/2020', expiry: '15/12/2020'})}
             </div>
             <div className="table product-info flex column">
-              {tableSeller.map(row => TableRow(row[0], row[1]))}
+              {tableSeller.map((row, id) => TableRow(row[0], row[1], id))}
             </div>
             <div className="button refund" role="button">REFUND</div>
           </div>
