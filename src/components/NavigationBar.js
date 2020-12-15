@@ -8,7 +8,7 @@ import { IconAccount, IconAdd, IconList } from "./Icons"
 
 import { GlobalContext } from "../contexts/Global"
 import { BuyerContext, Buyer } from "../contexts/Buyer"
-import { DIC } from "../contexts/Dictionary"
+import { DIC, ROUTE } from "../helpers/Dictionary"
 
 import { IconQR } from "./Icons"
 
@@ -42,7 +42,7 @@ function NavigationBar(props) {
             <IconList />
             </div>
             <div className="control add-product flex center animate" role="button" style={{transitionDelay: delay}}>
-              <IconAdd />
+              <Link to={ROUTE.NewOffer}><IconAdd /></Link>
             </div>
             <div className="control account flex center" role="button">
               <IconAccount />
@@ -54,14 +54,14 @@ function NavigationBar(props) {
             <div className="control commit flex center" role="button"
               onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
             >
-              <Link to="/connect-to-metamask">COMMIT TO BUY 0.1 ETH</Link>
+              <Link to={ROUTE.ConnectToMetamask}>COMMIT TO BUY 0.1 ETH</Link>
             </div>
           </div> : null
         }
         {transitionState === DIC.NAV.REDEEM ? 
           <div className="control-wrap">
             <div className="control redeem list flex center" role="button">
-            <Link to="/show-qr-code"><IconQR size="21" color="#FFFFFF"/> REDEEM</Link>
+            <Link to={ROUTE.ShowQR}><IconQR size="21" color="#FFFFFF"/> REDEEM</Link>
             </div>
           </div> : null
         }

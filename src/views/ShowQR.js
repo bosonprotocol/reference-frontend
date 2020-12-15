@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import "./StaticPage.scss"
 
 import { productAPI } from "../PlaceholderAPI"
+import { ROUTE } from '../helpers/Dictionary'
 
 function ShowQR() {
   const imageThumb = JSON.parse(localStorage.getItem('productsReviewed'))
@@ -15,7 +16,7 @@ function ShowQR() {
     <div className="container l infinite">
       <div className="wrapper w100 relative flex column center">
         <div className="top-nav">
-          <Link to="/">
+          <Link to={ROUTE.Home}>
             <div className="cancel"><span className="icon"></span></div>
           </Link>
         </div>

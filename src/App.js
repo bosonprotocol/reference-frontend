@@ -16,6 +16,9 @@ import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wal
 import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 
+
+import { ROUTE } from "./helpers/Dictionary"
+
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
     const [redeemState, redeemDispatch] = useReducer(BuyerReducer, BuyerInitialState);
@@ -42,11 +45,12 @@ function App() {
         <WalletContext.Provider value={walletContextValue}>
           <Router>
             <Switch>
-                <Route exact strict path="/connect" component={ Connect }/>
-                <Route exact path="/" component={Home}/>
+                <Route exact strict path={ROUTE.Connect} component={Connect}/>
+                <Route exact path={ROUTE.Home} component={Home}/>
                 <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
-                <Route path="/connect-to-metamask" component={ConnectToMetamask}/>
-                <Route path="/show-qr-code" component={ShowQR}/>
+                <Route path={ROUTE.ConnectToMetamask} component={ConnectToMetamask}/>
+                <Route path={ROUTE.ShowQR} component={ShowQR}/>
+                <Route path={ROUTE.NewOffer} component={ShowQR}/>
             </Switch>
           </Router>
         </WalletContext.Provider>

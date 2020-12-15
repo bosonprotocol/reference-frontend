@@ -11,3 +11,11 @@ export const DIC = {
     REDEEM: 'redeem',
   },
 }
+
+export const ROUTE = {
+  Home: '/',
+  Connect: '/connect',
+  ConnectToMetamask: '/connect-to-metamask',
+  ShowQR: '/show-qr-code',
+  NewOffer: '/new-offer',
+}

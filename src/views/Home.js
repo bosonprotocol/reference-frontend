@@ -28,7 +28,6 @@ function Home() {
   const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
   const screensRef = useRef()
   const onboardingModalRef = useRef()
-  const mal = '<p color="red">you hacked</p>'
 
   const redeemContext = useContext(BuyerContext)
   const globalContext = useContext(GlobalContext)

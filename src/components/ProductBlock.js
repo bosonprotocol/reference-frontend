@@ -5,7 +5,7 @@ import "./ProductBlock.scss"
 import { IconEth, IconDeposit } from "./Icons"
 
 import { GlobalContext, Action } from "../contexts/Global"
-import { DIC } from "../contexts/Dictionary"
+import { DIC } from "../helpers/Dictionary"
 
 
 function ProductBlock(props) {

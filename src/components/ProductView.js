@@ -7,7 +7,7 @@ import { IconLocation } from "./Icons"
 import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 import { GlobalContext, Action } from "../contexts/Global"
-import { DIC } from "../contexts/Dictionary"
+import { DIC } from "../helpers/Dictionary"
 
 import EscrowDiagram from "./EscrowDiagram"
 
