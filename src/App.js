@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './views/Home'
 import Connect from "./views/Connect";
 
+import { useInactiveListener } from './hooks'
+
+
 import "./styles/Animations.scss"
 
 import OnboardingReset from "./views/OnboardingReset"
@@ -29,10 +32,12 @@ function App() {
       state: globalState,
       dispatch: globalDispatch
     }
-    
+
     const walletContextValue = {
        walletState: walletState
     }
+
+    useInactiveListener(true)
 
     return (
       <div className="emulate-mobile">

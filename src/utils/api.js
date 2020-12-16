@@ -14,7 +14,7 @@ class ApiService {
 
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: "https://poc-v1-dot-boson-protocol-prototype-test.oa.r.appspot.com"
+            baseURL: "http://localhost:3000"
         })
     }
 
@@ -103,8 +103,8 @@ class ApiService {
         return await this.axiosInstance.post(`/users/${ address }`)
     }
 
-    async verifySignature(address, signature) {
-        return await this.axiosInstance.post(`/users/${ address }/verify-signature`, { signature })
+    async verifySignature(address, isSmartWallet, domain, types, signature) {
+        return await this.axiosInstance.post(`/users/${ address }/verify-signature`, { address, isSmartWallet, domain, types, signature })
     }
 
     async commitToBuy(voucherID, data, token) {

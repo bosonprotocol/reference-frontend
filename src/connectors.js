@@ -9,9 +9,11 @@ const RPC_URLS = {
     42: "https://kovan.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
 };
 
+export const RINKEBY_ID = 4;
+
 // rinkeby
 export const network = new NetworkConnector({
-    urls: { 1: RPC_URLS[4] },
+    urls: { 4: RPC_URLS[4] },
 });
 
 export const injected = new InjectedConnector({
@@ -20,7 +22,7 @@ export const injected = new InjectedConnector({
 
 // rinkeby
 export const walletconnect = new WalletConnectConnector({
-    rpc: { 1: RPC_URLS[4] },
+    rpc: { 4: RPC_URLS[4] },
     bridge: "https://bridge.walletconnect.org",
     qrcode: true,
     pollingInterval: POLLING_INTERVAL,

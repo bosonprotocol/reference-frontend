@@ -1,16 +1,31 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
 import {
     WalletConnect,
     WALLET_VIEWS,
-    getWalletTitle,
-    // signMessage,
+    getWalletTitle
 } from "../components/modals/WalletConnect";
+import { useEagerConnect } from "../hooks";
+import { NetworkContextName } from "../constants";
+import { network } from "../connectors";
 
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
-    // const { account, library, chainId } = useWeb3React();
-    const { account } = useWeb3React();
+    const context = useWeb3React();
+    const {
+        account,
+        active,
+    } = context;
+
+    const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
+
+    const triedEager = useEagerConnect()
+    // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
+    useEffect(() => {
+        if (triedEager && !networkActive && !networkError && !active) {
+            activateNetwork(network)
+        }
+    }, [triedEager, networkActive, networkError, activateNetwork, active])
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -26,9 +41,6 @@ export default function Connect() {
         if (isRedirect !== null) {
             localStorage.setItem("redirect", isRedirect);
         }
-
-        // if (!account || !chainId) return;
-        // signMessage({ account, library, chainId });
     }, []);
 
     return (

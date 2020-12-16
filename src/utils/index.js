@@ -56,44 +56,6 @@ export function getContract(address, ABI, library, account) {
     return new Contract(address, ABI, getProviderOrSigner(library, account));
 }
 
-export function formatEIP712Data(message, chainId) {
-    return {
-        domain: {
-            name: 'Boson Protocol',
-            version: '1',
-            chainId: '4',
-            verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
-        },
-        primaryType: "Verify",
-        message: {
-            content: 'udri'
-        },
-        types: {
-            Message: [
-                { name: 'content', type: 'string' }
-            ]
-        },
-    };
-}
-
-const domain = {
-    name: 'Boson Protocol',
-    version: '1',
-    chainId: '4',
-    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
-};
-
-const types = {
-    Message: [
-        { name: 'content', type: 'string' }
-    ]
-};
-
-const message = {
-    content: 'udri'
-};
-
-
 export function uriToHttp(uri) {
     try {
         const parsed = new URL(uri);
