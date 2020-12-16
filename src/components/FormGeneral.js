@@ -10,15 +10,13 @@ function FormGeneral(props) {
           <label htmlFor="offer-title">
             <h1>Title</h1>
           </label>
-          <input id="offer-title" type="text"
-          onChange={(e) => updateData('title', e.target.value)}/>
+          <input id="offer-title" type="text" name="title"/>
         </div>
       </div>
       <div className="row">
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
-          <input id="offer-quantity" type="number"
-          onChange={(e) => updateData('quantity', e.target.value)}/>
+          <input id="offer-quantity" type="number" name="quantity"/>
         </div>
       </div>
       <div className="row">

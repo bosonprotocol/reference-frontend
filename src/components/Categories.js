@@ -1,17 +1,19 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import "./Categories.scss"
 
 import { categories } from "../PlaceholderAPI"
 
 function Categories(props) {
-  const { updateData } = props
+  const { listenerType } = props
   const categoryTarget = useRef()
+
+  const customChange = new Event(listenerType)
 
   const setCategory = (id) => {
     categoryTarget.current.value = id
 
-     updateData('category', id)
+    categoryTarget.current.dispatchEvent(customChange)
   }
 
   return (
@@ -26,7 +28,7 @@ function Categories(props) {
           )
         }
       </ul>
-      <input ref={categoryTarget} id="offer-category" type="text"/>
+      <input ref={categoryTarget} id="offer-category" type="text" name="category"/>
     </div>
   )
 }

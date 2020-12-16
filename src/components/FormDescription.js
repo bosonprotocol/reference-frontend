@@ -10,8 +10,7 @@ function FormDescription(props) {
         <label htmlFor="offer-description">
             <h1>Description</h1>
           </label>
-          <textarea id="offer-description" name="description" form="offer-form"
-          onChange={(e) => updateData('description', e.target.value)}></textarea>
+          <textarea id="offer-description" name="description" form="offer-form"></textarea>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import Categories from "../components/Categories"
 import FormUploadPhoto from "../components/FormUploadPhoto"
@@ -23,9 +23,13 @@ const inputDefinitions = {
   end_date: null
 }
 
+// switch with 'change', if you want to trigger on completed input, instead on each change
+const listenerType = 'input'
+
 function NewOffer() {
   const [activeScreen, setActiveScreen] = useState(0)
   const [inputData, setInputData] = useState(inputDefinitions)
+  const screenController = useRef()
 
   const updateData = (field, value) => {
     setInputData({
@@ -34,8 +38,12 @@ function NewOffer() {
     })
   }
 
+  const test = (e) => {
+    console.log(e.target.name)
+  }
+
   const screens = [
-    <Categories updateData={updateData} />,
+    <Categories updateData={updateData} listenerType={listenerType} />,
     <FormUploadPhoto updateData={updateData} />,
     <FormGeneral updateData={updateData} />,
     <FormDescription updateData={updateData} />,
@@ -48,7 +56,16 @@ function NewOffer() {
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      Array.from(screenController.current.querySelectorAll('[name]')).map(input =>
+        input.addEventListener(listenerType, (e) => test(e))
+      )
+    }, 0)
+  }, [activeScreen])
+
+  useEffect(() => {
     console.log(inputData)
+
   }, [inputData])
 
   return (
@@ -62,7 +79,7 @@ function NewOffer() {
         </div>
         <div className="screen">
           <form id="offer-form">
-            <div className="screen-controller">
+            <div ref={screenController} className="screen-controller">
               {screens[activeScreen]}
             </div>
           </form>

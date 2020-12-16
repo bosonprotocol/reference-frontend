@@ -30,7 +30,6 @@ function UploadPhoto(props) {
   const fileReader = new FileReader()
 
   const previewImage = (submited) => {
-    console.log(thumbnailRef.current.style.backgroundImage )
     thumbnailRef.current.src = submited.currentTarget.result // sanitize
   }
 
@@ -60,15 +59,13 @@ function UploadPhoto(props) {
       fileReader.readAsDataURL(e.target.files[0])
       setImageUploaded(1)
       setImageData({...imageData, name: Image.name})
-
-      updateData('image', e.target.files[0])
     }
   }
 
   return ( 
     <div className="upload-photo">
       <h1>Photo</h1>
-      <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
+      <input id="offer-image-upload" type="file" name="image" onChange={(e) => imageUploadHandler(e)}/>
       <div className={`image-upload-container flex center ${imageUploaded ? 'uploaded' : 'awaiting'}`}>
         <div className="image-upload">
           {imageUploaded ? 

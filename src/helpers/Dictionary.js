@@ -20,3 +20,19 @@ export const ROUTE = {
   ShowQR: '/show-qr-code',
   NewOffer: '/new-offer',
 }
+
+export const NAME = {
+  CATEGORY: 'category',
+  IMAGE: 'image',
+  TITLE: 'title',
+  QUANTITY: 'quantity',
+  CONDITION: 'condition',
+  DESCRIPTION: 'description',
+  PRICE_C: 'price_currency',
+  PRICE: 'price',
+  SELLER_DEPOSIT_C: 'seller_deposit_currency',
+  SELLER_DEPOSIT: 'seller_deposit',
+  BUYER_DEPOSIT: 'buyer_deposit',
+  DATE_START: 'start_date',
+  DATE_END: 'end_date'
+}
