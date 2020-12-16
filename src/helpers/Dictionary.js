@@ -28,7 +28,7 @@ export const NAME = {
   QUANTITY: 'quantity',
   CONDITION: 'condition',
   DESCRIPTION: 'description',
-  PRICE_C: 'price_currency',
+  PRICE_C: 'price_currency', //
   PRICE: 'price',
   SELLER_DEPOSIT_C: 'seller_deposit_currency',
   SELLER_DEPOSIT: 'seller_deposit',

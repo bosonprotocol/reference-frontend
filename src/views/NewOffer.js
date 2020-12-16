@@ -7,21 +7,13 @@ import FormDescription from "../components/FormDescription"
 import FormPrice from "../components/FormPrice"
 import FormDate from "../components/FormDate"
 
-const inputDefinitions = {
-  category: null,
-  image: null,
-  title: null,
-  quantity: null,
-  condition: null,
-  description: null,
-  price_currency: null,
-  price: null,
-  seller_deposit_currency: null,
-  seller_deposit: null,
-  buyer_deposit: null,
-  start_date: null,
-  end_date: null
-}
+import { NAME } from "../helpers/Dictionary"
+
+const inputDefinitions = {}
+
+Object.entries(NAME).map((name) => 
+inputDefinitions[name[1]] = null
+)
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'input'
@@ -40,6 +32,7 @@ function NewOffer() {
 
   const test = (e) => {
     console.log(e.target.name)
+    console.log(e.target.value)
   }
 
   const screens = [
@@ -56,11 +49,9 @@ function NewOffer() {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      Array.from(screenController.current.querySelectorAll('[name]')).map(input =>
-        input.addEventListener(listenerType, (e) => test(e))
-      )
-    }, 0)
+    Array.from(screenController.current.querySelectorAll('[name]')).map(input =>
+      input.addEventListener(listenerType, (e) => test(e))
+    )
   }, [activeScreen])
 
   useEffect(() => {

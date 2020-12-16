@@ -4,6 +4,8 @@ import "./FormUploadPhoto.scss"
 
 import { IconPlus } from "./Icons"
 
+import { NAME } from "../helpers/Dictionary"
+
 const maxSize =  2 * (1000 * 1000) // in mb
 
 const acceptedImageFormats = ['image/gif', 'image/jpeg', 'image/png']
@@ -15,8 +17,7 @@ const Image = {
   rules: null,
 }
 
-function UploadPhoto(props) {
-  const { updateData } = props
+function UploadPhoto() {
   const thumbnailRef = useRef()
   const [imageUploaded, setImageUploaded] = useState(0)
   const [imageData, setImageData] = useState({
@@ -65,7 +66,7 @@ function UploadPhoto(props) {
   return ( 
     <div className="upload-photo">
       <h1>Photo</h1>
-      <input id="offer-image-upload" type="file" name="image" onChange={(e) => imageUploadHandler(e)}/>
+      <input id="offer-image-upload" type="file" name={NAME.IMAGE} onChange={(e) => imageUploadHandler(e)}/>
       <div className={`image-upload-container flex center ${imageUploaded ? 'uploaded' : 'awaiting'}`}>
         <div className="image-upload">
           {imageUploaded ? 

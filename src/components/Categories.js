@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 
 import "./Categories.scss"
 
 import { categories } from "../PlaceholderAPI"
+import { NAME } from "../helpers/Dictionary"
 
 function Categories(props) {
   const { listenerType } = props
@@ -28,7 +29,7 @@ function Categories(props) {
           )
         }
       </ul>
-      <input ref={categoryTarget} id="offer-category" type="text" name="category"/>
+      <input ref={categoryTarget} id="offer-category" type="text" name={NAME.CATEGORY} />
     </div>
   )
 }

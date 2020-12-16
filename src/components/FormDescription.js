@@ -1,8 +1,8 @@
 import React from 'react'
 
-function FormDescription(props) {
-  const { updateData } = props
+import { NAME } from "../helpers/Dictionary"
 
+function FormDescription() {
   return (
     <div className="description">
       <div className="row">
@@ -10,7 +10,7 @@ function FormDescription(props) {
         <label htmlFor="offer-description">
             <h1>Description</h1>
           </label>
-          <textarea id="offer-description" name="description" form="offer-form"></textarea>
+          <textarea id="offer-description" name={NAME.DESCRIPTION} form="offer-form"></textarea>
         </div>
       </div>
     </div>
