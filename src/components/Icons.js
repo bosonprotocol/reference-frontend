@@ -19,7 +19,7 @@ export const IconDeposit = (props) => (
 )
 
 export const IconQR = (props) => (
-  <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width={props.size ? (props.size).toString() : '42'} height={props.size ? (props.size).toString() : '42'} viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="13.2852" y="13.2854" width="6.93603" height="6.93603" rx="2.19032" fill={props.color ? props.color : '#B9CDE3'}/>
     <rect x="13.2852" y="22.0464" width="6.93603" height="6.93603" rx="2.19032" fill={props.color ? props.color : '#B9CDE3'}/>
     <rect x="22.0476" y="22.0464" width="6.93603" height="6.93603" rx="2.19032" fill={props.color ? props.color : '#B9CDE3'}/>
@@ -28,7 +28,7 @@ export const IconQR = (props) => (
     <path d="M25.3323 32.2683L27.1576 32.2683C29.9801 32.2683 32.2683 29.9801 32.2683 27.1576L32.2683 25.3323" stroke={props.color ? props.color : '#B9CDE3'} strokeWidth="1.3099"/>
     <path d="M10 25.3323L10 27.1576C10 29.9801 12.2882 32.2683 15.1108 32.2683L16.936 32.2683" stroke={props.color ? props.color : '#B9CDE3'} strokeWidth="1.3099"/>
     <path d="M32.2683 16.936L32.2683 15.1108C32.2683 12.2882 29.9801 10 27.1576 10L25.3323 10" stroke={props.color ? props.color : '#B9CDE3'} strokeWidth="1.3099"/>
-    <rect x="0.5" y="0.5" width="41" height="41" rx="9.5" stroke="#2E3F52"/>
+    <rect x="0.5" y="0.5" width="41" height="41" rx="9.5" stroke={props.color ? props.color : '#B9CDE3'}/>
   </svg>
 )
 

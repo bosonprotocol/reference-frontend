@@ -19,13 +19,13 @@ export default function Connect() {
 
     const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
 
-    const triedEager = useEagerConnect()
+    const triedEager = useEagerConnect();
     // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
     useEffect(() => {
         if (triedEager && !networkActive && !networkError && !active) {
             activateNetwork(network)
         }
-    }, [triedEager, networkActive, networkError, activateNetwork, active])
+    }, [triedEager, networkActive, networkError, activateNetwork, active]);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

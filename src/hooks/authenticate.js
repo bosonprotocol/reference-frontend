@@ -1,7 +1,5 @@
 import apiService from "../utils/api";
 import { splitSignature } from "ethers/lib/utils";
-import * as ethers from "ethers";
-
 export const AUTH_ADDRESSES_KEY = "authAddresses";
 const ARGENT_PEER_NAME = "Argent";
 
@@ -66,7 +64,7 @@ const updateAuthToken = (userAddress, token, active = true) => {
         allAddresses = [updatedUserInfo]
     }
 
-    let updatedLS = [...allAddresses.filter(e => e.address != addressToLower)];
+    let updatedLS = [...allAddresses.filter(e => e.address !== addressToLower)];
     updatedLS.push(updatedUserInfo);
 
     localStorage.setItem(AUTH_ADDRESSES_KEY, JSON.stringify(updatedLS))

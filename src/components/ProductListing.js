@@ -5,7 +5,7 @@ import ProductBlock from "../components/ProductBlock";
 import Masonry from 'react-masonry-css'
 import "./ProductListing.scss"
 
-import { homeProducts } from "../PlaceholderAPI"
+import { productAPI } from "../PlaceholderAPI"
 
 function ProductListing(props) {
   const {animateEl, animateDel} = props
@@ -21,7 +21,7 @@ function ProductListing(props) {
         breakpointCols={breakpointColumns}
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column">
-        {homeProducts.map((block, id) => <ProductBlock col key={id} {...block} delay={`${(id + animateDel) * 50}ms`} animate={id < animateEl} />)}
+        {productAPI.map((block, id) => <ProductBlock col key={id} {...block} delay={`${(id + animateDel) * 50}ms`} animate={id < animateEl} />)}
       </Masonry>
     </div>
   )
