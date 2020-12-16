@@ -15,7 +15,8 @@ const Image = {
   rules: null,
 }
 
-function UploadPhoto() {
+function UploadPhoto(props) {
+  const { updateData } = props
   const thumbnailRef = useRef()
   const [imageUploaded, setImageUploaded] = useState(0)
   const [imageData, setImageData] = useState({
@@ -60,6 +61,7 @@ function UploadPhoto() {
       setImageUploaded(1)
       setImageData({...imageData, name: Image.name})
 
+      updateData('image', e.target.files[0])
     }
   }
 

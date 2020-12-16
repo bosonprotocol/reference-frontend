@@ -1,6 +1,8 @@
 import React from 'react'
 
-function FormDescription() {
+function FormDescription(props) {
+  const { updateData } = props
+
   return (
     <div className="description">
       <div className="row">
@@ -8,7 +10,8 @@ function FormDescription() {
         <label htmlFor="offer-description">
             <h1>Description</h1>
           </label>
-          <textarea id="offer-description" name="description" form="offer-form"></textarea>
+          <textarea id="offer-description" name="description" form="offer-form"
+          onChange={(e) => updateData('description', e.target.value)}></textarea>
         </div>
       </div>
     </div>

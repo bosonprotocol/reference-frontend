@@ -4,6 +4,7 @@ export const DIC = {
   OPEN_PRODUCT: 'open_product',
   CLOSE_PRODUCT: 'close_product',
   ACTIVATE_QR_READER: 'activate_qr_reader',
+  TOGGLE_PROGRESS_STATUS: 'toggle_progress_status',
   NAV: {
     CONTROL: 'navigationControl',
     DEF: 'default_view',
