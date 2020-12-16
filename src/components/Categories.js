@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import "./Categories.scss"
 
 import { categories } from "../PlaceholderAPI"
 
 function Categories() {
+  const categoryTarget = useRef()
 
   return (
     <div className="categories">
@@ -18,6 +19,7 @@ function Categories() {
           )
         }
       </ul>
+      <input ref={categoryTarget} id="offer-category" type="text"/>
     </div>
   )
 }

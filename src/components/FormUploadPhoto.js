@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import "./UploadPhoto.scss"
+import "./FormUploadPhoto.scss"
 
 import { IconPlus } from "./Icons"
 
