@@ -19,9 +19,9 @@ html, body {
 
   font-family: $font-secondary;
   line-height: $height-regular;
-  font-weight: $weight-5;
+  font-weight: 500;
   color: $text-1;
-  font-size: $size-regular;
+  font-size: 16px;
   background: #181A29;
 
   // simulate mobile
@@ -29,7 +29,7 @@ html, body {
   justify-content: center;
 }
 
-section {
+section:not(.no-bg) {
   background-color: $background-primary;
 }
 
@@ -56,14 +56,14 @@ input[type="submit"] {
 }
 
 h1:not(.def) {
-  font-size: $size-title;
-  font-weight: $weight-6;
+  font-size: 26px;
+  font-weight: 600;
   line-height: $height-small;
 }
 
 h2:not(.def) {
-  font-size: $size-semi-title;
-  font-weight: $weight-6;
+  font-size: 18px;
+  font-weight: 600;
   line-height: $height-small;
 }
 
@@ -84,7 +84,7 @@ h2:not(.def) {
 
 .screens {
   max-height: none;
-  overflow-y: auto;
+  // overflow-y: auto;
 
   &.new-user {
     opacity: 0;
@@ -106,4 +106,13 @@ h2:not(.def) {
 
 ul {
   list-style: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }

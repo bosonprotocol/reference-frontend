@@ -1,19 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-// import Web3 from "web3";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
-import { useStore, usePrevious } from "../../hooks";
+import { usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
 import Modal from "../Modal";
-import { injected, walletconnect } from "../../connectors";
+import { injected, RINKEBY_ID, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
 import MetaMaskLogo from "../../images/metamask.png";
 import WalletConnectLogo from "../../images/walletconnect.svg";
 import Identicon from "../Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
-
-export const MODAL_WALLET_CONNECT = "modal_wallet_connect";
+import { WalletContext } from "../../contexts/Wallet";
+import { authenticateUser, getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -63,93 +62,6 @@ export default function ModalWalletConnect({ modal, setModal }) {
     );
 }
 
-// export async function signMessage({ library, account, chainId }, connector) {
-//     const skipSignatureVerification = true;
-//     // let isSigningRequired = true;
-//
-//     const web3 = new Web3(library.provider);
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const id = urlParams.get("id");
-//     const callbackURL = urlParams.get("callbackURL");
-//     const isNotRedirect =
-//         urlParams.get("redirect") === "false" || !urlParams.get("redirect");
-//     const fetch = require("node-fetch");
-//     // if (connector.walletLink) {
-//     // if false that means request is from node-red
-//     if (isNotRedirect || connector.walletLink) {
-//         const result = {
-//             account,
-//         };
-//         processResponse(undefined, result, "all");
-//         return;
-//     }
-//
-//     const msgParams = JSON.stringify(
-//         formatEIP712Data(
-//             {
-//                 from: account,
-//                 id,
-//                 callbackURL: "",
-//             },
-//             chainId
-//         )
-//     );
-//     const params = [account, msgParams];
-//     const method = "eth_signTypedData_v4";
-//     web3.currentProvider.sendAsync(
-//         {
-//             method,
-//             params,
-//             account,
-//         },
-//         async (err, result) => {
-//             processResponse(err, result);
-//         }
-//     );
-//
-//     async function processResponse(err, result, authType) {
-//         const reqType = urlParams.get("req_type");
-//         if (reqType === 'kchannel_connect' || reqType === 'kchannel_send') {
-//             return;
-//         }
-//         if (err) {
-//             return console.dir(err);
-//         }
-//         if (result.error) {
-//             alert(result.error.message);
-//         }
-//         if (result.error) return console.error("ERROR", result);
-//         if (!isNotRedirect && callbackURL) {
-//             window.location.href =
-//                 callbackURL +
-//                 window.location.search +
-//                 `&signature=${ result.result }&account=${ account }`;
-//         }
-//         // callback wallet connect only if mode is tpc or airdrop
-//         if (isNotRedirect && callbackURL) {
-//             const data = {
-//                 id,
-//                 signature: result.result,
-//                 account: account,
-//                 authType,
-//             };
-//             try {
-//                 const response = await fetch(callbackURL, {
-//                     method: "POST",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify(data),
-//                 });
-//                 const responseData = await response.json();
-//                 // console.log("response", responseData);
-//                 if (responseData.status)
-//                     alert(responseData.status);
-//             } catch (error) {
-//                 alert(error);
-//             }
-//         }
-//     }
-// }
-
 export function WalletConnect({
                                   onSuccess,
                                   setWalletView,
@@ -166,15 +78,11 @@ export function WalletConnect({
         active,
         error,
     } = context;
-    const [connectorsByName] = useStore(["connectorsByName"]);
+
+    const walletContext = useContext(WalletContext);
+    const connectorsByName = walletContext.walletState.connectorsByName;
 
     const previousAccount = usePrevious(account);
-
-    console.log("Library ---------------");
-    console.log(library);
-
-    console.log("Account ----------------");
-    console.log(account);
 
     // close on connection, when logged out before
     useEffect(() => {
@@ -194,8 +102,6 @@ export function WalletConnect({
                 (connector && connector !== connectorPrevious && !error))
         ) {
             if (setWalletView) setWalletView(WALLET_VIEWS.ACCOUNT);
-            // if (window.location.search)
-            //     signMessage({ account, chainId, library }, connector);
         }
     }, [
         setWalletView,
@@ -213,13 +119,38 @@ export function WalletConnect({
     }, []);
 
     function onConnectionClicked(name) {
+        if (name === "WalletConnect") {
+            const walletConnectData = localStorage.getItem('walletconnect')
+
+            const walletConnectDataObject = JSON.parse(walletConnectData);
+            if (walletConnectDataObject && walletConnectDataObject.chainId !== RINKEBY_ID) {
+                // ToDo: Use Global notification
+                console.error("Please use Rinkeby network.");
+                return
+            }
+        }
+
         const current = connectorsByName[name];
         activate(current);
     }
 
+    useEffect(() => {
+        if (library && account) {
+            const localStoredAccountData = getAccountStoredInLocalStorage(account);
+
+            if (localStoredAccountData.activeToken) {
+                return;
+            }
+
+            authenticateUser(library, account, chainId);
+        }
+    }, [library, account, chainId]);
+
+
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
         return <WalletAccount setWalletView={ setWalletView }/>;
     }
+
     return (
         <>
             <WalletListItem

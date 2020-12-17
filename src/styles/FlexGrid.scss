@@ -18,6 +18,12 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   &.erase-left {
     padding-left: 0;
   }
+  &.erase {
+    padding: 0;
+  }
+  &.l {
+    padding: 0 $container-padding-big;
+  }
 }
 .new-row {
   margin-left: -#{$container-padding};
@@ -94,6 +100,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       align-items: center;
       justify-content: center;
     }
+    &.split {
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 }
 
@@ -165,20 +175,6 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   }
 }
 
-//gap
-@mixin gap($selector) {
-  .gap#{$selector} {
-    margin-top: $margin-gap;    
-  }
-  .gap-small#{$selector} {
-    margin-top: $margin-gap-small;
-  }
-
-  .gap-large#{$selector} {
-    margin-top: $margin-gap-large;
-  }
-}
-
 //width and max-width
 @mixin width($selector) {
   .w100#{$selector} {
@@ -202,22 +198,22 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 }
 
 @mixin max-width($selector) {
-  .max-w100#{$selector} {
+  .mw100#{$selector} {
     max-width: 100%;
   }
-  .max-w50#{$selector} {
+  .mw50#{$selector} {
     max-width: 50%;
   }
-  .max-w33#{$selector} {
+  .mw33#{$selector} {
     max-width: calc(100% / 3);
   }
-  .max-w25#{$selector} {
+  .mw25#{$selector} {
     max-width: 25;
   }
-  .max-w20#{$selector} {
+  .mw20#{$selector} {
     max-width: 20%;
   }
-  .max-w10#{$selector} {
+  .mw10#{$selector} {
     max-width: 10%;
   }
 }
@@ -299,19 +295,6 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 @include col-grid($load-default);
 @include flex-grid($load-default);
 @include pad-last($load-default);
-@include gap($load-default);
-
-// @each $selector, $break-point in $gd-breakpoints {
-//   @media screen and(max-width: $break-point) {
-
-//     @include d-none(#{$selector});
-//     @include width(#{$selector});
-//     @include max-width(#{$selector});
-//     @include col-grid(#{$selector});
-//     @include flex-grid(#{$selector});
-//     @include gap(#{$selector});    
-//   }
-// }
 
 // ----------------------------------------------------------------
 // END OF DOCUMENT - GRID SETTINGS

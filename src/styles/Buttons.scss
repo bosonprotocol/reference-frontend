@@ -1,26 +1,50 @@
-.button {
+.button,
+.button a {
+  padding: 13px 22px;
+  font-family: $font-primary;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  border-radius: 8px;
+
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  transition: $ease-quick;
+
   &.primary {
     box-shadow: -6px -3px 35px rgba(128, 240, 190, 0.15);
-    padding: 13px 22px;
     background: #80F0BE;
     color: #1C2835;
-    font-family: $font-primary;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 19px;
-    border-radius: 8px;
-
-    text-align: center;
-    text-transform: uppercase;
-    cursor: pointer;
-
-    transition: $ease-quick;
 
     &:hover {
       color: $white;
       background-color: #50e5a2;
       box-shadow: -7px 1px 40px rgba(20, 255, 150, 0.18);
     }
+  }
+
+  &.orange,
+  &.orange a {
+    background: #F68C24;
+    color: #ffffff;
+    text-decoration: none;
+
+    &:hover {
+      color: #F68C24;
+      background-color: #fff;
+    }
+  }
+
+  &.refund {
+    background: #3D5167;
+    color: #ffffff;
+
+    // &:hover {
+    //   color: #3D5167;
+    //   background-color: #fff;
+    // }
   }
 }

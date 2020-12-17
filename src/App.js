@@ -1,59 +1,63 @@
 import "./styles/Global.scss"
 
-import React, { useState, useRef } from 'react'
+import React, { useReducer } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import Onboarding from './views/Onboarding'
 import Home from './views/Home'
 import Connect from "./views/Connect";
+import ShowQR from "./views/ShowQR"
 
-import { useStore } from "./hooks";
-import ModalWalletConnect, {
-    MODAL_WALLET_CONNECT,
-} from "./components/modals/WalletConnect"
-import QRCodeScanner from "./components/QRCodeScanner";
+import { useInactiveListener } from './hooks'
+
+
+import "./styles/Animations.scss"
+
+import OnboardingReset from "./views/OnboardingReset"
+import ConnectToMetamask from "./views/ConnectToMetamask"
+
+import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wallet"
+import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
+import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 
 function App() {
-    const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'));
-    const screensRef = useRef();
-    const onboardingModalRef = useRef();
+    const [walletState] = useReducer(WalletReducer, WalletInitialState);
+    const [redeemState, redeemDispatch] = useReducer(BuyerReducer, BuyerInitialState);
+    const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
 
-    const modalCloseTimeout = 900;
+    const redeemContextValue = {
+      state: redeemState,
+      dispatch: redeemDispatch
+    }
 
-    const [modal, setModal] = useStore(["modal"]);
-    const [qrReaderActivated] = useStore(["qrReaderActivated"]);
+    const globalContextValue = {
+      state: globalState,
+      dispatch: globalDispatch
+    }
 
-    const completeOnboarding = () => {
-        localStorage.setItem('onboarding-completed', '1');
+    const walletContextValue = {
+       walletState: walletState
+    }
 
-        onboardingModalRef.current.classList.add('fade-out');
-        screensRef.current.classList.add('onboarding-done');
-
-        setTimeout(() => {
-            setNewUser(false)
-        }, modalCloseTimeout);
-    };
+    useInactiveListener(true)
 
     return (
-        <div className="emulate-mobile">
-            { newUser &&
-            <div className="onboarding-modal flex center" ref={ onboardingModalRef }>
-                <Onboarding completeOnboarding={ completeOnboarding }/>
-            </div>
-            }
-            <div className={ `screens ${ newUser ? 'new-user' : '' }` } ref={ screensRef }>
-                <Router>
-                    <Switch>
-                        { qrReaderActivated ? (<QRCodeScanner/>) : null }
-                        <Route exact strict path="/connect" component={ Connect }/>
-                        <Home/>
-                    </Switch>
-                    { modal && modal.type === MODAL_WALLET_CONNECT ? (
-                        <ModalWalletConnect setModal={ setModal } modal={ modal }/>
-                    ) : null }
-                </Router>
-            </div>
-        </div>
+      <div className="emulate-mobile">
+        <GlobalContext.Provider value={globalContextValue}>
+        <BuyerContext.Provider value={redeemContextValue}>
+        <WalletContext.Provider value={walletContextValue}>
+          <Router>
+            <Switch>
+                <Route exact strict path="/connect" component={ Connect }/>
+                <Route exact path="/" component={Home}/>
+                <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
+                <Route path="/connect-to-metamask" component={ConnectToMetamask}/>
+                <Route path="/show-qr-code" component={ShowQR}/>
+            </Switch>
+          </Router>
+        </WalletContext.Provider>
+        </BuyerContext.Provider>
+        </GlobalContext.Provider>
+      </div>
     );
 }
 

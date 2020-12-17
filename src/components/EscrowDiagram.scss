@@ -8,34 +8,82 @@
     margin-left: auto;
     margin-right: auto;
   }
+  &.commited {
+    .col-4 {
+      .slot {
+        background-color: rgba(255, 255, 255, 0.02);
+        border: 1px dashed rgba(255, 255, 255, 0.08);
+
+        .block {
+          &::after,
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+    .buyer {
+      .slot {
+        .block {
+          background-color: rgba(#34465A, 1);
+          transform: translateX(calc(-100% - 10px));
+          border-radius: 8px;
+        }
+      }
+    }
+    .seller {
+      .slot {
+        .block {
+          background-color: rgba(#34465A, 1);
+          transform: translateX(calc(100% + 10px));
+          border-radius: 8px;
+        }
+      }
+    }
+    .field {
+      .slot {
+        border: none;
+      }
+    }
+  }
   .title {
     margin-bottom: 8px;
     p {
       text-align: center;
     }
   }
-  .block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  .slot {
     background-color: rgba($labels-background, 0.5);
-    padding: 7px 11px;
     border-radius: 8px;
     width: calc(100% - 3px);
     position: relative;
+    padding: 7px 11px;
+    height: 54px;
+    min-width: 75px;
 
-    &:not(.empty) + .block {
+    .block {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    &:not(.empty) + .slot {
       margin-top: 6px;
     }
 
     p {
       text-align: center;
       &.name {
-        font-size: $size-small;
+        font-size: 12px;
       }
       &.value {
-        font-size: $size-tiny;
+        font-size: 14px;
       }
     }
     &.non {
@@ -45,46 +93,50 @@
 
   .seller {
     z-index: 2;
-    .block {
-      &::after {
-        content: '';
-        background-image: url('../images/diagram-arrow.svg');
-        display: block;
-        position: absolute;
-        top: calc(50% - 9px);
-        right: -15px;
-        background-repeat: no-repeat;
-        width: 17px;
-        height: 20px;
-        z-index: 2;
-        // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      }
-      p.value {
-        &.value {
-          color: $labels-accent-1;
+    .slot {
+      .block {
+        &::after {
+          content: '';
+          background-image: url('../images/diagram-arrow.svg');
+          display: slot;
+          position: absolute;
+          top: calc(50% - 9px);
+          right: -15px;
+          background-repeat: no-repeat;
+          width: 17px;
+          height: 20px;
+          z-index: 2;
+          // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        p.value {
+          &.value {
+            color: $labels-accent-1;
+          }
         }
       }
     }
   }
   .buyer {
     z-index: 2;
-    .block {
-      &::before {
-        content: '';
-        background-image: url('../images/diagram-arrow-2.svg');
-        display: block;
-        position: absolute;
-        top: calc(50% - 9px);
-        left: -15px;
-        background-repeat: no-repeat;
-        width: 17px;
-        height: 20px;
-        z-index: 2;
-        // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      }
-      p.value {
-        &.value {
-          color: $labels-accent-2;
+    .slot {
+      .block {
+        &::before {
+          content: '';
+          background-image: url('../images/diagram-arrow-2.svg');
+          display: slot;
+          position: absolute;
+          top: calc(50% - 9px);
+          left: -15px;
+          background-repeat: no-repeat;
+          width: 17px;
+          height: 20px;
+          z-index: 2;
+          // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        p.value {
+          &.value {
+            color: $labels-accent-2;
+          }
         }
       }
     }
@@ -98,7 +150,7 @@
     border: 1px solid rgba($accent, 0);
     // position: relative;
 
-    .block {
+    .slot {
       width: calc(50% - 3px);
       height: calc(50% - 3px);
 

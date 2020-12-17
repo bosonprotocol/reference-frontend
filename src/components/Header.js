@@ -1,17 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { GlobalContext, Action} from '../contexts/Global'
+
 import "./Header.scss"
-import { useStore } from "../hooks";
+
+import { IconList, IconQR } from "./Icons"
 
 function Header() {
-    const [, setQrReaderActivated] = useStore(["qrReaderActivated"]);
-
-
-    const activateQrReader = () => {
-        setQrReaderActivated(true)
-    };
+  const globalContext = useContext(GlobalContext)
 
     return (
         <header className="flex jc-sb ai-center">
@@ -20,9 +18,9 @@ function Header() {
                 <Link to="/connect">
                     <div className="button primary" role="button">Connect</div> 
                 </Link>
-                <div className="search flex center" role="button"><img src="images/search-icon.svg" alt="Search"/>
+                <div className="search flex center" role="button"><IconList/>
                     <p>Search</p></div>
-                <div className="qr-icon" role="button" onClick={ activateQrReader }><img src="images/qr-icon.svg" alt="Scan QR"/></div>
+                <div className="qr-icon" role="button" onClick={() => globalContext.dispatch(Action.toggleQRReader(1))}><IconQR/></div>
             </nav>
         </header>
     )

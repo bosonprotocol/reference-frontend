@@ -3,10 +3,14 @@ import { useWeb3React } from "@web3-react/core";
 // import { parseBytes32String } from "@ethersproject/strings";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
-import { store } from "../store";
 import { NetworkContextName } from "../constants";
 import { injected } from "../connectors";
 import { parseLocalStorage } from "../utils";
+import {
+    authenticateUser,
+    createUnauthenticatedLocalStorageRecord,
+    getAccountStoredInLocalStorage
+} from "./authenticate";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
@@ -46,28 +50,6 @@ export function useLocalStorage(key, defaultValue, didChange = []) {
     }
 
     return [value, setValue];
-}
-
-export function useStore(path, defaultValue = undefined) {
-    const [value, setValue] = useState({
-        value: store.get(path) || defaultValue,
-    });
-
-    useEffect(() => {
-        let value = store.get(path);
-        if (!value && typeof defaultValue !== "undefined") value = defaultValue;
-        setValue({ value });
-        return store.subscribe(path, (newValue) => {
-            setValue({ value: newValue });
-        });
-        // eslint-disable-next-line
-    }, [JSON.stringify(path)]);
-
-    function set(value) {
-        store.set(path, value);
-    }
-
-    return [value.value, set];
 }
 
 export function usePrevious(value) {
@@ -121,22 +103,31 @@ export function useEagerConnect() {
  * and out after checking what network they are on
  */
 export function useInactiveListener(suppress = false) {
-    const { active, error, activate } = useWeb3React(); // specifically using useWeb3React because of what this hook does
+    const { library, account, active, error, activate, chainId } = useWeb3React();
 
     useEffect(() => {
         const { ethereum } = window;
 
-        if (ethereum && ethereum.on && !active && !error && !suppress) {
-            // TODO: Fix error on network change
+        if (ethereum && ethereum.on && account) {
             const handleChainChanged = () => {
+                // ToDo: Add global notification for network changing
+
                 // eat errors
                 activate(injected, undefined, true).catch((error) => {
                     console.error("Failed to activate after chain changed", error);
                 });
             };
 
-            const handleAccountsChanged = (accounts) => {
+            const handleAccountsChanged = async (accounts) => {
                 if (accounts.length > 0) {
+                    const newAccount = accounts[0];
+                    createUnauthenticatedLocalStorageRecord(newAccount);
+
+                    const localStoredAccountData = getAccountStoredInLocalStorage(account);
+                    if (!localStoredAccountData.activeToken) {
+                        await authenticateUser(library, newAccount, chainId)
+                    }
+
                     // eat errors
                     activate(injected, undefined, true).catch((error) => {
                         console.error("Failed to activate after accounts changed", error);
@@ -155,7 +146,7 @@ export function useInactiveListener(suppress = false) {
             };
         }
         return;
-    }, [active, error, suppress, activate]);
+    }, [active, error, suppress, activate, account, chainId, library]);
 }
 
 export function useCopyClipboard(timeout = 500) {
