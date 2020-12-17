@@ -58,11 +58,9 @@ function ProductView(props) {
   }
 
   const dragControlerEnable = (e) => {
-    console.log(delta)
     productWindow.current.style.transition = 'none'
     delta.offset = e.clientY
     delta.state = 1
-    console.log(delta)
     productWindow.current.classList.add('noselect')
   }
 

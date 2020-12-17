@@ -32,23 +32,25 @@ function NewOffer() {
   }
 
   const updateData = (input) => {
-    console.log('before', input, sellerContext.state.offeringData)
     sellerContext.dispatch(Seller.updateOfferingData({
       [input.name]: !input.files ? input.value : input.files[0]
     }))
   }
 
   useEffect(() => {
-    Array.from(screenController.current.querySelectorAll('[name]')).map(input =>
+    Array.from(screenController.current.querySelectorAll('[name]')).forEach(input => {
+      let retrieveState = sellerContext.state.offeringData[input.name]
+      
+      input.value = retrieveState ? retrieveState : ''
       input.addEventListener(listenerType, (e) => updateData(e.target))
-    )
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeScreen])
 
-  useEffect(() => {
-    console.log('after', sellerContext.state.offeringData)
-
-  }, [sellerContext.state.offeringData])
+  // show state on each change
+  // useEffect(() => {
+  //   console.log('after', sellerContext.state.offeringData)
+  // }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">

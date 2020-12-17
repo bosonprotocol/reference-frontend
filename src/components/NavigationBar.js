@@ -22,7 +22,6 @@ function NavigationBar(props) {
   const aniamtionTimout = 300
 
   useEffect(() => {
-    console.log(globalContext.state.navigation.state)
     // use this to compare {previus} screen and {current} screen
     // setTransitionTrigger(transitionState)
     setTransitionTrigger('out')

@@ -10,7 +10,6 @@ function ShowQR() {
   const imageThumb = JSON.parse(localStorage.getItem('productsReviewed'))
   const imageThumbId = imageThumb[imageThumb.length - 1]
 
-  console.log(imageThumb)
   return (
     <section className="show-qr-code static-page atomic-scoped flex ai-center">
     <div className="container l infinite">

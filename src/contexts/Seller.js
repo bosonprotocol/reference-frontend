@@ -30,6 +30,7 @@ export const SellerReducer = (state, action) => {
     [DIC.TOGGLE_PROGRESS_STATUS]: () => ({
       progressStatus: action.payload
     }),
+    
     [DIC.UPDATE_OFFERING_DATA]: () => ({
       offeringData: {
         ...state.offeringData,
