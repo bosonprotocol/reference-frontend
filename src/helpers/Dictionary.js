@@ -5,6 +5,7 @@ export const DIC = {
   CLOSE_PRODUCT: 'close_product',
   ACTIVATE_QR_READER: 'activate_qr_reader',
   TOGGLE_PROGRESS_STATUS: 'toggle_progress_status',
+  UPDATE_OFFERING_DATA: 'update_offering_data',
   NAV: {
     CONTROL: 'navigationControl',
     DEF: 'default_view',
@@ -28,7 +29,7 @@ export const NAME = {
   QUANTITY: 'quantity',
   CONDITION: 'condition',
   DESCRIPTION: 'description',
-  PRICE_C: 'price_currency', //
+  PRICE_C: 'price_currency',
   PRICE: 'price',
   SELLER_DEPOSIT_C: 'seller_deposit_currency',
   SELLER_DEPOSIT: 'seller_deposit',

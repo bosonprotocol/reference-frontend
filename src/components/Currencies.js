@@ -5,7 +5,7 @@ function Currencies(props) {
   return (
     <select name={name} id={name} >
       <option value="eth">ETH</option>
-      <option value="vvvv">test</option>
+      <option value="test currency">test</option>
     </select>
   )
 }

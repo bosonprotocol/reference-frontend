@@ -36,6 +36,7 @@ function UploadPhoto() {
 
   useEffect(() => {
     fileReader.addEventListener('load', previewImage)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const imageUploadHandler = (e) => {
@@ -56,7 +57,6 @@ function UploadPhoto() {
 
     } else {
       // set image
-      console.log('read')
       fileReader.readAsDataURL(e.target.files[0])
       setImageUploaded(1)
       setImageData({...imageData, name: Image.name})
