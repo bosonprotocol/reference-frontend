@@ -2,7 +2,7 @@
 
 header {
   nav {
-    .qr-icon {
+    & > * + * {
       margin-left: 45px;
     }
     .search {
