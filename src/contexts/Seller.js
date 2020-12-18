@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { DIC, NAME } from "../helpers/Dictionary"
+import { DIC } from "../helpers/Dictionary"
 
 export const SellerContext = createContext()
 

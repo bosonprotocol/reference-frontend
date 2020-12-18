@@ -66,7 +66,9 @@ function UploadPhoto(props) {
 
   return ( 
     <div className="upload-photo">
-      <h1>Photo</h1>
+      <div className="step-title">
+        <h1>Photo</h1>
+      </div>
       <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
       <div className={`image-upload-container flex center ${imageUploaded ? 'uploaded' : 'awaiting'}`}>
         <div className="image-upload">

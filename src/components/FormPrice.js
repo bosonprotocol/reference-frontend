@@ -14,7 +14,9 @@ function FormPrice() {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-price">
-            <h1>Payment Price</h1>
+            <div className="step-title">
+              <h1>Payment Price</h1>
+            </div>
           </label>
           <div className="flex">
             <Currencies name={NAME.PRICE_C} />

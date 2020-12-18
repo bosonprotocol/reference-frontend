@@ -26,6 +26,19 @@
     }
   }
 
+  &.static {
+    background: #132C3D;
+    color: rgba(#3C8FBD, 0.7);
+
+    &:hover {
+      background-color: #18384f;
+    }
+  
+    &:active {
+      background-color: #112736;
+    }
+  }
+
   &.orange,
   &.orange a {
     background: #F68C24;
@@ -46,6 +59,32 @@
     //   color: #3D5167;
     //   background-color: #fff;
     // }
+  }
+
+  &.square {
+    background-color: #132C3D;
+    border-radius: 7.61905px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #18384f;
+    }
+  
+    &:active {
+      background-color: #112736;
+    }
+  }
+
+  &.hide-disabled {
+    &[disabled] {
+      display: none;
+    }
   }
 
   &[disabled] {

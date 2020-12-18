@@ -70,9 +70,16 @@ export const IconLocation = (props) => (
   </svg>
 )
 
-export const IconPlus = (props) => (
+export const IconPlus = () => (
   <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M7.99951 13.0019L7.99951 1" stroke="#77F2BC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M14 7.00149L1.99805 7.00149" stroke="#77F2BC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+export const Arrow = (props) => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13 7H1" stroke={props.color ? props.color : '#3C8FBD'} strokeWidth="1.71429" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M7 13L1 7L7 1" stroke={props.color ? props.color : '#3C8FBD'} strokeWidth="1.71429" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )

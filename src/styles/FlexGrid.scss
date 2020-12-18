@@ -30,13 +30,6 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   margin-right: -#{$container-padding};
 }
 
-
-// flex standard
-.flex {
-  display: flex;
-}
-
-
 // ----------------------------------------------------------------
 // DEFINE GRID
 // ----------------------------------------------------------------
@@ -44,7 +37,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 
 //flex
 @mixin flex-grid($selector) {
-  .flex {
+  .flex,
+  &.bind {
+    display: flex;
+
     &.inline#{$selector} {
       display: inline-flex;
     }
@@ -103,10 +99,6 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     &.split {
       align-items: center;
       justify-content: space-between;
-    }
-
-    .bind {
-      display: flex;
     }
   }
 }

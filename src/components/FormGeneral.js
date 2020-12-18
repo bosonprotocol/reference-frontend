@@ -8,7 +8,9 @@ function FormGeneral() {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-title">
-            <h1>Title</h1>
+            <div className="step-title">
+              <h1>Title</h1>
+            </div>
           </label>
           <input id="offer-title" type="text" name={NAME.TITLE} />
         </div>

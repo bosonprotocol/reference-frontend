@@ -7,7 +7,9 @@ function FormDate() {
     <div className="date">
       <div className="row">
         <div className="field">
-          <label htmlFor="offer-start-date">Start Date</label>
+          <div className="step-title">
+            <label htmlFor="offer-start-date">Start Date</label>
+          </div>
           <input id="offer-start-date" name={NAME.DATE_START} type="date"/>
         </div>
       </div>

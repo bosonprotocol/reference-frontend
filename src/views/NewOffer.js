@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 
+import { useHistory } from "react-router"
+
+import "./NewOffer.scss"
+
 import Categories from "../components/Categories"
 import FormUploadPhoto from "../components/FormUploadPhoto"
 import FormGeneral from "../components/FormGeneral"
@@ -8,8 +12,9 @@ import FormPrice from "../components/FormPrice"
 import FormDate from "../components/FormDate"
 
 import { SellerContext, Seller } from "../contexts/Seller"
+import { Arrow } from "../components/Icons"
 
-import { NAME } from "../helpers/Dictionary"
+import { ROUTE, NAME } from "../helpers/Dictionary"
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'input'
@@ -26,13 +31,19 @@ function NewOffer() {
   const [init, triggerInit] = useState(1)
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
+  const history = useHistory()
 
-  const setActiveScreen = (target) => inScreenRange(target) && sellerContext.dispatch(Seller.setOfferingProgress(target))
+  const setActiveScreen = (target, backToHome) => {
+
+    return backToHome ? history.goBack() :
+    inScreenRange(target) && sellerContext.dispatch(Seller.setOfferingProgress(target))
+  }
 
   const resetOfferingData = () => {
     localStorage.removeItem('offeringData')
     sellerContext.dispatch(Seller.resetOfferingData())
     loadValues(true) // call with reset
+    sellerContext.dispatch(Seller.setOfferingProgress(0))
   }
 
   const screens = [
@@ -65,7 +76,7 @@ function NewOffer() {
     })
   }
 
-  // check for backup data
+  // check for backup
   useEffect(() => {
     // check for data
     localStorage.getItem('offeringData') &&
@@ -92,37 +103,38 @@ function NewOffer() {
 
   return (
     <section className="new-offer">
-      <div className="container">
-        <div className="top-navigation flex ai-center">
-          <div className="back-button" role="button" onClick={() => setActiveScreen(activeScreen - 1)}></div>
-          <div className="progress-bar flex center">
-            {screens.map((screen, id) => <div key={id} className={`bar ${id <= activeScreen ? 'fill' : ''}`} role="button" onClick={() => setActiveScreen(id)}></div>)}
+      <div className="container flex column jc-sb">
+        <div className="bind column">
+          <div className="top-navigation flex ai-center">
+            <div className="button square" role="button"
+              onClick={() => setActiveScreen(activeScreen - 1, activeScreen === 0)} >
+              <Arrow />
+            </div>
+            <div className="progress-bar flex center">
+              {screens.map((screen, id) => <div
+                key={id} role="button"
+                className={`bar ${id <= activeScreen ? 'fill' : ''}`}
+                onClick={() => setActiveScreen(id)}><span></span></div>)}
+            </div>
+          </div>
+          <div className="screen">
+            <form id="offer-form">
+              <div ref={screenController} className="screen-controller">
+                {screens[activeScreen]}
+              </div>
+            </form>
           </div>
         </div>
-        <div className="screen">
-          <form id="offer-form">
-            <div ref={screenController} className="screen-controller">
-              {screens[activeScreen]}
-            </div>
-          </form>
-        </div>
-        <div className="bottom-navigation flex jc-sb">
-          <div className="button primary" role="button"
+        <div className="bottom-navigation relative">
+          <div className="button static hide-disabled" role="button"
             onClick={resetOfferingData}
             disabled={!localStorage.getItem('offeringData') ? true : false} >
-            RESET
+            START OVER
           </div>
-          <div className="bind">
-            <div className="button primary" role="button"
-              onClick={() => setActiveScreen(activeScreen - 1)}
-              disabled={activeScreen === 0 ? true : false} >
-              BACK
-            </div>
-            <div className="button primary" role="button"
-              onClick={() => setActiveScreen(activeScreen + 1)}
-              disabled={activeScreen === screens.length - 1 ? true : false} >
-              NEXT
-            </div>
+          <div className="button primary" role="button"
+            onClick={() => setActiveScreen(activeScreen + 1)}
+            disabled={activeScreen === screens.length - 1 ? true : false} >
+            NEXT
           </div>
         </div>
       </div>

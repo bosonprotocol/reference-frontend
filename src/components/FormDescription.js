@@ -8,7 +8,9 @@ function FormDescription() {
       <div className="row">
         <div className="field">
         <label htmlFor="offer-description">
-            <h1>Description</h1>
+            <div className="step-title">
+              <h1>Description</h1>
+            </div>
           </label>
           <textarea id="offer-description" name={NAME.DESCRIPTION} form="offer-form"></textarea>
         </div>
