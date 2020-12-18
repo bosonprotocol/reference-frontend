@@ -4,8 +4,8 @@ function Currencies(props) {
   const { name } = props
   return (
     <select name={name} id={name} >
-      <option value="eth">ETH</option>
-      <option value="test currency">test</option>
+      <option value="eth">Ether</option>
+      <option value="test currency">Test</option>
     </select>
   )
 }

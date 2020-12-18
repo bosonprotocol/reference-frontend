@@ -12,22 +12,22 @@ function FormPrice() {
   return (
     <div className="price">
       <div className="row">
-        <div className="field">
+        <div className="field dual">
           <label htmlFor="offer-price">
             <div className="step-title">
               <h1>Payment Price</h1>
             </div>
           </label>
-          <div className="flex">
+          <div className="bind">
             <Currencies name={NAME.PRICE_C} />
             <input id="offer-price" type="number" name={NAME.PRICE} min="0.00" max={priceSettings.max} step={priceSettings.step} />
           </div>
         </div>
       </div>
       <div className="row">
-        <div className="field">
+        <div className="field dual">
           <label htmlFor="offer-seller-deposit">Seller’s Deposit</label>
-          <div className="flex">
+          <div className="bind">
             <Currencies name={NAME.SELLER_DEPOSIT_C} />
             <input id="offer-seller-deposit" type="number" name={NAME.SELLER_DEPOSIT} min="0.00" max={priceSettings.max} step={priceSettings.step}/>
           </div>

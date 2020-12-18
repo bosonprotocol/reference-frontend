@@ -1,3 +1,5 @@
+@import "../styles/Settings.scss";
+
 .new-offer {
   .container {
     min-height: 100vh;
@@ -71,4 +73,125 @@
       align-items: flex-end;
     }
   }
+  .screen-controller {
+    .row {
+      .field {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        label {
+          font-family: $font-primary;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: $height-small;
+
+          color: #FFFFFF;
+        }
+
+        input,
+        textarea {
+          margin-top: 14px;
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 2px;
+          height: 50px;
+          border: none;
+          color: #fff;
+          padding: 15px 13px;
+
+          font-family: $font-secondary;
+          font-size: 16px;
+          line-height: $height-regular;
+
+          &.hidden {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 0;
+            left: 0;
+          }
+        }
+
+        textarea {
+          min-height: 140px;
+        }
+
+        &.radio-label {
+          label {
+            width: 57px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: $font-secondary;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: $height-regular;
+
+            text-align: center;
+
+            color: #FFFFFF;
+
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.02);
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);            
+            }
+
+            &.active,
+            &.active:hover {
+              background: rgba(0, 0, 0, 0.1);
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
+            }
+          }
+
+          & + .field {
+            margin-left: 6px;
+          }
+        }
+
+        &.dual {
+          .bind {
+            margin-top: 14px;
+
+            select {
+              width: 72px;
+              width: 50px;
+              border: none;
+              background-color: rgba(255, 255, 255, 0.03);
+              color: transparent;
+
+              & + input {
+                margin-left: 8px;
+              }
+            }
+
+            input {
+              width: 100%;
+            }
+          }
+
+          input {
+            margin-top: 0;
+          }
+        }
+      }
+
+      & + .row {
+        margin-top: 30px;
+      }
+    }
+  }
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }

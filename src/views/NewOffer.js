@@ -14,7 +14,7 @@ import FormDate from "../components/FormDate"
 import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/Icons"
 
-import { ROUTE, NAME } from "../helpers/Dictionary"
+import { NAME } from "../helpers/Dictionary"
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'input'
@@ -103,7 +103,7 @@ function NewOffer() {
 
   return (
     <section className="new-offer">
-      <div className="container flex column jc-sb">
+      <div className="container l flex column jc-sb">
         <div className="bind column">
           <div className="top-navigation flex ai-center">
             <div className="button square" role="button"

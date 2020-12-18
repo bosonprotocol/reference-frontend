@@ -11,8 +11,14 @@ function Categories(props) {
 
   const customChange = new Event(listenerType)
 
-  const setCategory = (id) => {
+  const setCategory = (e, id) => {
     categoryTarget.current.value = id
+
+    Array.from(e.target.parentElement.querySelectorAll('[data-category]')).forEach(category => {
+      category.classList.remove('active')
+    })
+
+    e.target.classList.add('active')
 
     categoryTarget.current.dispatchEvent(customChange)
   }
@@ -22,10 +28,10 @@ function Categories(props) {
       <ul>
         {
           categories.map((category, id) => 
-            <li key={id} className="flex ai-center" onClick={() => setCategory(category.title)}>
+            <li key={id} data-category={category.title} className="flex ai-center" onClick={(e) => setCategory(e, category.title)}>
               <img src={category.image} alt={category.title}/>
               {category.title}
-            </li>  
+            </li>
           )
         }
       </ul>

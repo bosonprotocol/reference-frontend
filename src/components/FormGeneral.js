@@ -3,6 +3,12 @@ import React from 'react'
 import { NAME } from "../helpers/Dictionary"
 
 function FormGeneral() {
+  const selectLabel = (e) => {
+    Array.from(e.target.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
+      label.classList.remove('active')
+    })
+    e.target.parentElement.querySelector('label').classList.add('active') 
+  }
   return (
     <div className="general">
       <div className="row">
@@ -21,14 +27,18 @@ function FormGeneral() {
           <input id="offer-quantity" type="number" name={NAME.QUANTITY}/>
         </div>
       </div>
-      <div className="row">
-        <div className="field">
+      <div className="row flex">
+        <div className="field radio-label">
           <label htmlFor="condition-new">New</label>
-          <input id="condition-new" value="new" name={NAME.CONDITION} type="radio" />
+          <input className="hidden" id="condition-new" value="new" type="radio" 
+          name={NAME.CONDITION} 
+          onClick={(e) => selectLabel(e)} />
         </div>
-        <div className="field">
+        <div className="field radio-label">
           <label htmlFor="condition-used">Used</label>
-          <input id="condition-used" value="used" name={NAME.CONDITION} type="radio" />
+          <input className="hidden" id="condition-used" value="used" type="radio"
+          name={NAME.CONDITION} 
+          onClick={(e) => selectLabel(e)} />
         </div>
       </div>
     </div>
