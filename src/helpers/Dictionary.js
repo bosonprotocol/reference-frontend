@@ -4,8 +4,11 @@ export const DIC = {
   OPEN_PRODUCT: 'open_product',
   CLOSE_PRODUCT: 'close_product',
   ACTIVATE_QR_READER: 'activate_qr_reader',
-  TOGGLE_PROGRESS_STATUS: 'toggle_progress_status',
+  SET_OFFERING_PROGRESS: 'set_offering_progress',
+  GET_OFFERING_PROGRESS: 'get_offering_progress',
   UPDATE_OFFERING_DATA: 'update_offering_data',
+  LOAD_OFFERING_BACKUP: 'load_offering_backup',
+  RESET_OFFERING_DATA: 'reset_offering_data',
   NAV: {
     CONTROL: 'navigationControl',
     DEF: 'default_view',

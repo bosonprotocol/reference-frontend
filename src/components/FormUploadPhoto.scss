@@ -28,6 +28,9 @@
           transform: translateX(-50%);
         }
       }
+      .thumb-container {
+        opacity: 1;
+      }
     }
   }
   .image-upload {
@@ -79,6 +82,8 @@
       overflow: hidden;
       overflow: hidden;
       border-radius: 6px;
+      opacity: 0;
+      transition: 0.2s ease-in-out;
 
       .thumbnail {
         width: auto;

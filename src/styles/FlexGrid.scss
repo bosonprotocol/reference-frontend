@@ -104,6 +104,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       align-items: center;
       justify-content: space-between;
     }
+
+    .bind {
+      display: flex;
+    }
   }
 }
 

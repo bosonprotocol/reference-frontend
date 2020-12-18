@@ -4,8 +4,6 @@ import "./FormUploadPhoto.scss"
 
 import { IconPlus } from "./Icons"
 
-import { NAME } from "../helpers/Dictionary"
-
 const maxSize =  2 * (1000 * 1000) // in mb
 
 const acceptedImageFormats = ['image/gif', 'image/jpeg', 'image/png']
@@ -17,9 +15,9 @@ const Image = {
   rules: null,
 }
 
-function UploadPhoto() {
+function UploadPhoto(props) {
+  const { imageUploaded, setImageUploaded } = props
   const thumbnailRef = useRef()
-  const [imageUploaded, setImageUploaded] = useState(0)
   const [imageData, setImageData] = useState({
     name: null,
     error: {
@@ -31,13 +29,17 @@ function UploadPhoto() {
   const fileReader = new FileReader()
 
   const previewImage = (submited) => {
-    thumbnailRef.current.src = submited.currentTarget.result // sanitize
+    setImageUploaded(submited.currentTarget.result) // sanitize
   }
 
   useEffect(() => {
     fileReader.addEventListener('load', previewImage)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    thumbnailRef.current.src = imageUploaded // sanitize
+  }, [imageUploaded])
 
   const imageUploadHandler = (e) => {
     Image.name = e.target.files[0].name
@@ -58,7 +60,6 @@ function UploadPhoto() {
     } else {
       // set image
       fileReader.readAsDataURL(e.target.files[0])
-      setImageUploaded(1)
       setImageData({...imageData, name: Image.name})
     }
   }
@@ -66,14 +67,12 @@ function UploadPhoto() {
   return ( 
     <div className="upload-photo">
       <h1>Photo</h1>
-      <input id="offer-image-upload" type="file" name={NAME.IMAGE} onChange={(e) => imageUploadHandler(e)}/>
+      <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
       <div className={`image-upload-container flex center ${imageUploaded ? 'uploaded' : 'awaiting'}`}>
         <div className="image-upload">
-          {imageUploaded ? 
           <div className="thumb-container">
-            <img ref={thumbnailRef} className="thumbnail" alt="thumbnail"/> 
-          </div> : null
-        }
+            <img src={imageUploaded} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
+          </div>
           <div className="label">
             <label htmlFor="offer-image-upload" className="flex center column">
               <IconPlus />
