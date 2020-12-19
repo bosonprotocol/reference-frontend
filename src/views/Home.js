@@ -21,6 +21,7 @@ import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
+import TestApi from "./TestApi";
 
 
 function Home() {
@@ -41,7 +42,7 @@ function Home() {
     if(parseInt(openProductView))
       globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) 
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -72,6 +73,7 @@ function Home() {
         <div ref={homepage} className="home relative atomic-scoped">
           <div className="container o-hidden">
             <Header />
+            <TestApi/>
             <CategoryMenu />
           </div>
           <section className="product-list">
