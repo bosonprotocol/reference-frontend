@@ -40,6 +40,13 @@ function ProductView(props) {
     ['Phone', '1-415-542-5050'],
   ]
 
+  const tablePrices = [
+    ['Payment Price', '0.1', 'ETH', 0],
+    false,
+    ['Buyer’s deposit', '0.02', 'ETH', 1],
+    ['Seller’s deposit', '0.01', 'ETH', 1]
+  ]
+
   const delta = {
     offset: 0,
     state: 0,
@@ -145,7 +152,7 @@ function ProductView(props) {
               {tableContent.map((row, id) => TableRow(row[0], row[1], id))}
             </div>
             <div className="table price flex column">
-              {PriceTable({payment: 0.1, buyerD: 0.02, sellerD: 0.01})}
+              {PriceTable(tablePrices)}
             </div>
             <div className="table date flex jc-sb ai-center">
               {DateTable({start: '15/11/2020', expiry: '15/12/2020'})}

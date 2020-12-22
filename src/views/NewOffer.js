@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 
+import "../components/ProductView.scss"
+
 import { useHistory } from "react-router"
 
 import "./NewOffer.scss"
@@ -10,6 +12,7 @@ import FormGeneral from "../components/FormGeneral"
 import FormDescription from "../components/FormDescription"
 import FormPrice from "../components/FormPrice"
 import FormDate from "../components/FormDate"
+import FormSummary from "../components/FormSummary"
 
 import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/Icons"
@@ -53,6 +56,7 @@ function NewOffer() {
     <FormDescription />,
     <FormPrice />,
     <FormDate />,
+    <FormSummary imageUploaded={imageUploaded} />,
   ]
   const updateData = (input) => {
     console.log(input.value)

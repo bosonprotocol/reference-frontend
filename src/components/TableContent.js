@@ -1,42 +1,40 @@
 import { IconCalendar, IconDeposit, IconEth } from "./Icons"
 
+function setRows(list, howMany) {
+  var result = []
+  let input = list
 
-export const PriceTable = (objPrices) => {
-  const {payment, buyerD, sellerD} = objPrices
+  while (input[0]) {
+    result.push(input.splice(0, howMany))
+  }
+  return result
+}
 
-  return <>
-    <div className="row flex ai-center jc-sb">
-      <div className="block flex">
-        <div className="icon">
-          <IconEth color="#5D6F84" />
-        </div>
-        <div className="text">
-          <p className="title">Payment Price</p>
-          <p className="value">{payment} ETH</p>
-        </div>
-      </div>
-      <div className="block flex">
-        <div className="icon">
-          <IconDeposit color="#5D6F84" />
-        </div>
-        <div className="text">
-          <p className="title">Buyer’s deposit</p>
-          <p className="value">{buyerD} ETH</p>
-        </div>
-      </div>
+export const PriceTable = (data) => {
+  const dataCopy = setRows(data, 2)
+
+  const iconList = [
+    <IconEth color="#5D6F84" />,
+    <IconDeposit color="#5D6F84" />
+  ]
+
+  const defaultCurrency = 'ETH'
+
+  const jsxBlock = (title, value, currency, icon, id) => <div key={id} className="block flex">
+    <div className="icon">{iconList[icon]}</div>
+    <div className="text">
+      <p className="title">{title}</p>
+      <p className="value">{value} {currency ? currency : defaultCurrency}</p>
     </div>
-    <div className="row">
-      <div className="block flex">
-        <div className="icon">
-          <IconDeposit color="#5D6F84" />
-        </div>
-        <div className="text">
-          <p className="title">Seller’s deposit</p>
-          <p className="value">{sellerD} ETH</p>
-        </div>
+  </div>
+
+  return <>{
+    dataCopy.map((row, key) => 
+      <div key={key} className="row flex jc-sb ai-center">
+        {row.map((block, id) => block ? jsxBlock(block[0], block[1], block[2], block[3], id) : null)}
       </div>
-    </div>
-  </>
+    )
+  }</>
 }
 
 export const DateTable = (objPrices) => {
@@ -64,8 +62,9 @@ export const DateTable = (objPrices) => {
   </>
 }
 
-export const TableRow = (title, value, id) => {
-  return <div key={id} className="row flex jc-sb ai-center">
+export const TableRow = (props) => {
+  const { title, value } = props
+  return <div className="row flex jc-sb ai-center">
     <p className="title">{title}</p>
     <p className="value">{value}</p>
   </div>
