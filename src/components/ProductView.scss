@@ -172,6 +172,8 @@
   }
 
   &.summary {
+    padding-bottom: 31px;
+    
     h1 {
       font-family: $font-primary;
       font-style: normal;
@@ -192,7 +194,7 @@
       justify-content: center;
       background: linear-gradient(210.91deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 102.42%), #1C2835;
       border-radius: 14.074px;
-      
+
       margin-bottom: 44px;
 
       img {

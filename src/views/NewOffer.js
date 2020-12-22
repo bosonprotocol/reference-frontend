@@ -36,6 +36,18 @@ function NewOffer() {
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
 
+  const screens = [
+    <Categories listenerType={listenerType} />,
+    <FormUploadPhoto imageUploaded={imageUploaded} setImageUploaded={setImageUploaded} />,
+    <FormGeneral />,
+    <FormDescription />,
+    <FormPrice />,
+    <FormDate />,
+    <FormSummary imageUploaded={imageUploaded} />,
+  ]
+
+  const lastScreenBoolean = activeScreen === screens.length - 1
+
   const setActiveScreen = (target, backToHome) => {
 
     return backToHome ? history.goBack() :
@@ -49,24 +61,13 @@ function NewOffer() {
     sellerContext.dispatch(Seller.setOfferingProgress(0))
   }
 
-  const screens = [
-    <Categories listenerType={listenerType} />,
-    <FormUploadPhoto imageUploaded={imageUploaded} setImageUploaded={setImageUploaded} />,
-    <FormGeneral />,
-    <FormDescription />,
-    <FormPrice />,
-    <FormDate />,
-    <FormSummary imageUploaded={imageUploaded} />,
-  ]
   const updateData = (input) => {
-    console.log(input.value)
     sellerContext.dispatch(Seller.updateOfferingData({
       [input.name]: input.value
     }))
   }
 
   const loadValues = (reset) => {
-    console.log(sellerContext.state.offeringData)
     Array.from(screenController.current.querySelectorAll('[name]')).forEach(input => {
       if(reset) {
         input.value = null
@@ -129,7 +130,7 @@ function NewOffer() {
             </form>
           </div>
         </div>
-        <div className="bottom-navigation relative">
+        <div className={`bottom-navigation relative${lastScreenBoolean ? ' hide' : ''}`}>
           <div className="button static hide-disabled" role="button"
             onClick={resetOfferingData}
             disabled={!localStorage.getItem('offeringData') ? true : false} >
@@ -137,7 +138,7 @@ function NewOffer() {
           </div>
           <div className="button primary" role="button"
             onClick={() => setActiveScreen(activeScreen + 1)}
-            disabled={activeScreen === screens.length - 1 ? true : false} >
+            disabled={lastScreenBoolean ? true : false} >
             NEXT
           </div>
         </div>

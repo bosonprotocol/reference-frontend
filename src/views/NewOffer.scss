@@ -65,6 +65,10 @@
         right: 0;
       }
     }
+
+    &.hide {
+      display: none;
+    }
   }
   .screen {
     .step-title {
