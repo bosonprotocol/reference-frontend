@@ -3,9 +3,9 @@ import React from 'react'
 function Currencies(props) {
   const { name } = props
   return (
-    <select name={name} id={name} >
-      <option value="eth">Ether</option>
-      <option value="test currency">Test</option>
+    <select className="currencies" name={name} id={name} >
+      <option value="ETH">e</option>
+      <option value="USD"></option>
     </select>
   )
 }

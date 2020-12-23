@@ -76,6 +76,8 @@ function NewOffer() {
 
       let retrieveState = sellerContext.state.offeringData[input.name]
 
+      console.log(JSON.parse(localStorage.getItem('offeringData')), retrieveState)
+
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
       input.addEventListener(listenerType, (e) => updateData(e.target))
     })
@@ -102,9 +104,9 @@ function NewOffer() {
   }, [activeScreen, init])
 
   // show state on each change
-  // useEffect(() => {
-  //   console.log('after', sellerContext.state.offeringData)
-  // }, [sellerContext.state.offeringData])
+  useEffect(() => {
+    console.log('after', sellerContext.state.offeringData)
+  }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">
@@ -130,11 +132,15 @@ function NewOffer() {
             </form>
           </div>
         </div>
-        <div className={`bottom-navigation relative${lastScreenBoolean ? ' hide' : ''}`}>
+        <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
           <div className="button static hide-disabled" role="button"
             onClick={resetOfferingData}
             disabled={!localStorage.getItem('offeringData') ? true : false} >
             START OVER
+          </div>
+          <div className="button offer primary" role="button"
+            onClick={() => console.log('offer')} >
+            OFFER
           </div>
           <div className="button primary" role="button"
             onClick={() => setActiveScreen(activeScreen + 1)}

@@ -1,17 +1,21 @@
-import { IconCalendar, IconDeposit, IconEth } from "./Icons"
+import { IconCalendar, IconDeposit, IconEth, IconLocation } from "./Icons"
 
 function setRows(list, howMany) {
   var result = []
-  let input = list
+  let input = JSON.parse(JSON.stringify(list))
 
-  while (input[0]) {
+  while (input[0] !== undefined) {
     result.push(input.splice(0, howMany))
   }
   return result
 }
 
-export const PriceTable = (data) => {
+
+
+export const PriceTable = (props) => {
+  const { data } = props
   const dataCopy = setRows(data, 2)
+
 
   const iconList = [
     <IconEth color="#5D6F84" />,
@@ -28,44 +32,70 @@ export const PriceTable = (data) => {
     </div>
   </div>
 
-  return <>{
-    dataCopy.map((row, key) => 
-      <div key={key} className="row flex jc-sb ai-center">
-        {row.map((block, id) => block ? jsxBlock(block[0], block[1], block[2], block[3], id) : null)}
-      </div>
-    )
-  }</>
+  return (
+    <div className="table price flex column">{
+      dataCopy.map((row, key) => 
+        <div key={key} className="row flex jc-sb ai-center">
+          {row.map((block, id) => block ? jsxBlock(block[0], block[1], block[2], block[3], id) : null)}
+        </div>
+      )
+    }</div>
+  )
 }
 
-export const DateTable = (objPrices) => {
-  const {start, expiry} = objPrices
+export const DateTable = (props) => {
+  const { data } = props
+  const start = data[0]
+  const expiry = data[1]
 
-  return <>
-    <div className="block flex">
-      <div className="icon">
-        <IconCalendar />
-      </div>
-      <div className="text">
-        <p className="title">Start Date</p>
-        <p className="value">{start}</p>
-      </div>
+  return (
+    <div className="table date flex jc-sb ai-center">
+      {start ? 
+      <div className="block flex">
+        <div className="icon">
+          <IconCalendar />
+        </div>
+        <div className="text">
+          <p className="title">Start Date</p>
+          <p className="value">{start}</p>
+        </div>
+      </div> : null }
+
+      {expiry ?
+      <div className="block flex">
+        <div className="icon">
+          <IconCalendar />
+        </div>
+        <div className="text">
+          <p className="title">End Date</p>
+          <p className="value">{expiry}</p>
+        </div>
+      </div> : null }
     </div>
-    <div className="block flex">
-      <div className="icon">
-        <IconCalendar />
-      </div>
-      <div className="text">
-        <p className="title">Start Date</p>
-        <p className="value">{expiry}</p>
-      </div>
-    </div>
-  </>
+  )
 }
 
 export const TableRow = (props) => {
-  const { title, value } = props
-  return <div className="row flex jc-sb ai-center">
+  const { data } = props
+
+  const block = (title, value, id) => <div key={id} className="row flex jc-sb ai-center">
     <p className="title">{title}</p>
     <p className="value">{value}</p>
   </div>
+
+  return (
+    <div className="table product-info flex column">
+      {data.map((row, id) => row && block(row[0], row[1], id))}
+    </div>
+  )
+}
+
+export const TableLocation = (props) => {
+  const { data } = props
+  return (
+  <div className="table location flex ai-center jc-sb">
+    <p className="flex center"><IconLocation />{data}</p>
+    <div className="arrow expand"></div>
+  </div>
+  )
 }

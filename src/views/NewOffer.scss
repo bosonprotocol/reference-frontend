@@ -66,8 +66,20 @@
       }
     }
 
-    &.hide {
-      display: none;
+    &.offer {
+      .button:not(.offer) {
+        display: none;
+      }
+      .button.offer {
+        width: 100%;
+        position: absolute;
+      }
+    }
+
+    &:not(.offer) {
+      .offer {
+        display: none;
+      }
     }
   }
   .screen {
@@ -122,6 +134,21 @@
           min-height: 140px;
         }
 
+        .currencies {
+          position: relative;
+
+          &::before {
+            content: '';
+            width: 9.8px;
+            height: 16.9px;
+            background-image: url('../images/icon-eth.png');
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 12px;
+          }
+        }
+
         &.radio-label {
           label {
             width: 57px;
@@ -168,7 +195,7 @@
 
             select {
               width: 72px;
-              width: 50px;
+              height: 50px;
               border: none;
               background-color: rgba(255, 255, 255, 0.03);
               color: transparent;

@@ -145,6 +145,8 @@ nav.navigation-bar {
     display: flex;
     justify-content: center;
     background-color: #1D2834;
+    overflow: hidden;
+    min-height: 70px;
 
     &.default_view:not(.out) .nav-container {
       box-shadow: none;

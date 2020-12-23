@@ -2,9 +2,7 @@ import React, { useRef, useEffect, useContext } from 'react'
 
 import "./ProductView.scss"
 
-import { IconLocation } from "./Icons"
-
-import { TableRow, DateTable, PriceTable } from "./TableContent"
+import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
 
 import { GlobalContext, Action } from "../contexts/Global"
 import { DIC } from "../helpers/Dictionary"
@@ -35,23 +33,26 @@ function ProductView(props) {
     ['Remaining Quantity', 1],
   ]
 
-  const tableSeller = [
-    ['Seller', 'David'],
-    ['Phone', '1-415-542-5050'],
-  ]
-
   const tablePrices = [
     ['Payment Price', '0.1', 'ETH', 0],
     false,
-    ['Buyer’s deposit', '0.02', 'ETH', 1],
+    ['Buyer’s deposit', '0.02', 'ETH', 1],  
     ['Seller’s deposit', '0.01', 'ETH', 1]
   ]
+
+  const tableDate = [
+    '15/11/2020',
+    '15/12/2020'
+  ]
+
+  const tableLocation = 'Los Angeles'
 
   const delta = {
     offset: 0,
     state: 0,
     end: 0
   }
+
 
   const clearDialog = () => {
     productWindow.current.removeAttribute('style');
@@ -144,22 +145,10 @@ function ProductView(props) {
               <h2>{selectedProduct.title}</h2>
               <p>{description}</p>
             </div>
-            <div className="table location flex ai-center jc-sb">
-              <p className="flex center"><IconLocation />Los Angeles</p>
-              <div className="arrow expand"></div>
-            </div>
-            <div className="table product-info flex column">
-              {tableContent.map((row, id) => TableRow(row[0], row[1], id))}
-            </div>
-            <div className="table price flex column">
-              {PriceTable(tablePrices)}
-            </div>
-            <div className="table date flex jc-sb ai-center">
-              {DateTable({start: '15/11/2020', expiry: '15/12/2020'})}
-            </div>
-            <div className="table product-info flex column">
-              {tableSeller.map((row, id) => TableRow(row[0], row[1], id))}
-            </div>
+            {tableLocation ? <TableLocation data={tableLocation} /> : null}
+            {tableContent.some(item => item) ? <TableRow data={tableContent} /> : null}
+            {tablePrices.some(item => item) ? <PriceTable data={tablePrices} /> : null}
+            {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
             <div className="button refund" role="button">REFUND</div>
           </div>
         </div>
