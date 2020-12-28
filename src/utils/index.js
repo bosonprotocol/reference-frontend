@@ -1,4 +1,6 @@
 import { getAddress } from "@ethersproject/address";
+import { Contract } from "@ethersproject/contracts";
+import { AddressZero } from "@ethersproject/constants";
 
 export const ChainId = {
     MAINNET: 1,
@@ -35,6 +37,25 @@ export const parseLocalStorage = (raw, key) => {
     return parsed;
 };
 
+// account is not optional
+export function getSigner(library, account) {
+    return library.getSigner(account).connectUnchecked();
+}
+
+// account is optional
+export function getProviderOrSigner(library, account) {
+    return account ? getSigner(library, account) : library;
+}
+
+// account is optional
+export function getContract(address, ABI, library, account) {
+    if (!isAddress(address) || address === AddressZero) {
+        throw Error(`Invalid 'address' parameter '${ address }'.`);
+    }
+
+    return new Contract(address, ABI, getProviderOrSigner(library, account));
+}
+
 export function uriToHttp(uri) {
     try {
         const parsed = new URL(uri);
@@ -45,21 +66,21 @@ export function uriToHttp(uri) {
         } else if (parsed.protocol === "ipfs:") {
             const hash = parsed.href.match(/^ipfs:(\/\/)?(.*)$/)?.[2];
             return [
-                `https://cloudflare-ipfs.com/ipfs/${hash}/`,
-                `https://ipfs.io/ipfs/${hash}/`,
+                `https://cloudflare-ipfs.com/ipfs/${ hash }/`,
+                `https://ipfs.io/ipfs/${ hash }/`,
             ];
         } else if (parsed.protocol === "ipns:") {
             const name = parsed.href.match(/^ipns:(\/\/)?(.*)$/)?.[2];
             return [
-                `https://cloudflare-ipfs.com/ipns/${name}/`,
-                `https://ipfs.io/ipns/${name}/`,
+                `https://cloudflare-ipfs.com/ipns/${ name }/`,
+                `https://ipfs.io/ipns/${ name }/`,
             ];
         } else {
             return [];
         }
     } catch (error) {
         if (uri.toLowerCase().endsWith(".eth")) {
-            return [`https://${uri.toLowerCase()}.link`];
+            return [`https://${ uri.toLowerCase() }.link`];
         }
         return [];
     }
