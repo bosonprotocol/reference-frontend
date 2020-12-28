@@ -59,6 +59,15 @@ function NewOffer() {
     sellerContext.dispatch(Seller.resetOfferingData())
     loadValues(true) // call with reset
     sellerContext.dispatch(Seller.setOfferingProgress(0))
+    
+    // remove class active from active screen
+    removeActiveItems()
+  }
+
+  const removeActiveItems = () => {
+    screenController.current.querySelectorAll('.active').forEach(item => {
+      item.classList.remove('active')
+    })
   }
 
   const updateData = (input) => {

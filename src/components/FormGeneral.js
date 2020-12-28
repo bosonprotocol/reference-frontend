@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import { NAME } from "../helpers/Dictionary"
 
 function FormGeneral() {
-  const selectLabel = (e) => {
-    Array.from(e.target.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
+  const conditionTarget = useRef()
+
+  const selectLabel = (el) => {
+    Array.from(el.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
       label.classList.remove('active')
     })
-    e.target.parentElement.querySelector('label').classList.add('active') 
+    el.parentElement.querySelector('label').classList.add('active') 
   }
+
+  useEffect(() => {
+    let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
+    let element = conditionTarget.current?.querySelector(`[data-condition="${fetchedBackup?.condition}"]`)
+    console.log(element)
+    
+    if(element) {
+      element.style.transition = 'none'
+      selectLabel(element)
+      element.removeAttribute('transition');
+    }
+  }, [])
+
   return (
     <div className="general">
       <div className="row">
@@ -27,18 +42,18 @@ function FormGeneral() {
           <input id="offer-quantity" type="number" name={NAME.QUANTITY}/>
         </div>
       </div>
-      <div className="row flex">
+      <div ref={conditionTarget} className="row flex">
         <div className="field radio-label">
-          <label htmlFor="condition-new">New</label>
-          <input className="hidden" id="condition-new" value="new" type="radio" 
+          <label data-condition="new" htmlFor="condition-new">New</label>
+          <input className="hidden"   aid="condition-new" value="new" type="radio" 
           name={NAME.CONDITION} 
-          onClick={(e) => selectLabel(e)} />
+          onClick={(e) => selectLabel(e.target)} />
         </div>
         <div className="field radio-label">
-          <label htmlFor="condition-used">Used</label>
+          <label data-condition="used" htmlFor="condition-used">Used</label>
           <input className="hidden" id="condition-used" value="used" type="radio"
           name={NAME.CONDITION} 
-          onClick={(e) => selectLabel(e)} />
+          onClick={(e) => selectLabel(e.target)} />
         </div>
       </div>
     </div>

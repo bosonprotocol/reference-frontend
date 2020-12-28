@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import "./Categories.scss"
 
@@ -8,27 +8,41 @@ import { NAME } from "../helpers/Dictionary"
 function Categories(props) {
   const { listenerType } = props
   const categoryTarget = useRef()
+  const categoryList = useRef()
 
   const customChange = new Event(listenerType)
 
-  const setCategory = (e, id) => {
+  // (html element, name to set on input field)
+  const setCategory = (el, id) => {
     categoryTarget.current.value = id
 
-    Array.from(e.target.parentElement.querySelectorAll('[data-category]')).forEach(category => {
+    Array.from(el.parentElement.querySelectorAll('[data-category]')).forEach(category => {
       category.classList.remove('active')
     })
 
-    e.target.classList.add('active')
+    el.classList.add('active')
 
     categoryTarget.current.dispatchEvent(customChange)
   }
 
+  useEffect(() => {
+    let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
+    let element = categoryList.current?.querySelector(`[data-category="${fetchedBackup?.category}"]`)
+    console.log(element)
+    
+    if(element) {
+      element.style.transition = 'none'
+      setCategory(element, fetchedBackup)
+      element.removeAttribute('transition');
+    }
+  }, [])
+
   return (
-    <div className="categories">
+    <div ref={categoryList} className="categories">
       <ul>
         {
           categories.map((category, id) => 
-            <li key={id} data-category={category.title} className="flex ai-center" onClick={(e) => setCategory(e, category.title)}>
+            <li key={id} data-category={category.title} className="flex ai-center" onClick={(e) => setCategory(e.target, category.title)}>
               <img src={category.image} alt={category.title}/>
               {category.title}
             </li>
