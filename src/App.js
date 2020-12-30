@@ -1,6 +1,6 @@
 import "./styles/Global.scss"
 
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Home from './views/Home'
@@ -8,7 +8,7 @@ import Connect from "./views/Connect";
 import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 
-import { useInactiveListener } from './hooks'
+import { useEagerConnect, useInactiveListener } from './hooks'
 
 
 import "./styles/Animations.scss"
@@ -20,6 +20,10 @@ import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wal
 import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
 import { SellerContext, SellerInitialState, SellerReducer } from "./contexts/Seller"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
+import TestApi from "./views/TestApi";
+import { useWeb3React } from "@web3-react/core";
+import { NetworkContextName } from "./constants";
+import { network } from "./connectors";
 
 
 import { ROUTE } from "./helpers/Dictionary"
@@ -41,17 +45,33 @@ function App() {
     }
 
     const globalContextValue = {
-      state: globalState,
-      dispatch: globalDispatch
+        state: globalState,
+        dispatch: globalDispatch
     }
 
     const walletContextValue = {
-       walletState: walletState
+        walletState: walletState
     }
+
+    const context = useWeb3React();
+    const {
+        active,
+    } = context;
+
+    const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
+
+    const triedEager = useEagerConnect();
+    // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
+    useEffect(() => {
+        if (triedEager && !networkActive && !networkError && !active) {
+            activateNetwork(network)
+        }
+    }, [triedEager, networkActive, networkError, activateNetwork, active]);
 
     useInactiveListener(true)
 
     return (
+<<<<<<< HEAD
       <div className="emulate-mobile">
         <GlobalContext.Provider value={globalContextValue}>
         <BuyerContext.Provider value={redeemContextValue}>
@@ -72,6 +92,25 @@ function App() {
         </BuyerContext.Provider>
         </GlobalContext.Provider>
       </div>
+=======
+        <div className="emulate-mobile">
+            <GlobalContext.Provider value={ globalContextValue }>
+                <BuyerContext.Provider value={ redeemContextValue }>
+                    <WalletContext.Provider value={ walletContextValue }>
+                        <Router>
+                            <Switch>
+                                <Route exact strict path="/connect" component={ Connect }/>
+                                <Route exact path="/" component={ Home }/>
+                                <Route path="/onboarding" component={ OnboardingReset }/> {/* delete on prod */ }
+                                <Route path="/connect-to-metamask" component={ ConnectToMetamask }/>
+                                <Route path="/show-qr-code" component={ ShowQR }/>
+                            </Switch>
+                        </Router>
+                    </WalletContext.Provider>
+                </BuyerContext.Provider>
+            </GlobalContext.Provider>
+        </div>
+>>>>>>> d9bb37752c8794ad16a84396dd2d75910d54a385
     );
 }
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: "https://git branch-hook-280010.oa.r.appspot.com"
+    baseURL: "https://psyched-hook-280010.oa.r.appspot.com"
 });
 
 export const generateNonce = async (address) => {

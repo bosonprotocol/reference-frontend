@@ -1,12 +1,13 @@
-import apiService from "../utils/api";
 import { splitSignature } from "ethers/lib/utils";
+import { generateNonce, verifySignature } from "./api";
+
 export const AUTH_ADDRESSES_KEY = "authAddresses";
 const ARGENT_PEER_NAME = "Argent";
 
 export const authenticateUser = async (library, account, chainId) => {
     const signerAddress = account;
 
-    const nonce = (await apiService.generateNonce(signerAddress)).data;
+    const nonce = await generateNonce(signerAddress);
 
     const EIP712Domain = [
         { name: 'name', type: 'string' },
@@ -41,7 +42,7 @@ export const authenticateUser = async (library, account, chainId) => {
     const signatureLike = await library.send('eth_signTypedData_v4', [account, data]);
     const signature = await splitSignature(signatureLike);
 
-    const jwt = (await apiService.verifySignature(signerAddress, isSmartWalletAccount, domain, { AuthSignature }, signature)).data;
+    const jwt = await verifySignature(signerAddress, isSmartWalletAccount, domain, { AuthSignature }, signature);
 
     updateAuthToken(signerAddress, jwt)
 };
