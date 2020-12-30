@@ -1,3 +1,4 @@
+import "./styles/Theme.scss"
 import "./styles/Global.scss"
 
 import React, { useEffect, useReducer } from 'react'
@@ -69,12 +70,13 @@ function App() {
     useInactiveListener(true)
 
     return (
-      <div className="emulate-mobile">
+    // dark|light; (default: dark)
+    <div className="emulate-mobile theme">
         <GlobalContext.Provider value={globalContextValue}>
         <BuyerContext.Provider value={redeemContextValue}>
         <SellerContext.Provider value={sellerContextValue}>
         <WalletContext.Provider value={walletContextValue}>
-          <Router>
+            <Router>
             <Switch>
                 <Route exact strict path={ROUTE.Connect} component={Connect}/>
                 <Route exact path={ROUTE.Home} component={Home}/>
@@ -83,12 +85,12 @@ function App() {
                 <Route path={ROUTE.ShowQR} component={ShowQR}/>
                 <Route path={ROUTE.NewOffer} component={NewOffer}/>
             </Switch>
-          </Router>
+            </Router>
         </WalletContext.Provider>
         </SellerContext.Provider>
         </BuyerContext.Provider>
         </GlobalContext.Provider>
-      </div>
+    </div>
     );
 }
 
