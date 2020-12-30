@@ -1,12 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { createVoucherSet, getAllVoucherSets } from "../hooks/api";
 import { findEventByName, useCashierContract } from "../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
+import { SellerContext } from "../contexts/Seller"
+
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
+    const sellerContext = useContext(SellerContext)
+
+    const { 
+        start_date,
+        end_date,
+        price,
+        seller_deposit,
+        buyer_deposit,
+        quantity,
+        title,
+        category,
+        description,
+        condition
+
+    } = sellerContext.state.offeringData
     const { selectedFile } = props
 
     const { library, account } = useWeb3React();
@@ -20,25 +37,18 @@ export default function SubmitForm(props) {
             return;
         }
 
-        const startDate = new Date(2020, 11, 25) / 1000;
-        const endDate = new Date(2021, 11, 25) / 1000;
-        const price = ethers.utils.parseEther("1.5").toString();
-        const sellerDeposit = ethers.utils.parseEther("0.0001").toString();
-        const buyerDeposit = ethers.utils.parseEther("0.0002").toString();
-        const quantity = 1;
-
         let dataArr = [
-            startDate,
-            endDate,
-            price,
-            sellerDeposit,
-            buyerDeposit,
-            quantity
+            new Date(start_date) / 1000,
+            new Date(end_date) / 1000,
+            parseFloat(price),
+            parseFloat(seller_deposit),
+            parseFloat(buyer_deposit),
+            parseInt(quantity)
         ];
-
-        const txValue = ethers.BigNumber.from(sellerDeposit).mul(quantity);
-
         console.log(dataArr);
+
+        const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
+
         console.log(txValue);
 
         const tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
@@ -59,23 +69,23 @@ export default function SubmitForm(props) {
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
         const startDate = new Date(dataArr[0] * 1000);
-        const endDate = new Date(dataArr[1] * 1000);
+        const endDate =  new Date(dataArr[1] * 1000);
 
         appendFilesToFormData();
 
-        formData.append('title', "Voucher Title");
+        formData.append('title', title);
         formData.append('qty', dataArr[5]);
-        formData.append('category', "Category");
+        formData.append('category', category);
         formData.append('startDate', startDate.getTime());
         formData.append('expiryDate', endDate.getTime());
         formData.append('offeredDate', Date.now());
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-        formData.append('description', "Description");
+        formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
-        formData.append('conditions', "Conditions");
+        formData.append('conditions', condition);
         formData.append('voucherOwner', account);
         formData.append('txHash', parsedEvent.txHash);
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
