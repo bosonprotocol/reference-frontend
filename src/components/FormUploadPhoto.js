@@ -16,7 +16,7 @@ const Image = {
 }
 
 function UploadPhoto(props) {
-  const { imageUploaded, setImageUploaded } = props
+  const { imageUploaded, setImageUploaded, setSelectedFile } = props
   const thumbnailRef = useRef()
   const [imageData, setImageData] = useState({
     name: null,
@@ -42,6 +42,7 @@ function UploadPhoto(props) {
   }, [imageUploaded])
 
   const imageUploadHandler = (e) => {
+    setSelectedFile(e.target.files[0])
     Image.name = e.target.files[0].name
     Image.size = e.target.files[0].size
     Image.type = e.target.files[0].type

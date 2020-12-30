@@ -21,8 +21,6 @@ import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
-import TestApi from "./TestApi";
-
 
 function Home() {
   const homepage = useRef()
@@ -74,7 +72,6 @@ function Home() {
         <div ref={homepage} className="home relative atomic-scoped">
           <div className="container o-hidden">
             <Header />
-            <TestApi/>
             <CategoryMenu />
           </div>
           <section className="product-list">

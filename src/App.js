@@ -20,11 +20,9 @@ import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wal
 import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
 import { SellerContext, SellerInitialState, SellerReducer } from "./contexts/Seller"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
-import TestApi from "./views/TestApi";
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
 import { network } from "./connectors";
-
 
 import { ROUTE } from "./helpers/Dictionary"
 

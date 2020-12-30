@@ -13,6 +13,7 @@ import FormDescription from "../components/FormDescription"
 import FormPrice from "../components/FormPrice"
 import FormDate from "../components/FormDate"
 import FormSummary from "../components/FormSummary"
+import FormBottomNavigation from "../components/FormBottomNavigation"
 
 import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/Icons"
@@ -35,10 +36,15 @@ function NewOffer() {
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
+  const [selectedFile, setSelectedFile] = useState('');
 
   const screens = [
     <Categories listenerType={listenerType} />,
-    <FormUploadPhoto imageUploaded={imageUploaded} setImageUploaded={setImageUploaded} />,
+    <FormUploadPhoto 
+      imageUploaded={imageUploaded} 
+      setImageUploaded={setImageUploaded} 
+      setSelectedFile={setSelectedFile}
+      />,
     <FormGeneral />,
     <FormDescription />,
     <FormPrice />,
@@ -117,6 +123,10 @@ function NewOffer() {
     console.log('after', sellerContext.state.offeringData)
   }, [sellerContext.state.offeringData])
 
+  useEffect(() => {
+    console.log(imageUploaded)
+  }, [imageUploaded])
+
   return (
     <section className="new-offer">
       <div className="container l flex column jc-sb">
@@ -141,22 +151,13 @@ function NewOffer() {
             </form>
           </div>
         </div>
-        <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
-          <div className="button static hide-disabled" role="button"
-            onClick={resetOfferingData}
-            disabled={!localStorage.getItem('offeringData') ? true : false} >
-            START OVER
-          </div>
-          <div className="button offer primary" role="button"
-            onClick={() => console.log('offer')} >
-            OFFER
-          </div>
-          <div className="button primary" role="button"
-            onClick={() => setActiveScreen(activeScreen + 1)}
-            disabled={lastScreenBoolean ? true : false} >
-            NEXT
-          </div>
-        </div>
+        <FormBottomNavigation 
+          lastScreenBoolean={lastScreenBoolean}
+          resetOfferingData={resetOfferingData}
+          activeScreen={activeScreen}
+          setActiveScreen={setActiveScreen}
+          selectedFile={selectedFile}
+        />
       </div>
     </section>
   )

@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { createVoucherSet, getAllVoucherSets } from "../hooks/api";
 import { findEventByName, useCashierContract } from "../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
-export default function TestApi() {
-    const { library, account } = useWeb3React();
+export default function SubmitForm(props) {
+    // onFileSelectSuccess={ (file) => setSelectedFile(file) }
+    const { selectedFile } = props
 
-    const [selectedFile, setSelectedFile] = useState('');
+    const { library, account } = useWeb3React();
 
     const cashierContract = useCashierContract();
     let formData = new FormData();
@@ -94,38 +95,29 @@ export default function TestApi() {
     }, []);
 
     return (
-        <div>
-            <div className="App">
-                <form>
-                    <FileUploader
-                        onFileSelectSuccess={ (file) => setSelectedFile(file) }
-                        onFileSelectError={ ({ error }) => alert(error) }
-                    />
-                </form>
-            </div>
-            <div className="button primary"
-                 role="button" onClick={ onCreateVoucherSet }>Offer
-            </div>
+        <div className="button offer primary" role="button"
+            onClick={onCreateVoucherSet} >
+            OFFER
         </div>
     );
 }
 
-const FileUploader = ({ onFileSelectSuccess, onFileSelectError }) => {
-    const handleFileInput = (e) => {
-        // handle validations
-        const file = e.target.files[0];
+// const FileUploader = ({ onFileSelectSuccess, onFileSelectError }) => {
+//     const handleFileInput = (e) => {
+//         // handle validations
+//         const file = e.target.files[0];
 
-        // ToDo: Have to add some file validations
-        // if (file.size > 1024)
-        //     onFileSelectError({ error: "File size cannot exceed more than 1MB" });
-        // else onFileSelectSuccess(file);
+//         // ToDo: Have to add some file validations
+//         // if (file.size > 1024)
+//         //     onFileSelectError({ error: "File size cannot exceed more than 1MB" });
+//         // else onFileSelectSuccess(file);
 
-        onFileSelectSuccess(file)
-    };
+//         onFileSelectSuccess(file)
+//     };
 
-    return (
-        <div className="file-uploader">
-            <input type="file" onChange={ handleFileInput }/>
-        </div>
-    )
-};
+//     return (
+//         <div className="file-uploader">
+//             <input type="file" onChange={ handleFileInput }/>
+//         </div>
+//     )
+// };
