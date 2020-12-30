@@ -71,7 +71,6 @@ function App() {
     useInactiveListener(true)
 
     return (
-<<<<<<< HEAD
       <div className="emulate-mobile">
         <GlobalContext.Provider value={globalContextValue}>
         <BuyerContext.Provider value={redeemContextValue}>
@@ -92,25 +91,6 @@ function App() {
         </BuyerContext.Provider>
         </GlobalContext.Provider>
       </div>
-=======
-        <div className="emulate-mobile">
-            <GlobalContext.Provider value={ globalContextValue }>
-                <BuyerContext.Provider value={ redeemContextValue }>
-                    <WalletContext.Provider value={ walletContextValue }>
-                        <Router>
-                            <Switch>
-                                <Route exact strict path="/connect" component={ Connect }/>
-                                <Route exact path="/" component={ Home }/>
-                                <Route path="/onboarding" component={ OnboardingReset }/> {/* delete on prod */ }
-                                <Route path="/connect-to-metamask" component={ ConnectToMetamask }/>
-                                <Route path="/show-qr-code" component={ ShowQR }/>
-                            </Switch>
-                        </Router>
-                    </WalletContext.Provider>
-                </BuyerContext.Provider>
-            </GlobalContext.Provider>
-        </div>
->>>>>>> d9bb37752c8794ad16a84396dd2d75910d54a385
     );
 }
 
