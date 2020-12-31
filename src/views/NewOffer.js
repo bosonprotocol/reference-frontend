@@ -121,11 +121,8 @@ function NewOffer() {
   // show state on each change
   useEffect(() => {
     console.log('after', sellerContext.state.offeringData)
-  }, [sellerContext.state.offeringData])
-
-  useEffect(() => {
-    console.log(imageUploaded)
-  }, [imageUploaded])
+    console.log(selectedFile)
+  }, [sellerContext.state.offeringData, selectedFile])
 
   return (
     <section className="new-offer">

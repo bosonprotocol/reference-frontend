@@ -22,10 +22,9 @@ export function useCashierContract() {
     return useContract(SMART_CONTRACTS.CashierContractAddress, CASHIER_ABI.abi)
 }
 
-export function findEventByName(txReceipt, eventName, ...eventFields) {
-
+export async function findEventByName(txReceipt, eventName, ...eventFields) {
     for (const key in txReceipt.events) {
-        if (txReceipt.events[key].event == eventName) {
+        if (txReceipt.events[key].event === eventName) {
             const event = txReceipt.events[key]
 
             const resultObj = {

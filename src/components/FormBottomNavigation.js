@@ -3,7 +3,7 @@ import React from 'react'
 import SubmitForm from "./SubmitForm"
 
 function FormBottomNavigation(props) {
-  const { lastScreenBoolean, resetOfferingData, activeScreen, setActiveScreen, formData } = props
+  const { lastScreenBoolean, resetOfferingData, activeScreen, setActiveScreen, formData, selectedFile } = props
   
   return (
     <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
@@ -12,7 +12,7 @@ function FormBottomNavigation(props) {
         disabled={!localStorage.getItem('offeringData') ? true : false} >
         START OVER
       </div>
-      <SubmitForm formData={formData} />
+      <SubmitForm formData={formData} selectedFile={selectedFile} />
       <div className="button primary" role="button"
         onClick={() => setActiveScreen(activeScreen + 1)}
         disabled={lastScreenBoolean ? true : false} >
