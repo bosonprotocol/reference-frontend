@@ -45,9 +45,9 @@ export default function SubmitForm(props) {
         let dataArr = [
             new Date(start_date) / 1000,
             new Date(end_date) / 1000,
-            parseFloat(price),
-            parseFloat(seller_deposit),
-            parseFloat(buyer_deposit),
+            ethers.utils.parseEther(price).toString(),
+            ethers.utils.parseEther(seller_deposit).toString(),
+            ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
         console.log(dataArr);
