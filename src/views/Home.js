@@ -4,15 +4,15 @@ import "./Home.scss"
 
 import Slider from "react-slick";
 
-import Header from "../components/Header";
-import ProductBlock from "../components/ProductBlock";
-import CardBlock from "../components/CardBlock";
-import CategoryMenu from "../components/CategoryMenu"
-import NavigationBar from "../components/NavigationBar"
-import ProductListing from "../components/ProductListing"
-import ProductView from "../components/ProductView"
+import Header from "../components/home/Header";
+import ProductBlock from "../components/home/ProductBlock";
+import CardBlock from "../components/home/CardBlock";
+import CategoryMenu from "../components/home/CategoryMenu"
+import NavigationBar from "../components/shared/NavigationBar"
+import ProductListing from "../components/home/ProductListing"
+import ProductView from "../components/shared/ProductView"
 import Onboarding from '../views/Onboarding'
-import QRCodeScanner from "../components/QRCodeScanner"
+import QRCodeScanner from "../components/shared/QRCodeScanner"
 
 import { animateEl, animateDel } from "../helpers/AnimationMap"
 import { productListSettings, cardListSettings } from "../helpers/SliderSettings"
@@ -21,7 +21,6 @@ import { productBlocks, cardBlocks } from "../PlaceholderAPI"
 
 import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
-
 
 function Home() {
   const homepage = useRef()
@@ -41,7 +40,7 @@ function Home() {
     if(parseInt(openProductView))
       globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) 
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,6 +61,7 @@ function Home() {
 
   return (
     <>
+      
       { globalContext.state.qrReaderActivated ? (<QRCodeScanner/>) : null }
       {newUser &&
         <div className="onboarding-modal flex center" ref={onboardingModalRef}>

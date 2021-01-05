@@ -195,3 +195,46 @@ export const productAPI = [
     deposit: 0.02,
   },
 ]
+
+export const categories = [
+  {
+    image: 'images/temp/category-item-1.png',
+    title: 'Accessories'
+  },
+  {
+    image: 'images/temp/category-item-2.png',
+    title: 'Automobiles & Motorcycles'
+  },
+  {
+    image: 'images/temp/category-item-3.png',
+    title: 'Beaty & Health'
+  },
+  {
+    image: 'images/temp/category-item-4.png',
+    title: 'Books'
+  },
+  {
+    image: 'images/temp/category-item-5.png',
+    title: 'Clothes'
+  },
+  {
+    image: 'images/temp/category-item-6.png',
+    title: 'Electronics'
+  },
+  {
+    image: 'images/temp/category-item-7.png',
+    title: 'Furniture'
+  },
+  {
+    image: 'images/temp/category-item-8.png',
+    title: 'Home & Garden'
+  },
+  {
+    image: 'images/temp/category-item-9.png',
+    title: 'Jewelry'
+  },
+  {
+    image: 'images/temp/category-item-10.png',
+    title: 'Kids'
+  },
+]

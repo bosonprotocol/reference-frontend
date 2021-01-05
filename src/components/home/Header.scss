@@ -1,0 +1,18 @@
+@import "../../styles/Settings.scss";
+
+header {
+  nav {
+    & > * + * {
+      margin-left: 45px;
+    }
+    .search {
+      svg {
+        margin-right: 15px;
+      }
+      p {
+        font-family: $font-third;
+        font-size: 13px;
+      }
+    }
+  }
+}

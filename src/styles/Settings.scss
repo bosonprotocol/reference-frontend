@@ -43,7 +43,7 @@ $color-secondary: $text-2;
 // ----- font weight -----
 
 // ----- background -----
-$background-primary: $color-background-primary;
+$background-primary: var(--background-primary);
 
 // ----- borders -----
 

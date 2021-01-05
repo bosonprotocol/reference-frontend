@@ -1,0 +1,96 @@
+@import "../../styles/Settings.scss";
+
+.upload-photo {
+  position: relative;
+
+  input {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  .image-upload-container {
+    margin-top: 68px;
+    padding-bottom: 80px;
+
+    &.uploaded {
+      .image-upload label {
+        &::after {
+          content: "CHANGE";
+          font-family: $font-primary;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: $height-small;
+          color: #FFFFFF;
+          top: calc(100% + 20px);
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+      .thumb-container {
+        opacity: 1;
+      }
+    }
+  }
+  .image-upload {
+    width: 152px;
+    height: 152px;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    position: relative;
+
+    background: #1C252D;
+    border-radius: 6px;
+    border: 1px dashed #123247;
+
+    label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      cursor: pointer;
+
+      span {
+        margin-top: 12px;
+
+        font-family: $font-third;
+        font-size: 12px;
+        line-height: $height-regular;
+        /* or 17px */
+
+        text-align: center;
+
+        color: #FFFFFF;
+      }
+    }
+
+    .thumb-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+      overflow: hidden;
+      border-radius: 6px;
+      opacity: 0;
+      transition: 0.2s ease-in-out;
+
+      .thumbnail {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+}

@@ -1,76 +1,31 @@
-# Getting Started with Create React App
+# Boson Protocol
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Front-end Doc
 
-In the project directory, you can run:
+### Offer Flow
 
-### `npm start`
+The flow is using context (and will use localstorage) for state management.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### `components/NewOffer.js`
+This is where the the form is registered and its' data is navigated.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+'screens' defines the order of the screens
 
-### `npm test`
+The function 'updateData' will send an object with property: value of the field changed and its' value.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+On activeScreen change, we fire useEffect, which will bind event listener (which is either 'input' or 'change') to the active input fields.
 
-### `npm run build`
+The component returns TOP NAVIGATION, SCREEN, and BOTTOM NAVIGATION. SCREEN is dynamic.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Configuring input fields
+To change, add, or remove an input field:
+1. Refer to desired screen (defined in 'screens' constant)
+2. When making changes - make sure the field has a 'name' attribute. Assign a corresponding property in the 'NAME' object in 'helpers/Dictionary.js'.
+-If you are removing a field - remove its' property from 'NAME'
+-If you want to store the field's value in the context - assign a new property in 'NAME' and bind it to the field's name attribute.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-## Contributing
-
-Contributions are most welcome!
-
-Please note that by interacting here you are agreeing to abide by the [Code of Conduct](CODE_OF_CONDUCT.md). Thank you.
+#### `helpers/Dictionary.js`
+'NAME' object is assigned to context and used to store data from the form. If you modify the fields here, there is no need to update any other logic, for the submission to work fine.

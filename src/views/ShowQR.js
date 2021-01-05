@@ -4,18 +4,18 @@ import { Link } from 'react-router-dom'
 import "./StaticPage.scss"
 
 import { productAPI } from "../PlaceholderAPI"
+import { ROUTE } from '../helpers/Dictionary'
 
 function ShowQR() {
   const imageThumb = JSON.parse(localStorage.getItem('productsReviewed'))
   const imageThumbId = imageThumb[imageThumb.length - 1]
 
-  console.log(imageThumb)
   return (
     <section className="show-qr-code static-page atomic-scoped flex ai-center">
     <div className="container l infinite">
       <div className="wrapper w100 relative flex column center">
         <div className="top-nav">
-          <Link to="/">
+          <Link to={ROUTE.Home}>
             <div className="cancel"><span className="icon"></span></div>
           </Link>
         </div>

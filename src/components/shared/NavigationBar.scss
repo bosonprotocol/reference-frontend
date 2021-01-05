@@ -1,0 +1,186 @@
+@import "../../styles/Settings.scss";
+
+$animation-timing: 300;
+$unit: 'ms';
+nav.navigation-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  transition: #{$animation-timing}#{$unit} ease-in-out;
+
+  &.out {
+    &:not(.default_view) {
+      .control-wrap {
+        animation: scale-down #{$animation-timing}#{$unit} ease-in-out forwards; 
+      }
+    }
+
+    &.default_view {
+      .control-wrap {
+        animation: fade-out #{$animation-timing}#{$unit} ease-in-out forwards; 
+        .control {
+          animation: fade-out-move #{$animation-timing - 100}#{$unit} ease-in-out forwards;
+          opacity: 1;
+
+          &:nth-child(2) {
+            animation-delay: 50ms;
+          }
+          &:nth-child(1) {
+            animation-delay: 100ms;
+          }
+        }
+      }
+    }
+  }
+  &.in {
+    &:not(.default_view) {
+      .control-wrap {
+        animation: scale-up #{$animation-timing + 150}#{$unit} ease-in-out forwards; 
+      }
+    }
+
+    &.default_view {
+      .nav-container {
+        animation: scale-up #{$animation-timing + 150}#{$unit} ease-in-out forwards; 
+      }
+      .control-wrap {
+        .control {
+          animation: pop-up #{$animation-timing + 50}#{$unit} ease-in-out forwards;
+
+          &:nth-child(1) {
+            animation-delay: 200ms;
+          }
+          &:nth-child(2) {
+            animation-delay: 280ms;
+          }
+          &:nth-child(3) {
+            animation-delay: 360ms;
+          }
+        }
+      }
+    }
+  }
+
+  .nav-container {
+    background-color: rgba(#1D2834, 0);
+    border-radius: 0;
+    padding: 0 0;
+    box-shadow: 0px 3px 12px rgba(0, 0, 0, 0);
+    transition: #{$animation-timing - 100}#{$unit} 100ms ease-in-out;
+
+    .control {
+      + .control {
+        margin-left: 25px;
+      }
+
+      &.commit,
+      &.redeem {
+        a {
+          background: #358EF5;
+          border-radius: 8px;
+          padding: 13px;
+          font-family: $font-primary;
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 19px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+  
+          text-align: center;
+  
+          color: #FFFFFF;
+          text-decoration: none;
+
+          svg {
+            margin-right: 15px;
+          }
+        }
+
+        @media (min-width: 961px) {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  &.default_view:not(.out) {
+    .nav-container {
+      background-color: rgba(#1D2834, 0.94);
+      border-radius: 71px;
+      padding: 10px 21px;
+      box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.4);
+
+      .control {
+        transform: translateY(50px);
+        opacity: 0;
+        transition: #{$animation-timing}#{$unit} ease-in-out;
+      }
+    }
+  }
+
+  &.special {
+    background: rgba(#1D2834, 0);
+
+    .nav-container {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+
+      @media (max-width: 960px) {
+        min-height: auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 961px) {
+  nav.navigation-bar {
+    left: 0;
+    right: 0;
+    transform: none;
+    display: flex;
+    justify-content: center;
+    background-color: #1D2834;
+    overflow: hidden;
+    min-height: 70px;
+
+    &.default_view:not(.out) .nav-container {
+      box-shadow: none;
+    }
+
+    .nav-container {
+      padding: 10px 0;
+    }
+  }
+}
+
+@keyframes scale-down {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  100% { transform: scale(0); }
+}
+@keyframes scale-up {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pop-up {
+  0% { transform: translateY(50px); opacity: 0;}
+  70% { transform: translateY(-10px); opacity: 0.7;}
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-out-move {
+  0% { transform: translateY(0); opacity: 1;}
+  100% { transform: translateY(30px); opacity: 0;}
+}
+
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0;}
+}

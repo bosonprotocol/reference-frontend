@@ -1,0 +1,53 @@
+.categories {
+  margin-top: 21px;
+
+  ul {
+    li {
+      padding: 10px 0;
+      cursor: pointer;
+      transition: 0.18s ease-in-out;
+
+      img {
+        margin-right: 17px;
+        transition: 0.18s ease-in-out;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.01);
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.18);
+
+        img {
+          transform: scale(1.23) rotate(5deg);
+        }
+      }
+      &:nth-child(odd) {
+        &:hover {
+          img {
+            transform: scale(1.23) rotate(-5deg);
+          }
+        }
+      }
+      &.active {
+        background: rgba(255, 255, 255, 0.02);
+        opacity: 0.8;
+
+        img {
+          transform: scale(1) rotate(0) !important;
+        }
+
+        &:hover {
+          transform: scale(1) rotate(0);
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  #offer-category {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

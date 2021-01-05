@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { BuyerContext, Buyer } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
 
-import { DIC } from "../contexts/Dictionary"
+import { DIC, ROUTE } from "../helpers/Dictionary"
 
 
 import "./StaticPage.scss"
@@ -23,7 +23,7 @@ function ConnectToMetamask() {
     <section className="connect-to-metamask static-page flex ai-center">
       <div className="container l">
         <div className="wrapper w100 relative flex column ai-center jc-sb">
-          <Link to="/">
+          <Link to={ROUTE.Home}>
             <div className="cancel"><span className="icon"></span></div>
           </Link>
           <div className="info connect flex column ai-center">
@@ -35,7 +35,7 @@ function ConnectToMetamask() {
           <div className="button orange" role="button">
             <Link
             onClick={updateStatus}
-            to="/">CONNECT TO METAMASK</Link>
+            to={ROUTE.Home}>CONNECT TO METAMASK</Link>
           </div>
         </div>
       </div>

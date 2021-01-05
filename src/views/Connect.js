@@ -8,6 +8,8 @@ import {
 import { useEagerConnect } from "../hooks";
 import { NetworkContextName } from "../constants";
 import { network } from "../connectors";
+// import { shortenAddress } from "../utils";
+import { Link } from "react-router-dom";
 
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
@@ -46,6 +48,11 @@ export default function Connect() {
     return (
         <div className="">
             <div className="">
+                <Link to="/">
+                    <div className="button primary"
+                         role="button">Home
+                    </div>
+                </Link>
                 <div className="">
                     { getWalletTitle({ account, walletView, setWalletView }) }
                 </div>
