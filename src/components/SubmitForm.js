@@ -6,12 +6,14 @@ import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
 import { SellerContext } from "../contexts/Seller"
+import ContractInteractionButton from "./ContractInteractionButton";
+import { useLocation } from 'react-router-dom';
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const sellerContext = useContext(SellerContext)
 
-    const { 
+    const {
         start_date,
         end_date,
         price,
@@ -35,6 +37,9 @@ export default function SubmitForm(props) {
 
     const cashierContract = useCashierContract();
     let formData = new FormData();
+
+    const location = useLocation();
+    console.log(location);
 
     async function onCreateVoucherSet() {
         if (!library || !account) {
@@ -75,7 +80,7 @@ export default function SubmitForm(props) {
     function prepareVoucherFormData(parsedEvent, dataArr) {
         console.log('prepareVoucher', parsedEvent)
         const startDate = new Date(dataArr[0] * 1000);
-        const endDate =  new Date(dataArr[1] * 1000);
+        const endDate = new Date(dataArr[1] * 1000);
 
         appendFilesToFormData();
 
@@ -112,10 +117,12 @@ export default function SubmitForm(props) {
     }, []);
 
     return (
-        <div className="button offer primary" role="button"
-            onClick={onCreateVoucherSet} >
-            OFFER
-        </div>
+        <ContractInteractionButton
+            className="button offer primary"
+            handleClick={ onCreateVoucherSet }
+            label="OFFER"
+            sourcePath={location.pathname}
+        />
     );
 }
 
@@ -138,12 +145,6 @@ export default function SubmitForm(props) {
 //         </div>
 //     )
 // };
-
-
-
-
-
-
 
 
 // import React, { useEffect, useRef, useState } from "react";

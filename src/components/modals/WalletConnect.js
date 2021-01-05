@@ -13,6 +13,7 @@ import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
 import { authenticateUser, getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { useHistory, useLocation } from 'react-router-dom';
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -134,8 +135,14 @@ export function WalletConnect({
         activate(current);
     }
 
+    const location = useLocation();
+    console.log(location);
+    const history = useHistory();
+
     useEffect(() => {
         if (library && account) {
+            history.push(location?.state?.sourcePath);
+
             const localStoredAccountData = getAccountStoredInLocalStorage(account);
 
             if (localStoredAccountData.activeToken) {
