@@ -45,7 +45,7 @@ function FormGeneral() {
       <div ref={conditionTarget} className="row flex">
         <div className="field radio-label">
           <label data-condition="new" htmlFor="condition-new">New</label>
-          <input className="hidden"   aid="condition-new" value="new" type="radio" 
+          <input className="hidden" id="condition-new" value="new" type="radio" 
           name={NAME.CONDITION} 
           onClick={(e) => selectLabel(e.target)} />
         </div>

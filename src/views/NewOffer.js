@@ -77,6 +77,15 @@ function NewOffer() {
   }
 
   const updateData = (input) => {
+    console.log(input.tagName)
+    if(input.tagName === 'SELECT') {
+      input.parentElement.getElementsByClassName('icons')[0].className = `icons`
+
+      setTimeout(() => {
+        input.parentElement.getElementsByClassName('icons')[0].className = `icons ${input.value}`
+      }, 100)
+    }
+    // input.classList.add(input.value)
     sellerContext.dispatch(Seller.updateOfferingData({
       [input.name]: input.value
     }))

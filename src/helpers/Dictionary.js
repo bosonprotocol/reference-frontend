@@ -40,3 +40,8 @@ export const NAME = {
   DATE_START: 'start_date',
   DATE_END: 'end_date'
 }
+
+export const CURRENCY = {
+  ETH: 'ETH',
+  BSN: 'BSN',
+}
