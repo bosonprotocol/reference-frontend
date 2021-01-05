@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from 'react'
 
 import "./Categories.scss"
 
-import { categories } from "../PlaceholderAPI"
-import { NAME } from "../helpers/Dictionary"
+import { categories } from "../../PlaceholderAPI"
+import { NAME } from "../../helpers/Dictionary"
 
 function Categories(props) {
   const { listenerType } = props

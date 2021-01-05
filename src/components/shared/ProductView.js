@@ -4,12 +4,12 @@ import "./ProductView.scss"
 
 import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
 
-import { GlobalContext, Action } from "../contexts/Global"
-import { DIC } from "../helpers/Dictionary"
+import { GlobalContext, Action } from "../../contexts/Global"
+import { DIC } from "../../helpers/Dictionary"
 
 import EscrowDiagram from "./EscrowDiagram"
 
-import { productAPI } from "../PlaceholderAPI"
+import { productAPI } from "../../PlaceholderAPI"
 
 
 const closePoint = window.innerHeight / 4

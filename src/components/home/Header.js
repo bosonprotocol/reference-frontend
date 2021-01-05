@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { GlobalContext, Action } from '../contexts/Global'
+import { GlobalContext, Action } from '../../contexts/Global'
 
 import "./Header.scss"
 
-import { IconList, IconQR } from "./Icons"
+import { IconList, IconQR } from "../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
-import { shortenAddress } from "../utils";
+import { shortenAddress } from "../../utils";
 
 function Header() {
     const globalContext = useContext(GlobalContext);

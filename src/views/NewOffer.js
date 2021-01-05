@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 
-import "../components/ProductView.scss"
+import "../components/shared/ProductView.scss"
 
 import { useHistory } from "react-router"
 
 import "./NewOffer.scss"
 
-import Categories from "../components/Categories"
-import FormUploadPhoto from "../components/FormUploadPhoto"
-import FormGeneral from "../components/FormGeneral"
-import FormDescription from "../components/FormDescription"
-import FormPrice from "../components/FormPrice"
-import FormDate from "../components/FormDate"
-import FormSummary from "../components/FormSummary"
-import FormBottomNavigation from "../components/FormBottomNavigation"
+import Categories from "../components/offerFlow/Categories"
+import FormUploadPhoto from "../components/offerFlow/FormUploadPhoto"
+import FormGeneral from "../components/offerFlow/FormGeneral"
+import FormDescription from "../components/offerFlow/FormDescription"
+import FormPrice from "../components/offerFlow/FormPrice"
+import FormDate from "../components/offerFlow/FormDate"
+import FormSummary from "../components/offerFlow/FormSummary"
+import FormBottomNavigation from "../components/offerFlow/FormBottomNavigation"
 
 import { SellerContext, Seller } from "../contexts/Seller"
-import { Arrow } from "../components/Icons"
+import { Arrow } from "../components/shared/Icons"
 
 import { NAME } from "../helpers/Dictionary"
 
@@ -119,7 +119,6 @@ function NewOffer() {
   // show state on each change
   useEffect(() => {
     console.log('after', sellerContext.state.offeringData)
-    console.log(selectedFile)
   }, [sellerContext.state.offeringData, selectedFile])
 
   return (

@@ -1,13 +1,13 @@
 import React, { useRef, useContext, forwardRef } from 'react'
 
-import { SellerContext, Seller } from "../contexts/Seller"
+import { SellerContext, Seller } from "../../contexts/Seller"
 
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
 // https://www.npmjs.com/package/react-datepicker
 
-import { NAME } from "../helpers/Dictionary"
+import { NAME } from "../../helpers/Dictionary"
 
 function FormDate() {
   const sellerContext = useContext(SellerContext)

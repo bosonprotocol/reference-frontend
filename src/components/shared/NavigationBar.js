@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom'
 
 import "./NavigationBar.scss"
 
-import { IconAccount, IconAdd, IconList } from "./Icons"
+import { IconAccount, IconAdd, IconList, IconQR } from "./Icons"
 
-import { GlobalContext } from "../contexts/Global"
-import { BuyerContext, Buyer } from "../contexts/Buyer"
-import { DIC, ROUTE } from "../helpers/Dictionary"
-
-import { IconQR } from "./Icons"
+import { GlobalContext } from "../../contexts/Global"
+import { BuyerContext, Buyer } from "../../contexts/Buyer"
+import { DIC, ROUTE } from "../../helpers/Dictionary"
 
 function NavigationBar(props) {
   const globalContext = useContext(GlobalContext)

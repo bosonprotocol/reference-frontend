@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import "./FormUploadPhoto.scss"
 
-import { IconPlus } from "./Icons"
+import { IconPlus } from "../shared/Icons"
 
 const maxSize =  2 * (1000 * 1000) // in mb
 

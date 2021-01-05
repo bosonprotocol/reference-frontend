@@ -3,7 +3,7 @@ import QrReader from "react-qr-reader";
 import "./QRCodeScanner.scss";
 import { useState, useContext } from "react";
 
-import { GlobalContext, Action} from '../contexts/Global'
+import { GlobalContext, Action} from '../../contexts/Global'
 
 function QRCodeScanner() {
     const globalContext = useContext(GlobalContext)

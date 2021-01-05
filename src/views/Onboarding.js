@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import EscrowDiagram from '../components/EscrowDiagram';
+import EscrowDiagram from '../components/shared/EscrowDiagram';
 
 function slide1() {
   return(

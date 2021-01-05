@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { NAME } from "../helpers/Dictionary"
+import { NAME } from "../../helpers/Dictionary"
 
 function FormDescription() {
   return (

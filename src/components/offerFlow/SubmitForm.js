@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from "react";
-import { createVoucherSet, getAllVoucherSets } from "../hooks/api";
-import { findEventByName, useCashierContract } from "../hooks/useContract";
+import { createVoucherSet, getAllVoucherSets } from "../../hooks/api";
+import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 
-import { SellerContext } from "../contexts/Seller"
-import ContractInteractionButton from "./ContractInteractionButton";
+import { SellerContext } from "../../contexts/Seller"
+import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 
 export default function SubmitForm(props) {

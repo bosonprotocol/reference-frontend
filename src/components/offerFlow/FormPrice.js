@@ -2,7 +2,7 @@ import React from 'react'
 
 import Currencies from "./Currencies"
 
-import { NAME } from "../helpers/Dictionary"
+import { NAME } from "../../helpers/Dictionary"
 
 function FormPrice() {
   const priceSettings = {

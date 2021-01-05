@@ -1,11 +1,11 @@
 import React from 'react'
 
-import ProductBlock from "../components/ProductBlock";
+import ProductBlock from "./ProductBlock";
 
 import Masonry from 'react-masonry-css'
 import "./ProductListing.scss"
 
-import { productAPI } from "../PlaceholderAPI"
+import { productAPI } from "../../PlaceholderAPI"
 
 function ProductListing(props) {
   const {animateEl, animateDel} = props

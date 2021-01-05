@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 
 import "./ProductBlock.scss"
 
-import { IconEth, IconDeposit } from "./Icons"
+import { IconEth, IconDeposit } from "../shared/Icons"
 
-import { GlobalContext, Action } from "../contexts/Global"
-import { DIC } from "../helpers/Dictionary"
+import { GlobalContext, Action } from "../../contexts/Global"
+import { DIC } from "../../helpers/Dictionary"
 
 
 function ProductBlock(props) {

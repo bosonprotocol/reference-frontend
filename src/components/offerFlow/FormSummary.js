@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 
-import { TableRow, DateTable, PriceTable } from "./TableContent"
+import { TableRow, DateTable, PriceTable } from "../shared/TableContent"
 
-import { SellerContext } from "../contexts/Seller"
+import { SellerContext } from "../../contexts/Seller"
 
 function FormSummary(props) {
   const { imageUploaded } = props

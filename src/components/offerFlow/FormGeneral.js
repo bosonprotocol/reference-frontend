@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 
-import { NAME } from "../helpers/Dictionary"
+import { NAME } from "../../helpers/Dictionary"
 
 function FormGeneral() {
   const conditionTarget = useRef()

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import "./CategoryMenu.scss"
 
-import { categoryMenu } from "../PlaceholderAPI"
+import { categoryMenu } from "../../PlaceholderAPI"
 
 function CategoryMenu() {
   const [selected, setSelected] = useState(0)
