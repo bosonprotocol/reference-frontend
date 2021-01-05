@@ -85,6 +85,9 @@ export function WalletConnect({
 
     const previousAccount = usePrevious(account);
 
+    const location = useLocation();
+    const history = useHistory();
+
     // close on connection, when logged out before
     useEffect(() => {
         if (isMounted.current && account && !previousAccount) {
@@ -135,10 +138,6 @@ export function WalletConnect({
         activate(current);
     }
 
-    const location = useLocation();
-    console.log(location);
-    const history = useHistory();
-
     useEffect(() => {
         if (library && account) {
             history.push(location?.state?.sourcePath);
@@ -151,6 +150,7 @@ export function WalletConnect({
 
             authenticateUser(library, account, chainId);
         }
+        // eslint-disable-next-line
     }, [library, account, chainId]);
 
 
