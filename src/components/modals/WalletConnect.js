@@ -13,6 +13,7 @@ import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
 import { authenticateUser, getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { useHistory, useLocation } from 'react-router-dom';
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -84,6 +85,9 @@ export function WalletConnect({
 
     const previousAccount = usePrevious(account);
 
+    const location = useLocation();
+    const history = useHistory();
+
     // close on connection, when logged out before
     useEffect(() => {
         if (isMounted.current && account && !previousAccount) {
@@ -136,6 +140,8 @@ export function WalletConnect({
 
     useEffect(() => {
         if (library && account) {
+            history.push(location?.state?.sourcePath);
+
             const localStoredAccountData = getAccountStoredInLocalStorage(account);
 
             if (localStoredAccountData.activeToken) {
@@ -144,6 +150,7 @@ export function WalletConnect({
 
             authenticateUser(library, account, chainId);
         }
+        // eslint-disable-next-line
     }, [library, account, chainId]);
 
 
