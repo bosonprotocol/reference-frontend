@@ -8,7 +8,7 @@ import {
 import { useEagerConnect } from "../hooks";
 import { NetworkContextName } from "../constants";
 import { network } from "../connectors";
-import { shortenAddress } from "../utils";
+// import { shortenAddress } from "../utils";
 import { Link } from "react-router-dom";
 
 export default function Connect() {

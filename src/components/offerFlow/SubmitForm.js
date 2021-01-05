@@ -30,10 +30,6 @@ export default function SubmitForm(props) {
 
     const { selectedFile } = props
 
-    useEffect(() => {
-        console.log(selectedFile)
-    }, [])
-
     const { library, account } = useWeb3React();
 
     const cashierContract = useCashierContract();

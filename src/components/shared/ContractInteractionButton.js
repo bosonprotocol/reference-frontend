@@ -13,6 +13,7 @@ export default function ContractInteractionButton(props) {
 
     useEffect(() => {
         createButton()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [library, account]);
 
     function createButton() {
