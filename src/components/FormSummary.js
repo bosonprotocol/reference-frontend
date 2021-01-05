@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
+import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 import { SellerContext } from "../contexts/Seller"
 
@@ -37,12 +37,24 @@ function FormSummary(props) {
     ['Seller’s deposit', seller_deposit, seller_deposit_currency, 1] : false,
   ]
 
-  const tableDate = [
-    start_date && start_date,
-    end_date && end_date
-  ]
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-  const tableLocation = 'Los Angeles'
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  const tableDate = [
+    start_date && formatDate(start_date),
+    end_date && formatDate(end_date)
+  ]
 
   return (
     <div className="summary product-view">
@@ -55,7 +67,6 @@ function FormSummary(props) {
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        {tableLocation ? <TableLocation data={tableLocation} /> : null}
         {tableContent.some(item => item) ? <TableRow data={tableContent} /> : null}
         {tablePrices.some(item => item) ? <PriceTable data={tablePrices} /> : null}
         {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}

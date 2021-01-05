@@ -106,7 +106,8 @@
         }
 
         input,
-        textarea {
+        textarea,
+        .field {
           margin-top: 14px;
           background: rgba(255, 255, 255, 0.03);
           border-radius: 2px;
@@ -119,6 +120,8 @@
           font-size: 16px;
           line-height: $height-regular;
 
+          width: 100%;
+
           &.hidden {
             opacity: 0;
             pointer-events: none;
@@ -128,6 +131,10 @@
             top: 0;
             left: 0;
           }
+        }
+
+        .field {
+          cursor: pointer;
         }
 
         textarea {

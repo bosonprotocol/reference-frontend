@@ -27,7 +27,6 @@ export const ROUTE = {
 
 export const NAME = {
   CATEGORY: 'category',
-  IMAGE: 'image',
   TITLE: 'title',
   QUANTITY: 'quantity',
   CONDITION: 'condition',

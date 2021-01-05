@@ -91,8 +91,6 @@ function NewOffer() {
 
       let retrieveState = sellerContext.state.offeringData[input.name]
 
-      console.log(JSON.parse(localStorage.getItem('offeringData')), retrieveState)
-
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
       input.addEventListener(listenerType, (e) => updateData(e.target))
     })
