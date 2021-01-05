@@ -3,8 +3,6 @@ import { useWeb3React } from "@web3-react/core";
 import { useHistory } from 'react-router-dom';
 
 export default function ContractInteractionButton(props) {
-    console.log(props);
-
     let handleClick = null;
     let label = "";
     const { library, account } = useWeb3React();

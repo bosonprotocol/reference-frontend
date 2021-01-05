@@ -12,6 +12,7 @@ import { useLocation } from 'react-router-dom';
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const sellerContext = useContext(SellerContext)
+    const location = useLocation();
 
     const {
         start_date,
@@ -37,9 +38,6 @@ export default function SubmitForm(props) {
 
     const cashierContract = useCashierContract();
     let formData = new FormData();
-
-    const location = useLocation();
-    console.log(location);
 
     async function onCreateVoucherSet() {
         if (!library || !account) {
@@ -121,7 +119,7 @@ export default function SubmitForm(props) {
             className="button offer primary"
             handleClick={ onCreateVoucherSet }
             label="OFFER"
-            sourcePath={location.pathname}
+            sourcePath={ location.pathname }
         />
     );
 }
