@@ -18,14 +18,14 @@ import FormBottomNavigation from "../components/offerFlow/FormBottomNavigation"
 import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/shared/Icons"
 
-import { NAME } from "../helpers/Dictionary"
+import { NAME, CURRENCY } from "../helpers/Dictionary"
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'input'
 
 const inputFallback = {
-  [NAME.SELLER_DEPOSIT_C]: 'eth',
-  [NAME.PRICE_C]: 'eth',
+  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
+  [NAME.PRICE_C]: CURRENCY.ETH,
 }
 
 function NewOffer() {
@@ -76,13 +76,16 @@ function NewOffer() {
     })
   }
 
+  const currencyList = Object.keys(CURRENCY)
+
   const updateData = (input) => {
-    console.log(input.tagName)
     if(input.tagName === 'SELECT') {
-      input.parentElement.getElementsByClassName('icons')[0].className = `icons`
+      currencyList.map(currency => 
+        input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
+      )
 
       setTimeout(() => {
-        input.parentElement.getElementsByClassName('icons')[0].className = `icons ${input.value}`
+        input.parentElement.getElementsByClassName('icons')[0].classList.add(`${input.value}`)
       }, 100)
     }
     // input.classList.add(input.value)
@@ -99,6 +102,16 @@ function NewOffer() {
       }
 
       let retrieveState = sellerContext.state.offeringData[input.name]
+
+      if(input.tagName === 'SELECT') {
+        let assign = retrieveState ? retrieveState :
+          (inputFallback[input.name] ? inputFallback[input.name] : '')
+        
+        currencyList.map(currency => 
+          input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
+        )
+        input.parentElement.getElementsByClassName('icons')[0].classList.add(assign)
+      }
 
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
       input.addEventListener(listenerType, (e) => updateData(e.target))
