@@ -10,7 +10,10 @@ import { NAME } from "../../helpers/Dictionary"
 function FormPrice() {
   const sellerContext = useContext(SellerContext)
 
-  const getContext = (name) => sellerContext.state.offeringData[name]
+  const price = sellerContext.state.offeringData[NAME.PRICE]
+  const priceCurrency = sellerContext.state.offeringData[NAME.PRICE_C]
+  const seller = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT]
+  const sellerCurrency = sellerContext.state.offeringData[NAME.PRICESELLER_DEPOSIT_C_C]
   
   const getCurrency = el => (
     sellerContext.state.offeringData
@@ -19,9 +22,10 @@ function FormPrice() {
   )
 
   const updateSuffix = (name, value) => {
-    // sellerContext.dispatch(Seller.updateOfferingData({
-    //   [name]: value
-    // }))
+    console.log(name, value)
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [name]: value
+    }))
   }
 
   const focusHandler = (el, toggle) => {
@@ -33,33 +37,22 @@ function FormPrice() {
       let propertyName = el.parentElement.querySelector('.pseudo').attributes["name"].value
       let valueToSet = el.value + ` ${getCurrency(el)}`
 
-      updateSuffix(propertyName, valueToSet)
+      // updateSuffix(propertyName, valueToSet)
     }
   }
 
   useEffect(() => {
-    updateSuffix(
-      NAME.PRICE_SUFFIX,
-      `${getContext(NAME.PRICE)} ${getContext(NAME.PRICE_C)}`
-    )
+    if(price && priceCurrency) updateSuffix(NAME.PRICE_SUFFIX, `${price} ${priceCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getContext(NAME.PRICE), getContext(NAME.PRICE_C)])
+  }, [price, priceCurrency])
 
-  useEffect(() => {
-    updateSuffix(
-      NAME.SELLER_SUFFIX,
-      `${getContext(NAME.SELLER_DEPOSIT)} ${getContext(NAME.SELLER_DEPOSIT_C)}`
-    )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getContext(NAME.SELLER_DEPOSIT), getContext(NAME.SELLER_DEPOSIT_C)])
-
-  useEffect(() => {
-    console.log(localStorage['offeringData'] && JSON.parse(localStorage['offeringData'])[NAME.SELLER_SUFFIX])
-    // localStorage['offeringData'] ? 
-    // updateSuffix(NAME.SELLER_SUFFIX, localStorage.getItem(NAME.SELLER_SUFFIX)) :
-    // updateSuffix(NAME.SELLER_SUFFIX, `0 ${getContext(NAME.SELLER_DEPOSIT_C)}`)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   updateSuffix(
+  //     NAME.SELLER_SUFFIX,
+  //     `${getContext(NAME.SELLER_DEPOSIT)} ${getContext(NAME.SELLER_DEPOSIT_C)}`
+  //   )
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [getContext(NAME.SELLER_DEPOSIT), getContext(NAME.SELLER_DEPOSIT_C)])
 
   const priceSettings = {
     max: 10000.00,
