@@ -9,9 +9,6 @@ function FormDescription() {
   const description = sellerContext.state.offeringData[NAME.DESCRIPTION]
   const maxSymbols = 160
 
-
-
-
   return (
     <div className="description">
       <div className="row">
