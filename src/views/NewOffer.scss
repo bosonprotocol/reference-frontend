@@ -322,6 +322,24 @@
         margin-top: 30px;
       }
     }
+    .description {
+      .limit {
+        position: absolute;
+        right: 17px;
+        bottom: 9px;
+
+        font-family: Barlow;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 143.4%;
+        /* identical to box height, or 23px */
+
+        text-align: right;
+
+        color: #5D6F84;
+      }
+    }
   }
 }
 
