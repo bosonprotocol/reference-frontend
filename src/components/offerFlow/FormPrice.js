@@ -33,14 +33,14 @@ function FormPrice() {
 
   // on change of currency, or value - update placeholder
   useEffect(() => {
-    if(price !== undefined && priceCurrency !== undefined)
-      updateSuffix(NAME.PRICE_SUFFIX, `${price} ${priceCurrency}`)
+    if(priceCurrency !== undefined)
+    updateSuffix(NAME.PRICE_SUFFIX, `${price === '' || price === undefined ? 0 : price} ${priceCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price, priceCurrency])
 
   useEffect(() => {
-    if(seller !== undefined && sellerCurrency !== undefined)
-      updateSuffix(NAME.SELLER_SUFFIX, `${seller === '' ? 0 : seller} ${sellerCurrency}`)
+    if(sellerCurrency !== undefined)
+      updateSuffix(NAME.SELLER_SUFFIX, `${seller === '' || seller === undefined ? 0 : seller} ${sellerCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seller, sellerCurrency])
 
