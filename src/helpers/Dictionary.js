@@ -34,8 +34,10 @@ export const NAME = {
   DESCRIPTION: 'description',
   PRICE_C: 'price_currency',
   PRICE: 'price',
+  PRICE_SUFFIX: 'price_suffix',
   SELLER_DEPOSIT_C: 'seller_deposit_currency',
   SELLER_DEPOSIT: 'seller_deposit',
+  SELLER_SUFFIX: 'seller_suffix',
   BUYER_DEPOSIT: 'buyer_deposit',
   DATE_START: 'start_date',
   DATE_END: 'end_date'

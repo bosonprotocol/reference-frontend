@@ -229,7 +229,7 @@
                     background-image: url('../images/icon-eth.png');
                   }
                   &.BSN {
-                    background-image: url('../images/dropdown-office.png');
+                    background-image: url('../images/icon-eth.png');
                   }
                 }
 
@@ -269,13 +269,46 @@
                 height: 100%;
               }
 
-              & + input {
+              & + .input {
                 margin-left: 8px;
               }
             }
 
-            input {
+            .input {
               width: 100%;
+
+              .pseudo {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border: none;
+                color: #fff;
+                padding: 15px 13px;
+                font-family: "Barlow", sans-serif;
+                font-size: 16px;
+                line-height: 1.43;
+                pointer-events: none;
+                opacity: 1;
+                transition: 0.1s ease-in-out;
+              }
+
+              input {
+                transition: 0.1s ease-in-out;
+                color: transparent;
+              }
+
+              &.focus {
+                .pseudo {
+                  opacity: 0;
+                }
+                input {
+                  color: #fff;
+                  padding: 15px 13px;
+                  font-family: "Barlow", sans-serif;
+                  font-size: 16px;
+                  line-height: 1.43;
+                }
+              }
             }
           }
 
