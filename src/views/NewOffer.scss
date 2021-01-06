@@ -133,6 +133,31 @@
           }
         }
 
+        & > .input {
+          margin-top: 14px;
+
+          input {
+            margin-top: 0;
+          }
+        }
+
+        .max {
+          position: absolute;
+          height: 100%;
+          border: none;
+          color: #5D6F84;
+          font-family: "Barlow", sans-serif;
+          font-size: 16px;
+          line-height: 1.43;
+          pointer-events: none;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 15px;
+          left: auto;
+          display: flex;
+          align-items: center;
+        }
+
         .field {
           cursor: pointer;
         }
@@ -324,6 +349,7 @@
     }
     .description {
       .limit {
+        pointer-events: none;
         position: absolute;
         right: 17px;
         bottom: 9px;
