@@ -8,10 +8,13 @@ import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { SellerContext } from "../../contexts/Seller"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
+import { ModalContext, ModalResolver } from "../../contexts/Modal";
+import { MODAL_TYPES } from "../../helpers/Dictionary";
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const sellerContext = useContext(SellerContext)
+    const modalContext = useContext(ModalContext);
     const location = useLocation();
 
     const {
@@ -55,10 +58,22 @@ export default function SubmitForm(props) {
 
         console.log(txValue);
 
-        const tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
-        console.log(tx);
-        const receipt = await tx.wait();
-        console.log(receipt);
+        let tx;
+        let receipt;
+
+        try {
+            tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
+            console.log(tx);
+            receipt = await tx.wait();
+            console.log(receipt);
+        } catch (e) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+            return;
+        }
 
         const parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
         console.log('parsedEvent', parsedEvent)
