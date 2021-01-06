@@ -103,6 +103,7 @@ function NewOffer() {
 
       let retrieveState = sellerContext.state.offeringData[input.name]
 
+      // currencies
       if(input.tagName === 'SELECT') {
         let assign = retrieveState ? retrieveState :
           (inputFallback[input.name] ? inputFallback[input.name] : '')
@@ -110,13 +111,19 @@ function NewOffer() {
         currencyList.map(currency => 
           input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
         )
+        console.log(sellerContext.state.offeringData)
         input.parentElement.getElementsByClassName('icons')[0].classList.add(assign)
-      }
+      } 
 
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
       input.addEventListener(listenerType, (e) => updateData(e.target))
     })
   }
+
+  useEffect(() => {
+    loadValues()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeScreen, init])
 
   // check for backup
   useEffect(() => {
@@ -132,11 +139,6 @@ function NewOffer() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    loadValues()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeScreen, init])
 
   // show state on each change
   useEffect(() => {

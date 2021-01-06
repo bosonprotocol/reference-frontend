@@ -19,10 +19,9 @@ function FormPrice() {
   )
 
   const updateSuffix = (name, value) => {
-    sellerContext.dispatch(Seller.updateOfferingData({
-      // get sibling ".pseudo" name and set {price}{suffix} in context
-      [name]: value
-    }))
+    // sellerContext.dispatch(Seller.updateOfferingData({
+    //   [name]: value
+    // }))
   }
 
   const focusHandler = (el, toggle) => {
@@ -54,12 +53,12 @@ function FormPrice() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getContext(NAME.SELLER_DEPOSIT), getContext(NAME.SELLER_DEPOSIT_C)])
 
-  useEffect(() => {
-    localStorage[NAME.SELLER_SUFFIX] ? 
-    updateSuffix(NAME.SELLER_SUFFIX, localStorage[NAME.SELLER_SUFFIX]) :
-    updateSuffix(NAME.SELLER_SUFFIX, `0 ${getContext(NAME.SELLER_DEPOSIT_C)}`)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   localStorage.getItem(NAME.SELLER_SUFFIX) ? 
+  //   updateSuffix(NAME.SELLER_SUFFIX, localStorage.getItem(NAME.SELLER_SUFFIX)) :
+  //   updateSuffix(NAME.SELLER_SUFFIX, `0 ${getContext(NAME.SELLER_DEPOSIT_C)}`)
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const priceSettings = {
     max: 10000.00,
