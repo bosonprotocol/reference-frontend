@@ -12,14 +12,10 @@ function FormPrice() {
 
   const price = sellerContext.state.offeringData[NAME.PRICE]
   const priceCurrency = sellerContext.state.offeringData[NAME.PRICE_C]
+  const priceSuffix = sellerContext.state.offeringData[NAME.PRICE_SUFFIX]
   const seller = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT]
-  const sellerCurrency = sellerContext.state.offeringData[NAME.PRICESELLER_DEPOSIT_C_C]
-  
-  const getCurrency = el => (
-    sellerContext.state.offeringData
-    [el.parentElement.parentElement
-    .getElementsByTagName('select')[0].name]
-  )
+  const sellerCurrency = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT_C]
+  const sellerSuffix = sellerContext.state.offeringData[NAME.SELLER_SUFFIX]
 
   const updateSuffix = (name, value) => {
     console.log(name, value)
@@ -28,31 +24,24 @@ function FormPrice() {
     }))
   }
 
+  // toggle 1 = remove placeholder; toggle 0 = add placeholder
   const focusHandler = (el, toggle) => {
     toggle ?
       el.parentElement.classList.add("focus") :
       el.parentElement.classList.remove("focus")
-
-    if(!toggle) {
-      let propertyName = el.parentElement.querySelector('.pseudo').attributes["name"].value
-      let valueToSet = el.value + ` ${getCurrency(el)}`
-
-      // updateSuffix(propertyName, valueToSet)
-    }
   }
 
+  // on change of currency, or value - update placeholder
   useEffect(() => {
     if(price && priceCurrency) updateSuffix(NAME.PRICE_SUFFIX, `${price} ${priceCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price, priceCurrency])
 
-  // useEffect(() => {
-  //   updateSuffix(
-  //     NAME.SELLER_SUFFIX,
-  //     `${getContext(NAME.SELLER_DEPOSIT)} ${getContext(NAME.SELLER_DEPOSIT_C)}`
-  //   )
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [getContext(NAME.SELLER_DEPOSIT), getContext(NAME.SELLER_DEPOSIT_C)])
+  useEffect(() => {
+    console.log(seller, sellerCurrency)
+    if(seller && sellerCurrency) updateSuffix(NAME.SELLER_SUFFIX, `${seller} ${sellerCurrency}`)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seller, sellerCurrency])
 
   const priceSettings = {
     max: 10000.00,
@@ -71,7 +60,7 @@ function FormPrice() {
           <div className="bind">
             <Currencies name={NAME.PRICE_C} />
             <div className="input relative">
-              <div name={NAME.PRICE_SUFFIX} className="pseudo">{sellerContext.state.offeringData[NAME.PRICE_SUFFIX]}</div>
+              <div name={NAME.PRICE_SUFFIX} className="pseudo">{priceSuffix}</div>
               <input
               onFocus={(e) => focusHandler(e.target, 1)}
               onBlur={(e) => focusHandler(e.target, 0)}
@@ -86,7 +75,7 @@ function FormPrice() {
           <div className="bind">
             <Currencies name={NAME.SELLER_DEPOSIT_C} />
             <div className="input relative">
-              <div name={NAME.SELLER_SUFFIX} className="pseudo">{sellerContext.state.offeringData[NAME.SELLER_SUFFIX]}</div>
+              <div name={NAME.SELLER_SUFFIX} className="pseudo">{sellerSuffix}</div>
               <input
               onFocus={(e) => focusHandler(e.target, 1)}
               onBlur={(e) => focusHandler(e.target, 0)}
