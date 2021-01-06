@@ -53,12 +53,13 @@ function FormPrice() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getContext(NAME.SELLER_DEPOSIT), getContext(NAME.SELLER_DEPOSIT_C)])
 
-  // useEffect(() => {
-  //   localStorage.getItem(NAME.SELLER_SUFFIX) ? 
-  //   updateSuffix(NAME.SELLER_SUFFIX, localStorage.getItem(NAME.SELLER_SUFFIX)) :
-  //   updateSuffix(NAME.SELLER_SUFFIX, `0 ${getContext(NAME.SELLER_DEPOSIT_C)}`)
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  useEffect(() => {
+    console.log(localStorage['offeringData'] && JSON.parse(localStorage['offeringData'])[NAME.SELLER_SUFFIX])
+    // localStorage['offeringData'] ? 
+    // updateSuffix(NAME.SELLER_SUFFIX, localStorage.getItem(NAME.SELLER_SUFFIX)) :
+    // updateSuffix(NAME.SELLER_SUFFIX, `0 ${getContext(NAME.SELLER_DEPOSIT_C)}`)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const priceSettings = {
     max: 10000.00,

@@ -24,8 +24,8 @@ import { NAME, CURRENCY } from "../helpers/Dictionary"
 const listenerType = 'input'
 
 const inputFallback = {
-  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
   [NAME.PRICE_C]: CURRENCY.ETH,
+  [NAME.SELLER_DEPOSIT_C]: CURRENCY.BSN,
 }
 
 function NewOffer() {
@@ -128,8 +128,14 @@ function NewOffer() {
   // check for backup
   useEffect(() => {
     // check for data
-    localStorage.getItem('offeringData') &&
-    sellerContext.dispatch(Seller.loadOfferingBackup())
+    localStorage.getItem('offeringData') ?
+    sellerContext.dispatch(Seller.loadOfferingBackup()) :
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.SELLER_DEPOSIT_C]: inputFallback[NAME.SELLER_DEPOSIT_C],
+      [NAME.PRICE_C]: inputFallback[NAME.PRICE_C],
+      [NAME.PRICE_SUFFIX]: `0 ${inputFallback[NAME.PRICE_C]}`,
+      [NAME.SELLER_SUFFIX]: `0 ${inputFallback[NAME.SELLER_DEPOSIT_C]}`,
+    }))
 
     // check for page
     localStorage.getItem('offeringProgress') &&
