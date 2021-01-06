@@ -16,6 +16,8 @@ function FormPrice() {
   const seller = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT]
   const sellerCurrency = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT_C]
   const sellerSuffix = sellerContext.state.offeringData[NAME.SELLER_SUFFIX]
+  const buyer = sellerContext.state.offeringData[NAME.BUYER_DEPOSIT]
+  const buyerSuffix = sellerContext.state.offeringData[NAME.BUYER_SUFFIX]
 
   const updateSuffix = (name, value) => {
     console.log(name, value)
@@ -37,6 +39,12 @@ function FormPrice() {
     updateSuffix(NAME.PRICE_SUFFIX, `${price === '' || price === undefined ? 0 : price} ${priceCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price, priceCurrency])
+
+  useEffect(() => {
+    if(priceCurrency !== undefined)
+    updateSuffix(NAME.BUYER_SUFFIX, `${buyer === '' || buyer === undefined ? 0 : buyer} ${priceCurrency}`)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [buyer, priceCurrency])
 
   useEffect(() => {
     if(sellerCurrency !== undefined)
@@ -111,7 +119,11 @@ function FormPrice() {
         <div className="field">
           <label htmlFor="offer-buyer-deposit">Buyer’s Deposit</label>
           <div className="input relative">
-            <input id="offer-buyer-deposit" type="number" name={NAME.BUYER_DEPOSIT} min="0.00"
+            <div name={NAME.PRICE_SUFFIX} className="pseudo">{buyerSuffix}</div>
+            <input id="offer-buyer-deposit"
+            onFocus={(e) => focusHandler(e.target, 1)}
+            onBlur={(e) => focusHandler(e.target, 0)}
+            type="number" name={NAME.BUYER_DEPOSIT} min="0.00"
             max={buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : 0} 
             step={generalSettings.step} />
             <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div>

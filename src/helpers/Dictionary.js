@@ -39,6 +39,7 @@ export const NAME = {
   SELLER_DEPOSIT: 'seller_deposit',
   SELLER_SUFFIX: 'seller_suffix',
   BUYER_DEPOSIT: 'buyer_deposit',
+  BUYER_SUFFIX: 'buyer_suffix',
   DATE_START: 'start_date',
   DATE_END: 'end_date'
 }
