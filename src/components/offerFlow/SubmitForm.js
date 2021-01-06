@@ -52,20 +52,17 @@ export default function SubmitForm(props) {
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-        console.log(dataArr);
 
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
-        console.log(txValue);
-
         let tx;
         let receipt;
+        let parsedEvent;
 
         try {
             tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
-            console.log(tx);
             receipt = await tx.wait();
-            console.log(receipt);
+            parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -75,15 +72,20 @@ export default function SubmitForm(props) {
             return;
         }
 
-        const parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
-        console.log('parsedEvent', parsedEvent)
         const authData = getAccountStoredInLocalStorage(account);
-        prepareVoucherFormData(parsedEvent, dataArr);
 
-        const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
-        console.log(voucherSetResponse);
-
-        await logVoucherSets();
+        try {
+            prepareVoucherFormData(parsedEvent, dataArr);
+            const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
+            console.log(voucherSetResponse);
+            await getVoucherSets();
+        } catch (e) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+        }
     }
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
@@ -116,13 +118,13 @@ export default function SubmitForm(props) {
         formData.append("fileToUpload", selectedFile, selectedFile['name']);
     }
 
-    async function logVoucherSets() {
+    async function getVoucherSets() {
         const allVoucherSets = await getAllVoucherSets();
         console.log(allVoucherSets);
     }
 
     useEffect(() => {
-        logVoucherSets()
+        getVoucherSets()
     }, []);
 
     return (
