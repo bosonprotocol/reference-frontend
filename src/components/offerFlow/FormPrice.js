@@ -19,36 +19,44 @@ function FormPrice() {
   const buyer = sellerContext.state.offeringData[NAME.BUYER_DEPOSIT]
   const buyerSuffix = sellerContext.state.offeringData[NAME.BUYER_SUFFIX]
 
-  const updateSuffix = (name, value) => {
-    console.log(name, value)
+  const updateData = (name, value, trigger) => {
     sellerContext.dispatch(Seller.updateOfferingData({
       [name]: value
     }))
+
+    if(trigger) {
+      trigger.value = value
+    }
   }
 
-  // toggle 1 = remove placeholder; toggle 0 = add placeholder
   const focusHandler = (el, toggle) => {
-    toggle ?
-      el.parentElement.classList.add("focus") :
+    // focus
+    if(toggle) {
+      el.parentElement.classList.add("focus")
+    } 
+    // blur
+    else {
       el.parentElement.classList.remove("focus")
+      if(el.value > el.max) updateData(el.name, el.max, el)
+    }
   }
 
   // on change of currency, or value - update placeholder
   useEffect(() => {
     if(priceCurrency !== undefined)
-    updateSuffix(NAME.PRICE_SUFFIX, `${price === '' || price === undefined ? 0 : price} ${priceCurrency}`)
+    updateData(NAME.PRICE_SUFFIX, `${price === '' || price === undefined ? 0 : price} ${priceCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price, priceCurrency])
 
   useEffect(() => {
     if(priceCurrency !== undefined)
-    updateSuffix(NAME.BUYER_SUFFIX, `${buyer === '' || buyer === undefined ? 0 : buyer} ${priceCurrency}`)
+    updateData(NAME.BUYER_SUFFIX, `${buyer === '' || buyer === undefined ? 0 : buyer} ${priceCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buyer, priceCurrency])
 
   useEffect(() => {
     if(sellerCurrency !== undefined)
-      updateSuffix(NAME.SELLER_SUFFIX, `${seller === '' || seller === undefined ? 0 : seller} ${sellerCurrency}`)
+      updateData(NAME.SELLER_SUFFIX, `${seller === '' || seller === undefined ? 0 : seller} ${sellerCurrency}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seller, sellerCurrency])
 
