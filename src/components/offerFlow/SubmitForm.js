@@ -70,7 +70,6 @@ export default function SubmitForm(props) {
     }
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
-        console.log('prepareVoucher', parsedEvent)
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 

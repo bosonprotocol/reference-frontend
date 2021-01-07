@@ -82,6 +82,7 @@ function NewOffer() {
         input.parentElement.getElementsByClassName('icons')[0].classList.add(`${input.value}`)
       }, 100)
     }
+
     // input.classList.add(input.value)
     sellerContext.dispatch(Seller.updateOfferingData({
       [input.name]: input.value
