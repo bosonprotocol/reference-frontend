@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext, useState } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 
 import { SellerContext, Seller } from "../../contexts/Seller"
 
@@ -10,7 +10,7 @@ import { NAME } from "../../helpers/Dictionary"
 
 
 const maxSize =  ( 3 ) * (1000 * 1000) // in mb
-const acceptedImageFormats = ['image/gif', 'image/jpeg', 'image/png']
+const acceptedImageFormats = ['image/jpeg', 'image/png']
 
 const Image = {
   name: null,

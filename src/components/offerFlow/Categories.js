@@ -28,7 +28,6 @@ function Categories(props) {
   useEffect(() => {
     let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
     let element = categoryList.current?.querySelector(`[data-category="${fetchedBackup?.category}"]`)
-    console.log(element)
     
     if(element) {
       element.style.transition = 'none'

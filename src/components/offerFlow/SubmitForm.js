@@ -47,7 +47,7 @@ export default function SubmitForm(props) {
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-        console.log(dataArr);
+
 
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
@@ -95,8 +95,11 @@ export default function SubmitForm(props) {
     }
 
     function appendFilesToFormData() {
-        console.log(image)
-        formData.append("fileToUpload", image, image['name']);
+        fetch(image)
+        .then(res => res.blob())
+        .then(res =>
+            formData.append("fileToUpload", res, res['name'])
+        )
     }
 
     async function logVoucherSets() {

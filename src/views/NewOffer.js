@@ -25,7 +25,7 @@ const listenerType = 'input'
 
 const inputFallback = {
   [NAME.PRICE_C]: CURRENCY.ETH,
-  [NAME.SELLER_DEPOSIT_C]: CURRENCY.BSN,
+  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
 }
 
 function NewOffer() {
@@ -105,7 +105,7 @@ function NewOffer() {
         currencyList.map(currency => 
           input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
         )
-        console.log(sellerContext.state.offeringData)
+
         input.parentElement.getElementsByClassName('icons')[0].classList.add(assign)
       } 
 
@@ -141,9 +141,9 @@ function NewOffer() {
   }, [])
 
   // show state on each change
-  useEffect(() => {
-    console.log('after', sellerContext.state.offeringData)
-  }, [sellerContext.state.offeringData])
+  // useEffect(() => {
+  //   console.log('after', sellerContext.state.offeringData)
+  // }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">
