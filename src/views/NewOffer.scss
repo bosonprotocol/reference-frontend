@@ -164,6 +164,40 @@
             color: transparent;
           }
 
+          .clear-field {
+            position: absolute;
+            top: 50%;
+            right: 11px;
+            width: 22px;
+            transform: translateY(-50%);
+            height: 22px;
+            background: rgba(0, 167, 255, 0.15);
+            border-radius: 48px;
+            cursor: pointer;
+            opacity: 0;
+            transition: 0.15s ease-in-out;
+
+            &::before,
+            &::after {
+              content: '';
+              position: absolute;
+              width: 2px;
+              height: 12px;
+              top: 5px;
+              left: 10px;
+              background: #4DC0FD;
+              transform: rotate(-45deg);
+              border-radius: 20px;
+            }
+            &::after {
+              transform: rotate(45deg);
+            }
+
+            &.active {
+              opacity: 1;
+            }
+          }
+
           &.focus {
             .pseudo {
               opacity: 0;
