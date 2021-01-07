@@ -28,6 +28,7 @@ export const ROUTE = {
 export const NAME = {
   CATEGORY: 'category',
   IMAGE: 'image',
+  IMAGE_STRING: 'image_string',
   TITLE: 'title',
   QUANTITY: 'quantity',
   CONDITION: 'condition',

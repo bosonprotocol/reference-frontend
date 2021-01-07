@@ -25,10 +25,8 @@ export default function SubmitForm(props) {
         category,
         description,
         condition,
-
+        image
     } = sellerContext.state.offeringData
-
-    const { selectedFile } = props
 
     const { library, account } = useWeb3React();
 
@@ -97,8 +95,8 @@ export default function SubmitForm(props) {
     }
 
     function appendFilesToFormData() {
-        console.log(selectedFile)
-        formData.append("fileToUpload", selectedFile, selectedFile['name']);
+        console.log(image)
+        formData.append("fileToUpload", image, image['name']);
     }
 
     async function logVoucherSets() {

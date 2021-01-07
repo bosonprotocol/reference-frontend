@@ -31,25 +31,19 @@ const inputFallback = {
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
-  const [imageUploaded, setImageUploaded] = useState('')
   const [init, triggerInit] = useState(1)
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
-  const [selectedFile, setSelectedFile] = useState('');
 
   const screens = [
     <Categories listenerType={listenerType} />,
-    <FormUploadPhoto 
-      imageUploaded={imageUploaded} 
-      setImageUploaded={setImageUploaded} 
-      setSelectedFile={setSelectedFile}
-      />,
+    <FormUploadPhoto />,
     <FormGeneral />,
     <FormDescription />,
     <FormPrice />,
     <FormDate />,
-    <FormSummary imageUploaded={imageUploaded} />,
+    <FormSummary />,
   ]
 
   const lastScreenBoolean = activeScreen === screens.length - 1
@@ -149,7 +143,7 @@ function NewOffer() {
   // show state on each change
   useEffect(() => {
     console.log('after', sellerContext.state.offeringData)
-  }, [sellerContext.state.offeringData, selectedFile])
+  }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">
@@ -180,7 +174,6 @@ function NewOffer() {
           resetOfferingData={resetOfferingData}
           activeScreen={activeScreen}
           setActiveScreen={setActiveScreen}
-          selectedFile={selectedFile}
         />
       </div>
     </section>
