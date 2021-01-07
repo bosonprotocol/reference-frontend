@@ -21,17 +21,20 @@ import { WalletContext, WalletInitialState, WalletReducer } from "./contexts/Wal
 import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
 import { SellerContext, SellerInitialState, SellerReducer } from "./contexts/Seller"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
+import { ModalContext, ModalInitialState, ModalReducer } from "./contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
 import { network } from "./connectors";
 
 import { ROUTE } from "./helpers/Dictionary"
+import ContextModal from "./components/shared/ContextModal";
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
     const [buyerState, buyerDispatch] = useReducer(BuyerReducer, BuyerInitialState);
     const [sellerState, sellerDispatch] = useReducer(SellerReducer, SellerInitialState);
     const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
+    const [modalState, modalDispatch] = useReducer(ModalReducer, ModalInitialState);
 
     const redeemContextValue = {
       state: buyerState,
@@ -41,6 +44,11 @@ function App() {
     const sellerContextValue = {
       state: sellerState,
       dispatch: sellerDispatch
+    }
+
+    const modalContextValue = {
+        state: modalState,
+        dispatch: modalDispatch
     }
 
     const globalContextValue = {
@@ -72,6 +80,7 @@ function App() {
     return (
     // dark|light; (default: dark)
     <div className="emulate-mobile theme">
+        <ModalContext.Provider value={modalContextValue}>
         <GlobalContext.Provider value={globalContextValue}>
         <BuyerContext.Provider value={redeemContextValue}>
         <SellerContext.Provider value={sellerContextValue}>
@@ -86,10 +95,12 @@ function App() {
                 <Route path={ROUTE.NewOffer} component={NewOffer}/>
             </Switch>
             </Router>
+            <ContextModal/>
         </WalletContext.Provider>
         </SellerContext.Provider>
         </BuyerContext.Provider>
         </GlobalContext.Provider>
+        </ModalContext.Provider>
     </div>
     );
 }

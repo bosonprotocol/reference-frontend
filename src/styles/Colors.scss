@@ -5,8 +5,8 @@ $white-transparent: rgba($white, 0.3);
 
 // general colors
 $text-1: $white;
-$text-2: #C1C7CE; 
-$text-3 : #4C6581;
+$text-2: #C1C7CE;
+$text-3: #4C6581;
 $text-semi: #5D6F84;
 $text-dark: #1C2835;
 
@@ -16,18 +16,21 @@ $notification: #FF457D;
 $color-background-primary: #181A29; // Onboarding, Offer Voucher
 $color-background-secondary: #1C2835;
 
+$modal-background-color: #1D242C;
+$color-error: #FF4539;
+
 // Onboarding
 $dots-1: $white-transparent;
 $labels-background: #243343;
 $labels-accent-1: #77F2BC;
 $labels-accent-2: #4DC0FD;
 
-// Offer Voucher 
+// Offer Voucher
 $color-placeholder-2: #32383E;
-$control-background: #132C3D; 
+$control-background: #132C3D;
 $control-color: #3C8FBD;
 $label-background: rgba(#00A7FF, 0.15);
 $label-color: #4DC0FD;
 $input-background: rgba($white, 0.03);
 $input-color: $white;
-$dots-2: #C4C4C4; 
+$dots-2: #C4C4C4;
