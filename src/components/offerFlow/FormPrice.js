@@ -10,58 +10,91 @@ import { NAME, CURRENCY } from "../../helpers/Dictionary"
 function FormPrice() {
   const sellerContext = useContext(SellerContext)
 
-  const price = sellerContext.state.offeringData[NAME.PRICE]
-  const priceCurrency = sellerContext.state.offeringData[NAME.PRICE_C]
-  const priceSuffix = sellerContext.state.offeringData[NAME.PRICE_SUFFIX]
-  const seller = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT]
-  const sellerCurrency = sellerContext.state.offeringData[NAME.SELLER_DEPOSIT_C]
-  const sellerSuffix = sellerContext.state.offeringData[NAME.SELLER_SUFFIX]
-  const buyer = sellerContext.state.offeringData[NAME.BUYER_DEPOSIT]
-  const buyerSuffix = sellerContext.state.offeringData[NAME.BUYER_SUFFIX]
+  const getData = name => sellerContext.state.offeringData[name]
 
-  const updateData = (name, value, trigger) => {
+  const price = getData(NAME.PRICE)
+  const priceCurrency = getData(NAME.PRICE_C)
+  const priceSuffix = getData(NAME.PRICE_SUFFIX)
+  const seller = getData(NAME.SELLER_DEPOSIT)
+  const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+  const sellerSuffix = getData(NAME.SELLER_SUFFIX)
+  const buyer = getData(NAME.BUYER_DEPOSIT)
+  const buyerSuffix = getData(NAME.BUYER_SUFFIX)
+
+  const updateData = (name, value, curr, max) => {
+    let res = value > max ? max : value
     sellerContext.dispatch(Seller.updateOfferingData({
-      [name]: value
+      [name]: `${res === '' || res === undefined ? 0 : res} ${curr}`,
     }))
-
-    if(trigger) {
-      trigger.value = value
-    }
   }
 
   const focusHandler = (el, toggle) => {
     // focus
     if(toggle) {
       el.parentElement.classList.add("focus")
+
+      if(el.value > el.max) el.value = el.max
     } 
     // blur
     else {
       el.parentElement.classList.remove("focus")
-      if(el.value > el.max) updateData(el.name, el.max, el)
+      // if(el.value > el.max) updateData(el.name, el.max, el)
     }
   }
 
   // on change of currency, or value - update placeholder
   useEffect(() => {
     if(priceCurrency !== undefined)
-    updateData(NAME.PRICE_SUFFIX, `${price === '' || price === undefined ? 0 : price} ${priceCurrency}`)
+    updateData(NAME.PRICE_SUFFIX, price === '' || price === undefined ? 0 : price, priceCurrency, priceSettings[priceCurrency].max)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price, priceCurrency])
 
   useEffect(() => {
     if(priceCurrency !== undefined)
-    updateData(NAME.BUYER_SUFFIX, `${buyer === '' || buyer === undefined ? 0 : buyer} ${priceCurrency}`)
+    updateData(NAME.BUYER_SUFFIX, buyer === '' || buyer === undefined ? 0 : buyer, priceCurrency, buyerSettings[priceCurrency].max)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buyer, priceCurrency])
 
   useEffect(() => {
     if(sellerCurrency !== undefined)
-      updateData(NAME.SELLER_SUFFIX, `${seller === '' || seller === undefined ? 0 : seller} ${sellerCurrency}`)
+      updateData(NAME.SELLER_SUFFIX, seller === '' || seller === undefined ? 0 : seller, sellerCurrency, sellerSettings[sellerCurrency].max)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seller, sellerCurrency])
 
+  useEffect(() => {
+    let price = document.querySelector(`[name="${NAME.PRICE}"]`).value
+    let priceMax = priceSettings[priceCurrency] && priceSettings[priceCurrency].max
+
+    let buyer = document.querySelector(`[name="${NAME.BUYER_DEPOSIT}"]`).value
+    let buyerMax = buyerSettings[priceCurrency] && buyerSettings[priceCurrency].max
+    if(price !== undefined && priceMax !== undefined && buyer !== undefined && buyerMax !== undefined) sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.PRICE]: price > priceMax ? priceMax : price,
+      [NAME.BUYER_DEPOSIT]: buyer > buyerMax ? buyerMax : buyer,
+    }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [priceCurrency])
+
+  useEffect(() => {
+    let seller = document.querySelector(`[name="${NAME.SELLER_DEPOSIT}"]`).value
+    let sellerMax = sellerSettings[sellerCurrency] && sellerSettings[sellerCurrency].max
+
+    if(seller !== undefined && sellerMax !== undefined) sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.SELLER_DEPOSIT]: seller > sellerMax ? sellerMax : seller,
+    }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sellerCurrency])
+
   const generalSettings = {
     step: 0.01,
+  }
+
+  const priceSettings = {
+    [CURRENCY.ETH]: {
+      max: 2
+    },
+    [CURRENCY.BSN]: {
+      max: 1.8
+    }
   }
 
   const sellerSettings = {
@@ -99,8 +132,9 @@ function FormPrice() {
               onFocus={(e) => focusHandler(e.target, 1)}
               onBlur={(e) => focusHandler(e.target, 0)}
               id="offer-price" type="number" name={NAME.PRICE} min="0.00"
-              max={buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : 0}
+              max={priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : 0}
               step={generalSettings.step} />
+              <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
             </div>
           </div>
         </div>
