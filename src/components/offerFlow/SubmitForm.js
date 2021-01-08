@@ -1,16 +1,24 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { createVoucherSet, getAllVoucherSets } from "../../hooks/api";
 import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 
+import Loading from "./Loading"
+
+import { Redirect } from "react-router-dom"
+
 import { SellerContext } from "../../contexts/Seller"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 
+import { ROUTE } from "../../helpers/Dictionary"
+
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
+    const [redirect, setRedirect] = useState(0)
+    const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
     const location = useLocation();
 
@@ -28,6 +36,8 @@ export default function SubmitForm(props) {
         image
     } = sellerContext.state.offeringData
 
+    const { resetOfferingData } = props
+
     const { library, account } = useWeb3React();
 
     const cashierContract = useCashierContract();
@@ -38,6 +48,8 @@ export default function SubmitForm(props) {
             alert("Connect your wallet");
             return;
         }
+
+        setLoading(1)
 
         let dataArr = [
             new Date(start_date) / 1000,
@@ -65,6 +77,13 @@ export default function SubmitForm(props) {
 
         const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
         console.log(voucherSetResponse);
+
+        setLoading(0)
+
+        if(voucherSetResponse.success) {
+            resetOfferingData()
+            setRedirect(1)
+        }
 
         await logVoucherSets();
     }
@@ -111,11 +130,18 @@ export default function SubmitForm(props) {
     }, []);
 
     return (
+    <>
+        {loading ? <Loading /> : null}
+        {
+        !redirect ?
         <ContractInteractionButton
             className="button offer primary"
             handleClick={ onCreateVoucherSet }
             label="OFFER"
             sourcePath={ location.pathname }
         />
+        : <Redirect exact to={ROUTE.Home} />
+        }
+    </>
     );
 }

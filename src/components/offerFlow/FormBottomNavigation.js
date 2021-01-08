@@ -12,7 +12,7 @@ function FormBottomNavigation(props) {
         disabled={!localStorage.getItem('offeringData') ? true : false} >
         START OVER
       </div>
-      <SubmitForm />
+      <SubmitForm resetOfferingData={resetOfferingData} />
       <div className="button primary" role="button"
         onClick={() => setActiveScreen(activeScreen + 1)}
         disabled={lastScreenBoolean ? true : false} >
