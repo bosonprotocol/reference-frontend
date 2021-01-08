@@ -9,21 +9,44 @@ import "./Header.scss"
 import { IconList, IconQR } from "../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
 import { shortenAddress } from "../../utils";
+import { injected, walletconnect } from "../../connectors";
+import MetaMaskLogo from "../../images/metamask.png";
+import WalletConnectLogo from "../../images/walletconnect.svg";
 
 function Header() {
     const globalContext = useContext(GlobalContext);
-    const { account } = useWeb3React();
+    const { account, connector } = useWeb3React();
+
+    function getName() {
+        if (connector === injected) {
+            return "MetaMask";
+        } else if (connector === walletconnect) {
+            return "WalletConnect";
+        }
+    }
 
     return (
         <header className="flex jc-sb ai-center">
-            <h1><img src="images/boson-logo-nav.png" alt="Boson Protocol Logo"/></h1>
-            <nav className="flex ai-center">
+            {/*<h1><img src="images/boson-logo-nav.png" alt="Boson Protocol Logo"/></h1>*/ }
+            <nav className="flex jc-sb ai-center">
                 <Link to="/connect">
-                    <div className="button primary"
-                         role="button">{ account ? shortenAddress(account) : 'Connect' }</div>
+                    { account ? <div className="button connected-account-button"
+                                     role="button">
+                            <img
+                                className="provider-logo"
+                                src={ connector === injected ? MetaMaskLogo : connector === walletconnect ? WalletConnectLogo : null }
+                                alt="Connected account"/>
+                            <div className="active-wallet-indicator">
+                                <img src="images/active-wallet.png"
+                                     alt="Active wallet"/>
+                                <div/>
+                            </div>
+                            <span>{ shortenAddress(account) }</span></div> :
+                        <div className="button linear"
+                             role="button">Connect to a wallet</div> }
                 </Link>
-                <div className="search flex center" role="button"><IconList/>
-                    <p>Search</p></div>
+                {/*<div className="search flex center" role="button"><IconList/>*/ }
+                {/*    <p>Search</p></div>*/ }
                 <div className="qr-icon" role="button"
                      onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR/></div>
             </nav>

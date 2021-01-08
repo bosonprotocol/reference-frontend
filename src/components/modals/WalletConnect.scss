@@ -2,35 +2,42 @@
 
 .account-title {
   text-align: center;
-  padding: 50px;
+  font-family: $font-third;
+  padding: 20px;
 }
 
 .wallet-list-item {
   display: flex;
-  justify-content: space-between;
-  padding: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  height: 54px;
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 10px;
   margin: 15px;
 
-  &:hover {
-    border: 1px solid gray;
+  &.active-connector {
+    //border: 1px solid $accent;
+    //border-radius: 10px;
+    //margin: 15px;
   }
 
-  &.active-connector {
-    border: 1px solid $accent;
-    border-radius: 10px;
-    margin: 15px;
+  .list-item-option {
+    padding: 16px 40px;
+    display: flex;
+
+    .active-wallet-indicator {
+      margin-right: 8px;
+    }
   }
 
   .wallet-list-item-image-holder {
-    height: 40px;
-    width: 40px;
+    height: 28px;
+    width: 28px;
+    padding: 12px 20px;
 
     img {
-      height: 35px;
-      width: 35px;
+      height: 28px;
+      width: 28px;
     }
   }
 }
