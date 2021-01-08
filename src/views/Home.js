@@ -17,15 +17,16 @@ import QRCodeScanner from "../components/shared/QRCodeScanner"
 import { animateEl, animateDel } from "../helpers/AnimationMap"
 import { productListSettings, cardListSettings } from "../helpers/SliderSettings"
 
-import { productBlocks, cardBlocks } from "../PlaceholderAPI"
+import { cardBlocks } from "../PlaceholderAPI"
 
 import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
 
-// import { getAllVoucherSets } from "../hooks/api";
+import { getAllVoucherSets } from "../hooks/api";
+import * as ethers from "ethers";
 
 function Home() {
-    // const [productBlockss, setProductBlockss] = useState([]);
+    const [productBlocks, setProductBlocks] = useState([]);
     const homepage = useRef()
     const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
     const screensRef = useRef()
@@ -43,43 +44,41 @@ function Home() {
         if (parseInt(openProductView))
             globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
 
-        // async function getVoucherSets() {
-        //     const allVoucherSets = await getAllVoucherSets();
-        //     // prepareVoucherSetData(allVoucherSets)
-        // }
-        //
-        // getVoucherSets()
+        async function getVoucherSets() {
+            const allVoucherSets = await getAllVoucherSets();
+            prepareVoucherSetData(allVoucherSets)
+        }
+
+        getVoucherSets()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // const prepareVoucherSetData = (rawVoucherSets) => {
-    //     if (!rawVoucherSets) {
-    //         setProductBlockss([])
-    //         return;
-    //     }
-    //
-    //     let parsedVoucherSets = [];
-    //
-    //     for (const voucherSet of rawVoucherSets.voucherSupplies) {
-    //         console.log(voucherSet);
-    //
-    //         let parsedVoucherSet = {
-    //             id: voucherSet._id,
-    //             title: voucherSet.title,
-    //             image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-    //             price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-    //             deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal)
-    //         };
-    //
-    //         console.log(parsedVoucherSet);
-    //
-    //         // parsedVoucherSets.push(parsedVoucherSet)
-    //     }
-    //
-    //     // setProductBlocks(parsedVoucherSets)
-    //
-    // };
+    const prepareVoucherSetData = (rawVoucherSets) => {
+        if (!rawVoucherSets) {
+            setProductBlocks([])
+            return;
+        }
+
+        let parsedVoucherSets = [];
+
+        for (const voucherSet of rawVoucherSets.voucherSupplies) {
+            let parsedVoucherSet = {
+                id: voucherSet._id,
+                title: voucherSet.title,
+                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal)
+            };
+
+            parsedVoucherSets.push(parsedVoucherSet)
+        }
+
+        console.log(parsedVoucherSets);
+        productListSettings.infinite = parsedVoucherSets.length > 4;
+        setProductBlocks(parsedVoucherSets)
+
+    };
 
     useEffect(() => {
         setTimeout(() => {
