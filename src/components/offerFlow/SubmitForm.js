@@ -5,21 +5,24 @@ import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 
-import Loading from "./Loading"
+// import Loading from "./Loading"
 
 import { Redirect } from "react-router-dom"
 
 import { SellerContext } from "../../contexts/Seller"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
+// import { ModalContext, ModalResolver } from "../../contexts/Modal";
+// import { MODAL_TYPES } from "../../helpers/Dictionary";
 
 import { ROUTE } from "../../helpers/Dictionary"
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const [redirect, setRedirect] = useState(0)
-    const [loading, setLoading] = useState(0)
+    // const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
+    // const modalContext = useContext(ModalContext);
     const location = useLocation();
 
     const {
@@ -49,7 +52,7 @@ export default function SubmitForm(props) {
             return;
         }
 
-        setLoading(1)
+        // setLoading(1)
 
         let dataArr = [
             new Date(start_date) / 1000,
@@ -60,32 +63,47 @@ export default function SubmitForm(props) {
             parseInt(quantity)
         ];
 
-
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
-        console.log(txValue);
+        let tx;
+        let receipt;
+        let parsedEvent;
 
-        const tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
-        console.log(tx);
-        const receipt = await tx.wait();
-        console.log(receipt);
-
-        const parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
-        console.log('parsedEvent', parsedEvent)
-        const authData = getAccountStoredInLocalStorage(account);
-        prepareVoucherFormData(parsedEvent, dataArr);
-
-        const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
-        console.log(voucherSetResponse);
-
-        setLoading(0)
-
-        if(voucherSetResponse.success) {
-            resetOfferingData()
-            setRedirect(1)
+        try {
+            tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
+            receipt = await tx.wait();
+            parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
+        } catch (e) {
+            // modalContext.dispatch(ModalResolver.showModal({
+            //     show: true,
+            //     type: MODAL_TYPES.GENERIC_ERROR,
+            //     content: e.message
+            // }));
+            return;
         }
 
-        await logVoucherSets();
+        const authData = getAccountStoredInLocalStorage(account);
+
+        try {
+            prepareVoucherFormData(parsedEvent, dataArr);
+            const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
+            console.log(voucherSetResponse);
+
+            // setLoading(0)
+
+            if(voucherSetResponse.success) {
+                resetOfferingData()
+                setRedirect(1)
+            }
+            
+            await getVoucherSets();
+        } catch (e) {
+            // modalContext.dispatch(ModalResolver.showModal({
+            //     show: true,
+            //     type: MODAL_TYPES.GENERIC_ERROR,
+            //     content: e.message
+            // }));
+        }
     }
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
@@ -120,18 +138,18 @@ export default function SubmitForm(props) {
         )
     }
 
-    async function logVoucherSets() {
+    async function getVoucherSets() {
         const allVoucherSets = await getAllVoucherSets();
         console.log(allVoucherSets);
     }
 
     useEffect(() => {
-        logVoucherSets()
+        getVoucherSets()
     }, []);
 
     return (
     <>
-        {loading ? <Loading /> : null}
+        {/* {loading ? <Loading /> : null} */}
         {
         !redirect ?
         <ContractInteractionButton
