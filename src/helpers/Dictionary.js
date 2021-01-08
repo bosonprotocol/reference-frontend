@@ -35,9 +35,12 @@ export const NAME = {
     DESCRIPTION: 'description',
     PRICE_C: 'price_currency',
     PRICE: 'price',
+    PRICE_SUFFIX: 'price_suffix',
     SELLER_DEPOSIT_C: 'seller_deposit_currency',
     SELLER_DEPOSIT: 'seller_deposit',
+    SELLER_SUFFIX: 'seller_suffix',
     BUYER_DEPOSIT: 'buyer_deposit',
+    BUYER_SUFFIX: 'buyer_suffix',
     DATE_START: 'start_date',
     DATE_END: 'end_date'
 }
@@ -45,3 +48,8 @@ export const NAME = {
 export const MODAL_TYPES = {
     GENERIC_ERROR: 'generic_error'
 };
+
+export const CURRENCY = {
+    ETH: 'ETH',
+    BSN: 'BSN',
+}

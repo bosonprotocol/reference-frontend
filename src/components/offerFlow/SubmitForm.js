@@ -1,9 +1,13 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { createVoucherSet, getAllVoucherSets } from "../../hooks/api";
 import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+
+// import Loading from "./Loading"
+
+import { Redirect } from "react-router-dom"
 
 import { SellerContext } from "../../contexts/Seller"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
@@ -11,8 +15,12 @@ import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES } from "../../helpers/Dictionary";
 
+import { ROUTE } from "../../helpers/Dictionary"
+
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
+    const [redirect, setRedirect] = useState(0)
+    // const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
     const modalContext = useContext(ModalContext);
     const location = useLocation();
@@ -28,10 +36,10 @@ export default function SubmitForm(props) {
         category,
         description,
         condition,
-
+        image
     } = sellerContext.state.offeringData
 
-    const { selectedFile } = props
+    const { resetOfferingData } = props
 
     const { library, account } = useWeb3React();
 
@@ -43,6 +51,8 @@ export default function SubmitForm(props) {
             alert("Connect your wallet");
             return;
         }
+
+        // setLoading(1)
 
         let dataArr = [
             new Date(start_date) / 1000,
@@ -78,6 +88,14 @@ export default function SubmitForm(props) {
             prepareVoucherFormData(parsedEvent, dataArr);
             const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
             console.log(voucherSetResponse);
+
+            // setLoading(0)
+
+            if(voucherSetResponse.success) {
+                resetOfferingData()
+                setRedirect(1)
+            }
+            
             await getVoucherSets();
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -89,7 +107,6 @@ export default function SubmitForm(props) {
     }
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
-        console.log('prepareVoucher', parsedEvent)
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 
@@ -114,8 +131,11 @@ export default function SubmitForm(props) {
     }
 
     function appendFilesToFormData() {
-        console.log(selectedFile)
-        formData.append("fileToUpload", selectedFile, selectedFile['name']);
+        fetch(image)
+        .then(res => res.blob())
+        .then(res =>
+            formData.append("fileToUpload", res, res['name'])
+        )
     }
 
     async function getVoucherSets() {
@@ -128,11 +148,18 @@ export default function SubmitForm(props) {
     }, []);
 
     return (
+    <>
+        {/* {loading ? <Loading /> : null} */}
+        {
+        !redirect ?
         <ContractInteractionButton
             className="button offer primary"
             handleClick={ onCreateVoucherSet }
             label="OFFER"
             sourcePath={ location.pathname }
         />
+        : <Redirect exact to={ROUTE.Home} />
+        }
+    </>
     );
 }
