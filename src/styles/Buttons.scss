@@ -26,6 +26,14 @@
     }
   }
 
+  &.linear {
+    text-transform: inherit;
+    text-decoration: inherit;
+    padding: 13px 32px;
+    background: linear-gradient(0.17turn, #4DC0FD, #55FFAA);
+    color: white;
+  }
+
   &.static {
     background: #132C3D;
     color: rgba(#3C8FBD, 0.7);
@@ -33,9 +41,32 @@
     &:hover {
       background-color: #18384f;
     }
-  
+
     &:active {
       background-color: #112736;
+    }
+  }
+
+  &.connected-account-button {
+    display: flex;
+    background-color: #192028;
+    text-transform: inherit;
+    text-decoration: inherit;
+    font-weight: normal;
+
+    .provider-logo {
+      height: 22px;
+      width: 32px;
+      padding-right: 10px;
+    }
+
+    .active-wallet-indicator {
+      height: 8px;
+      padding: 0 5px;
+    }
+
+    span {
+      color: #8798AB;
     }
   }
 
@@ -75,7 +106,7 @@
     &:hover {
       background-color: #18384f;
     }
-  
+
     &:active {
       background-color: #112736;
     }

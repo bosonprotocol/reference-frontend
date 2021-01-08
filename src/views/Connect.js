@@ -9,10 +9,14 @@ import { useEagerConnect } from "../hooks";
 import { NetworkContextName } from "../constants";
 import { network } from "../connectors";
 // import { shortenAddress } from "../utils";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+import './Connect.scss';
+import { Arrow } from "../components/shared/Icons";
 
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
+    const history = useHistory();
     const context = useWeb3React();
     const {
         account,
@@ -45,19 +49,25 @@ export default function Connect() {
         }
     }, []);
 
+    function goToHomeScreen() {
+        history.push("/");
+    }
+
     return (
-        <div className="">
-            <div className="">
-                <Link to="/">
-                    <div className="button primary"
-                         role="button">Home
+        <section className="connect">
+            <div className="container l flex column jc-sb">
+                <div className="bind column">
+                    <div className="top-navigation flex ai-center">
+                        <div className="button square" role="button" onClick={ goToHomeScreen }>
+                            <Arrow/>
+                        </div>
                     </div>
-                </Link>
-                <div className="">
-                    { getWalletTitle({ account, walletView, setWalletView }) }
+                    <div className="content">
+                        { getWalletTitle({ account, walletView, setWalletView }) }
+                        <WalletConnect walletView={ walletView } setWalletView={ setWalletView }/>
+                    </div>
                 </div>
-                <WalletConnect walletView={ walletView } setWalletView={ setWalletView }/>
             </div>
-        </div>
+        </section>
     );
 }
