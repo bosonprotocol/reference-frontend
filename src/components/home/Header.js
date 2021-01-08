@@ -6,7 +6,7 @@ import { GlobalContext, Action } from '../../contexts/Global'
 
 import "./Header.scss"
 
-import { IconList, IconQR } from "../shared/Icons"
+import { IconQR } from "../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
 import { shortenAddress } from "../../utils";
 import { injected, walletconnect } from "../../connectors";
@@ -16,14 +16,6 @@ import WalletConnectLogo from "../../images/walletconnect.svg";
 function Header() {
     const globalContext = useContext(GlobalContext);
     const { account, connector } = useWeb3React();
-
-    function getName() {
-        if (connector === injected) {
-            return "MetaMask";
-        } else if (connector === walletconnect) {
-            return "WalletConnect";
-        }
-    }
 
     return (
         <header className="flex jc-sb ai-center">
