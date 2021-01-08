@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { createVoucherSet, getAllVoucherSets } from "../../hooks/api";
 import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
@@ -13,9 +13,7 @@ import { SellerContext } from "../../contexts/Seller"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
-import { MODAL_TYPES } from "../../helpers/Dictionary";
-
-import { ROUTE } from "../../helpers/Dictionary"
+import { MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
@@ -36,10 +34,10 @@ export default function SubmitForm(props) {
         category,
         description,
         condition,
-        image
+
     } = sellerContext.state.offeringData
 
-    const { resetOfferingData } = props
+    const { selectedFile } = props
 
     const { library, account } = useWeb3React();
 
@@ -53,6 +51,7 @@ export default function SubmitForm(props) {
         }
 
         setLoading(1)
+
 
         let dataArr = [
             new Date(start_date) / 1000,
@@ -107,6 +106,7 @@ export default function SubmitForm(props) {
     }
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
+        console.log('prepareVoucher', parsedEvent)
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 
@@ -131,11 +131,8 @@ export default function SubmitForm(props) {
     }
 
     function appendFilesToFormData() {
-        fetch(image)
-        .then(res => res.blob())
-        .then(res =>
-            formData.append("fileToUpload", res, res['name'])
-        )
+        console.log(selectedFile)
+        formData.append("fileToUpload", selectedFile, selectedFile['name']);
     }
 
     async function getVoucherSets() {
@@ -158,8 +155,5 @@ export default function SubmitForm(props) {
             label="OFFER"
             sourcePath={ location.pathname }
         />
-        : <Redirect exact to={ROUTE.Home} />
-        }
-    </>
     );
 }
