@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
+
+import { SellerContext, Seller } from "../../contexts/Seller"
 
 import "./FormUploadPhoto.scss"
 
 import { IconPlus } from "../shared/Icons"
 
-const maxSize =  2 * (1000 * 1000) // in mb
+import { NAME } from "../../helpers/Dictionary"
 
-const acceptedImageFormats = ['image/gif', 'image/jpeg', 'image/png']
+
+const maxSize =  ( 3 ) * (1000 * 1000) // in mb
+const acceptedImageFormats = ['image/jpeg', 'image/png']
 
 const Image = {
   name: null,
@@ -16,20 +20,17 @@ const Image = {
 }
 
 function UploadPhoto(props) {
-  const { imageUploaded, setImageUploaded, setSelectedFile } = props
+  const sellerContext = useContext(SellerContext)
   const thumbnailRef = useRef()
-  const [imageData, setImageData] = useState({
-    name: null,
-    error: {
-      size: false,
-      type: false
-    }
-  })
+
+  const getData = (name) => sellerContext.state.offeringData[name]
 
   const fileReader = new FileReader()
 
   const previewImage = (submited) => {
-    setImageUploaded(submited.currentTarget.result) // sanitize
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.IMAGE]: submited.currentTarget.result,
+    }))
   }
 
   useEffect(() => {
@@ -37,12 +38,7 @@ function UploadPhoto(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    thumbnailRef.current.src = imageUploaded // sanitize
-  }, [imageUploaded])
-
   const imageUploadHandler = (e) => {
-    setSelectedFile(e.target.files[0])
     Image.name = e.target.files[0].name
     Image.size = e.target.files[0].size
     Image.type = e.target.files[0].type
@@ -53,15 +49,10 @@ function UploadPhoto(props) {
       type: !acceptedImageFormats.includes(Image.type)
     }
 
-    if(Image.rules.size || Image.rules.type) {
-      // set errors
-      setImageData({...imageData, error: Image.rules})
-      setImageUploaded(0)
-
-    } else {
-      // set image
+    if(!Image.rules.size || !Image.rules.type) {
       fileReader.readAsDataURL(e.target.files[0])
-      setImageData({...imageData, name: Image.name})
+    } else {
+      // set errors
     }
   }
 
@@ -71,10 +62,10 @@ function UploadPhoto(props) {
         <h1>Photo</h1>
       </div>
       <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
-      <div className={`image-upload-container flex center ${imageUploaded ? 'uploaded' : 'awaiting'}`}>
+      <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
         <div className="image-upload">
           <div className="thumb-container">
-            <img src={imageUploaded} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
+            <img src={sellerContext.state.offeringData[NAME.IMAGE]} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
           </div>
           <div className="label">
             <label htmlFor="offer-image-upload" className="flex center column">

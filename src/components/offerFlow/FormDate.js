@@ -44,25 +44,31 @@ function FormDate() {
           <div className="step-title">
             <label htmlFor="offer-start-date">Start Date</label>
           </div>
-          <DatePicker
-            id="offer-start-date" name={NAME.DATE_START}
-            
-            selected={setDefaultValue(NAME.DATE_START)}
-            onChange={(date) => handleDateChange(date, NAME.DATE_START)}
-            customInput={<Field ref={startDate} />}
-          />
+          <div className="input relative">
+            <DatePicker
+              id="offer-start-date" name={NAME.DATE_START}
+              
+              selected={setDefaultValue(NAME.DATE_START)}
+              onChange={(date) => handleDateChange(date, NAME.DATE_START)}
+              customInput={<Field ref={startDate} />}
+            />
+            <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
+          </div>
         </div>
       </div>
       <div className="row">
         <div className="field">
           <label htmlFor="offer-expiry-date">Expiry Date</label>
-          <DatePicker
-            id="offer-expiry-date" name={NAME.DATE_END}
-            
-            selected={setDefaultValue(NAME.DATE_END)}
-            onChange={(date) => handleDateChange(date, NAME.DATE_END)}
-            customInput={<Field ref={endDate} />}
-          />
+          <div className="input relative">
+            <DatePicker
+              id="offer-expiry-date" name={NAME.DATE_END}
+              
+              selected={setDefaultValue(NAME.DATE_END)}
+              onChange={(date) => handleDateChange(date, NAME.DATE_END)}
+              customInput={<Field ref={endDate} />}
+            />
+            <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
+          </div>
         </div>
       </div>
     </div>

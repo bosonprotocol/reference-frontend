@@ -4,9 +4,7 @@ import { TableRow, DateTable, PriceTable } from "../shared/TableContent"
 
 import { SellerContext } from "../../contexts/Seller"
 
-function FormSummary(props) {
-  const { imageUploaded } = props
-
+function FormSummary() {
   const sellerContext = useContext(SellerContext)
   const { 
     category, 
@@ -20,6 +18,7 @@ function FormSummary(props) {
     seller_deposit,
     seller_deposit_currency, 
     buyer_deposit,
+    image,
   } = sellerContext.state.offeringData
 
   const tableContent = [
@@ -60,7 +59,7 @@ function FormSummary(props) {
     <div className="summary product-view">
       <h1>Offer voucher</h1>
       <div className="thumbnail flex center">
-        <img className="mw100" src={imageUploaded} alt={title} />
+        <img className="mw100" src={image} alt={title} />
       </div>
       <div className="content">
         <div className="product-info">
