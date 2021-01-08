@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
-import Modal from "../shared/Modal";
+// import Modal from "../shared/Modal";
 import { injected, RINKEBY_ID, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
 import MetaMaskLogo from "../../images/metamask.png";
@@ -41,27 +41,27 @@ export function getWalletTitle({ account, walletView, setWalletView }) {
     }
 }
 
-export default function ModalWalletConnect({ modal, setModal }) {
-    const context = useWeb3React();
-    const { account } = context;
-    const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
-
-    return (
-        <Modal
-            title={ getWalletTitle({ account, walletView, setWalletView }) }
-            setModal={ setModal }
-            modal={ modal }
-        >
-            <InnerModal isAccount={ account && walletView === WALLET_VIEWS.ACCOUNT }>
-                <WalletConnect
-                    onSuccess={ () => setModal(null) }
-                    walletView={ walletView }
-                    setWalletView={ setWalletView }
-                />
-            </InnerModal>
-        </Modal>
-    );
-}
+// export default function ModalWalletConnect({ modal, setModal }) {
+//     const context = useWeb3React();
+//     const { account } = context;
+//     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
+//
+//     return (
+//         <Modal
+//             title={ getWalletTitle({ account, walletView, setWalletView }) }
+//             setModal={ setModal }
+//             modal={ modal }
+//         >
+//             <InnerModal isAccount={ account && walletView === WALLET_VIEWS.ACCOUNT }>
+//                 <WalletConnect
+//                     onSuccess={ () => setModal(null) }
+//                     walletView={ walletView }
+//                     setWalletView={ setWalletView }
+//                 />
+//             </InnerModal>
+//         </Modal>
+//     );
+// }
 
 export function WalletConnect({
                                   onSuccess,
@@ -177,15 +177,14 @@ export function WalletConnect({
                     }
                     onConnectionClicked("WalletConnect");
                 } }
-                imageStyle={ { height: "100%", width: "100%" } }
             />
         </>
     );
 }
 
-function InnerModal({ children, isAccount }) {
-    return <div className={ "pa4 " + (isAccount ? "pt0" : "") }>{ children }</div>;
-}
+// function InnerModal({ children, isAccount }) {
+//     return <div className={ "pa4 " + (isAccount ? "pt0" : "") }>{ children }</div>;
+// }
 
 function WalletListItem({
                             name,
@@ -205,25 +204,22 @@ function WalletListItem({
                 }
             ) }
         >
-            <div className="">
-                { isActive ? (
-                    <div className="">
-                        <div
-                            className=""
-                            style={ { height: "8px", width: "8px" } }
-                        >
-                            <div/>
-                        </div>
-                    </div>
-                ) : null }
-                { name }
-            </div>
             <div className="wallet-list-item-image-holder">
                 <img
                     src={ imageName }
                     alt={ name + "-" + imageName }
                     style={ imageStyle }
                 />
+            </div>
+            <div className="list-item-option">
+                { isActive ? (
+                    <div className="active-wallet-indicator">
+                        <img src="images/active-wallet.png"
+                             alt="Active wallet"/>
+                        <div/>
+                    </div>
+                ) : null }
+                { name }
             </div>
         </div>
     );
