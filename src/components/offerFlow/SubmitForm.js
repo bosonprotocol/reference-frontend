@@ -12,8 +12,8 @@ import { Redirect } from "react-router-dom"
 import { SellerContext } from "../../contexts/Seller"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
-import { ModalContext, ModalResolver } from "../../contexts/Modal";
-import { MODAL_TYPES } from "../../helpers/Dictionary";
+// import { ModalContext, ModalResolver } from "../../contexts/Modal";
+// import { MODAL_TYPES } from "../../helpers/Dictionary";
 
 import { ROUTE } from "../../helpers/Dictionary"
 
@@ -22,7 +22,7 @@ export default function SubmitForm(props) {
     const [redirect, setRedirect] = useState(0)
     // const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
-    const modalContext = useContext(ModalContext);
+    // const modalContext = useContext(ModalContext);
     const location = useLocation();
 
     const {
@@ -74,11 +74,11 @@ export default function SubmitForm(props) {
             receipt = await tx.wait();
             parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
         } catch (e) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message
-            }));
+            // modalContext.dispatch(ModalResolver.showModal({
+            //     show: true,
+            //     type: MODAL_TYPES.GENERIC_ERROR,
+            //     content: e.message
+            // }));
             return;
         }
 
@@ -98,11 +98,11 @@ export default function SubmitForm(props) {
             
             await getVoucherSets();
         } catch (e) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message
-            }));
+            // modalContext.dispatch(ModalResolver.showModal({
+            //     show: true,
+            //     type: MODAL_TYPES.GENERIC_ERROR,
+            //     content: e.message
+            // }));
         }
     }
 
