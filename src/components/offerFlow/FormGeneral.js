@@ -38,7 +38,7 @@ function FormGeneral() {
               <h1>Title</h1>
             </div>
           </label>
-          <div className="input relative focus">
+          <div className="input focus">
             <input ref={titleInput} id="offer-title" type="text" name={NAME.TITLE} />
             <div 
               ref={titleClear}
@@ -51,7 +51,9 @@ function FormGeneral() {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
-          <input id="offer-quantity" type="number" name={NAME.QUANTITY}/>
+          <div className="input focus">
+            <input id="offer-quantity" type="number" name={NAME.QUANTITY}/>
+          </div>
         </div>
       </div>
       <div ref={conditionTarget} className="row flex">

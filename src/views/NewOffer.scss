@@ -90,6 +90,30 @@
     }
   }
   .screen-controller {
+    .input {
+      position: relative;
+
+      &[data-error-message] {
+        &:not(.no-border) {
+          border-bottom: 1px solid #FF4E63;
+        }
+  
+        &::after {
+          content: attr(data-error-message);
+          display: block;
+          position: absolute;
+          font-family: Exo;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 111.4%;
+          text-align: right;
+          color: #FF4E63;
+          top: -21px;
+          right: 0;
+        }
+      }
+    }
     .row {
       .field {
         display: flex;
@@ -108,7 +132,6 @@
         input,
         textarea,
         .field {
-          margin-top: 14px;
           background: rgba(255, 255, 255, 0.03);
           border-radius: 2px;
           height: 50px;
@@ -143,6 +166,7 @@
 
         .input {
           width: 100%;
+          margin-top: 14px;
 
           .pseudo {
             position: absolute;
@@ -159,9 +183,25 @@
             transition: 0.1s ease-in-out;
           }
 
+          .react-datepicker-wrapper {
+            width: 100%;
+
+            .field {
+              padding-left: 38px;
+            }
+          }
+
           input {
             transition: 0.1s ease-in-out;
             color: transparent;
+          }
+
+          .icon {
+            pointer-events: none;
+            position: absolute;
+            left: 10px;
+            top: 0px;
+            padding-top: 16px;
           }
 
           .clear-field {
@@ -294,9 +334,11 @@
 
         &.dual {
           .bind {
-            margin-top: 14px;
+            // margin-top: 14px;
 
             .currencies-container {
+              margin-right: 8px;
+              margin-top: 14px; 
               width: 72px;
               height: 50px;
               position: relative;

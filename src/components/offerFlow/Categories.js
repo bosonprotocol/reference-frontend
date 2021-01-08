@@ -39,16 +39,18 @@ function Categories(props) {
 
   return (
     <div ref={categoryList} className="categories">
-      <ul>
-        {
-          categories.map((category, id) => 
-            <li key={id} data-category={category.title} className="flex ai-center" onClick={(e) => setCategory(e.target, category.title)}>
-              <img src={category.image} alt={category.title}/>
-              {category.title}
-            </li>
-          )
-        }
-      </ul>
+      <div className="input focus no-border">
+        <ul>
+          {
+            categories.map((category, id) => 
+              <li key={id} data-category={category.title} className="flex ai-center" onClick={(e) => setCategory(e.target, category.title)}>
+                <img src={category.image} alt={category.title}/>
+                {category.title}
+              </li>
+            )
+          }
+        </ul>
+      </div>
       <input ref={categoryTarget} id="offer-category" type="text" name={NAME.CATEGORY} />
     </div>
   )

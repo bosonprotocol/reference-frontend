@@ -19,9 +19,11 @@ function FormDescription() {
             </div>
           </label>
           <div className="area relative">
-            <textarea 
-              maxLength={maxSymbols} id="offer-description" name={NAME.DESCRIPTION} form="offer-form">              
-            </textarea>
+            <div className="input focus">
+              <textarea 
+                maxLength={maxSymbols} id="offer-description" name={NAME.DESCRIPTION} form="offer-form">              
+              </textarea>
+            </div>
             <span className="limit">{description ? description.length : 0} / {maxSymbols}</span>
           </div>
         </div>
