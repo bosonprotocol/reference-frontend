@@ -24,6 +24,7 @@ export const ROUTE = {
     ConnectToMetamask: '/connect-to-metamask',
     ShowQR: '/show-qr-code',
     NewOffer: '/new-offer',
+    Activity: '/activity',
 }
 
 export const NAME = {
