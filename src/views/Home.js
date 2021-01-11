@@ -46,7 +46,7 @@ function Home() {
 
         async function getVoucherSets() {
             const allVoucherSets = await getAllVoucherSets();
-            prepareVoucherSetData(allVoucherSets)
+            prepareVoucherSetData(allVoucherSets);
         }
 
         getVoucherSets()
@@ -62,13 +62,21 @@ function Home() {
 
         let parsedVoucherSets = [];
 
+
         for (const voucherSet of rawVoucherSets.voucherSupplies) {
             let parsedVoucherSet = {
                 id: voucherSet._id,
                 title: voucherSet.title,
                 image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
                 price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal)
+                buyerDeposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
+                sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
+                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
+                description: voucherSet.description,
+                category: voucherSet.category,
+                startDate: voucherSet.startDate,
+                expiryDate: voucherSet.expiryDate,
+                qty: voucherSet.qty
             };
 
             parsedVoucherSets.push(parsedVoucherSet)
@@ -76,8 +84,8 @@ function Home() {
 
         console.log(parsedVoucherSets);
         productListSettings.infinite = parsedVoucherSets.length > 4;
-        setProductBlocks(parsedVoucherSets)
-
+        setProductBlocks(parsedVoucherSets);
+        globalContext.dispatch(Action.allVoucherSets(parsedVoucherSets));
     };
 
     useEffect(() => {
