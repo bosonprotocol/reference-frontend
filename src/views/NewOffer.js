@@ -24,8 +24,51 @@ import { NAME, CURRENCY } from "../helpers/Dictionary"
 const listenerType = 'input'
 
 const inputFallback = {
+  [NAME.PRICE]: '0',
   [NAME.PRICE_C]: CURRENCY.ETH,
-  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
+  [NAME.SELLER_DEPOSIT]: '0', 
+  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH, 
+  [NAME.BUYER_DEPOSIT]: '0', 
+}
+
+const priceSettings = {
+  [CURRENCY.ETH]: {
+    max: 2
+  },
+  [CURRENCY.BSN]: {
+    max: 1.8
+  }
+}
+
+const sellerSettings = { 
+  [CURRENCY.ETH]: {
+    max: 0.1
+  },
+  [CURRENCY.BSN]: {
+    max: 0.2
+  }
+}
+
+const buyerSettings = {
+  [CURRENCY.ETH]: {
+    max: 0.3
+  },
+  [CURRENCY.BSN]: {
+    max: 0.4
+  }
+}
+
+const descriptionSettings = {
+  min: 10
+}
+
+const quantitySettings = {
+  max: 10
+}
+
+const titleSettings = {
+  max: 50,
+  min: 3
 }
 
 function NewOffer() {
@@ -36,12 +79,101 @@ function NewOffer() {
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
 
+  const getData = name => sellerContext.state.offeringData[name]
+
+  // const price = getData(NAME.PRICE)
+  const priceCurrency = getData(NAME.PRICE_C)
+  // const seller = getData(NAME.SELLER_DEPOSIT)
+  const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+  // const buyer = getData(NAME.BUYER_DEPOSIT)
+
+  const validation = (input, value) => {
+    // currency select inputs
+    if(input === NAME.SELLER_DEPOSIT_C) {
+      if(getData(NAME.SELLER_DEPOSIT)) {
+        console.log(getData(NAME.SELLER_DEPOSIT), sellerSettings[value].max)
+        if(getData(NAME.SELLER_DEPOSIT) > sellerSettings[value].max) {
+          
+          sellerContext.dispatch(Seller.updateOfferingData({
+            [NAME.SELLER_DEPOSIT]: sellerSettings[value].max
+          }))
+        }
+      }
+
+      return false
+    }
+    else if(input === NAME.PRICE_C) {
+      if(getData(NAME.PRICE) > priceSettings[value].max) sellerContext.dispatch(Seller.updateOfferingData({
+        [NAME.PRICE]: priceSettings[value].max
+      }))
+      if(getData(NAME.BUYER_DEPOSIT) > buyerSettings[value].max) sellerContext.dispatch(Seller.updateOfferingData({
+        [NAME.BUYER_DEPOSIT]: buyerSettings[value].max
+      }))
+
+      return false
+    }
+    // price number inputs
+    else if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
+
+      return false
+    }
+    else if(input === NAME.SELLER_DEPOSIT && getData(NAME.SELLER_DEPOSIT_C)) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > sellerSettings[sellerCurrency].max) return `The maximum value is ${sellerSettings[sellerCurrency].max}`
+
+      return false
+    }
+    else if(input === NAME.BUYER_DEPOSIT && getData(NAME.PRICE_C)) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > buyerSettings[priceCurrency].max) return `The maximum value is ${buyerSettings[priceCurrency].max}`
+
+      return false
+    }
+    // description
+    else if(input === NAME.DESCRIPTION) {
+      if(value.length < descriptionSettings.min) {
+        sellerContext.dispatch(Seller.updateOfferingData({
+          [input]: value
+        }))
+
+        return `Desciption must be at least ${descriptionSettings.min} characters`
+      }
+
+      return false
+    }
+    // general
+    else if(input === NAME.QUANTITY) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > quantitySettings.max) return `Maximum quantity is ${quantitySettings.max}`
+
+      return false
+    }
+    else if(input === NAME.TITLE) {
+      if(value.length <= titleSettings.min) return `Title must be at least ${titleSettings.min + 1} characters long`
+      if(value.length > titleSettings.max) return `Title can't more than ${titleSettings.max} characters long`
+
+      return false
+    }
+
+    return false
+  }
+
   const screens = [
     <Categories listenerType={listenerType} />,
     <FormUploadPhoto />,
     <FormGeneral />,
     <FormDescription />,
-    <FormPrice />,
+    <FormPrice 
+      priceSettings={priceSettings}
+      sellerSettings={sellerSettings}
+      buyerSettings={buyerSettings}
+    />,
     <FormDate />,
     <FormSummary />,
   ]
@@ -83,10 +215,19 @@ function NewOffer() {
       }, 100)
     }
 
-    // input.classList.add(input.value)
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [input.name]: input.value
-    }))
+    let error = true;
+    error = validation(input.name, input.value)
+
+    console.log(error)
+
+    if(!error && error !== undefined) {
+      input.parentElement.removeAttribute('data-error')
+      if(input.value) sellerContext.dispatch(Seller.updateOfferingData({
+        [input.name]: input.value
+      }))
+    } else {
+      input.parentElement.setAttribute('data-error', error)
+    }
   }
 
   const loadValues = (reset) => {
@@ -126,10 +267,7 @@ function NewOffer() {
     localStorage.getItem('offeringData') ?
     sellerContext.dispatch(Seller.loadOfferingBackup()) :
     sellerContext.dispatch(Seller.updateOfferingData({
-      [NAME.SELLER_DEPOSIT_C]: inputFallback[NAME.SELLER_DEPOSIT_C],
-      [NAME.PRICE_C]: inputFallback[NAME.PRICE_C],
-      [NAME.PRICE_SUFFIX]: `0 ${inputFallback[NAME.PRICE_C]}`,
-      [NAME.SELLER_SUFFIX]: `0 ${inputFallback[NAME.SELLER_DEPOSIT_C]}`,
+      ...inputFallback
     }))
 
     // check for page
