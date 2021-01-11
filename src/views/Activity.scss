@@ -1,5 +1,119 @@
-.activity {
+@import "../styles/Settings.scss";
+
+section.activity {
+  background-color: #151E27;
+  min-height: 100vh;
+  .title {
+    h1 {
+      font-family: $font-primary;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 26px;
+      line-height: 111.4%;
+      /* identical to box height, or 29px */
+
+
+      color: #FFFFFF;
+      margin-bottom: 50px;
+    }
+  }
   .vouchers-container {
-    //
+    .voucher-block {
+      max-height: 150px;
+      border-radius: 8px;
+      padding: 5px;
+      transition: 0.15s ease-in-out;
+
+      & + .voucher-block  {
+        margin-top: 20px;
+      }
+
+      @media (min-width: 1366px) {
+        padding: 20px;
+      }
+      cursor: pointer;
+
+      &:hover {
+        background: #1D2834;
+      }
+
+      .thumb {
+        background:linear-gradient(210.91deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 102.42%), #1C2835;;
+        border-radius: 4.6623px;
+        box-shadow: 5.12853px 6.99345px 20.5141px rgba(0, 0, 0, 0.2);
+
+        margin-right: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 10px;
+        flex: 0 1 185px;
+        min-width: 80px;
+      }
+
+      .info {
+        font-family: $font-secondary;
+        font-style: normal;
+        font-weight: 500;
+
+        width: calc(80% - 80px);
+        flex: 8 0 auto;
+
+        & > div + div {
+          margin-top: 9px;
+        }
+
+        .label {
+          background: #358EF5;
+          border-radius: 58px;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: center;
+
+          color: #FFFFFF;
+          padding: 3px 12px 5px 12px;
+          text-transform: uppercase;
+        }
+        .date {
+          font-size: 13px;
+          line-height: 16px;
+          /* identical to box height */
+
+
+          color: #4C6581;
+        }
+        .title {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+
+          color: #FFFFFF;
+
+          @media (min-width: 1366px) {
+            font-size: 20px;
+          }
+        }
+        .value {
+          text-transform: uppercase;
+          font-size: 14px;
+          line-height: 17px;
+
+          color: #FFFFFF;
+
+          img {
+            margin-right: 9px;
+          }
+        }
+        .quality {
+          text-transform: uppercase;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: right;
+
+          color: #FFFFFF;
+        }
+      }
+    }
   }
 }
