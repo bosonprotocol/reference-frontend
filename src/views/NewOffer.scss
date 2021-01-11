@@ -93,13 +93,12 @@
     .input {
       position: relative;
 
-      &[data-error-message] {
-        &:not(.no-border) {
-          border-bottom: 1px solid #FF4E63;
-        }
-  
+      &:not(.no-border) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0);
+        transition: 0.2s ease-in-out;
+
         &::after {
-          content: attr(data-error-message);
+          content: attr(data-error);
           display: block;
           position: absolute;
           font-family: Exo;
@@ -111,6 +110,20 @@
           color: #FF4E63;
           top: -21px;
           right: 0;
+          opacity: 0;
+          pointer-events: none;
+          transition: 0.2s ease-in-out;
+        }
+      }
+
+      &[data-error] {
+        &:not(.no-border) {
+          border-bottom: 1px solid rgba(#FF4E63, 1);
+        }
+  
+        &::after {
+          content: attr(data-error);
+          opacity: 1;
         }
       }
     }

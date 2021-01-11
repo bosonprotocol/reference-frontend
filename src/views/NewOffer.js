@@ -76,10 +76,9 @@ function NewOffer() {
 
   const validation = (input, value) => {
     if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
-      let min = value > 0
-      let max = value <= priceSettings[priceCurrency].max
-
-      if(min && max) return true
+      if(!parseInt(value)) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
 
       return false
     }
@@ -136,21 +135,21 @@ function NewOffer() {
       }, 100)
     }
 
-    let continueDispatch = true;
+    let error = true;
 
     // special case 
     if(input.name === NAME.PRICE) {
-      if(!validation(input.name, input.value)) {
-        continueDispatch = false
-      }
+      error = validation(input.name, input.value)
+      console.log(input.value)
     }
 
-    if(continueDispatch) {
+    if(!error) {
+      input.parentElement.removeAttribute('data-error')
       sellerContext.dispatch(Seller.updateOfferingData({
         [input.name]: input.value
       }))
     } else {
-      console.log(input.parentElement.dataset)
+      input.parentElement.setAttribute('data-error', error)
     }
   }
 
