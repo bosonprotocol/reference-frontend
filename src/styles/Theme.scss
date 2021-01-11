@@ -1,5 +1,6 @@
+@import "../styles/Settings.scss";
 :root {
-  --background-primary: $color-background-primary;
+  --background-primary: #{$color-background-primary};
 
   .theme.light {
     --background-primary: #fff;

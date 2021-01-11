@@ -119,6 +119,7 @@ function ProductView(props) {
   }, [])
 
   return (
+    <>
     <section
       ref={windowContainer}
       className="product-view no-bg"
@@ -155,6 +156,8 @@ function ProductView(props) {
       </div>
       <div className="hide-dialog" onClick={clearDialog}></div>
     </section>
+    <div className="disable-scroll-propagation"></div>
+    </>
   )
 }
 

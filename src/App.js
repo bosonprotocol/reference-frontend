@@ -8,6 +8,7 @@ import Home from './views/Home'
 import Connect from "./views/Connect";
 import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
+import Activity from "./views/Activity"
 
 import { useEagerConnect, useInactiveListener } from './hooks'
 
@@ -93,6 +94,7 @@ function App() {
                 <Route path={ROUTE.ConnectToMetamask} component={ConnectToMetamask}/>
                 <Route path={ROUTE.ShowQR} component={ShowQR}/>
                 <Route path={ROUTE.NewOffer} component={NewOffer}/>
+                <Route path={ROUTE.Activity} component={Activity}/>
             </Switch>
             </Router>
             <ContextModal/>

@@ -100,6 +100,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       align-items: center;
       justify-content: space-between;
     }
+    &.no-shrink {
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -267,6 +270,8 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 
 .atomic-scoped {
   img:not(.def) {
+    max-height: 100%;
+    width: auto;
     height: auto;
     max-width: 100%;
   

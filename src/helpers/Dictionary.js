@@ -24,11 +24,13 @@ export const ROUTE = {
     ConnectToMetamask: '/connect-to-metamask',
     ShowQR: '/show-qr-code',
     NewOffer: '/new-offer',
+    Activity: '/activity',
 }
 
 export const NAME = {
     CATEGORY: 'category',
     IMAGE: 'image',
+    SELECTED_FILE: 'selected_file',
     TITLE: 'title',
     QUANTITY: 'quantity',
     CONDITION: 'condition',

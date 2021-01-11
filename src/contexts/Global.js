@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import { DIC } from "../helpers/Dictionary"
+// import { disableScroll, enableScroll } from "../helpers/ScrollManipulation" 
 
 export const GlobalContext = createContext()
 
@@ -40,6 +41,7 @@ export const GlobalReducer = (state, action) => {
     [DIC.OPEN_PRODUCT]: () => {
       UpdateReviewedProducts(action.payload)
       UpdateProductView(1)
+      // disableScroll(document.body)
 
       return {
         productView: {
@@ -50,6 +52,7 @@ export const GlobalReducer = (state, action) => {
     },
     [DIC.CLOSE_PRODUCT]: () => {
       UpdateProductView(0)
+      // enableScroll(document.body)
 
       return {
         productView: {
