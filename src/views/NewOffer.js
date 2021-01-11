@@ -81,11 +81,11 @@ function NewOffer() {
 
   const getData = name => sellerContext.state.offeringData[name]
 
-  const price = getData(NAME.PRICE)
+  // const price = getData(NAME.PRICE)
   const priceCurrency = getData(NAME.PRICE_C)
-  const seller = getData(NAME.SELLER_DEPOSIT)
+  // const seller = getData(NAME.SELLER_DEPOSIT)
   const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
-  const buyer = getData(NAME.BUYER_DEPOSIT)
+  // const buyer = getData(NAME.BUYER_DEPOSIT)
 
   const validation = (input, value) => {
     // currency select inputs

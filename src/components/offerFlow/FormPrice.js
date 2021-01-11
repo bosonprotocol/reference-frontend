@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
-import { SellerContext, Seller } from "../../contexts/Seller"
+import { SellerContext } from "../../contexts/Seller"
 
 import Currencies from "./Currencies"
 
