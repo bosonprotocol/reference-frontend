@@ -15,8 +15,6 @@ function ProductBlock(props) {
     const globalContext = useContext(GlobalContext)
 
     const openProduct = () => {
-        console.log(globalContext.state.allVoucherSets);
-        console.log(id);
         globalContext.dispatch(Action.openProduct(id));
         globalContext.dispatch(Action.navigationControl(DIC.NAV.COMMIT))
     };

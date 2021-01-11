@@ -37,3 +37,10 @@ export const createVoucherSet = async (data, token) => {
     });
     return allVouchers.data;
 };
+
+export const commitToBuy = async (supplyId, data, token) => {
+    const allVouchers = await axiosInstance.post(`/users/${ supplyId }/buy`, data, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
+    return allVouchers.data;
+};

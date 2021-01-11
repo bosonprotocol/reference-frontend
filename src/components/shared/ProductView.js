@@ -21,7 +21,6 @@ function ProductView(props) {
     const globalContext = useContext(GlobalContext);
 
     const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === globalContext.state.productView.id);
-    console.log(selectedProduct);
 
     const description = selectedProduct?.description;
 
