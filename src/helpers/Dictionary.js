@@ -15,7 +15,8 @@ export const DIC = {
         COMMIT: 'commit_to_buy',
         REDEEM: 'redeem',
     },
-    SHOW_MODAL: 'show_modal'
+    SHOW_MODAL: 'show_modal',
+    ALL_VOUCHER_SETS: 'all_voucher_sets'
 }
 
 export const ROUTE = {
