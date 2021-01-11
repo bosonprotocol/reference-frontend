@@ -18,38 +18,32 @@ import FormBottomNavigation from "../components/offerFlow/FormBottomNavigation"
 import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/shared/Icons"
 
-import { NAME } from "../helpers/Dictionary"
+import { NAME, CURRENCY } from "../helpers/Dictionary"
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'input'
 
 const inputFallback = {
-  [NAME.SELLER_DEPOSIT_C]: 'eth',
-  [NAME.PRICE_C]: 'eth',
+  [NAME.PRICE_C]: CURRENCY.ETH,
+  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
 }
 
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
-  const [imageUploaded, setImageUploaded] = useState('')
   const [init, triggerInit] = useState(1)
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
-  const [selectedFile, setSelectedFile] = useState('');
 
   const screens = [
     <Categories listenerType={listenerType} />,
-    <FormUploadPhoto 
-      imageUploaded={imageUploaded} 
-      setImageUploaded={setImageUploaded} 
-      setSelectedFile={setSelectedFile}
-      />,
+    <FormUploadPhoto />,
     <FormGeneral />,
     <FormDescription />,
     <FormPrice />,
     <FormDate />,
-    <FormSummary imageUploaded={imageUploaded} />,
+    <FormSummary />,
   ]
 
   const lastScreenBoolean = activeScreen === screens.length - 1
@@ -76,7 +70,20 @@ function NewOffer() {
     })
   }
 
+  const currencyList = Object.keys(CURRENCY)
+
   const updateData = (input) => {
+    if(input.tagName === 'SELECT') {
+      currencyList.map(currency => 
+        input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
+      )
+
+      setTimeout(() => {
+        input.parentElement.getElementsByClassName('icons')[0].classList.add(`${input.value}`)
+      }, 100)
+    }
+
+    // input.classList.add(input.value)
     sellerContext.dispatch(Seller.updateOfferingData({
       [input.name]: input.value
     }))
@@ -91,16 +98,39 @@ function NewOffer() {
 
       let retrieveState = sellerContext.state.offeringData[input.name]
 
+      // currencies
+      if(input.tagName === 'SELECT') {
+        let assign = retrieveState ? retrieveState :
+          (inputFallback[input.name] ? inputFallback[input.name] : '')
+        
+        currencyList.map(currency => 
+          input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
+        )
+
+        input.parentElement.getElementsByClassName('icons')[0].classList.add(assign)
+      } 
+
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
       input.addEventListener(listenerType, (e) => updateData(e.target))
     })
   }
 
+  useEffect(() => {
+    loadValues()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeScreen, init])
+
   // check for backup
   useEffect(() => {
     // check for data
-    localStorage.getItem('offeringData') &&
-    sellerContext.dispatch(Seller.loadOfferingBackup())
+    localStorage.getItem('offeringData') ?
+    sellerContext.dispatch(Seller.loadOfferingBackup()) :
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.SELLER_DEPOSIT_C]: inputFallback[NAME.SELLER_DEPOSIT_C],
+      [NAME.PRICE_C]: inputFallback[NAME.PRICE_C],
+      [NAME.PRICE_SUFFIX]: `0 ${inputFallback[NAME.PRICE_C]}`,
+      [NAME.SELLER_SUFFIX]: `0 ${inputFallback[NAME.SELLER_DEPOSIT_C]}`,
+    }))
 
     // check for page
     localStorage.getItem('offeringProgress') &&
@@ -111,15 +141,10 @@ function NewOffer() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    loadValues()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeScreen, init])
-
   // show state on each change
-  useEffect(() => {
-    console.log('after', sellerContext.state.offeringData)
-  }, [sellerContext.state.offeringData, selectedFile])
+  // useEffect(() => {
+  //   console.log('after', sellerContext.state.offeringData)
+  // }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">
@@ -150,7 +175,6 @@ function NewOffer() {
           resetOfferingData={resetOfferingData}
           activeScreen={activeScreen}
           setActiveScreen={setActiveScreen}
-          selectedFile={selectedFile}
         />
       </div>
     </section>
