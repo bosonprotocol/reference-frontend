@@ -31,6 +31,33 @@ const inputFallback = {
   [NAME.BUYER_DEPOSIT]: '0', 
 }
 
+const priceSettings = {
+  [CURRENCY.ETH]: {
+    max: 2
+  },
+  [CURRENCY.BSN]: {
+    max: 1.8
+  }
+}
+
+const sellerSettings = { 
+  [CURRENCY.ETH]: {
+    max: 0.1
+  },
+  [CURRENCY.BSN]: {
+    max: 0.2
+  }
+}
+
+const buyerSettings = {
+  [CURRENCY.ETH]: {
+    max: 0.3
+  },
+  [CURRENCY.BSN]: {
+    max: 0.4
+  }
+}
+
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
@@ -39,12 +66,35 @@ function NewOffer() {
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
 
+  const getData = name => sellerContext.state.offeringData[name]
+
+  const price = getData(NAME.PRICE)
+  const priceCurrency = getData(NAME.PRICE_C)
+  const seller = getData(NAME.SELLER_DEPOSIT)
+  const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+  const buyer = getData(NAME.BUYER_DEPOSIT)
+
+  const validation = (input, value) => {
+    if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
+      let min = value > 0
+      let max = value <= priceSettings[priceCurrency].max
+
+      if(min && max) return true
+
+      return false
+    }
+  }
+
   const screens = [
     <Categories listenerType={listenerType} />,
     <FormUploadPhoto />,
     <FormGeneral />,
     <FormDescription />,
-    <FormPrice />,
+    <FormPrice 
+      priceSettings={priceSettings}
+      sellerSettings={sellerSettings}
+      buyerSettings={buyerSettings}
+    />,
     <FormDate />,
     <FormSummary />,
   ]
@@ -86,10 +136,22 @@ function NewOffer() {
       }, 100)
     }
 
-    // input.classList.add(input.value)
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [input.name]: input.value
-    }))
+    let continueDispatch = true;
+
+    // special case 
+    if(input.name === NAME.PRICE) {
+      if(!validation(input.name, input.value)) {
+        continueDispatch = false
+      }
+    }
+
+    if(continueDispatch) {
+      sellerContext.dispatch(Seller.updateOfferingData({
+        [input.name]: input.value
+      }))
+    } else {
+      console.log(input.parentElement.dataset)
+    }
   }
 
   const loadValues = (reset) => {

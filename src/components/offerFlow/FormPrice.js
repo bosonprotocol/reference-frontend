@@ -4,11 +4,13 @@ import { SellerContext, Seller } from "../../contexts/Seller"
 
 import Currencies from "./Currencies"
 
-import { NAME, CURRENCY } from "../../helpers/Dictionary"
+import { NAME } from "../../helpers/Dictionary"
 
 
-function FormPrice() {
+function FormPrice(props) {
   const sellerContext = useContext(SellerContext)
+
+  const { priceSettings, sellerSettings, buyerSettings } = props
 
   const getData = name => sellerContext.state.offeringData[name]
 
@@ -32,37 +34,6 @@ function FormPrice() {
     }
   }
 
-  const generalSettings = {
-    step: 0.01,
-  }
-
-  const priceSettings = {
-    [CURRENCY.ETH]: {
-      max: 2
-    },
-    [CURRENCY.BSN]: {
-      max: 1.8
-    }
-  }
-
-  const sellerSettings = { 
-    [CURRENCY.ETH]: {
-      max: 0.1
-    },
-    [CURRENCY.BSN]: {
-      max: 0.2
-    }
-  }
-
-  const buyerSettings = {
-    [CURRENCY.ETH]: {
-      max: 0.3
-    },
-    [CURRENCY.BSN]: {
-      max: 0.4
-    }
-  }
-
   return (
     <div className="price">
       <div className="row">
@@ -79,9 +50,7 @@ function FormPrice() {
               <input
               onFocus={(e) => focusHandler(e.target, 1)}
               onBlur={(e) => focusHandler(e.target, 0)}
-              id="offer-price" type="number" name={NAME.PRICE} min="0.00"
-              max={priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : 0}
-              step={generalSettings.step} />
+              id="offer-price" type="number" name={NAME.PRICE} />
               <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
             </div>
           </div>
@@ -97,9 +66,7 @@ function FormPrice() {
               <input
               onFocus={(e) => focusHandler(e.target, 1)}
               onBlur={(e) => focusHandler(e.target, 0)}
-              id="offer-seller-deposit" type="number" name={NAME.SELLER_DEPOSIT} min="0.00"
-              max={sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : 0}
-              step={generalSettings.step}/>
+              id="offer-seller-deposit" type="number" name={NAME.SELLER_DEPOSIT} />
               <div className="max">max {sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : null} {sellerCurrency}</div>
             </div>
           </div>
@@ -113,10 +80,8 @@ function FormPrice() {
             <input id="offer-buyer-deposit"
             onFocus={(e) => focusHandler(e.target, 1)}
             onBlur={(e) => focusHandler(e.target, 0)}
-            type="number" name={NAME.BUYER_DEPOSIT} min="0.00"
-            max={buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : 0} 
-            step={generalSettings.step} />
-            <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div>
+            type="number" name={NAME.BUYER_DEPOSIT} />
+            <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div> 
           </div>
         </div>
       </div>
