@@ -34,7 +34,7 @@ export default function SubmitForm(props) {
         category,
         description,
         condition,
-        image
+        selected_file, // switch with image to use blob
     } = sellerContext.state.offeringData
 
     const { resetOfferingData } = props
@@ -126,13 +126,20 @@ export default function SubmitForm(props) {
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
     }
 
+    // append blob
+    // function appendFilesToFormData() {
+    //     fetch(image)
+    //         .then(res => res.blob())
+    //         .then(res => {
+    //                 formData.append("fileToUpload", res, res['name'])
+    //             }
+    //         )
+    // }
+
+    // append file
     function appendFilesToFormData() {
-        fetch(image)
-            .then(res => res.blob())
-            .then(res => {
-                    formData.append("fileToUpload", res, res['name'])
-                }
-            )
+        console.log(selected_file)
+        formData.append("fileToUpload", selected_file, selected_file['name']);
     }
 
     return (

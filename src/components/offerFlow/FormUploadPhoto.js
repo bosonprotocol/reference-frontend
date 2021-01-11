@@ -49,8 +49,12 @@ function UploadPhoto(props) {
       type: !acceptedImageFormats.includes(Image.type)
     }
 
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.SELECTED_FILE]: e.target.files[0]
+    }))
+
     if(!Image.rules.size || !Image.rules.type) {
-      fileReader.readAsDataURL(e.target.files[0])
+      fileReader.readAsDataURL(e.target.files[0]) 
     } else {
       // set errors
     }

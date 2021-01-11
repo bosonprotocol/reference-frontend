@@ -30,6 +30,7 @@ export const ROUTE = {
 export const NAME = {
     CATEGORY: 'category',
     IMAGE: 'image',
+    SELECTED_FILE: 'selected_file',
     TITLE: 'title',
     QUANTITY: 'quantity',
     CONDITION: 'condition',
