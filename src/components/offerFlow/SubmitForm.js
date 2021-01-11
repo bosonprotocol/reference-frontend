@@ -14,6 +14,7 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
+import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
@@ -46,7 +47,11 @@ export default function SubmitForm(props) {
 
     async function onCreateVoucherSet() {
         if (!library || !account) {
-            alert("Connect your wallet");
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please connect your wallet account'
+            }));
             return;
         }
 
@@ -70,7 +75,7 @@ export default function SubmitForm(props) {
         try {
             tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
             receipt = await tx.wait();
-            parsedEvent = await findEventByName(receipt, 'LogOrderCreated', '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
+            parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -153,7 +158,7 @@ export default function SubmitForm(props) {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <Redirect exact to={ ROUTE.Home }/>
+                    : <Redirect exact to={ ROUTE.Activity }/>
             }
         </>
     );

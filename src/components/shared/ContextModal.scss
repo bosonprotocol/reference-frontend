@@ -52,6 +52,7 @@
       .genericErrorMessage {
         color: $color-error;
         padding: 60px 15px 15px;
+        overflow: auto;
       }
     }
 
