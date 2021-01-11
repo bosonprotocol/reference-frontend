@@ -62,7 +62,6 @@ function Home() {
 
         let parsedVoucherSets = [];
 
-        console.log(rawVoucherSets.voucherSupplies);
 
         for (const voucherSet of rawVoucherSets.voucherSupplies) {
             let parsedVoucherSet = {
