@@ -243,6 +243,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 // CUSTOM SETTINGS
 // ----------------------------------------------------------------
 
+.grow {
+  flex-grow: 1;
+}
+
 .relative {
   position: relative;
 }
