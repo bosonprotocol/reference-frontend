@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState } from "react";
-import { createVoucherSet, getAllVoucherSets } from "../../hooks/api";
+import React, { useContext, useState } from "react";
+import { createVoucherSet } from "../../hooks/api";
 import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -84,17 +84,15 @@ export default function SubmitForm(props) {
 
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
+
             const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
-            console.log(voucherSetResponse);
 
             setLoading(0)
 
-            if(voucherSetResponse.success) {
+            if (voucherSetResponse.success) {
                 resetOfferingData()
                 setRedirect(1)
             }
-            
-            await getVoucherSets();
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -130,34 +128,26 @@ export default function SubmitForm(props) {
 
     function appendFilesToFormData() {
         fetch(image)
-        .then(res => res.blob())
-        .then(res =>
-            formData.append("fileToUpload", res, res['name'])
-        )
+            .then(res => res.blob())
+            .then(res => {
+                    formData.append("fileToUpload", res, res['name'])
+                }
+            )
     }
-
-    async function getVoucherSets() {
-        const allVoucherSets = await getAllVoucherSets();
-        console.log(allVoucherSets);
-    }
-
-    useEffect(() => {
-        getVoucherSets()
-    }, []);
 
     return (
-    <>
-        {loading ? <Loading /> : null}
-        {
-        !redirect ?
-        <ContractInteractionButton
-            className="button offer primary"
-            handleClick={ onCreateVoucherSet }
-            label="OFFER"
-            sourcePath={ location.pathname }
-        />
-        : <Redirect exact to={ROUTE.Home} />
-        }
-    </>
+        <>
+            { loading ? <Loading/> : null }
+            {
+                !redirect ?
+                    <ContractInteractionButton
+                        className="button offer primary"
+                        handleClick={ onCreateVoucherSet }
+                        label="OFFER"
+                        sourcePath={ location.pathname }
+                    />
+                    : <Redirect exact to={ ROUTE.Home }/>
+            }
+        </>
     );
 }
