@@ -25,11 +25,15 @@ function FormPrice(props) {
     if(toggle) {
       el.parentElement.classList.add("focus")
 
-      if(el.value > el.max) el.value = el.max
+      if(el.value !== getData(el.name)) el.value = getData(el.name)
     } 
     // blur
     else {
       el.parentElement.classList.remove("focus")
+
+      if(el.parentElement.getAttribute("data-error")) {
+        el.parentElement.removeAttribute("data-error")
+      }
       // if(el.value > el.max) updateData(el.name, el.max, el)
     }
   }

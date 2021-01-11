@@ -58,6 +58,19 @@ const buyerSettings = {
   }
 }
 
+const descriptionSettings = {
+  min: 10
+}
+
+const quantitySettings = {
+  max: 10
+}
+
+const titleSettings = {
+  max: 50,
+  min: 3
+}
+
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
@@ -75,13 +88,80 @@ function NewOffer() {
   const buyer = getData(NAME.BUYER_DEPOSIT)
 
   const validation = (input, value) => {
-    if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
-      if(!parseInt(value)) return 'Must be a valid number'
+    // currency select inputs
+    if(input === NAME.SELLER_DEPOSIT_C) {
+      if(getData(NAME.SELLER_DEPOSIT)) {
+        console.log(getData(NAME.SELLER_DEPOSIT), sellerSettings[value].max)
+        if(getData(NAME.SELLER_DEPOSIT) > sellerSettings[value].max) {
+          
+          sellerContext.dispatch(Seller.updateOfferingData({
+            [NAME.SELLER_DEPOSIT]: sellerSettings[value].max
+          }))
+        }
+      }
+
+      return false
+    }
+    else if(input === NAME.PRICE_C) {
+      if(getData(NAME.PRICE) > priceSettings[value].max) sellerContext.dispatch(Seller.updateOfferingData({
+        [NAME.PRICE]: priceSettings[value].max
+      }))
+      if(getData(NAME.BUYER_DEPOSIT) > buyerSettings[value].max) sellerContext.dispatch(Seller.updateOfferingData({
+        [NAME.BUYER_DEPOSIT]: buyerSettings[value].max
+      }))
+
+      return false
+    }
+    // price number inputs
+    else if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
       if(value <= 0) return 'Value cannot less or equal to 0'
       if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
 
       return false
     }
+    else if(input === NAME.SELLER_DEPOSIT && getData(NAME.SELLER_DEPOSIT_C)) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > sellerSettings[sellerCurrency].max) return `The maximum value is ${sellerSettings[sellerCurrency].max}`
+
+      return false
+    }
+    else if(input === NAME.BUYER_DEPOSIT && getData(NAME.PRICE_C)) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > buyerSettings[priceCurrency].max) return `The maximum value is ${buyerSettings[priceCurrency].max}`
+
+      return false
+    }
+    // description
+    else if(input === NAME.DESCRIPTION) {
+      if(value.length < descriptionSettings.min) {
+        sellerContext.dispatch(Seller.updateOfferingData({
+          [input]: value
+        }))
+
+        return `Desciption must be at least ${descriptionSettings.min} characters`
+      }
+
+      return false
+    }
+    // general
+    else if(input === NAME.QUANTITY) {
+      if(isNaN(parseInt(value))) return 'Must be a valid number'
+      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value > quantitySettings.max) return `Maximum quantity is ${quantitySettings.max}`
+
+      return false
+    }
+    else if(input === NAME.TITLE) {
+      if(value.length <= titleSettings.min) return `Title must be at least ${titleSettings.min + 1} characters long`
+      if(value.length > titleSettings.max) return `Title can't more than ${titleSettings.max} characters long`
+
+      return false
+    }
+
+    return false
   }
 
   const screens = [
@@ -136,16 +216,13 @@ function NewOffer() {
     }
 
     let error = true;
+    error = validation(input.name, input.value)
 
-    // special case 
-    if(input.name === NAME.PRICE) {
-      error = validation(input.name, input.value)
-      console.log(input.value)
-    }
+    console.log(error)
 
-    if(!error) {
+    if(!error && error !== undefined) {
       input.parentElement.removeAttribute('data-error')
-      sellerContext.dispatch(Seller.updateOfferingData({
+      if(input.value) sellerContext.dispatch(Seller.updateOfferingData({
         [input.name]: input.value
       }))
     } else {
