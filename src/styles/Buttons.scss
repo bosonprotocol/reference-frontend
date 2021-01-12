@@ -104,6 +104,17 @@
     padding: 0;
     transition: 0.2s ease-in-out;
 
+    &.dark {
+      background-color: #192028;
+
+      &:hover {
+        background-color: #202429;
+      }
+      &:active {
+        background-color: #131b25;
+      }
+    }
+
     &:hover {
       background-color: #18384f;
     }

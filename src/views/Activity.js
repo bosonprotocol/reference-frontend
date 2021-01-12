@@ -57,13 +57,13 @@ function Activity() {
     <section className="activity atomic-scoped">
       <div className="container">
         <div className="top-navigation flex split">
-          <div className="button square" role="button" 
+          <div className="button square dark" role="button" 
             onClick={() => history.goBack()}
           >
-            <Arrow />
+            <Arrow color="#80F0BE" />
           </div>
           <div className="qr-icon" role="button"
-            onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR noBorder /></div>
+            onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6" noBorder /></div>
         </div>
         <div className="title">
           <h1>Activity</h1>
