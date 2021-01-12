@@ -28,7 +28,7 @@ export const IconQR = (props) => (
     <path d="M25.3323 32.2683L27.1576 32.2683C29.9801 32.2683 32.2683 29.9801 32.2683 27.1576L32.2683 25.3323" stroke={props.color ? props.color : '#B9CDE3'} strokeWidth="1.3099"/>
     <path d="M10 25.3323L10 27.1576C10 29.9801 12.2882 32.2683 15.1108 32.2683L16.936 32.2683" stroke={props.color ? props.color : '#B9CDE3'} strokeWidth="1.3099"/>
     <path d="M32.2683 16.936L32.2683 15.1108C32.2683 12.2882 29.9801 10 27.1576 10L25.3323 10" stroke={props.color ? props.color : '#B9CDE3'} strokeWidth="1.3099"/>
-    <rect x="0.5" y="0.5" width="41" height="41" rx="9.5" stroke={props.color ? props.color : '#B9CDE3'}/>
+    { !props.noBorder && <rect x="0.5" y="0.5" width="41" height="41" rx="9.5" stroke={props.color ? props.color : '#B9CDE3'} />}
   </svg>
 )
 
@@ -81,5 +81,25 @@ export const Arrow = (props) => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M13 7H1" stroke={props.color ? props.color : '#3C8FBD'} strokeWidth="1.71429" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M7 13L1 7L7 1" stroke={props.color ? props.color : '#3C8FBD'} strokeWidth="1.71429" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+export const Quantity = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+    <g filter="url(#filter0_d)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.51275 9.37665C4.65199 9.21731 4.00008 8.46267 4.00008 7.55577L4.00008 3.85182C4.00008 2.82906 4.8292 1.99994 5.85196 1.99994L9.55591 1.99994C10.4627 1.99994 11.2172 2.65163 11.3767 3.51218C11.2667 3.49182 11.1534 3.48118 11.0375 3.48118L7.33355 3.48118C6.31079 3.48118 5.48167 4.3103 5.48167 5.33306L5.48167 9.03701C5.48167 9.15302 5.49234 9.26655 5.51275 9.37665Z" fill={props.color ? props.color : '#4C6581'}/>
+    <rect width="7.4077" height="7.4077" rx="1.11113" transform="matrix(-4.37114e-08 -1 -1 4.37114e-08 14 12)" fill={props.color ? props.color : '#4C6581'}/>
+    </g>
+    <defs>
+    <filter id="filter0_d" x="-1.71661e-05" y="0.6666" width="18" height="18.0001" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+    <feOffset dy="2.66668"/>
+    <feGaussianBlur stdDeviation="2.00001"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    </defs>
   </svg>
 )
