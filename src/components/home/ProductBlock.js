@@ -16,7 +16,10 @@ function ProductBlock(props) {
 
     const openProduct = () => {
         globalContext.dispatch(Action.openProduct(id));
-        globalContext.dispatch(Action.navigationControl(DIC.NAV.COMMIT))
+
+        const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === id);
+
+        globalContext.dispatch(Action.navigationControl(selectedProduct?.qty === 0 ? DIC.NAV.DEF : DIC.NAV.COMMIT))
     };
 
     return (
