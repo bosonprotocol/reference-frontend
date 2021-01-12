@@ -5,8 +5,10 @@ import "./Activity.scss"
 
 import { GlobalContext, Action } from '../contexts/Global'
 
+import { getAllVoucherSets, getVouchers } from "../hooks/api";
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import { getAllVoucherSets } from "../hooks/api";
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
@@ -14,77 +16,91 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 function Activity() {
-  const [productBlocks, setProductBlocks] = useState([])
-  const globalContext = useContext(GlobalContext);
+    const [productBlocks, setProductBlocks] = useState([])
+    const { account } = useWeb3React();
 
-  const history = useHistory()
+    const globalContext = useContext(GlobalContext);
 
-  useEffect(() => {
-    async function getVoucherSets() {
-      const allVoucherSets = await getAllVoucherSets();
-      prepareVoucherSetData(allVoucherSets)
-    }
+    const history = useHistory()
 
-    getVoucherSets()
-  }, [])
+    useEffect(() => {
+        async function getVoucherSets() {
+            const allVoucherSets = await getAllVoucherSets();
+            prepareVoucherSetData(allVoucherSets)
+        }
+
+        getVoucherSets()
 
 
-  const prepareVoucherSetData = (rawVoucherSets) => {
-    if (!rawVoucherSets) {
-      setProductBlocks([])
-      return;
-    }
+        // ToDo: Show it in separate vouchers only screen
+        async function getAccountVouchers() {
+            const authData = getAccountStoredInLocalStorage(account);
 
-    let parsedVoucherSets = [];
+            const allAccountVouchers = await getVouchers(authData.authToken);
+            console.log(allAccountVouchers);
+        }
 
-    for (const voucherSet of rawVoucherSets.voucherSupplies) {
-      let parsedVoucherSet = {
-        id: voucherSet._id,
-        title: voucherSet.title,
-        image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-        price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-        deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal)
-      };
+        getAccountVouchers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-      parsedVoucherSets.push(parsedVoucherSet)
-    }
 
-    console.log(parsedVoucherSets);
-    setProductBlocks(parsedVoucherSets)
-  };
+    const prepareVoucherSetData = (rawVoucherSets) => {
+        if (!rawVoucherSets) {
+            setProductBlocks([])
+            return;
+        }
 
-  return (
-    <section className="activity atomic-scoped">
-      <div className="container">
-        <div className="top-navigation flex split">
-          <div className="button square dark" role="button" 
-            onClick={() => history.goBack()}
-          >
-            <Arrow color="#80F0BE" />
+        let parsedVoucherSets = [];
+
+        for (const voucherSet of rawVoucherSets.voucherSupplies) {
+            let parsedVoucherSet = {
+                id: voucherSet._id,
+                title: voucherSet.title,
+                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal)
+            };
+
+            parsedVoucherSets.push(parsedVoucherSet)
+        }
+
+        console.log(parsedVoucherSets);
+        setProductBlocks(parsedVoucherSets)
+    };
+
+    return (
+      <section className="activity atomic-scoped">
+        <div className="container">
+          <div className="top-navigation flex split">
+            <div className="button square dark" role="button" 
+              onClick={() => history.goBack()}
+            >
+              <Arrow color="#80F0BE" />
+            </div>
+            <div className="qr-icon" role="button"
+              onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6" noBorder /></div>
           </div>
-          <div className="qr-icon" role="button"
-            onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6" noBorder /></div>
-        </div>
-        <div className="title">
-          <h1>Activity</h1>
-        </div>
-        <Tabs>
-          <TabList>
-            <Tab>Active</Tab>
-            <Tab>Inactive</Tab>
-          </TabList>
+          <div className="title">
+            <h1>Activity</h1>
+          </div>
+          <Tabs>
+            <TabList>
+              <Tab>Active</Tab>
+              <Tab>Inactive</Tab>
+            </TabList>
 
-          <TabPanel>
-            {<ActiveView products={productBlocks} />}
-          </TabPanel>
-          <TabPanel>
-            {<InactiveView products={productBlocks} />}
-          </TabPanel>
-        </Tabs>
-        
-      </div>
-    </section>
-  )
+            <TabPanel>
+              {<ActiveView products={productBlocks} />}
+            </TabPanel>
+            <TabPanel>
+              {<InactiveView products={productBlocks} />}
+            </TabPanel>
+          </Tabs>
+          
+        </div>
+      </section>
+    )
 }
 
 
@@ -99,14 +115,10 @@ const ActiveView = (props) => {
   )
 }
 
-const InactiveView = (props) => {
-  // const { products } = props
+const InactiveView = () => {
   return (
     <div className="vouchers-container">
-            ... No vouchers
-    {/* {
-      products.map((block, id) => <Block { ...block } key={ id }/>)
-    } */}
+      ... No vouchers
   </div>
   )
 }
