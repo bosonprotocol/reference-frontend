@@ -1,18 +1,16 @@
 .button,
 .button a {
-  &:not([role="button"]) {
-    padding: 13px 22px;
-    font-family: $font-primary;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 19px;
-    border-radius: 8px;
+  padding: 13px 22px;
+  font-family: $font-primary;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  border-radius: 8px;
 
-    text-align: center;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
 
   
   transition: $ease-quick;
