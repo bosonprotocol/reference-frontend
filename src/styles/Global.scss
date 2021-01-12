@@ -52,6 +52,42 @@ input[type="submit"] {
 
 [role="button"] {
   cursor: pointer;
+
+  &.button {
+    transition: 0.2s ease-in-out;
+    a {
+      border-radius: 8px;
+      padding: 13px;
+      font-family: "Exo", sans-serif;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    &.-blue {
+      a {
+        background: #358EF5;
+        color: #FFFFFF;
+      }
+    }
+    &.-green {
+      a {
+        background: #80F0BE;
+        color: #1C2835;
+      }
+      &:hover {
+        a {
+          color: $white;
+          background-color: #50e5a2;
+        }
+      }
+    }
+  }
 }
 
 h1:not(.def) {

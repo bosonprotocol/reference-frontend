@@ -48,7 +48,7 @@ function NavigationBar(props) {
         }
         {transitionState === DIC.NAV.COMMIT ?
           <div className={`control-wrap ${DIC.NAV.COMMIT}`}>
-            <div className="control commit flex center" role="button"
+            <div className="button -green" role="button"
               onClick={() => buyerContext.dispatch(Buyer.commitToBuy())}
             >
               <Link to={ROUTE.ConnectToMetamask}>COMMIT TO BUY 0.1 ETH</Link>
