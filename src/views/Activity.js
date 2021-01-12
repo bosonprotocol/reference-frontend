@@ -16,10 +16,6 @@ import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { getAllVoucherSets, getVouchers } from "../hooks/api";
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { useWeb3React } from "@web3-react/core";
-
 
 function Activity() {
     const [productBlocks, setProductBlocks] = useState([])
