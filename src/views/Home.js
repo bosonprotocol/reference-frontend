@@ -62,6 +62,7 @@ function Home() {
 
         let parsedVoucherSets = [];
 
+        console.log(rawVoucherSets);
 
         for (const voucherSet of rawVoucherSets.voucherSupplies) {
             let parsedVoucherSet = {
@@ -76,7 +77,9 @@ function Home() {
                 category: voucherSet.category,
                 startDate: voucherSet.startDate,
                 expiryDate: voucherSet.expiryDate,
-                qty: voucherSet.qty
+                qty: voucherSet.qty,
+                setId: voucherSet._tokenIdSupply,
+                voucherOwner: voucherSet.voucherOwner
             };
 
             parsedVoucherSets.push(parsedVoucherSet)
