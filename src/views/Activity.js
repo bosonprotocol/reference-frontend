@@ -70,8 +70,8 @@ function Activity() {
         </div>
         <Tabs>
           <TabList>
-            <Tab>Title 1</Tab>
-            <Tab>Title 2</Tab>
+            <Tab>Active</Tab>
+            <Tab>Inactive</Tab>
           </TabList>
 
           <TabPanel>
@@ -114,8 +114,6 @@ const InactiveView = (props) => {
 const Block = (props) => {
   const { title, image, price } = props
 
-  const status = 'OFFERED';
-  const date = 'Oct 26th 2020';
   const currency = 'ETH';
   const quantity = 1;
 
@@ -125,9 +123,8 @@ const Block = (props) => {
         <img src={ image } alt={ title }/>
       </div>
       <div className="info grow">
-        <div className="status flex split">
-          <div className="label">{ status }</div>
-          <div className="date">{ date }</div>
+        <div className="status">
+          <p>VOUCHER SET</p>
         </div>
         <div className="title elipsis">{ title }</div>
         <div className="price flex split">

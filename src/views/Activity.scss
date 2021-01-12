@@ -7,7 +7,8 @@ section.activity {
   
   .title {
     margin-top: 21px;
-    
+    margin-bottom: 28px;
+
     h1 {
       font-family: $font-primary;
       font-style: normal;
@@ -18,10 +19,35 @@ section.activity {
 
 
       color: #FFFFFF;
-      margin-bottom: 50px;
+    }
+  }
+  .react-tabs {
+    ul[role="tablist"] {
+      border-bottom: 1px solid #212C36;
+      li {
+        width: 50%;
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 111.4%;
+        /* identical to box height, or 18px */
+
+        padding: 12px;
+
+        text-align: center;
+        &.react-tabs__tab--selected {
+          background: none;
+          border: none;
+          color: #fff;
+          border-radius: 0;
+          border-bottom: 2px solid #80F0BE;
+        }
+      }
     }
   }
   .vouchers-container {
+    margin-top: 40px;
     .voucher-block {
       max-height: 150px;
       border-radius: 8px;
@@ -39,6 +65,18 @@ section.activity {
 
       &:hover {
         background: #1D2834;
+      }
+
+      .status {
+        p {
+          font-family: 'Barlow', sans-serif;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 13px;
+
+          color: #4C6581;
+        }
       }
 
       .thumb {
