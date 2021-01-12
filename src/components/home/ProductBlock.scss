@@ -35,6 +35,8 @@
     font-size: 16px;
     font-weight: 500;
     margin-top: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .price {
     margin-top: 5px;

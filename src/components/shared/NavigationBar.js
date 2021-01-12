@@ -155,11 +155,11 @@ function NavigationBar(props) {
                     }
                     { transitionState === DIC.NAV.COMMIT ?
                         <div className={ `control-wrap ${ DIC.NAV.COMMIT }` }>
-                            <div className="control commit flex center" role="button"
+                            <div className="flex center" role="button"
                                  onClick={ () => buyerContext.dispatch(Buyer.commitToBuy()) }
                             >
                                 <ContractInteractionButton
-                                    className="button offer primary"
+                                    className="button button -green"
                                     handleClick={ onCommitToBuy }
                                     label="COMMIT TO BUY"
                                     sourcePath={ location.pathname }

@@ -7,7 +7,7 @@ import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
 import { GlobalContext, Action } from "../../contexts/Global"
 import { DIC } from "../../helpers/Dictionary"
 
-import EscrowDiagram from "./EscrowDiagram"
+// import EscrowDiagram from "./EscrowDiagram"
 
 
 const closePoint = window.innerHeight / 4
