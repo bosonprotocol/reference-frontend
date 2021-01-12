@@ -22,13 +22,13 @@ function Header() {
             {/*<h1><img src="images/boson-logo-nav.png" alt="Boson Protocol Logo"/></h1>*/ }
             <nav className="flex jc-sb ai-center">
                 <Link to="/connect">
-                    { account ? <div className="button connected-account-button"
+                    { account ? <div className="button flex ai-center connected-account-button"
                                      role="button">
                             <img
                                 className="provider-logo"
                                 src={ connector === injected ? MetaMaskLogo : connector === walletconnect ? WalletConnectLogo : null }
                                 alt="Connected account"/>
-                            <div className="active-wallet-indicator">
+                            <div className="active-wallet-indicator flex">
                                 <img src="images/active-wallet.png"
                                      alt="Active wallet"/>
                                 <div/>

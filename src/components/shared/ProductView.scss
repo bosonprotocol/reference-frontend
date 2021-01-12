@@ -45,6 +45,10 @@
     transform: translateY(100vh);
 
     transition: 0.6s ease-in-out;
+
+    .thumbnail {
+      padding: 10px 35px;
+    }
   }
 
   .drag-controler {
@@ -92,7 +96,6 @@
         font-family: $font-primary;
         font-weight: 600; 
         font-size: 26px;
-        word-break: break-word;
       }
       & > p {
         margin-top: 16px;

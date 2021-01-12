@@ -1,11 +1,14 @@
 @import "../styles/Settings.scss";
 
 section.activity {
-  background-color: #151E27;
+  background-color: $black;
   min-height: 100vh;
   padding-top: 60px;
   
   .title {
+    margin-top: 21px;
+    margin-bottom: 28px;
+
     h1 {
       font-family: $font-primary;
       font-style: normal;
@@ -16,27 +19,65 @@ section.activity {
 
 
       color: #FFFFFF;
-      margin-bottom: 50px;
+    }
+  }
+  .react-tabs {
+    ul[role="tablist"] {
+      border-bottom: 1px solid #212C36;
+      li {
+        width: 50%;
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 111.4%;
+        /* identical to box height, or 18px */
+
+        padding: 12px;
+
+        text-align: center;
+        &.react-tabs__tab--selected {
+          background: none;
+          border: none;
+          color: #fff;
+          border-radius: 0;
+          border-bottom: 2px solid #80F0BE;
+        }
+      }
     }
   }
   .vouchers-container {
+    margin-top: 40px;
     .voucher-block {
       max-height: 150px;
       border-radius: 8px;
-      padding: 5px;
+      padding: 5px 11px 5px 5px;
+      background: #141C24;
       transition: 0.15s ease-in-out;
 
       & + .voucher-block  {
         margin-top: 20px;
       }
 
-      @media (min-width: 1366px) {
+      @media (min-width: 768px) {
         padding: 20px;
       }
       cursor: pointer;
 
       &:hover {
         background: #1D2834;
+      }
+
+      .status {
+        p {
+          font-family: 'Barlow', sans-serif;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 13px;
+
+          color: #4C6581;
+        }
       }
 
       .thumb {
@@ -58,6 +99,7 @@ section.activity {
         font-family: $font-secondary;
         font-style: normal;
         font-weight: 500;
+        position: relative;
 
         width: calc(80% - 80px);
         flex: 8 0 auto;
@@ -96,6 +138,11 @@ section.activity {
             font-size: 20px;
           }
         }
+        .price {
+          width: 100%;
+          position: absolute;
+          bottom: 12px;
+        }
         .value {
           text-transform: uppercase;
           font-size: 14px;
@@ -107,13 +154,27 @@ section.activity {
             margin-right: 9px;
           }
         }
-        .quality {
+        .quantity {
           text-transform: uppercase;
           font-size: 12px;
           line-height: 14px;
           text-align: right;
 
           color: #FFFFFF;
+          background: #1D2834;
+          border-radius: 58px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px 13px 5px 8px;
+
+          .icon {
+            margin-right: 6px;
+
+            svg {
+              transform: translateY(4px);
+            }
+          }
         }
       }
     }

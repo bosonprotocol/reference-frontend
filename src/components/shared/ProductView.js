@@ -157,7 +157,7 @@ function ProductView(props) {
                                 <EscrowDiagram status={ 'commited' }/>
                             </div> */}
                             <div className="product-info">
-                                <h2>{ selectedProduct?.title }</h2>
+                                <h2 className="elipsis">{ selectedProduct?.title }</h2>
                                 <p>{ description }</p>
                             </div>
                             { tableLocation ? <TableLocation data={ tableLocation }/> : null }
