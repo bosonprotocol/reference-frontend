@@ -149,7 +149,7 @@ function NavigationBar(props) {
                                 <Link to={ ROUTE.NewOffer }><IconAdd/></Link>
                             </div>
                             <div className="control account flex center" role="button">
-                                <IconAccount/>
+                                <Link to={ ROUTE.Activity }><IconAccount/></Link>
                             </div>
                         </div> : null
                     }
