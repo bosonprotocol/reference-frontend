@@ -30,6 +30,7 @@ function Activity() {
         }
 
         getAccountVouchers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
