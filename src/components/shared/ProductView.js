@@ -26,7 +26,7 @@ function ProductView(props) {
 
     const tableContent = [
         ['Category', selectedProduct?.category],
-        ['Remaining Quantity', selectedProduct?.qty],
+        // ['Remaining Quantity', selectedProduct?.qty],
     ];
 
     const tablePrices = [
@@ -59,7 +59,7 @@ function ProductView(props) {
         formatDate(selectedProduct?.expiryDate)
     ];
 
-    const tableLocation = 'Los Angeles(static value)';
+    const tableLocation = 'Los Angeles';
 
     const delta = {
         offset: 0,
@@ -153,9 +153,9 @@ function ProductView(props) {
                             <img className="mw100" src={ selectedProduct?.image } alt={ selectedProduct?.title }/>
                         </div>
                         <div className="content">
-                            <div className="escrow-container">
+                            {/* <div className="escrow-container">
                                 <EscrowDiagram status={ 'commited' }/>
-                            </div>
+                            </div> */}
                             <div className="product-info">
                                 <h2>{ selectedProduct?.title }</h2>
                                 <p>{ description }</p>
@@ -164,7 +164,7 @@ function ProductView(props) {
                             { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
                             { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
                             { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-                            <div className="button refund" role="button">REFUND</div>
+                            {/* <div className="button refund" role="button">REFUND</div> */}
                         </div>
                     </div>
                 </div>

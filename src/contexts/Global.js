@@ -102,15 +102,18 @@ const UpdateProductView = (status) => {
 }
 
 const UpdateReviewedProducts = (id) => {
+    // get from local storage
     update.productsReviewed = localStorage.getItem('productsReviewed')
 
+    // check if it has been assigned
     if (update.productsReviewed != null) {
         update.productsReviewed = JSON.parse(update.productsReviewed)
     } else {
+        // if not, create new array
         update.productsReviewed = []
     }
 
-    if (!update.productsReviewed.length || !update.productsReviewed.includes(id)) {
+    if (update.productsReviewed[update.productsReviewed.length - 1] !== id) {
         if (update.productsReviewed.length < Settings.maxReviewedProducts) {
             update.productsReviewed.push(id)
         } else {
