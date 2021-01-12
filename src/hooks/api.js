@@ -21,8 +21,10 @@ export const verifySignature = async (address, isSmartWallet, domain, types, sig
     return jwtResponse.data;
 };
 
-export const getAllVouchers = async () => {
-    const allVouchers = await axiosInstance.get(`/vouchers/public`);
+export const getVouchers = async (token) => {
+    const allVouchers = await axiosInstance.get(`/vouchers`, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
     return allVouchers.data;
 };
 

@@ -4,10 +4,13 @@ import "./Activity.scss"
 
 import * as ethers from "ethers";
 
-import { getAllVoucherSets } from "../hooks/api";
+import { getAllVoucherSets, getVouchers } from "../hooks/api";
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { useWeb3React } from "@web3-react/core";
 
 function Activity() {
     const [productBlocks, setProductBlocks] = useState([])
+    const { account } = useWeb3React();
 
     useEffect(() => {
         async function getVoucherSets() {
@@ -16,6 +19,17 @@ function Activity() {
         }
 
         getVoucherSets()
+
+
+        // ToDo: Show it in separate vouchers only screen
+        async function getAccountVouchers() {
+            const authData = getAccountStoredInLocalStorage(account);
+
+            const allAccountVouchers = await getVouchers(authData.authToken);
+            console.log(allAccountVouchers);
+        }
+
+        getAccountVouchers();
     }, [])
 
 
