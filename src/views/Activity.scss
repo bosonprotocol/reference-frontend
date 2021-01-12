@@ -51,14 +51,15 @@ section.activity {
     .voucher-block {
       max-height: 150px;
       border-radius: 8px;
-      padding: 5px;
+      padding: 5px 11px 5px 5px;
+      background: #141C24;
       transition: 0.15s ease-in-out;
 
       & + .voucher-block  {
         margin-top: 20px;
       }
 
-      @media (min-width: 1366px) {
+      @media (min-width: 768px) {
         padding: 20px;
       }
       cursor: pointer;
@@ -98,6 +99,7 @@ section.activity {
         font-family: $font-secondary;
         font-style: normal;
         font-weight: 500;
+        position: relative;
 
         width: calc(80% - 80px);
         flex: 8 0 auto;
@@ -136,6 +138,11 @@ section.activity {
             font-size: 20px;
           }
         }
+        .price {
+          width: 100%;
+          position: absolute;
+          bottom: 12px;
+        }
         .value {
           text-transform: uppercase;
           font-size: 14px;
@@ -147,13 +154,27 @@ section.activity {
             margin-right: 9px;
           }
         }
-        .quality {
+        .quantity {
           text-transform: uppercase;
           font-size: 12px;
           line-height: 14px;
           text-align: right;
 
           color: #FFFFFF;
+          background: #1D2834;
+          border-radius: 58px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px 13px 5px 8px;
+
+          .icon {
+            margin-right: 6px;
+
+            svg {
+              transform: translateY(4px);
+            }
+          }
         }
       }
     }

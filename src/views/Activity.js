@@ -8,7 +8,7 @@ import { GlobalContext, Action } from '../contexts/Global'
 import * as ethers from "ethers";
 import { getAllVoucherSets } from "../hooks/api";
 
-import { Arrow, IconQR } from "../components/shared/Icons"
+import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -130,7 +130,7 @@ const Block = (props) => {
         <div className="price flex split">
           <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/> { price } { currency } 
           </div>
-          <div className="quantity">QTY: { quantity }</div>
+          <div className="quantity"><span className="icon"><Quantity /></span> QTY: { quantity }</div>
         </div>
       </div>
     </div>
