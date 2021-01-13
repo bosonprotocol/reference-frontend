@@ -356,6 +356,19 @@
               height: 50px;
               position: relative;
 
+              &.select-disabled {
+                width: 55px;
+                
+                .icons > div {
+                  left: 19px;
+                }
+                .icons {
+                  &::after {
+                    display: none;
+                  }
+                }
+              }
+
               .icons {
                 position: absolute;
                 top: 0;
