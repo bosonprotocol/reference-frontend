@@ -5,9 +5,7 @@ import "./Activity.scss"
 
 import { GlobalContext, Action } from '../contexts/Global'
 
-import { getAllVoucherSets, getVouchers } from "../hooks/api";
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { useWeb3React } from "@web3-react/core";
+import { getAllVoucherSets } from "../hooks/api";
 import * as ethers from "ethers";
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
@@ -20,7 +18,6 @@ import ProductView from "../components/shared/ProductView"
 
 function Activity() {
     const [productBlocks, setProductBlocks] = useState([])
-    const { account } = useWeb3React();
 
     const globalContext = useContext(GlobalContext);
 
