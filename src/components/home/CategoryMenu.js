@@ -20,9 +20,11 @@ function CategoryMenu() {
 
   return (
     <div className="category-menu flex ai-center">
-      <p className="selected-item" ref={selectedRef}>{categoryMenu[selected]}</p>
+      {/* remove class arrange to trigger animation */}
+      <p className="selected-item arrange" ref={selectedRef}>{categoryMenu[selected]}</p>
       <div className="category-container">
-        <ul className="flex ai-center" ref={categoryList}>
+        {/* remove classes "arrange no-animation" to trigger animation */}
+        <ul className="flex ai-center arrange no-animation" ref={categoryList}>
           {categoryMenu.map((item, id) => id !== selected && <li
             style={{transitionDelay: `${id * 50}ms`}}
             role="button" data-key={id}
