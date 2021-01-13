@@ -40,6 +40,12 @@
       scrollbar-width: none;  /* Firefox */
       margin-bottom: -5px;
 
+      &.no-animation {
+        li {
+          transition: none;
+        }
+      }
+
       &::-webkit-scrollbar {
         display: none;
       }
