@@ -35,7 +35,7 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: hosting:channel:deploy dev
+          args: deploy --only hosting
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY_DEV }}
