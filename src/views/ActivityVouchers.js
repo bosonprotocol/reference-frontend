@@ -5,7 +5,7 @@ import "./Activity.scss"
 
 import { GlobalContext, Action } from '../contexts/Global'
 
-import { getAllVoucherSets, getVouchers } from "../hooks/api";
+import {  getVouchers } from "../hooks/api";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -17,8 +17,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 
-function Activity() {
-    const [productBlocks, setProductBlocks] = useState([])
+function ActivityVouchers() {
+    const [preparedVouchers, setPreparedVouchers] = useState([])
     const { account } = useWeb3React();
 
     const globalContext = useContext(GlobalContext);
@@ -26,20 +26,11 @@ function Activity() {
     const history = useHistory()
 
     useEffect(() => {
-        async function getVoucherSets() {
-            const allVoucherSets = await getAllVoucherSets();
-            prepareVoucherSetData(allVoucherSets)
-        }
-
-        getVoucherSets()
-
-
-        // ToDo: Show it in separate vouchers only screen
         async function getAccountVouchers() {
             const authData = getAccountStoredInLocalStorage(account);
 
             const allAccountVouchers = await getVouchers(authData.authToken);
-            console.log(allAccountVouchers);
+            prepareVouchersData(allAccountVouchers);
         }
 
         getAccountVouchers();
@@ -47,29 +38,31 @@ function Activity() {
     }, [])
 
 
-    const prepareVoucherSetData = (rawVoucherSets) => {
-        if (!rawVoucherSets) {
-            setProductBlocks([])
+    const prepareVouchersData = (rawVouchers) => {
+        if (!rawVouchers) {
+            setPreparedVouchers([]);
             return;
         }
 
-        let parsedVoucherSets = [];
+        let parsedVouchers = [];
 
-        for (const voucherSet of rawVoucherSets.voucherSupplies) {
+        for (const voucher of rawVouchers.voucherData) {
+            console.log(voucher);
+
             let parsedVoucherSet = {
-                id: voucherSet._id,
-                title: voucherSet.title,
-                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
-                qty: voucherSet.qty
+                id: voucher._id,
+                title: voucher.title,
+                image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+                price: ethers.utils.formatEther(voucher.price.$numberDecimal),
+                qty: voucher.qty
+                // deposit: ethers.utils.formatEther(voucher.buyerDeposit.$numberDecimal)
             };
 
-            parsedVoucherSets.push(parsedVoucherSet)
+            parsedVouchers.push(parsedVoucherSet)
         }
 
-        console.log(parsedVoucherSets);
-        setProductBlocks(parsedVoucherSets)
+        console.log(parsedVouchers);
+        setPreparedVouchers(parsedVouchers)
     };
 
     return (
@@ -95,10 +88,10 @@ function Activity() {
                     </TabList>
 
                     <TabPanel>
-                        { <ActiveView products={ productBlocks }/> }
+                        { <ActiveView products={ preparedVouchers }/> }
                     </TabPanel>
                     <TabPanel>
-                        { <InactiveView products={ productBlocks }/> }
+                        { <InactiveView products={ preparedVouchers }/> }
                     </TabPanel>
                 </Tabs>
 
@@ -128,7 +121,8 @@ const InactiveView = () => {
 }
 
 const Block = (props) => {
-    const { title, image, price, qty } = props
+    const { title, image, price, qty } = props;
+    console.log(props);
 
     const currency = 'ETH'; // ToDo: implement it
 
@@ -139,7 +133,7 @@ const Block = (props) => {
             </div>
             <div className="info grow">
                 <div className="status">
-                    <p>VOUCHER SET</p>
+                    <p>VOUCHER</p>
                 </div>
                 <div className="title elipsis">{ title }</div>
                 <div className="price flex split">
@@ -152,4 +146,4 @@ const Block = (props) => {
     )
 }
 
-export default Activity
+export default ActivityVouchers
