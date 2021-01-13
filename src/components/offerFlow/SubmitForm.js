@@ -143,7 +143,6 @@ export default function SubmitForm(props) {
 
     // append file
     function appendFilesToFormData() {
-        console.log(selected_file)
         formData.append("fileToUpload", selected_file, selected_file['name']);
     }
 
