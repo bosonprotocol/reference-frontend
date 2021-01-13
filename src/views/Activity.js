@@ -33,17 +33,6 @@ function Activity() {
         }
 
         getVoucherSets()
-
-
-        // ToDo: Show it in separate vouchers only screen
-        async function getAccountVouchers() {
-            const authData = getAccountStoredInLocalStorage(account);
-
-            const allAccountVouchers = await getVouchers(authData.authToken);
-            console.log(allAccountVouchers);
-        }
-
-        getAccountVouchers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -69,7 +58,6 @@ function Activity() {
             parsedVoucherSets.push(parsedVoucherSet)
         }
 
-        console.log(parsedVoucherSets);
         setProductBlocks(parsedVoucherSets)
     };
 
@@ -148,8 +136,6 @@ const Block = (props) => {
         // globalContext.dispatch(Action.navigationControl(selectedProduct?.qty === 0 ? DIC.NAV.DEF : DIC.NAV.COMMIT))
     };
 
-    console.log(title, id)
-
     useEffect(() => {
         let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
         let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
@@ -171,7 +157,6 @@ const Block = (props) => {
 
         let parsedVoucherSets = [];
 
-        console.log(rawVoucherSets);
 
         for (const voucherSet of rawVoucherSets.voucherSupplies) {
             let parsedVoucherSet = {
@@ -194,7 +179,6 @@ const Block = (props) => {
             parsedVoucherSets.push(parsedVoucherSet)
         }
 
-        console.log(parsedVoucherSets);
         globalContext.dispatch(Action.allVoucherSets(parsedVoucherSets));
     };
 

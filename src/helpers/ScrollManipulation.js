@@ -26,7 +26,6 @@ var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewh
 
 // call this to Disable
 export function disableScroll(el) {
-  console.log('disable scroll')
   el.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
   el.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
   el.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
@@ -35,7 +34,6 @@ export function disableScroll(el) {
 
 // call this to Enable
 export function enableScroll(el) {
-  console.log('enable scroll')
   el.removeEventListener('DOMMouseScroll', preventDefault, false);
   el.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
   el.removeEventListener('touchmove', preventDefault, wheelOpt);

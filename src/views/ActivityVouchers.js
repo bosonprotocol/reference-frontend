@@ -47,8 +47,6 @@ function ActivityVouchers() {
         let parsedVouchers = [];
 
         for (const voucher of rawVouchers.voucherData) {
-            console.log(voucher);
-
             let parsedVoucherSet = {
                 id: voucher._id,
                 title: voucher.title,
@@ -61,7 +59,6 @@ function ActivityVouchers() {
             parsedVouchers.push(parsedVoucherSet)
         }
 
-        console.log(parsedVouchers);
         setPreparedVouchers(parsedVouchers)
     };
 

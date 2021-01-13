@@ -7,8 +7,6 @@ export function GetToday(increment = 0) {
   let day = '' + future.getDate()
   let year = future.getFullYear()
 
-  console.log(d, future)
-
   if (month.length < 2)
       month = '0' + month;
   if (day.length < 2)

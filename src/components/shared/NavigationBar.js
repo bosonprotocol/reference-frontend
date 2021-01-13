@@ -88,15 +88,11 @@ function NavigationBar(props) {
             });
 
             const receipt = await tx.wait();
-            console.log(receipt);
 
             let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
 
-            console.log(encodedTopic);
-
             data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
 
-            console.log(data);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
