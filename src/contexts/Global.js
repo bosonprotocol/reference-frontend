@@ -45,6 +45,7 @@ export const Action = {
 export const GlobalReducer = (state, action) => {
     const actionList = {
         [DIC.OPEN_PRODUCT]: () => {
+            console.log(action.payload)
             UpdateReviewedProducts(action.payload)
             UpdateProductView(1)
             // disableScroll(document.body)

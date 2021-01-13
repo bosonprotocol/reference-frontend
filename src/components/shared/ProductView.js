@@ -13,12 +13,14 @@ import { DIC } from "../../helpers/Dictionary"
 const closePoint = window.innerHeight / 4
 
 
-function ProductView(props) {
+function ProductView() {
     const productWindow = useRef();
     const windowContainer = useRef();
     const touchControl = useRef();
 
     const globalContext = useContext(GlobalContext);
+
+    console.log(globalContext.state.allVoucherSets)
 
     const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === globalContext.state.productView.id);
 
