@@ -3,7 +3,6 @@ import { useWeb3React } from "@web3-react/core";
 import {
     WalletConnect,
     WALLET_VIEWS,
-    getWalletTitle
 } from "../components/modals/WalletConnect";
 import { useEagerConnect } from "../hooks";
 import { NetworkContextName } from "../constants";
@@ -25,7 +24,6 @@ export default function Connect() {
     const history = useHistory();
     const context = useWeb3React();
     const {
-        account,
         active,
     } = context;
 
@@ -55,10 +53,6 @@ export default function Connect() {
         }
     }, []);
 
-    function goToHomeScreen() {
-        history.push("/");
-    }
-
     const ConnectedWallet = <WalletConnect getData={ACTION.GET_DATA} walletView={ walletView } setWalletView={ setWalletView }/>
 
     return (
@@ -66,7 +60,7 @@ export default function Connect() {
             <div className="container l">
                 <div className="top-navigation flex ai-center">
                     <div className="button square dark" role="button" 
-                    onClick={() => history.goBack()}
+                    onClick={() => history.push("/")}
                     >
                     <Arrow color="#80F0BE" />
                     </div>

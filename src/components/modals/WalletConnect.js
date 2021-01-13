@@ -230,27 +230,7 @@ function WalletListItem({
 }
 
 function WalletAccount() {
-    const { account, connector, activate } = useWeb3React();
-    const walletContext = useContext(WalletContext);
-
-    const connectorsByName = walletContext.walletState.connectorsByName;
-
-    function onConnectionClicked(name) {
-        if (name === "WalletConnect") {
-            const walletConnectData = localStorage.getItem('walletconnect')
-
-            const walletConnectDataObject = JSON.parse(walletConnectData);
-            if (walletConnectDataObject && walletConnectDataObject.chainId !== RINKEBY_ID) {
-                // ToDo: Use Global notification
-                console.error("Please use Rinkeby network.");
-                return
-            }
-        }
-
-        const current = connectorsByName[name];
-        activate(current);
-    }
-
+    const { account, connector } = useWeb3React();
 
     function getStatusIcon() {
         if (connector === injected) {
