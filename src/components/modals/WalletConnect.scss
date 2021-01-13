@@ -8,18 +8,16 @@
 
 .wallet-list-item {
   display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  height: 54px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  margin: 15px;
 
-  &.active-connector {
-    //border: 1px solid $accent;
-    //border-radius: 10px;
-    //margin: 15px;
+  &:not(.active-connector) {
+    cursor: pointer;
   }
+
+  // &.active-connector {
+  //   border: 1px solid $accent;
+  //   border-radius: 10px;
+  //   margin: 15px;
+  // }
 
   .list-item-option {
     padding: 16px 40px;
