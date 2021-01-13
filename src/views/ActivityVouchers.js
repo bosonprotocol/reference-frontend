@@ -122,7 +122,6 @@ const InactiveView = () => {
 
 const Block = (props) => {
     const { title, image, price, qty } = props;
-    console.log(props);
 
     const currency = 'ETH'; // ToDo: implement it
 

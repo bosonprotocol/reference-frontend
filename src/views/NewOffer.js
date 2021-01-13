@@ -20,16 +20,10 @@ import { Arrow } from "../components/shared/Icons"
 
 import { NAME, CURRENCY } from "../helpers/Dictionary"
 
+import { GetToday } from "../helpers/Misc"
+
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'input'
-
-const inputFallback = {
-  [NAME.PRICE]: '0',
-  [NAME.PRICE_C]: CURRENCY.ETH,
-  [NAME.SELLER_DEPOSIT]: '0', 
-  [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH, 
-  [NAME.BUYER_DEPOSIT]: '0', 
-}
 
 const priceSettings = {
   [CURRENCY.ETH]: {
@@ -78,6 +72,16 @@ function NewOffer() {
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
+
+  const inputFallback = {
+    [NAME.PRICE]: '0',
+    [NAME.PRICE_C]: CURRENCY.ETH,
+    [NAME.SELLER_DEPOSIT]: '0', 
+    [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH, 
+    [NAME.BUYER_DEPOSIT]: '0',
+    [NAME.DATE_START]: GetToday(),
+    [NAME.DATE_END]: GetToday(1),
+  }
 
   const getData = name => sellerContext.state.offeringData[name]
 
@@ -191,6 +195,11 @@ function NewOffer() {
     sellerContext.dispatch(Seller.resetOfferingData())
     loadValues(true) // call with reset
     sellerContext.dispatch(Seller.setOfferingProgress(0))
+
+    // load fallback
+    sellerContext.dispatch(Seller.updateOfferingData({
+      ...inputFallback
+    }))
     
     // remove class active from active screen
     removeActiveItems()
