@@ -29,6 +29,7 @@ import { network } from "./connectors";
 
 import { ROUTE } from "./helpers/Dictionary"
 import ContextModal from "./components/shared/ContextModal";
+import ActivityVouchers from "./views/ActivityVouchers";
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -95,6 +96,7 @@ function App() {
                 <Route path={ROUTE.ShowQR} component={ShowQR}/>
                 <Route path={ROUTE.NewOffer} component={NewOffer}/>
                 <Route path={ROUTE.Activity} component={Activity}/>
+                <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
             </Switch>
             </Router>
             <ContextModal/>

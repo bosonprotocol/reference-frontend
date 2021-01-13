@@ -26,6 +26,7 @@ export const ROUTE = {
     ShowQR: '/show-qr-code',
     NewOffer: '/new-offer',
     Activity: '/activity',
+    ActivityVouchers: '/activity-vouchers',
 }
 
 export const NAME = {
