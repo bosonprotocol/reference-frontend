@@ -67,6 +67,7 @@ export function WalletConnect({
                                   onSuccess,
                                   setWalletView,
                                   walletView = WALLET_VIEWS.ACCOUNT,
+                                  getData
                               }) {
     const isMounted = useRef(false);
     const context = useWeb3React();
@@ -153,31 +154,29 @@ export function WalletConnect({
         // eslint-disable-next-line
     }, [library, account, chainId]);
 
-
-    if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-        return <WalletAccount setWalletView={ setWalletView }/>;
-    }
-
     return (
-        <>
-            <WalletListItem
-                name={ "MetaMask" }
-                imageName={ MetaMaskLogo }
-                isActive={ connector === injected }
-                onClick={ () => onConnectionClicked("MetaMask") }
-            />
-            <WalletListItem
-                name={ "WalletConnect" }
-                imageName={ WalletConnectLogo }
-                isActive={ connector === walletconnect }
-                onClick={ () => {
-                    // if the user has already tried to connect, manually reset the connector
-                    if (connector?.walletConnectProvider?.wc?.uri) {
-                        connector.walletConnectProvider = undefined;
-                    }
-                    onConnectionClicked("WalletConnect");
-                } }
-            />
+        <>  
+            {account ? <WalletAccount /> : null}
+            <div className="wallets">
+                <WalletListItem
+                    name={ "MetaMask" }
+                    imageName={ MetaMaskLogo }
+                    isActive={ connector === injected }
+                    onClick={ () => onConnectionClicked("MetaMask") }
+                />
+                <WalletListItem
+                    name={ "WalletConnect" }
+                    imageName={ WalletConnectLogo }
+                    isActive={ connector === walletconnect }
+                    onClick={ () => {
+                        // if the user has already tried to connect, manually reset the connector
+                        if (connector?.walletConnectProvider?.wc?.uri) {
+                            connector.walletConnectProvider = undefined;
+                        }
+                        onConnectionClicked("WalletConnect");
+                    } }
+                />
+            </div>
         </>
     );
 }
@@ -212,21 +211,46 @@ function WalletListItem({
                 />
             </div>
             <div className="list-item-option">
-                { isActive ? (
+                { name }
+            </div>
+            <div className="status">
+            { isActive ? (
                     <div className="active-wallet-indicator">
                         <img src="images/active-wallet.png"
-                             alt="Active wallet"/>
-                        <div/>
+                             alt="Active wallet"/> Connected
                     </div>
-                ) : null }
-                { name }
+                ) : 
+                <div className="button gray" role="button">
+                    CONNECT
+                </div>
+                }
             </div>
         </div>
     );
 }
 
-function WalletAccount({ setWalletView }) {
-    const { account, connector } = useWeb3React();
+function WalletAccount() {
+    const { account, connector, activate } = useWeb3React();
+    const walletContext = useContext(WalletContext);
+
+    const connectorsByName = walletContext.walletState.connectorsByName;
+
+    function onConnectionClicked(name) {
+        if (name === "WalletConnect") {
+            const walletConnectData = localStorage.getItem('walletconnect')
+
+            const walletConnectDataObject = JSON.parse(walletConnectData);
+            if (walletConnectDataObject && walletConnectDataObject.chainId !== RINKEBY_ID) {
+                // ToDo: Use Global notification
+                console.error("Please use Rinkeby network.");
+                return
+            }
+        }
+
+        const current = connectorsByName[name];
+        activate(current);
+    }
+
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -240,36 +264,31 @@ function WalletAccount({ setWalletView }) {
         }
     }
 
-    function getName() {
-        if (connector === injected) {
-            return "MetaMask";
-        } else if (connector === walletconnect) {
-            return "WalletConnect";
-        }
-    }
+    // function getName() {
+    //     if (connector === injected) {
+    //         return "MetaMask";
+    //     } else if (connector === walletconnect) {
+    //         return "WalletConnect";
+    //     }
+    // }
+
+    const copyButton = <CopyHelper toCopy={ account }>
+        <span style={ { marginLeft: "4px" } }>Copy Address</span>
+    </CopyHelper>
 
     return (
-        <div className="connected-account">
-            <div className="connected-with">
-                <div className="connected-with-title">Connected with { getName() }</div>
-                <button
-                    className="button primary change-connector-button"
-                    onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }
-                >
-                    Change
-                </button>
-            </div>
-            <div className="connected-account-address-holder">
-                <div className="connected-account-address">
-                    { getStatusIcon() }
-                    <span className="">{ shortenAddress(account) }</span>
+        <>
+            <div className="connected-wallet">
+                <div className="address flex split">
+                    <div className="url flex center">{ getStatusIcon() }{shortenAddress(account)}</div>
+                    <div className="copy">{copyButton}</div>
                 </div>
-                <div className="copy-account-address">
-                    <CopyHelper toCopy={ account }>
-                        <span style={ { marginLeft: "4px" } }>Copy Address</span>
-                    </CopyHelper>
-                </div>
+                {/* <div className="control flex split">
+                    <div className="button gray w50">REMOVE</div>
+                    <div className="button gray action w50" role="button"
+                    onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }>CHANGE</div>
+                </div> */}
             </div>
-        </div>
+        </>
     );
 }
