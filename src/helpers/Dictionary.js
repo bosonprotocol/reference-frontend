@@ -19,6 +19,10 @@ export const DIC = {
     ALL_VOUCHER_SETS: 'all_voucher_sets'
 }
 
+export const CONTROL = {
+    TEST: 'test'
+}
+
 export const ROUTE = {
     Home: '/',
     Connect: '/connect',
