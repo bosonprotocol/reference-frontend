@@ -1,6 +1,5 @@
 import { createContext } from 'react'
 import { CONTROL } from "../helpers/Dictionary"
-// import { disableScroll, enableScroll } from "../helpers/ScrollManipulation"
 
 export const NavigationContext = createContext()
 
@@ -51,3 +50,5 @@ export const NavigationReducer = (state, action) => {
 
   return { ...state, ...actionList[action.type]() }
 }
+
+

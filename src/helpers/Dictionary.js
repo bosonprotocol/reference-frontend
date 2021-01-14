@@ -19,10 +19,12 @@ export const DIC = {
     ALL_VOUCHER_SETS: 'all_voucher_sets'
 }
 
+// CONTROL strings are used to execute commands related to Context
 export const CONTROL = {
     TEST: 'test'
 }
 
+// ROUTE strings are used to navigate to url
 export const ROUTE = {
     Home: '/',
     Connect: '/connect',
@@ -33,6 +35,7 @@ export const ROUTE = {
     ActivityVouchers: '/activity-vouchers',
 }
 
+// ROUTE strings are used in NewOffer for input fields
 export const NAME = {
     CATEGORY: 'category',
     IMAGE: 'image',
