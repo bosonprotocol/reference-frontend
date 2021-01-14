@@ -159,7 +159,7 @@ function NavigationBar(props) {
                                  onClick={ () => buyerContext.dispatch(Buyer.commitToBuy()) }
                             >
                                 <ContractInteractionButton
-                                    className="button button -green"
+                                    className="button -green"
                                     handleClick={ onCommitToBuy }
                                     label="COMMIT TO BUY"
                                     sourcePath={ location.pathname }
