@@ -5,7 +5,7 @@ function BottomNavigation() {
     <section className="bottom-navigation">
       <div className="container">
         <nav>
-          
+          BOTTOM
         </nav>
       </div>
     </section>

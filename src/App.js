@@ -11,6 +11,7 @@ import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 
 import BottomNavigation from "./components/shared/navigation/BottomNavigation"
+import TopNavigation from "./components/shared/navigation/TopNavigation"
 
 import { useEagerConnect, useInactiveListener } from './hooks'
 
@@ -90,7 +91,8 @@ function App() {
         <SellerContext.Provider value={sellerContextValue}>
         <WalletContext.Provider value={walletContextValue}>
             <Router>
-            <Switch>
+            <TopNavigation />
+                <Switch>
                 <Route exact strict path={ROUTE.Connect} component={Connect}/>
                 <Route exact path={ROUTE.Home} component={Home}/>
                 <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
@@ -99,10 +101,10 @@ function App() {
                 <Route path={ROUTE.NewOffer} component={NewOffer}/>
                 <Route path={ROUTE.Activity} component={Activity}/>
                 <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
-            </Switch>
+                </Switch>
+            <BottomNavigation />
             </Router>
             <ContextModal/>
-            <BottomNavigation />
         </WalletContext.Provider>
         </SellerContext.Provider>
         </BuyerContext.Provider>

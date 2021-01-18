@@ -1,6 +1,9 @@
 import { createContext } from 'react'
 import { DIC } from "../helpers/Dictionary"
 // import { disableScroll, enableScroll } from "../helpers/ScrollManipulation"
+import { getData as getContextData } from "../helpers/Context"
+
+export const getData = getContextData
 
 export const GlobalContext = createContext()
 

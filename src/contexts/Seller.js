@@ -1,7 +1,11 @@
 import { createContext } from 'react'
 import { DIC } from "../helpers/Dictionary"
+import { getData as getContextData } from "../helpers/Context"
+
+export const getData = getContextData
 
 export const SellerContext = createContext()
+
 
 const fetchProgressFallback = parseInt(localStorage.getItem('offeringProgress'))
 
