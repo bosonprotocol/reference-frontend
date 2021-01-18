@@ -2,12 +2,71 @@
   .container {
     min-height: 100vh;
 
-    .top-navigation {
-      margin-top: 48px;
+    .connected-wallet {
+      margin-bottom: 33px;
+
+      .url {
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 111.4%;
+        /* identical to box height, or 20px */
+
+
+        color: #FFFFFF;
+      }
+
+      & .address > div:first-child {
+        margin-left: 11px;
+      }
+      .address {
+        padding: 26px 12px;
+        background: #13191F;
+        border-radius: 8px;
+
+        .url {
+          div {
+            margin-right: 11px;
+          }
+        }
+      }
     }
 
-    .content {
-      padding-top: 25%;
+    .wallets {
+      padding-top: 33px;
+      border-top: 1px solid #37414C;
+
+      .status {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .active-wallet-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          margin-right: 6px;
+        }
+      }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      padding-top: 25px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 111.4%;
+      /* identical to box height, or 27px */
+
+
+      color: #FFFFFF;
     }
   }
 }

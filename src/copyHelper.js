@@ -11,7 +11,7 @@ export default function CopyHelper({ toCopy, children }) {
 
     return (
         <button
-            className="gray3 hover-gray1 outline-0 bg-none bn pointer flex f6 justify-center button primary"
+            className="gray3 hover-gray1 outline-0 bg-none bn pointer flex f6 justify-center button text"
             onClick={ () => setCopied(toCopy) }
         >
             { isCopied ? (

@@ -27,6 +27,37 @@
     }
   }
 
+  &.gray {
+    background: #192028;
+    border-radius: 8px;
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+
+    color: #8798AB;
+
+    &:hover {
+      background: rgba(#192028, 0.7);
+    }
+  }
+
+  &.text {
+    background: transparent;
+    border: none;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    color: #8798AB;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
   &.linear {
     text-transform: inherit;
     text-decoration: inherit;

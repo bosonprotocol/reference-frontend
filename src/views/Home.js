@@ -62,8 +62,6 @@ function Home() {
 
         let parsedVoucherSets = [];
 
-        console.log(rawVoucherSets);
-
         for (const voucherSet of rawVoucherSets.voucherSupplies) {
             let parsedVoucherSet = {
                 id: voucherSet._id,
@@ -85,7 +83,6 @@ function Home() {
             parsedVoucherSets.push(parsedVoucherSet)
         }
 
-        console.log(parsedVoucherSets);
         productListSettings.infinite = parsedVoucherSets.length > 4;
         setProductBlocks(parsedVoucherSets);
         globalContext.dispatch(Action.allVoucherSets(parsedVoucherSets));

@@ -87,12 +87,12 @@ export const Arrow = (props) => (
 export const Quantity = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
     <g filter="url(#filter0_d)">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.51275 9.37665C4.65199 9.21731 4.00008 8.46267 4.00008 7.55577L4.00008 3.85182C4.00008 2.82906 4.8292 1.99994 5.85196 1.99994L9.55591 1.99994C10.4627 1.99994 11.2172 2.65163 11.3767 3.51218C11.2667 3.49182 11.1534 3.48118 11.0375 3.48118L7.33355 3.48118C6.31079 3.48118 5.48167 4.3103 5.48167 5.33306L5.48167 9.03701C5.48167 9.15302 5.49234 9.26655 5.51275 9.37665Z" fill={props.color ? props.color : '#4C6581'}/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M5.51275 9.37665C4.65199 9.21731 4.00008 8.46267 4.00008 7.55577L4.00008 3.85182C4.00008 2.82906 4.8292 1.99994 5.85196 1.99994L9.55591 1.99994C10.4627 1.99994 11.2172 2.65163 11.3767 3.51218C11.2667 3.49182 11.1534 3.48118 11.0375 3.48118L7.33355 3.48118C6.31079 3.48118 5.48167 4.3103 5.48167 5.33306L5.48167 9.03701C5.48167 9.15302 5.49234 9.26655 5.51275 9.37665Z" fill={props.color ? props.color : '#4C6581'}/>
     <rect width="7.4077" height="7.4077" rx="1.11113" transform="matrix(-4.37114e-08 -1 -1 4.37114e-08 14 12)" fill={props.color ? props.color : '#4C6581'}/>
     </g>
     <defs>
-    <filter id="filter0_d" x="-1.71661e-05" y="0.6666" width="18" height="18.0001" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <filter id="filter0_d" x="-1.71661e-05" y="0.6666" width="18" height="18.0001" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
     <feOffset dy="2.66668"/>
     <feGaussianBlur stdDeviation="2.00001"/>
