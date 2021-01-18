@@ -9,17 +9,18 @@ export const NavigationInitialState = {
     connectedWallet: false,
     connectToWallet: false,
     notification: false,
-    offerProgress: false,
-    pageBack: {
-      type: null
-    }
+    newoffer: {
+      progress: null,
+      pageBack: null,
+    },
   },
   bottom: {
-    home: false,
-    buy: false,
-    add: false,
-    sell: false,
-    wallet: false,
+    main: false,
+    action: false,
+    newOffer: {
+      next: null,
+      reset: null,
+    },
   }
 };
 
