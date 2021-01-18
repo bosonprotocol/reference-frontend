@@ -10,6 +10,8 @@ import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 
+import BottomNavigation from "./components/shared/navigation/BottomNavigation"
+
 import { useEagerConnect, useInactiveListener } from './hooks'
 
 
@@ -100,6 +102,7 @@ function App() {
             </Switch>
             </Router>
             <ContextModal/>
+            <BottomNavigation />
         </WalletContext.Provider>
         </SellerContext.Provider>
         </BuyerContext.Provider>
