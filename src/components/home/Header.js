@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 import { GlobalContext, Action } from '../../contexts/Global'
 
-import "./Header.scss"
-
 import { IconQR } from "../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
 import { shortenAddress } from "../../utils";

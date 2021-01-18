@@ -120,7 +120,6 @@ function Home() {
             <div className={ `screens ${ newUser ? 'new-user' : '' }` } ref={ screensRef }>
                 <div ref={ homepage } className="home relative atomic-scoped">
                     <div className="container o-hidden">
-                        <Header/>
                         <CategoryMenu/>
                     </div>
                     <section className="product-list">
