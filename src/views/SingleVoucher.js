@@ -33,7 +33,6 @@ function SingleVoucher(props) {
     let parsedVoucherSets = [];
 
     for (const voucherSet of rawVoucherSets.voucherSupplies) {
-      console.log(voucherSet)
         let parsedVoucherSet = {
             id: voucherSet._id,
             title: voucherSet.title,
@@ -46,7 +45,6 @@ function SingleVoucher(props) {
         parsedVoucherSets.push(parsedVoucherSet)
     }
 
-    console.log(parsedVoucherSets);
     setSelectedProduct(parsedVoucherSets.find(x => x.id === voucherId))
   };
 

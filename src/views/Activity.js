@@ -34,17 +34,6 @@ function Activity() {
         }
 
         getVoucherSets()
-
-
-        // ToDo: Show it in separate vouchers only screen
-        async function getAccountVouchers() {
-            const authData = getAccountStoredInLocalStorage(account);
-
-            const allAccountVouchers = await getVouchers(authData.authToken);
-            console.log(allAccountVouchers);
-        }
-
-        getAccountVouchers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -70,7 +59,6 @@ function Activity() {
             parsedVoucherSets.push(parsedVoucherSet)
         }
 
-        console.log(parsedVoucherSets);
         setProductBlocks(parsedVoucherSets)
     };
 
@@ -131,7 +119,6 @@ const InactiveView = () => {
 
 const Block = (props) => {
     const { title, image, price, qty, id } = props;
-    console.log(`${ROUTE.SingleVoucher}/${id}`);
 
     const currency = 'ETH'; // ToDo: implement it
 
