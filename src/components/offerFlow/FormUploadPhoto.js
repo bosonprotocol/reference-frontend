@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext } from 'react'
+import React, { useRef, useContext } from 'react'
 
 import { SellerContext, Seller, getData } from "../../contexts/Seller"
 
@@ -25,20 +25,17 @@ function UploadPhoto() {
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const fileReader = new FileReader()
-
   const previewImage = (submited) => {
+    console.log(submited)
     sellerContext.dispatch(Seller.updateOfferingData({
       [NAME.IMAGE]: submited.currentTarget.result,
     }))
   }
 
-  useEffect(() => {
-    fileReader.addEventListener('load', previewImage)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const imageUploadHandler = (e) => {
+    const fileReader = new FileReader()
+    fileReader.addEventListener('load', previewImage)
+
     console.log(e)
     Image.name = e?.target?.files[0]?.name
     Image.size = e?.target?.files[0]?.size
@@ -61,6 +58,7 @@ function UploadPhoto() {
       sellerContext.dispatch(Seller.updateOfferingData({
         [NAME.SELECTED_FILE]: e.target.files[0]
       }))
+      console.log('past')
       fileReader.readAsDataURL(e.target.files[0]) 
     } else {
       // set errors
