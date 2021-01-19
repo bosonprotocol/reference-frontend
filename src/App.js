@@ -10,9 +10,6 @@ import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 
-import BottomNavigation from "./components/shared/navigation/BottomNavigation"
-import TopNavigation from "./components/shared/navigation/TopNavigation"
-
 import { useEagerConnect, useInactiveListener } from './hooks'
 
 
@@ -91,7 +88,6 @@ function App() {
         <SellerContext.Provider value={sellerContextValue}>
         <WalletContext.Provider value={walletContextValue}>
             <Router>
-            <TopNavigation />
                 <Switch>
                 <Route exact strict path={ROUTE.Connect} component={Connect}/>
                 <Route exact path={ROUTE.Home} component={Home}/>
@@ -102,7 +98,6 @@ function App() {
                 <Route path={ROUTE.Activity} component={Activity}/>
                 <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
                 </Switch>
-            <BottomNavigation />
             </Router>
             <ContextModal/>
         </WalletContext.Provider>

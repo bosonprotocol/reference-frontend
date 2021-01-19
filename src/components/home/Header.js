@@ -16,7 +16,7 @@ function Header() {
     const { account, connector } = useWeb3React();
 
     return (
-        <header className="flex jc-sb ai-center">
+        <header>
             {/*<h1><img src="images/boson-logo-nav.png" alt="Boson Protocol Logo"/></h1>*/ }
             <nav className="flex jc-sb ai-center">
                 <Link to="/connect">
