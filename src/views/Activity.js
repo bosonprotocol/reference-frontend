@@ -127,15 +127,7 @@ const InactiveView = () => {
 const Block = (props) => {
     const { title, image, price, qty, id } = props
 
-    const globalContext = useContext(GlobalContext);
-
-    const openProduct = (product) => {
-        globalContext.dispatch(Action.openProduct(product));
-
-        // const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === product);
-
-        // globalContext.dispatch(Action.navigationControl(selectedProduct?.qty === 0 ? DIC.NAV.DEF : DIC.NAV.COMMIT))
-    };
+    const globalContext = useContext(GlobalContext)
 
     useEffect(() => {
         let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
