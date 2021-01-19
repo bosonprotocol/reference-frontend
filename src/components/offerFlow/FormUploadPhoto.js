@@ -26,7 +26,6 @@ function UploadPhoto() {
   const getOfferingData = getData(sellerContext.state.offeringData)
 
   const previewImage = (submited) => {
-    console.log(submited)
     sellerContext.dispatch(Seller.updateOfferingData({
       [NAME.IMAGE]: submited.currentTarget.result,
     }))
@@ -36,7 +35,6 @@ function UploadPhoto() {
     const fileReader = new FileReader()
     fileReader.addEventListener('load', previewImage)
 
-    console.log(e)
     Image.name = e?.target?.files[0]?.name
     Image.size = e?.target?.files[0]?.size
     Image.type = e?.target?.files[0]?.type
@@ -48,17 +46,12 @@ function UploadPhoto() {
       existing: !Image.name
     }
 
-    console.log('data: ', Image)
-    console.log('file: ', e.target.files[0])
-
-    console.log(!Image.rules.size && !Image.rules.type && !Image.rules.existing)
-
     if(!Image.rules.size && !Image.rules.type && !Image.rules.existing) {
-      console.log('wtf')
+
       sellerContext.dispatch(Seller.updateOfferingData({
         [NAME.SELECTED_FILE]: e.target.files[0]
       }))
-      console.log('past')
+
       fileReader.readAsDataURL(e.target.files[0]) 
     } else {
       // set errors
