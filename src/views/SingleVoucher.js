@@ -13,7 +13,6 @@ function SingleVoucher(props) {
   const [selectedProduct, setSelectedProduct] = useState([])
   const voucherId = props.match.params.id
 
-
   useEffect(() => {
     async function getVoucherSets() {
       const allVoucherSets = await getAllVoucherSets();

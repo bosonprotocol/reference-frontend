@@ -9,12 +9,15 @@ import { GlobalContext, Action } from '../contexts/Global'
 import { getAllVoucherSets } from "../hooks/api";
 import * as ethers from "ethers";
 
+
 import { ROUTE } from "../helpers/Dictionary"
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+
+import ProductView from "../components/shared/ProductView"
 
 
 function Activity() {
@@ -60,11 +63,12 @@ function Activity() {
     };
 
     return (
+        <>
         <section className="activity atomic-scoped">
             <div className="container">
                 <div className="top-navigation flex split">
                     <div className="button square dark" role="button"
-                         onClick={ () => history.goBack() }
+                         onClick={ () => history.push('/') }
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
@@ -91,6 +95,12 @@ function Activity() {
 
             </div>
         </section>
+        {
+            globalContext.state.productView.open ?
+                <ProductView/> :
+                null
+        }
+        </>
     )
 }
 
@@ -115,7 +125,55 @@ const InactiveView = () => {
 }
 
 const Block = (props) => {
-    const { title, image, price, qty, id } = props;
+    const { title, image, price, qty, id } = props
+
+    const globalContext = useContext(GlobalContext)
+
+    useEffect(() => {
+        let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
+        let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
+
+        if (parseInt(openProductView))
+            globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
+
+        async function getVoucherSets() {
+            const allVoucherSets = await getAllVoucherSets();
+            prepareVoucherSetData(allVoucherSets);
+        }
+
+        getVoucherSets()
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const prepareVoucherSetData = (rawVoucherSets) => {
+
+        let parsedVoucherSets = [];
+
+
+        for (const voucherSet of rawVoucherSets.voucherSupplies) {
+            let parsedVoucherSet = {
+                id: voucherSet._id,
+                title: voucherSet.title,
+                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+                buyerDeposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
+                sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
+                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
+                description: voucherSet.description,
+                category: voucherSet.category,
+                startDate: voucherSet.startDate,
+                expiryDate: voucherSet.expiryDate,
+                qty: voucherSet.qty,
+                setId: voucherSet._tokenIdSupply,
+                voucherOwner: voucherSet.voucherOwner
+            };
+
+            parsedVoucherSets.push(parsedVoucherSet)
+        }
+
+        globalContext.dispatch(Action.allVoucherSets(parsedVoucherSets));
+    };
 
     const currency = 'ETH'; // ToDo: implement it
 

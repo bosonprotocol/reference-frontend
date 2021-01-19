@@ -5,14 +5,14 @@ import { CURRENCY } from "../../helpers/Dictionary"
 function Currencies(props) {
   const { name } = props
   return (
-    <span className="currencies-container select-disabled">
+    <span className="currencies-container">
       <span className="icons">
         <div className={CURRENCY.ETH}></div>
-        <div className={CURRENCY.BSN}></div>
+        {/* <div className={CURRENCY.BSN}></div> */}
       </span>
-      <select disabled className="currencies" name={name} id={name} >
+      <select className="currencies" name={name} id={name} >
         <option value={CURRENCY.ETH}>{CURRENCY.ETH}</option>
-        <option value={CURRENCY.BSN}>{CURRENCY.BSN}</option>
+        {/* <option value={CURRENCY.BSN}>{CURRENCY.BSN}</option> */}
       </select>
     </span>
   )
