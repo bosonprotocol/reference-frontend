@@ -49,6 +49,13 @@
     .thumbnail {
       padding: 10px 35px;
     }
+
+    .product-info {
+      p {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
   }
 
   .drag-controler {
