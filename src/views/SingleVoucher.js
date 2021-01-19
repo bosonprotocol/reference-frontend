@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import * as ethers from "ethers";
 import { getAllVoucherSets } from "../hooks/api";
@@ -7,16 +7,11 @@ import "../components/shared/ProductView.scss"
 
 import { TableRow, DateTable, PriceTable, TableLocation } from "../components/shared/TableContent"
 
-import { GlobalContext } from "../contexts/Global"
-
 // import EscrowDiagram from "./EscrowDiagram"
 
 function SingleVoucher(props) {
   const [selectedProduct, setSelectedProduct] = useState([])
   const voucherId = props.match.params.id
-
-  const globalContext = useContext(GlobalContext);
-
 
   useEffect(() => {
     async function getVoucherSets() {
