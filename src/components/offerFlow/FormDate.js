@@ -1,6 +1,6 @@
 import React, { useRef, useContext, forwardRef } from 'react'
 
-import { SellerContext, Seller } from "../../contexts/Seller"
+import { SellerContext, Seller, getData } from "../../contexts/Seller"
 
 import DatePicker from "react-datepicker";
  
@@ -14,6 +14,8 @@ function FormDate() {
   const startDate = useRef()
   const endDate = useRef()
 
+  const getOfferingData = getData(sellerContext.state.offeringData)
+
   const handleDateChange = (date, name) => {
     sellerContext.dispatch(Seller.updateOfferingData({
       [name]: date
@@ -21,9 +23,10 @@ function FormDate() {
   }
 
   const setDefaultValue = (name) => {
+    let def = getOfferingData(name)
     return (
-      sellerContext.state.offeringData[name] ?
-        new Date(sellerContext.state.offeringData[name]) :
+      def ?
+        new Date(def) :
         new Date()
     )
   }

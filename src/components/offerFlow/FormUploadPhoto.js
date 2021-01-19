@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useContext } from 'react'
 
-import { SellerContext, Seller } from "../../contexts/Seller"
+import { SellerContext, Seller, getData } from "../../contexts/Seller"
 
 import "./FormUploadPhoto.scss"
 
@@ -19,11 +19,11 @@ const Image = {
   rules: null,
 }
 
-function UploadPhoto(props) {
+function UploadPhoto() {
   const sellerContext = useContext(SellerContext)
   const thumbnailRef = useRef()
 
-  const getData = (name) => sellerContext.state.offeringData[name]
+  const getOfferingData = getData(sellerContext.state.offeringData)
 
   const fileReader = new FileReader()
 
@@ -66,10 +66,10 @@ function UploadPhoto(props) {
         <h1>Photo</h1>
       </div>
       <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
-      <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
+      <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getOfferingData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
         <div className="image-upload">
           <div className="thumb-container">
-            <img src={sellerContext.state.offeringData[NAME.IMAGE]} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
+            <img src={getOfferingData(NAME.IMAGE)} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
           </div>
           <div className="label">
             <label htmlFor="offer-image-upload" className="flex center column">
