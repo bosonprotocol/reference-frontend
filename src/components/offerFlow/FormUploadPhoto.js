@@ -39,21 +39,22 @@ function UploadPhoto() {
   }, [])
 
   const imageUploadHandler = (e) => {
-    Image.name = e.target.files[0].name
-    Image.size = e.target.files[0].size
-    Image.type = e.target.files[0].type
+    console.log(e)
+    Image.name = e?.target?.files[0]?.name
+    Image.size = e?.target?.files[0]?.size
+    Image.type = e?.target?.files[0]?.type
 
     // check for errors
     Image.rules = {
       size: Image.size > maxSize,
-      type: !acceptedImageFormats.includes(Image.type)
+      type: !acceptedImageFormats.includes(Image.type) && Image.type !== undefined,
+      existing: Image.name
     }
 
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [NAME.SELECTED_FILE]: e.target.files[0]
-    }))
+    console.log('data: ', Image)
+    console.log('file: ', e.target.files[0])
 
-    if(!Image.rules.size || !Image.rules.type) {
+    if(!Image.rules.size || !Image.rules.type || !Image.rules.existing) {
       fileReader.readAsDataURL(e.target.files[0]) 
     } else {
       // set errors
