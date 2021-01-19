@@ -1,4 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
+import * as ethers from "ethers";
+import { getAllVoucherSets } from "../hooks/api";
 
 import "../components/shared/ProductView.scss"
 
@@ -8,10 +11,44 @@ import { GlobalContext } from "../contexts/Global"
 
 // import EscrowDiagram from "./EscrowDiagram"
 
-function SingleVoucher() {
+function SingleVoucher(props) {
+  const [selectedProduct, setSelectedProduct] = useState([])
+  const voucherId = props.match.params.id
+
   const globalContext = useContext(GlobalContext);
 
-  const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === globalContext.state.productView.id);
+
+  useEffect(() => {
+    async function getVoucherSets() {
+      const allVoucherSets = await getAllVoucherSets();
+      prepareVoucherSetData(allVoucherSets)
+    }
+
+    getVoucherSets()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const prepareVoucherSetData = (rawVoucherSets) => {
+    let parsedVoucherSets = [];
+
+    for (const voucherSet of rawVoucherSets.voucherSupplies) {
+      console.log(voucherSet)
+        let parsedVoucherSet = {
+            id: voucherSet._id,
+            title: voucherSet.title,
+            image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+            price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+            deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
+            qty: voucherSet.qty
+        };
+
+        parsedVoucherSets.push(parsedVoucherSet)
+    }
+
+    console.log(parsedVoucherSets);
+    setSelectedProduct(parsedVoucherSets.find(x => x.id === voucherId))
+  };
 
   const description = selectedProduct?.description;
 
