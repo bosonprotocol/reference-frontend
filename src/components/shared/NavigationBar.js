@@ -135,7 +135,7 @@ function NavigationBar(props) {
     }
 
     return (
-        <div className="d-none">
+        <div>
             { loading ? <Loading/> : null }
             <nav className={ `navigation-bar flex ${ transitionState } ${ transitionTrigger }` }>
                 <div className="nav-container flex center">
