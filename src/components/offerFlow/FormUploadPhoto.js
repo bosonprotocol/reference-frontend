@@ -48,13 +48,19 @@ function UploadPhoto() {
     Image.rules = {
       size: Image.size > maxSize,
       type: !acceptedImageFormats.includes(Image.type) && Image.type !== undefined,
-      existing: Image.name
+      existing: !Image.name
     }
 
     console.log('data: ', Image)
     console.log('file: ', e.target.files[0])
 
-    if(!Image.rules.size || !Image.rules.type || !Image.rules.existing) {
+    console.log(!Image.rules.size && !Image.rules.type && !Image.rules.existing)
+
+    if(!Image.rules.size && !Image.rules.type && !Image.rules.existing) {
+      console.log('wtf')
+      sellerContext.dispatch(Seller.updateOfferingData({
+        [NAME.SELECTED_FILE]: e.target.files[0]
+      }))
       fileReader.readAsDataURL(e.target.files[0]) 
     } else {
       // set errors
