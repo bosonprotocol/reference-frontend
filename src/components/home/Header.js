@@ -18,7 +18,7 @@ function Header() {
     return (
         <header>
             {/*<h1><img src="images/boson-logo-nav.png" alt="Boson Protocol Logo"/></h1>*/ }
-            <nav className="flex jc-sb ai-center">
+            <nav className="flex jc-sb ai-center td-none">
                 <Link to="/connect">
                     { account ? <div className="button flex ai-center connected-account-button"
                                      role="button">
