@@ -1,23 +1,23 @@
 @import "../../styles/Settings.scss";
 
+.product-view:not(.summary) {
+  max-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-color: rgba($background-primary, 0);
+  min-height:100%;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  transition: 0.5s ease-in-out;
+}
+
 .product-view,
 .single-voucher {
-  &:not(.summary) {
-    max-height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    pointer-events: none;
-    background-color: rgba($background-primary, 0);
-    min-height:100%;
-    overflow-y:scroll;
-    overflow-x:hidden;
-    transition: 0.5s ease-in-out;
-  }
-
   .hide-dialog {
     position: fixed;
     top: 0;

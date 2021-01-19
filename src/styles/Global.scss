@@ -4,6 +4,10 @@
 @import "./Buttons.scss";
 @import "./Settings.scss";
 
+html {
+  font-size: 16px;
+}
+
 
 html, body {
   min-height: 100%;
