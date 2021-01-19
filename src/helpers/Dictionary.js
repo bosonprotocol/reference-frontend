@@ -33,6 +33,10 @@ export const ROUTE = {
     NewOffer: '/new-offer',
     Activity: '/activity',
     ActivityVouchers: '/activity-vouchers',
+    SingleVoucher: '/voucher',
+    PARAMS: {
+        ID: '/:id',
+    },
 }
 
 // ROUTE strings are used in NewOffer for input fields

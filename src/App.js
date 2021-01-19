@@ -9,6 +9,7 @@ import Connect from "./views/Connect";
 import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
+import SingleVoucher from "./views/SingleVoucher"
 
 import { useEagerConnect, useInactiveListener } from './hooks'
 
@@ -97,6 +98,7 @@ function App() {
                 <Route path={ROUTE.NewOffer} component={NewOffer}/>
                 <Route path={ROUTE.Activity} component={Activity}/>
                 <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
+                <Route path={ROUTE.SingleVoucher + ROUTE.PARAMS.ID} component={SingleVoucher}/>
                 </Switch>
             </Router>
             <ContextModal/>

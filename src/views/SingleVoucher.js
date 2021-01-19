@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 
 import "../components/shared/ProductView.scss"
 
-import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
+import { TableRow, DateTable, PriceTable, TableLocation } from "../components/shared/TableContent"
 
-import { GlobalContext } from "../../contexts/Global"
+import { GlobalContext } from "../contexts/Global"
 
 // import EscrowDiagram from "./EscrowDiagram"
 
@@ -54,7 +54,7 @@ function SingleVoucher() {
 
   return (
     <>
-      <section className="product-view no-bg">
+      <section className="single-voucher no-bg">
         <div className="container erase">
           <div className="window">
             <div className="thumbnail flex center">

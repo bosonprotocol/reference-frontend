@@ -1,6 +1,7 @@
 @import "../../styles/Settings.scss";
 
-.product-view {
+.product-view,
+.single-voucher {
   &:not(.summary) {
     max-height: 100vh;
     position: fixed;
@@ -28,7 +29,7 @@
   .container {
     padding-top: 80px;
   }
-  .window {
+  &:not(.single-voucher) .window {
     min-height: calc(100vh - 80px);
     margin: 0 auto;
     padding-top: 100px;
@@ -45,17 +46,6 @@
     transform: translateY(100vh);
 
     transition: 0.6s ease-in-out;
-
-    .thumbnail {
-      padding: 10px 35px;
-    }
-
-    .product-info {
-      p {
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
   }
 
   .drag-controler {
@@ -79,6 +69,17 @@
 
       border-radius: 53px;
       background-color: rgba($white, 0.13);
+    }
+  }
+
+  .thumbnail {
+    padding: 10px 35px;
+  }
+
+  .product-info {
+    p {
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
