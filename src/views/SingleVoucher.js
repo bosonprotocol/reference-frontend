@@ -7,6 +7,8 @@ import "../components/shared/ProductView.scss"
 
 import { TableRow, DateTable, PriceTable, TableLocation } from "../components/shared/TableContent"
 
+import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
+
 // import EscrowDiagram from "./EscrowDiagram"
 
 function SingleVoucher(props) {
@@ -87,6 +89,7 @@ function SingleVoucher(props) {
       <section className="single-voucher no-bg">
         <div className="container erase">
           <div className="window">
+            <EscrowDiagram />
             <div className="thumbnail flex center">
               <img className="mw100" src={ selectedProduct?.image } alt={ selectedProduct?.title }/>
             </div>
