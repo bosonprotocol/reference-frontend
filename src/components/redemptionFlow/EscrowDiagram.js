@@ -3,17 +3,9 @@ import React from 'react'
 import "./EscrowDiagram.scss"
 
 function EscrowDiagram() {
-  const escrowRow = (title, value) => (
-    <div className="body-row flex ai-center">
-      <div className="cell title">{title}</div>
-      <div className="cell flex relative">
-        <div className="val">{value}</div> {/* set value */}
-        <div className="box"></div>
-        <div className="box"></div>
-        <div className="box"></div>
-      </div>
-    </div>
-  )
+  // const escrowData = [
+  //   'PAYMENT': 
+  // ]
 
   return (
     <section className="escrow-diagram vertical">
@@ -25,11 +17,27 @@ function EscrowDiagram() {
             <div className="cell">SELLER</div>
           </div>
           <div className="body">
-            {escrowRow('title', 'value')}
+            <EscrowRow title='aaa' value='vvv' />
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+const EscrowRow = (props) => {
+  const { title, value } = props
+
+  return (
+    <div className="body-row flex ai-center">
+      <div className="cell title">{title}</div>
+      <div className="cell flex relative">
+        <div className="val">{value}</div>
+        <div className="box"></div>
+        <div className="box"></div>
+        <div className="box"></div>
+      </div>
+    </div>
   )
 }
 
