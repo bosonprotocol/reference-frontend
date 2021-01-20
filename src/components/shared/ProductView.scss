@@ -1,4 +1,5 @@
 @import "../../styles/Settings.scss";
+@import "../../styles/Mixins.scss";
 
 .product-view:not(.summary) {
   max-height: 100vh;
@@ -76,13 +77,6 @@
     padding: 10px 35px;
   }
 
-  .product-info {
-    p {
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-  }
-
   .content {
     padding: 0 25px;
     padding-top: 40px;
@@ -91,7 +85,7 @@
       padding-top: 25px;
       padding-bottom: 33px;
       margin-bottom: 33px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(31, 20, 20, 0.06);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
       .diagram-content {
@@ -99,61 +93,20 @@
       }
     }
 
-    .product-info {
-      h2 {
-        font-family: $font-primary;
-        font-weight: 600; 
-        font-size: 26px;
-      }
-      & > p {
-        margin-top: 16px;
-
-        font-family: $font-secondary;
-        font-weight: normal;
-        font-size: 16px;
-        line-height: $height-regular;
-        word-break: break-word;
-      }
-    }
-
-    .table {
+    @include product-info;
+    @include table {
       & + .table {
         border-top: 1px solid rgba(255, 255, 255, 0.06);
       }
-
       &.location {
         padding-bottom: 38px;
         padding-top: 30px;
-
-        p {
-          font-family: $font-secondary;
-          font-size: 16px;
-          line-height: $height-regular;
-
-          svg {
-            margin-right: 11px;
-          }
-        }
       }
       &.product-info {
         padding: 33px 0;
 
         .row {
           margin-top: 14px;
-        }
-
-        p {
-          font-family: $font-secondary;
-          font-weight: normal;
-          font-size: 16px;
-          line-height: $height-regular;
-
-          &.title {
-            color: #C1C7CE;
-          }
-          &.value {
-            color: #FFFFFF;
-          }
         }
       }
       &.price,
@@ -165,20 +118,8 @@
             margin-top: 20px;
           }
         }
-
-        .block {
-          .icon {
-            margin-right: 10px;
-          }
-          .text {
-            .title {
-              font-family: $font-secondary;
-              color: #C1C7CE;
-            }
-          }
-        }
       }
-    }
+    };
 
     .button.refund {
       margin-top: 15px;

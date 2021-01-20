@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
 
+import { useHistory } from "react-router"
+
 import * as ethers from "ethers";
 import { getAllVoucherSets } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
-import "../components/shared/ProductView.scss"
+import "./VoucherDetails.scss"
 
-import { TableRow, DateTable, PriceTable, TableLocation } from "../components/shared/TableContent"
+import { TableRow, DateTable, TableLocation } from "../components/shared/TableContent"
 
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
-// import EscrowDiagram from "./EscrowDiagram"
+import { Arrow } from "../components/shared/Icons"
 
 function VoucherDetails(props) {
   const [selectedProduct, setSelectedProduct] = useState([])
   const voucherId = props.match.params.id
+
+  const history = useHistory()
 
   useEffect(() => {
     async function getVoucherSets() {
@@ -46,18 +50,22 @@ function VoucherDetails(props) {
     setSelectedProduct(parsedVoucherSets.find(x => x.id === voucherId))
   };
 
-  const description = selectedProduct?.description;
+  const title = 'Nike Adapt Self-Lacing Smart Sneaker'
 
-  const tableContent = [
-      ['Category', selectedProduct?.category],
-      // ['Remaining Quantity', selectedProduct?.qty],
+  // const description = selectedProduct?.description;
+  const description = 'A breakthrough lacing system that electronically adjusts to the shape of your foot. Get the right fit, every game, every step.'
+
+  // const tableCategory = [
+  //   ['Category', selectedProduct?.category],
+  // ];
+
+  const tableCategory = [
+    ['Category', 'Clothing'],
   ];
 
-  const tablePrices = [
-      ['Payment Price', selectedProduct?.price, 'ETH', 0],
-      false,
-      ['Buyer’s deposit', selectedProduct?.buyerDeposit, 'ETH', 1],
-      ['Seller’s deposit', selectedProduct?.sellerDeposit, 'ETH', 1]
+  const tableSellerInfo= [
+    ['Seller', 'David'],
+    ['Phone', '1-415-542-5050'],
   ];
 
   const tableDate = [
@@ -69,26 +77,49 @@ function VoucherDetails(props) {
 
   return (
     <>
-      <section className="single-voucher no-bg">
+      <section className="voucher-details no-bg">
         <div className="container erase">
-          <div className="window">
-            <EscrowDiagram />
-            <div className="thumbnail flex center">
-              <img className="mw100" src={ selectedProduct?.image } alt={ selectedProduct?.title }/>
+          <div className="button square new" role="button"
+            onClick={ () => history.push('/') }
+          >
+            <Arrow color="#80F0BE"/>
+          </div>
+          <div className="content">
+            <div className="section title">
+              <h1>{title}</h1>
             </div>
-            <div className="content">
-                {/* <div className="escrow-container">
-                    <EscrowDiagram status={ 'commited' }/>
-                </div> */}
-                <div className="product-info">
-                  <h2 className="elipsis">{ selectedProduct?.title }</h2>
-                  <p>{ description }</p>
+            <div className="section status">
+              <h2>Status</h2>
+              <div className="status"></div>
+            </div>
+            <div className="section expiration">
+              <div className="expiration"></div>
+            </div>
+            <div className="section escrow">
+              <EscrowDiagram status={ 'commited' }/>
+            </div>
+            <div className="section info">
+              <div className="section description">
+                <h2 className="flex split">
+                  <span>Description</span>
+                  <div className="image flex center">
+                    <img src={selectedProduct?.image} alt={selectedProduct?.title} />
+                  </div>
+                </h2>
+                <div className="description">
+                  {description}
                 </div>
+              </div>
+              <div className="section general">
                 { tableLocation ? <TableLocation data={ tableLocation }/> : null }
-                { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
-                { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
+                { tableCategory.some(item => item) ? <TableRow data={ tableCategory }/> : null }
+              </div>
+              <div className="section date">
                 { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-                {/* <div className="button refund" role="button">REFUND</div> */}
+              </div>
+              <div className="section seller">
+                { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
+              </div>
             </div>
           </div>
         </div>

@@ -1,0 +1,82 @@
+@import "../styles/Settings.scss";
+@import "../styles/Mixins.scss";
+
+.voucher-details {
+  background: #161B21;
+  margin-top: 47px;
+  margin-bottom: 27px;
+
+  h2 {
+    font-family: 'Barlow', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    /* identical to box height */
+
+
+    color: #FFFFFF;
+  }
+
+  .content {
+    margin-top: 30px;
+
+    @include product-info;
+    @include table;
+
+    .section {
+      .table + .table,
+      .row + .row  {
+        margin-top: 18px;
+      }
+      
+      &.status {
+        margin-top: 44px;
+      }
+      &.expiration {
+        margin-top: 36px;
+      }
+      &.escrow {
+        margin-top: 50px;
+      }
+      &.info {
+        margin-top: 39px;
+        padding-top: 30px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      &.description {
+        .image {
+          width: 35px;
+          height: 45px;
+
+          img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+          }
+        }
+        .description {
+          margin-top: 25px;
+        }
+      }
+      &.general {
+        margin-top: 42px;
+
+        .table:not(.location) {
+          margin-left: 24px;
+        }
+      }
+      &.date {
+        margin-top: 42px;
+      }
+      &.seller {
+        margin-top: 30px;
+        padding-top: 27px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+    }
+  }
+}

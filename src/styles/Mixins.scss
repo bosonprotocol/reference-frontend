@@ -1,0 +1,69 @@
+@mixin product-info {
+  .product-info {
+    h2 {
+      font-family: $font-primary;
+      font-weight: 600; 
+      font-size: 26px;
+    }
+    & > p {
+      margin-top: 16px;
+
+      font-family: $font-secondary;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: $height-regular;
+      word-break: break-word;
+    }
+    p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+
+@mixin table {
+  .table {
+    @content;
+
+    &.location {
+      p {
+        font-family: $font-secondary;
+        font-size: 16px;
+        line-height: $height-regular;
+
+        svg {
+          margin-right: 11px;
+        }
+      }
+    }
+    &.product-info {
+      p {
+        font-family: $font-secondary;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: $height-regular;
+
+        &.title {
+          color: #C1C7CE;
+        }
+        &.value {
+          color: #FFFFFF;
+        }
+      }
+    }
+    &.price,
+    &.date {
+      .block {
+        .icon {
+          margin-right: 10px;
+        }
+        .text {
+          .title {
+            font-family: $font-secondary;
+            color: #C1C7CE;
+          }
+        }
+      }
+    }
+  }
+}
