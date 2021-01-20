@@ -5,7 +5,7 @@ import "./Activity.scss"
 
 import { GlobalContext, Action } from '../contexts/Global'
 
-import {  getVouchers } from "../hooks/api";
+import { getVoucherDetails, getVouchers, updateVoucher } from "../hooks/api";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -15,13 +15,25 @@ import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
+import { ModalContext, ModalResolver } from "../contexts/Modal";
+import { MODAL_TYPES } from "../helpers/Dictionary";
+import { decodeData, getEncodedTopic, useVoucherKernelContract } from "../hooks/useContract";
+import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
+import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
+import { useLocation } from "react-router-dom";
+import Loading from "../components/offerFlow/Loading";
 
 
 function ActivityVouchers() {
     const [preparedVouchers, setPreparedVouchers] = useState([])
-    const { account } = useWeb3React();
-
+    const [loading, setLoading] = useState(0)
     const globalContext = useContext(GlobalContext);
+    const modalContext = useContext(ModalContext);
+
+    const { library, account } = useWeb3React();
+
+    const location = useLocation();
 
     const history = useHistory()
 
@@ -49,6 +61,7 @@ function ActivityVouchers() {
         for (const voucher of rawVouchers.voucherData) {
             let parsedVoucherSet = {
                 id: voucher._id,
+                tokenIdVoucher: voucher._tokenIdVoucher,
                 title: voucher.title,
                 image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
                 price: ethers.utils.formatEther(voucher.price.$numberDecimal),
@@ -60,7 +73,71 @@ function ActivityVouchers() {
         }
 
         setPreparedVouchers(parsedVouchers)
+        console.log(parsedVouchers);
     };
+
+    const voucherKernelContract = useVoucherKernelContract();
+
+    async function onRedeem() {
+        if (!library || !account) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please connect your wallet account'
+            }));
+            return;
+        }
+
+        setLoading(1)
+
+        const voucherId = "60081dc494c889a5a1cd7c40"; // ToDo: Implement it
+        let tx;
+        let data;
+        const authData = getAccountStoredInLocalStorage(account);
+        const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
+        console.log(voucherDetails);
+
+        try {
+            tx = await voucherKernelContract.redeem(voucherDetails.voucher._tokenIdVoucher);
+
+            const receipt = await tx.wait();
+
+            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
+            console.log("Redeem event data");
+            console.log(data);
+
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+            return;
+        }
+
+
+        try {
+            const data = {
+                _id: voucherId,
+                status: VOUCHER_STATUSES.REDEEMED
+            };
+
+            const redeemResponse = await updateVoucher(data, authData.authToken);
+            console.log(redeemResponse);
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+        }
+
+        setLoading(0)
+    }
+
 
     return (
         <section className="activity atomic-scoped">
@@ -85,7 +162,13 @@ function ActivityVouchers() {
                     </TabList>
 
                     <TabPanel>
-                        { <ActiveView products={ preparedVouchers }/> }
+                        { <ActiveView loading={ loading } products={ preparedVouchers }/> }
+                        <ContractInteractionButton
+                            className="button button -green"
+                            handleClick={ onRedeem }
+                            label="REDEEM"
+                            sourcePath={ location.pathname }
+                        />
                     </TabPanel>
                     <TabPanel>
                         { <InactiveView products={ preparedVouchers }/> }
@@ -99,13 +182,18 @@ function ActivityVouchers() {
 
 
 const ActiveView = (props) => {
-    const { products } = props
+    const { products, loading } = props;
     return (
-        <div className="vouchers-container">
+        <>
+            { loading ? <Loading/> : null }
             {
-                products.map((block, id) => <Block { ...block } key={ id }/>)
+                <div className="vouchers-container">
+                    {
+                        products.map((block, id) => <Block { ...block } key={ id }/>)
+                    }
+                </div>
             }
-        </div>
+        </>
     )
 }
 
