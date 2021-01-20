@@ -3,6 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
 import CASHIER_ABI from "./ABIs/Cashier";
+import VOUCHER_KERNEL_ABI from "./ABIs/VoucherKernel";
 import * as ethers from "ethers";
 
 function useContract(address, ABI, withSignerIfPossible = true) {
@@ -21,6 +22,10 @@ function useContract(address, ABI, withSignerIfPossible = true) {
 
 export function useCashierContract() {
     return useContract(SMART_CONTRACTS.CashierContractAddress, CASHIER_ABI.abi)
+}
+
+export function useVoucherKernelContract() {
+    return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL_ABI.abi)
 }
 
 export async function findEventByName(txReceipt, eventName, ...eventFields) {

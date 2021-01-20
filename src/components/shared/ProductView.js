@@ -9,9 +9,7 @@ import { DIC } from "../../helpers/Dictionary"
 
 // import EscrowDiagram from "./EscrowDiagram"
 
-
 const closePoint = window.innerHeight / 4
-
 
 function ProductView() {
     const productWindow = useRef();
@@ -122,7 +120,7 @@ function ProductView() {
         productWindow.current.style.transform = `translateY(${ delta.end }px)`
     }
 
-    useEffect(() => {
+    useEffect( () => {
         setTimeout(() => {
             windowContainer.current.classList.add('open')
         }, 100)
@@ -155,7 +153,7 @@ function ProductView() {
                         <div className="content">
                             {/* <div className="escrow-container">
                                 <EscrowDiagram status={ 'commited' }/>
-                            </div> */}
+                            </div> */ }
                             <div className="product-info">
                                 <h2 className="elipsis">{ selectedProduct?.title }</h2>
                                 <p>{ description }</p>
@@ -164,7 +162,7 @@ function ProductView() {
                             { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
                             { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
                             { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-                            {/* <div className="button refund" role="button">REFUND</div> */}
+                            {/* <div className="button refund" role="button">REFUND</div> */ }
                         </div>
                     </div>
                 </div>
