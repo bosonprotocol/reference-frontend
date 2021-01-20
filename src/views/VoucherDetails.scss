@@ -63,6 +63,10 @@
       }
       &.general {
         margin-top: 42px;
+
+        .table:not(.location) {
+          margin-left: 24px;
+        }
       }
       &.date {
         margin-top: 42px;
