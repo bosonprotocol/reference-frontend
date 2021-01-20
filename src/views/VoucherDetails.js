@@ -79,18 +79,17 @@ function VoucherDetails(props) {
     <>
       <section className="voucher-details no-bg">
         <div className="container erase">
-          <div className="section">
           <div className="button square new" role="button"
             onClick={ () => history.push('/') }
           >
             <Arrow color="#80F0BE"/>
-          </div>
           </div>
           <div className="content">
             <div className="section title">
               <h1>{title}</h1>
             </div>
             <div className="section status">
+              <h2>Status</h2>
               <div className="status"></div>
             </div>
             <div className="section expiration">
@@ -100,27 +99,28 @@ function VoucherDetails(props) {
               <EscrowDiagram status={ 'commited' }/>
             </div>
             <div className="section info">
-              <h2 className="flex split">
-                <span>Description</span>
-                <div className="image">
-                  <img src={selectedProduct?.image} alt={selectedProduct?.title} />
+              <div className="section description">
+                <h2 className="flex split">
+                  <span>Description</span>
+                  <div className="image flex center">
+                    <img src={selectedProduct?.image} alt={selectedProduct?.title} />
+                  </div>
+                </h2>
+                <div className="description">
+                  {description}
                 </div>
-              </h2>
-              <div className="description">
-                {description}
+              </div>
+              <div className="section general">
+                { tableLocation ? <TableLocation data={ tableLocation }/> : null }
+                { tableCategory.some(item => item) ? <TableRow data={ tableCategory }/> : null }
+              </div>
+              <div className="section date">
+                { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
+              </div>
+              <div className="section seller">
+                { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
               </div>
             </div>
-            <div className="section general">
-              { tableLocation ? <TableLocation data={ tableLocation }/> : null }
-              { tableCategory.some(item => item) ? <TableRow data={ tableCategory }/> : null }
-            </div>
-            <div className="section">
-              { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-            </div>
-            <div className="section seller">
-              { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
-            </div>
-            
           </div>
         </div>
       </section>

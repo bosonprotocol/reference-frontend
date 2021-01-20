@@ -85,7 +85,7 @@
       padding-top: 25px;
       padding-bottom: 33px;
       margin-bottom: 33px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(31, 20, 20, 0.06);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
       .diagram-content {
@@ -97,6 +97,27 @@
     @include table {
       & + .table {
         border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      &.location {
+        padding-bottom: 38px;
+        padding-top: 30px;
+      }
+      &.product-info {
+        padding: 33px 0;
+
+        .row {
+          margin-top: 14px;
+        }
+      }
+      &.price,
+      &.date {
+        padding: 34px 0 41px 0;
+        
+        .row {
+          & + .row {
+            margin-top: 20px;
+          }
+        }
       }
     };
 

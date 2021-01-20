@@ -26,9 +26,6 @@
     @content;
 
     &.location {
-      padding-bottom: 38px;
-      padding-top: 30px;
-
       p {
         font-family: $font-secondary;
         font-size: 16px;
@@ -40,12 +37,6 @@
       }
     }
     &.product-info {
-      padding: 33px 0;
-
-      .row {
-        margin-top: 14px;
-      }
-
       p {
         font-family: $font-secondary;
         font-weight: normal;
@@ -62,14 +53,6 @@
     }
     &.price,
     &.date {
-      padding: 34px 0 41px 0;
-      
-      .row {
-        & + .row {
-          margin-top: 20px;
-        }
-      }
-
       .block {
         .icon {
           margin-right: 10px;
