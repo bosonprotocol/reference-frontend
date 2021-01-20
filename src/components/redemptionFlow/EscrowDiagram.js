@@ -24,20 +24,18 @@ function EscrowDiagram() {
 
   return (
     <section className="escrow-diagram vertical">
-      <div className="container">
-        <div className="section-title flex split">
-          <h2>Payment and Deposits</h2>
-          <div className="info" role="button">?</div>
+      <div className="section-title flex split">
+        <h2>Payment and Deposits</h2>
+        <div className="info" role="button">?</div>
+      </div>
+      <div className="semi-container">
+        <div className="top-row flex ai-center jc-end">
+          <div className="cell set">BUYER</div>
+          <div className="cell set">BOSON ESCROW</div>
+          <div className="cell set">SELLER</div>
         </div>
-        <div className="semi-container">
-          <div className="top-row flex ai-center jc-end">
-            <div className="cell set">BUYER</div>
-            <div className="cell set">BOSON ESCROW</div>
-            <div className="cell set">SELLER</div>
-          </div>
-          <div className="body">
-            {Object.values(escrowData).map(row => <EscrowRow { ...row } />)}
-          </div>
+        <div className="body">
+          {Object.values(escrowData).map(row => <EscrowRow { ...row } />)}
         </div>
       </div>
     </section>

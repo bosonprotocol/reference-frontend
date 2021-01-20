@@ -46,18 +46,22 @@ function VoucherDetails(props) {
     setSelectedProduct(parsedVoucherSets.find(x => x.id === voucherId))
   };
 
-  const description = selectedProduct?.description;
+  const title = 'Nike Adapt Self-Lacing Smart Sneaker'
 
-  const tableContent = [
-      ['Category', selectedProduct?.category],
-      // ['Remaining Quantity', selectedProduct?.qty],
+  // const description = selectedProduct?.description;
+  const description = 'A breakthrough lacing system that electronically adjusts to the shape of your foot. Get the right fit, every game, every step.'
+
+  // const tableCategory = [
+  //   ['Category', selectedProduct?.category],
+  // ];
+
+  const tableCategory = [
+    ['Category', 'Clothing'],
   ];
 
-  const tablePrices = [
-      ['Payment Price', selectedProduct?.price, 'ETH', 0],
-      false,
-      ['Buyer’s deposit', selectedProduct?.buyerDeposit, 'ETH', 1],
-      ['Seller’s deposit', selectedProduct?.sellerDeposit, 'ETH', 1]
+  const tableSellerInfo= [
+    ['Seller', 'David'],
+    ['Phone', '1-415-542-5050'],
   ];
 
   const tableDate = [
@@ -71,30 +75,44 @@ function VoucherDetails(props) {
     <>
       <section className="voucher-details no-bg">
         <div className="container erase">
-          <div className="window">
-            <EscrowDiagram />
-            <div className="thumbnail flex center">
-              <img className="mw100" src={ selectedProduct?.image } alt={ selectedProduct?.title }/>
+          <div className="content">
+            <h1>{title}</h1>
+            <div className="status"></div>
+            <div className="expiration"></div>
+            <EscrowDiagram status={ 'commited' }/>
+            <div className="description">
+              {description}
             </div>
-            <div className="content">
-                {/* <div className="escrow-container">
-                    <EscrowDiagram status={ 'commited' }/>
-                </div> */}
-                <div className="product-info">
-                  <h2 className="elipsis">{ selectedProduct?.title }</h2>
-                  <p>{ description }</p>
-                </div>
-                { tableLocation ? <TableLocation data={ tableLocation }/> : null }
-                { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
-                { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
-                { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-                {/* <div className="button refund" role="button">REFUND</div> */}
-            </div>
+            { tableLocation ? <TableLocation data={ tableLocation }/> : null }
+            { tableCategory.some(item => item) ? <TableRow data={ tableCategory }/> : null }
+            { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
+            { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
           </div>
         </div>
       </section>
     </>
   )
 }
+
+/* <div className="container erase">
+          <EscrowDiagram />
+          <div className="thumbnail flex center">
+            <img className="mw100" src={ selectedProduct?.image } alt={ selectedProduct?.title }/>
+          </div>
+          <div className="content">
+              <div className="escrow-container">
+                  <EscrowDiagram status={ 'commited' }/>
+              </div>
+              <div className="product-info">
+                <h2 className="elipsis">{ selectedProduct?.title }</h2>
+                <p>{ description }</p>
+              </div>
+              { tableLocation ? <TableLocation data={ tableLocation }/> : null }
+              { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
+              { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
+              { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
+              <div className="button refund" role="button">REFUND</div>
+          </div>
+        </div> */
 
 export default VoucherDetails
