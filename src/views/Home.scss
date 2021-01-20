@@ -1,8 +1,12 @@
 .home {
-  padding: 55px 0;
+  padding-bottom: 55px;
 
   @media (min-width: 961px) {
     padding-bottom: 112px;
+  }
+
+  header {
+    margin-top: 60px;
   }
   
   .product-list {

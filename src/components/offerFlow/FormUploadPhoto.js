@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useContext } from 'react'
+import React, { useRef, useContext } from 'react'
 
-import { SellerContext, Seller } from "../../contexts/Seller"
+import { SellerContext, Seller, getData } from "../../contexts/Seller"
 
 import "./FormUploadPhoto.scss"
 
@@ -19,13 +19,11 @@ const Image = {
   rules: null,
 }
 
-function UploadPhoto(props) {
+function UploadPhoto() {
   const sellerContext = useContext(SellerContext)
   const thumbnailRef = useRef()
 
-  const getData = (name) => sellerContext.state.offeringData[name]
-
-  const fileReader = new FileReader()
+  const getOfferingData = getData(sellerContext.state.offeringData)
 
   const previewImage = (submited) => {
     sellerContext.dispatch(Seller.updateOfferingData({
@@ -33,27 +31,27 @@ function UploadPhoto(props) {
     }))
   }
 
-  useEffect(() => {
-    fileReader.addEventListener('load', previewImage)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const imageUploadHandler = (e) => {
-    Image.name = e.target.files[0].name
-    Image.size = e.target.files[0].size
-    Image.type = e.target.files[0].type
+    const fileReader = new FileReader()
+    fileReader.addEventListener('load', previewImage)
+
+    Image.name = e?.target?.files[0]?.name
+    Image.size = e?.target?.files[0]?.size
+    Image.type = e?.target?.files[0]?.type
 
     // check for errors
     Image.rules = {
       size: Image.size > maxSize,
-      type: !acceptedImageFormats.includes(Image.type)
+      type: !acceptedImageFormats.includes(Image.type) && Image.type !== undefined,
+      existing: !Image.name
     }
 
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [NAME.SELECTED_FILE]: e.target.files[0]
-    }))
+    if(!Image.rules.size && !Image.rules.type && !Image.rules.existing) {
 
-    if(!Image.rules.size || !Image.rules.type) {
+      sellerContext.dispatch(Seller.updateOfferingData({
+        [NAME.SELECTED_FILE]: e.target.files[0]
+      }))
+
       fileReader.readAsDataURL(e.target.files[0]) 
     } else {
       // set errors
@@ -66,10 +64,10 @@ function UploadPhoto(props) {
         <h1>Photo</h1>
       </div>
       <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
-      <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
+      <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getOfferingData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
         <div className="image-upload">
           <div className="thumb-container">
-            <img src={sellerContext.state.offeringData[NAME.IMAGE]} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
+            <img src={getOfferingData(NAME.IMAGE)} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
           </div>
           <div className="label">
             <label htmlFor="offer-image-upload" className="flex center column">

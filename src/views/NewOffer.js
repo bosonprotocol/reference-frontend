@@ -226,6 +226,8 @@ function NewOffer() {
     let error = true;
     error = validation(input.name, input.value)
 
+    console.error(error)
+
     if(!error && error !== undefined) {
       input.parentElement.removeAttribute('data-error')
       if(input.value) sellerContext.dispatch(Seller.updateOfferingData({

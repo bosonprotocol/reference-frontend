@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from "react-router"
+import { Link } from 'react-router-dom'
 
 import "./Activity.scss"
 
@@ -7,6 +8,8 @@ import { GlobalContext, Action } from '../contexts/Global'
 
 import { getAllVoucherSets } from "../hooks/api";
 import * as ethers from "ethers";
+
+import { ROUTE } from "../helpers/Dictionary"
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
@@ -184,6 +187,7 @@ const Block = (props) => {
     return (
         <div className="voucher-block flex"
         onClick={()=>openProduct(id)}>
+            <Link to={`${ROUTE.VoucherDetails}/${id}`}>
             <div className="thumb no-shrink">
                 <img src={ image } alt={ title }/>
             </div>
@@ -191,13 +195,19 @@ const Block = (props) => {
                 <div className="status">
                     <p>VOUCHER SET</p>
                 </div>
-                <div className="title elipsis">{ title }</div>
-                <div className="price flex split">
-                    <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/> { price } { currency }
+                <div className="info grow">
+                    <div className="status">
+                        <p>VOUCHER</p>
                     </div>
-                    <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    <div className="title elipsis">{ title }</div>
+                    <div className="price flex split">
+                        <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/> { price } { currency }
+                        </div>
+                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    </div>
                 </div>
             </div>
+            </Link>
         </div>
     )
 }

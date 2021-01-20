@@ -1,22 +1,23 @@
 @import "../../styles/Settings.scss";
 
-.product-view {
-  &:not(.summary) {
-    max-height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    pointer-events: none;
-    background-color: rgba($background-primary, 0);
-    min-height:100%;
-    overflow-y:scroll;
-    overflow-x:hidden;
-    transition: 0.5s ease-in-out;
-  }
+.product-view:not(.summary) {
+  max-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-color: rgba($background-primary, 0);
+  min-height:100%;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  transition: 0.5s ease-in-out;
+}
 
+.product-view,
+.single-voucher {
   .hide-dialog {
     position: fixed;
     top: 0;
@@ -28,7 +29,7 @@
   .container {
     padding-top: 80px;
   }
-  .window {
+  &:not(.single-voucher) .window {
     min-height: calc(100vh - 80px);
     margin: 0 auto;
     padding-top: 100px;
@@ -45,10 +46,6 @@
     transform: translateY(100vh);
 
     transition: 0.6s ease-in-out;
-
-    .thumbnail {
-      padding: 10px 35px;
-    }
   }
 
   .drag-controler {
@@ -72,6 +69,17 @@
 
       border-radius: 53px;
       background-color: rgba($white, 0.13);
+    }
+  }
+
+  .thumbnail {
+    padding: 10px 35px;
+  }
+
+  .product-info {
+    p {
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
