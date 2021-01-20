@@ -1,12 +1,15 @@
 import React, { useContext } from 'react'
 
-import { SellerContext } from "../../contexts/Seller"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 import { NAME } from "../../helpers/Dictionary"
 
 function FormDescription() {
   const sellerContext = useContext(SellerContext)
-  const description = sellerContext.state.offeringData[NAME.DESCRIPTION]
+
+  const getOfferingData = getData(sellerContext.state.offeringData)
+
+  const description = getOfferingData(NAME.DESCRIPTION)
   const maxSymbols = 160
 
   return (

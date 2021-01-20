@@ -131,7 +131,7 @@ function NavigationBar(props) {
     }
 
     return (
-        <>
+        <div>
             { loading ? <Loading/> : null }
             <nav className={ `navigation-bar flex ${ transitionState } ${ transitionTrigger }` }>
                 <div className="nav-container flex center">
@@ -155,7 +155,7 @@ function NavigationBar(props) {
                                  onClick={ () => buyerContext.dispatch(Buyer.commitToBuy()) }
                             >
                                 <ContractInteractionButton
-                                    className="button button -green"
+                                    className="button -green"
                                     handleClick={ onCommitToBuy }
                                     label="COMMIT TO BUY"
                                     sourcePath={ location.pathname }
@@ -172,7 +172,7 @@ function NavigationBar(props) {
                     }
                 </div>
             </nav>
-        </>
+        </div>
     )
 }
 

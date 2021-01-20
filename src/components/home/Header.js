@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 import { GlobalContext, Action } from '../../contexts/Global'
 
-import "./Header.scss"
-
 import { IconQR } from "../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
 import { shortenAddress } from "../../utils";
@@ -18,9 +16,9 @@ function Header() {
     const { account, connector } = useWeb3React();
 
     return (
-        <header className="flex jc-sb ai-center">
+        <header>
             {/*<h1><img src="images/boson-logo-nav.png" alt="Boson Protocol Logo"/></h1>*/ }
-            <nav className="flex jc-sb ai-center">
+            <nav className="flex jc-sb ai-center td-none">
                 <Link to="/connect">
                     { account ? <div className="button flex ai-center connected-account-button"
                                      role="button">

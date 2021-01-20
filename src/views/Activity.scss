@@ -49,23 +49,26 @@ section.activity {
   .vouchers-container {
     margin-top: 40px;
     .voucher-block {
-      max-height: 150px;
-      border-radius: 8px;
-      padding: 5px 11px 5px 5px;
-      background: #141C24;
-      transition: 0.15s ease-in-out;
+      a {
+        display: flex;
+        max-height: 150px;
+        border-radius: 8px;
+        padding: 5px 11px 5px 5px;
+        background: #141C24;
+        transition: 0.15s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background: #1D2834;
+        }
+
+        @media (min-width: 768px) {
+          padding: 20px;
+        }
+      }
 
       & + .voucher-block  {
         margin-top: 20px;
-      }
-
-      @media (min-width: 768px) {
-        padding: 20px;
-      }
-      cursor: pointer;
-
-      &:hover {
-        background: #1D2834;
       }
 
       .status {

@@ -1,0 +1,144 @@
+$cell-gap: 3px;
+$cell-width: 87px;
+
+@mixin dynamic-color {
+  &.color {
+    &_1 {
+      color: #4DC0FD;
+    }
+    &_2 {
+      color: #77F2BC;
+    }
+  }
+}
+
+.escrow-diagram {
+  &.vertical {
+    .info[role="button"] {
+      background: #2A3542;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      
+      font-family: 'Roboto', sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 19px;
+
+      text-align: center;
+
+      color: #A1BBD9;
+      cursor: pointer;
+    }
+
+    .semi-container {
+      width: 331px;
+      margin: 0 auto;
+      margin-top: 27px;
+    }
+    .cell, .set {
+      width: $cell-width;
+      height: 44px;
+
+      &:not(.set) {
+        background: #1A2128;
+        border-radius: 4px;
+      }
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px;
+    }
+
+    .cell.val {
+      position: absolute;
+
+      font-family: 'Barlow', sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 112.4%;
+      /* identical to box height, or 16px */
+
+      text-align: center;
+      text-transform: uppercase;
+
+      color: #4DC0FD;
+      background: #25303D;
+      // display: none;
+
+      &.position {
+        left: 0;
+        top: 0;
+
+        &_1 {
+          transform: translateX(0);
+        }
+        &_2 {
+          transform: translateX(#{$cell-width + $cell-gap});
+        }
+        &_3 {
+          transform: translateX(#{($cell-width * 2) + ($cell-gap * 2)});
+        }
+      }
+
+      @include dynamic-color;
+    }
+
+    .top-row {
+      .cell {
+        font-family: 'Barlow', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+
+        text-align: center;
+        text-transform: uppercase;
+
+        color: #A1BBD9;
+
+        padding: 0;
+      }
+    }
+
+    .body-row {
+      & + .body-row {
+        margin-top: $cell-gap;
+      }
+
+      .block {
+        .cell {
+          &:nth-child(3) {
+            border: 1px dashed #25303D;
+          }
+        }
+      }
+
+      .cell.title {
+        font-family: 'Barlow', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 112.4%;
+
+        text-transform: uppercase;
+
+        padding-left: 0;
+        justify-content: flex-start;
+
+        @include dynamic-color;
+      }
+    }
+
+    .block {
+      .cell:not(.val) + .cell {
+        margin-left: $cell-gap; 
+      }
+    }
+  }
+}

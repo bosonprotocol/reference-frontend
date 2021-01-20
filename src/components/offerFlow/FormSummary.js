@@ -4,6 +4,8 @@ import { TableRow, DateTable, PriceTable } from "../shared/TableContent"
 
 import { SellerContext } from "../../contexts/Seller"
 
+import { formatDate } from "../../helpers/Format"
+
 function FormSummary() {
   const sellerContext = useContext(SellerContext)
   const { 
@@ -35,20 +37,6 @@ function FormSummary() {
     (seller_deposit && seller_deposit) ? 
     ['Seller’s deposit', seller_deposit, seller_deposit_currency, 1] : false,
   ]
-
-  function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-  }
 
   const tableDate = [
     start_date && formatDate(start_date),

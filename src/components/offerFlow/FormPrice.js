@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { SellerContext } from "../../contexts/Seller"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 import Currencies from "./Currencies"
 
@@ -12,20 +12,20 @@ function FormPrice(props) {
 
   const { priceSettings, sellerSettings, buyerSettings } = props
 
-  const getData = name => sellerContext.state.offeringData[name]
+  const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const price = getData(NAME.PRICE)
-  const priceCurrency = getData(NAME.PRICE_C)
-  const seller = getData(NAME.SELLER_DEPOSIT)
-  const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
-  const buyer = getData(NAME.BUYER_DEPOSIT)
+  const price = getOfferingData(NAME.PRICE)
+  const priceCurrency = getOfferingData(NAME.PRICE_C)
+  const seller = getOfferingData(NAME.SELLER_DEPOSIT)
+  const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C)
+  const buyer = getOfferingData(NAME.BUYER_DEPOSIT)
 
   const focusHandler = (el, toggle) => {
     // focus
     if(toggle) {
       el.parentElement.classList.add("focus")
 
-      if(el.value !== getData(el.name)) el.value = getData(el.name)
+      if(el.value !== getOfferingData(el.name)) el.value = getOfferingData(el.name)
     } 
     // blur
     else {
