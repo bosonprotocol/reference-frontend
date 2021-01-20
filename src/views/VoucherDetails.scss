@@ -1,0 +1,9 @@
+@import "../styles/Settings.scss";
+@import "../styles/Mixins.scss";
+
+.voucher-details {
+  .content {
+    @include product-info;
+    @include table;
+  }
+}

@@ -4,7 +4,7 @@ import * as ethers from "ethers";
 import { getAllVoucherSets } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
-import "../components/shared/ProductView.scss"
+import "./VoucherDetails.scss"
 
 import { TableRow, DateTable, PriceTable, TableLocation } from "../components/shared/TableContent"
 
@@ -69,7 +69,7 @@ function VoucherDetails(props) {
 
   return (
     <>
-      <section className="single-voucher no-bg">
+      <section className="voucher-details no-bg">
         <div className="container erase">
           <div className="window">
             <EscrowDiagram />
