@@ -11,7 +11,7 @@ import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
 // import EscrowDiagram from "./EscrowDiagram"
 
-function SingleVoucher(props) {
+function VoucherDetails(props) {
   const [selectedProduct, setSelectedProduct] = useState([])
   const voucherId = props.match.params.id
 
@@ -114,4 +114,4 @@ function SingleVoucher(props) {
   )
 }
 
-export default SingleVoucher
+export default VoucherDetails

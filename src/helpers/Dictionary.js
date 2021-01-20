@@ -33,7 +33,7 @@ export const ROUTE = {
     NewOffer: '/new-offer',
     Activity: '/activity',
     ActivityVouchers: '/activity-vouchers',
-    SingleVoucher: '/voucher',
+    VoucherDetails: '/voucher',
     PARAMS: {
         ID: '/:id',
     },
