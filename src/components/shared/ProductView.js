@@ -7,6 +7,8 @@ import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
 import { GlobalContext, Action } from "../../contexts/Global"
 import { DIC } from "../../helpers/Dictionary"
 
+import { formatDate } from "../../helpers/Format"
+
 // import EscrowDiagram from "./EscrowDiagram"
 
 
@@ -35,24 +37,6 @@ function ProductView(props) {
         ['Buyer’s deposit', selectedProduct?.buyerDeposit, 'ETH', 1],
         ['Seller’s deposit', selectedProduct?.sellerDeposit, 'ETH', 1]
     ];
-
-    function formatDate(date) {
-        if (!date) {
-            return "NA";
-        }
-
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
 
     const tableDate = [
         formatDate(selectedProduct?.startDate),
