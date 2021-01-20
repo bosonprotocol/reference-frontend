@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: "https://psyched-hook-280010.oa.r.appspot.com"
+    baseURL: process.env.REACT_APP_BACKEND_BASE_URL
 });
 
 export const generateNonce = async (address) => {

@@ -15,7 +15,7 @@ import { formatDate } from "../../helpers/Format"
 const closePoint = window.innerHeight / 4
 
 
-function ProductView(props) {
+function ProductView() {
     const productWindow = useRef();
     const windowContainer = useRef();
     const touchControl = useRef();
