@@ -23,7 +23,7 @@ function EscrowDiagram() {
   }
 
   return (
-    <section className="escrow-diagram vertical">
+    <section className="escrow-diagram vertical no-bg">
       <div className="section-title flex split">
         <h2>Payment and Deposits</h2>
         <div className="info" role="button">?</div>

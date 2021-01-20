@@ -2,6 +2,10 @@
 @import "../styles/Mixins.scss";
 
 .voucher-details {
+  background: #161B21;
+  margin-top: 47px;
+  margin-bottom: 27px;
+
   .content {
     @include product-info;
     @include table;
