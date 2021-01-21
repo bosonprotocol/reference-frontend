@@ -21,7 +21,8 @@ export const DIC = {
 
 // CONTROL strings are used to execute commands related to Context
 export const CONTROL = {
-    TEST: 'test'
+    UPDATE_LOCATION: 'updateLocation',
+    UPDATE_AFFORDANCES: 'updateAffordances',
 }
 
 // ROUTE strings are used to navigate to url
@@ -34,10 +35,18 @@ export const ROUTE = {
     Activity: '/activity',
     ActivityVouchers: '/activity-vouchers',
     VoucherDetails: '/voucher',
+    Default: '/default',
     PARAMS: {
         ID: '/:id',
     },
 }
+
+// affordances list
+export const AFFMAP = {
+    BACK_BUTTON: 'back-button',
+    QR_CODE_READER: 'qr-code-reader',
+    WALLET_CONNECTION: 'wallet-connection',
+  }
 
 // ROUTE strings are used in NewOffer for input fields
 export const NAME = {

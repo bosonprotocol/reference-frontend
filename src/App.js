@@ -11,8 +11,11 @@ import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 import VoucherDetails from "./views/VoucherDetails"
 
-import { useEagerConnect, useInactiveListener } from './hooks'
+// import TopNavigation from "./components/shared/navigation/TopNavigation"
+// import BottomNavigation from "./components/shared/navigation/BottomNavigation"
+// import LocationManager from "./components/shared/navigation/LocationManager"
 
+import { useEagerConnect, useInactiveListener } from './hooks'
 
 import "./styles/Animations.scss"
 
@@ -24,6 +27,8 @@ import { BuyerContext, BuyerInitialState, BuyerReducer } from "./contexts/Buyer"
 import { SellerContext, SellerInitialState, SellerReducer } from "./contexts/Seller"
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 import { ModalContext, ModalInitialState, ModalReducer } from "./contexts/Modal";
+import { NavigationContext, NavigationInitialState, NavigationReducer } from "./contexts/Navigation";
+
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
 import { network } from "./connectors";
@@ -38,6 +43,7 @@ function App() {
     const [sellerState, sellerDispatch] = useReducer(SellerReducer, SellerInitialState);
     const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
     const [modalState, modalDispatch] = useReducer(ModalReducer, ModalInitialState);
+    const [navigationState, navigationDispatch] = useReducer(NavigationReducer, NavigationInitialState);
 
     const redeemContextValue = {
       state: buyerState,
@@ -62,6 +68,11 @@ function App() {
     const walletContextValue = {
         walletState: walletState
     }
+
+    const navigationContextValue = {
+        state: navigationState,
+        dispatch: navigationDispatch
+      }
 
     const context = useWeb3React();
     const {
@@ -88,7 +99,10 @@ function App() {
         <BuyerContext.Provider value={redeemContextValue}>
         <SellerContext.Provider value={sellerContextValue}>
         <WalletContext.Provider value={walletContextValue}>
+        <NavigationContext.Provider value={navigationContextValue}>
             <Router>
+                {/* <LocationManager />
+                <TopNavigation /> */}
                 <Switch>
                 <Route exact strict path={ROUTE.Connect} component={Connect}/>
                 <Route exact path={ROUTE.Home} component={Home}/>
@@ -100,8 +114,10 @@ function App() {
                 <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
                 <Route path={ROUTE.VoucherDetails + ROUTE.PARAMS.ID} component={VoucherDetails}/>
                 </Switch>
+                {/* <BottomNavigation /> */}
             </Router>
             <ContextModal/>
+        </NavigationContext.Provider>
         </WalletContext.Provider>
         </SellerContext.Provider>
         </BuyerContext.Provider>

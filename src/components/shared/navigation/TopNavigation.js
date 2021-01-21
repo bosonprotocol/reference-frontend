@@ -1,12 +1,17 @@
 import React, { useContext } from 'react'
 
+import { useHistory } from "react-router"
+
 import { Link } from 'react-router-dom'
 
 import { GlobalContext, Action } from '../../../contexts/Global'
+import { NavigationContext } from '../../../contexts/Navigation'
+
+import { AFFMAP } from "../../../helpers/Dictionary"
 
 import "./TopNavigation.scss"
 
-import { IconQR } from "../../shared/Icons"
+import { IconQR, Arrow } from "../../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
 import { shortenAddress } from "../../../utils";
 import { injected, walletconnect } from "../../../connectors";
@@ -15,48 +20,69 @@ import WalletConnectLogo from "../../../images/walletconnect.svg";
 
 function TopNavigation() {
   const globalContext = useContext(GlobalContext);
+  const navigationContext = useContext(NavigationContext);
+  const history = useHistory()
+
   const { account, connector } = useWeb3React();
-  
+
   return (
     <header className="top-navigation">
       <div className="container">
-        <nav className="flex jc-sb ai-center">
-          <HomeNavigation 
+        <nav className="flex split">
+
+          {/* Wallet Connection Button */}
+          { navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ?
+            <WalletConnection 
             account={account}
             connector={connector}
-            globalContext={globalContext}
-          />
+            />
+          : null}
+
+          {/* Back button */}
+          { navigationContext.state.top[AFFMAP.BACK_BUTTON] ?
+            <div className="button square new" role="button"
+            onClick={ () => history.push('/') } >
+              <Arrow color="#80F0BE"/>
+            </div>
+          : null}
+
+          {/* QR Reader button */}
+          { navigationContext.state.top[AFFMAP.QR_CODE_READER] ?
+            <div className="qr-icon" role="button"
+            onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }>
+              <IconQR color="#8393A6" noBorder/>
+            </div>
+          : null}
+
         </nav>
       </div>
     </header>
   )
 }
 
-const HomeNavigation = (props) => {
-  const { account, connector, globalContext } = props
+
+
+const WalletConnection = (props) => {
+  const { account, connector } = props
   return (
-    <>
-      <Link to="/connect">
-      {account ? 
-        <div className="button flex ai-center connected-account-button"
-        role="button">
-          <img
-          className="provider-logo"
-          src={ connector === injected ? MetaMaskLogo : connector === walletconnect ? WalletConnectLogo : null }
-          alt="Connected account"/>
-          <div className="active-wallet-indicator flex">
-            <img src="images/active-wallet.png"
-            alt="Active wallet"/>
-          </div>
-          <span>{ shortenAddress(account) }</span>
+    <Link to="/connect">
+    {account ? 
+      <div className="button flex ai-center connected-account-button"
+      role="button">
+        <img
+        className="provider-logo"
+        src={ connector === injected ? MetaMaskLogo : connector === walletconnect ? WalletConnectLogo : null }
+        alt="Connected account"/>
+        <div className="active-wallet-indicator flex">
+          <img src="images/active-wallet.png"
+          alt="Active wallet"/>
         </div>
-        :
-        <div className="button linear"
-        role="button">Connect to a wallet</div> }
-      </Link>
-      <div className="qr-icon" role="button"
-      onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR/></div>
-    </>
+        <span>{ shortenAddress(account) }</span>
+      </div>
+      :
+      <div className="button linear"
+      role="button">Connect to a wallet</div> }
+    </Link>
   )
 }
 

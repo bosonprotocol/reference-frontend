@@ -3,8 +3,13 @@
 
 .voucher-details {
   background: #161B21;
-  margin-top: 47px;
-  margin-bottom: 27px;
+  min-height: 100vh;
+  padding-top: 47px;
+  padding-bottom: 27px;
+
+  .container {
+    padding: 0 22px;
+  }
 
   h2 {
     font-family: 'Barlow', sans-serif;

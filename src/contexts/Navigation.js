@@ -1,53 +1,45 @@
 import { createContext } from 'react'
-import { CONTROL } from "../helpers/Dictionary"
+import { CONTROL, AFFMAP } from "../helpers/Dictionary"
 import { getData as getContextData } from "../helpers/Context"
+
+export const MAP = CONTROL
 
 export const getData = getContextData
 
 export const NavigationContext = createContext()
 
 export const NavigationInitialState = {
+  location: null,
   top: {
-    qrReader: false,
-    connectedWallet: false,
-    connectToWallet: false,
-    notification: false,
-    newoffer: {
-      progress: null,
-      pageBack: null,
-    },
+    [AFFMAP.WALLET_CONNECTION]: false,
+    [AFFMAP.BACK_BUTTON]: false,
+    [AFFMAP.QR_CODE_READER]: false,
   },
-  bottom: {
-    main: false,
-    action: false,
-    newOffer: {
-      next: null,
-      reset: null,
-    },
-  }
 };
 
-export const Top = {
-  test: (state) => ({
-    type: CONTROL.TEST,
-    payload: state
-  })
-}
-
-export const Bottom = {
-  test: (state) => ({
-    type: CONTROL.TEST,
-    payload: state
-  })
+export const Action = {
+  updateLocation: (location) => ({
+    type: CONTROL.UPDATE_LOCATION,
+    payload: location
+  }),
+  updateAffordances: (location) => ({
+    type: CONTROL.UPDATE_AFFORDANCES,
+    payload: location
+  }),
 }
 
 export const NavigationReducer = (state, action) => {
   const actionList = {
-    [CONTROL.TEST]: () => {
+    [CONTROL.UPDATE_LOCATION]: () => {
       return {
-        navigation: {
-          state: action.payload
-        }
+        location: action.payload
+      }
+    },
+    [CONTROL.UPDATE_AFFORDANCES]: () => {
+      console.log(action.payload)
+      console.log(state.top)
+      return {
+        top: action.payload
       }
     },
   }

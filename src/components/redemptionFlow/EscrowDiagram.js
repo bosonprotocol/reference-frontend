@@ -35,7 +35,7 @@ function EscrowDiagram() {
           <div className="cell set">SELLER</div>
         </div>
         <div className="body">
-          {Object.values(escrowData).map(row => <EscrowRow { ...row } />)}
+          {Object.values(escrowData).map((row, key) => <EscrowRow key={key} { ...row } />)}
         </div>
       </div>
     </section>
