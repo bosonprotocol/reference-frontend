@@ -80,7 +80,7 @@ function VoucherDetails(props) {
       <section className="voucher-details no-bg">
         <div className="container erase">
           <div className="button square new" role="button"
-            onClick={ () => history.push('/') }
+            onClick={ () => history.goBack() }
           >
             <Arrow color="#80F0BE"/>
           </div>

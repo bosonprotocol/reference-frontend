@@ -67,7 +67,7 @@ function Activity() {
             <div className="container">
                 <div className="top-navigation flex split">
                     <div className="button square dark" role="button"
-                         onClick={ () => history.push('/') }
+                         onClick={ () => history.goBack() }
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
