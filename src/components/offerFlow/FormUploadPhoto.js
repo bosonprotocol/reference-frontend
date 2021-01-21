@@ -42,7 +42,6 @@ function UploadPhoto() {
     Image.type = e?.target?.files[0]?.type
 
 
-    console.log(maxSize / (1000 * 1000))
     // check for errors
     Image.rules = {
       size: Image.size > maxSize,
@@ -50,21 +49,27 @@ function UploadPhoto() {
       existing: !Image.name
     }
 
+    const error = 
+    Image.rules.type ? `This file type is not allowed.` :
+    Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
+    false
+
+    error && errorHandle.current.setAttribute('data-error', error)
+
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.SELECTED_FILE]: e.target.files[0]
+    }))
     if(!Image.rules.size && !Image.rules.type && !Image.rules.existing) {
-
-      sellerContext.dispatch(Seller.updateOfferingData({
-        [NAME.SELECTED_FILE]: e.target.files[0]
-      }))
-
       fileReader.readAsDataURL(e.target.files[0]) 
-    } else {
-      const error = 
-      Image.rules.type ? `This file type is not allowed.` :
-      Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
-      'There was an error. Please try again.'
-
-      errorHandle.current.setAttribute('data-error', error)
     }
+    //  else {
+    //   const error = 
+    //   Image.rules.type ? `This file type is not allowed.` :
+    //   Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
+    //   'There was an error. Please try again.'
+
+    //   errorHandle.current.setAttribute('data-error', error)
+    // }
   }
 
   return ( 

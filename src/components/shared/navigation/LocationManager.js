@@ -9,7 +9,6 @@ const affordances = { }
 
 // recieve an array with affordances that should be dispplayed
 const enableControl = (affordancesArray) => {
-  console.log(affordancesArray.forEach(toggle => affordances[toggle] = true))
   return affordancesArray.forEach(toggle => affordances[toggle] = true)
 }
 

@@ -73,7 +73,6 @@ function ActivityVouchers() {
         }
 
         setPreparedVouchers(parsedVouchers)
-        console.log(parsedVouchers);
     };
 
     const voucherKernelContract = useVoucherKernelContract();

@@ -12,6 +12,7 @@
 
     .bar {
       padding: 20px 0;
+      cursor: auto;
       span {
         display: block;
         background: #132C3D;
@@ -26,11 +27,11 @@
         }
       }
 
-      &:hover {
-        span {
-          opacity: 0.6;
-        }
-      }
+      // &:hover {
+      //   span {
+      //     opacity: 0.6;
+      //   }
+      // }
 
       & + .bar {
         margin-left: 2px;
@@ -90,6 +91,30 @@
     }
   }
   .screen-controller {
+    .date {
+      .field[role="button"].await {
+        position: relative;
+        &::after {
+          content: 'dd/mm/yyyy';
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 38px;
+          padding: 15px 13px;
+          padding-left: 0;
+          border-radius: 2px;
+          height: 50px;
+          border: none;
+          color: #fff;
+          font-family: "Barlow", sans-serif;
+          font-size: 16px;
+          line-height: 1.43;
+          background: #1f2130;
+          transition: 0.1s ease-in-out;
+        }
+      }
+    }
     .input {
       position: relative;
 

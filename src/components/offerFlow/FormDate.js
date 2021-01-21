@@ -1,4 +1,4 @@
-import React, { useRef, useContext, forwardRef } from 'react'
+import React, { useRef, useContext, forwardRef, useEffect } from 'react'
 
 import { SellerContext, Seller, getData } from "../../contexts/Seller"
 
@@ -21,6 +21,9 @@ function FormDate() {
   const yesterday = new Date().setDate(new Date().getDate() - 1)
 
   const getOfferingData = getData(sellerContext.state.offeringData)
+
+  const start_date = getOfferingData(NAME.DATE_START)
+  const end_date = getOfferingData(NAME.DATE_END)
 
   const checkError = {
     [NAME.DATE_START]: date => (
@@ -48,6 +51,7 @@ function FormDate() {
 
   const setDefaultValue = (name) => {
     let def = getOfferingData(name)
+
     return (
       def ?
         new Date(def) :
@@ -55,9 +59,16 @@ function FormDate() {
     )
   }
 
+  useEffect(() => {
+    start_date && dateRef[NAME.DATE_START].current.querySelector('.field[role="button"]').classList.remove('await')
+    end_date && dateRef[NAME.DATE_END].current.querySelector('.field[role="button"]').classList.remove('await')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [start_date, end_date])
+
   const Field = forwardRef(
     ({ value, onClick }, ref) => (
-      <div ref={ref} className="field" role="button" onClick={onClick}>
+      <div ref={ref} className="field await" role="button" onClick={onClick}>
         {value}
       </div>
     )

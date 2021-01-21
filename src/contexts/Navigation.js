@@ -36,8 +36,6 @@ export const NavigationReducer = (state, action) => {
       }
     },
     [CONTROL.UPDATE_AFFORDANCES]: () => {
-      console.log(action.payload)
-      console.log(state.top)
       return {
         top: action.payload
       }

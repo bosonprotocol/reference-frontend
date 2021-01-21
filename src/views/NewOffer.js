@@ -74,13 +74,13 @@ function NewOffer() {
   const history = useHistory()
 
   const inputFallback = {
-    [NAME.PRICE]: '0',
+    // [NAME.PRICE]: '0',
     [NAME.PRICE_C]: CURRENCY.ETH,
-    [NAME.SELLER_DEPOSIT]: '0', 
+    // [NAME.SELLER_DEPOSIT]: '0', 
     [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH, 
-    [NAME.BUYER_DEPOSIT]: '0',
+    // [NAME.BUYER_DEPOSIT]: '0',
     [NAME.DATE_START]: GetToday(),
-    [NAME.DATE_END]: GetToday(1),
+    // [NAME.DATE_END]: GetToday(1),
   }
 
   const getData = name => sellerContext.state.offeringData[name]
@@ -95,14 +95,14 @@ function NewOffer() {
 
     // currency select inputs
     if(input === NAME.SELLER_DEPOSIT_C) {
-      if(getData(NAME.SELLER_DEPOSIT)) {
-        if(getData(NAME.SELLER_DEPOSIT) > sellerSettings[value].max) {
+      // if(getData(NAME.SELLER_DEPOSIT)) {
+      //   if(getData(NAME.SELLER_DEPOSIT) > sellerSettings[value].max) {
           
-          sellerContext.dispatch(Seller.updateOfferingData({
-            [NAME.SELLER_DEPOSIT]: sellerSettings[value].max
-          }))
-        }
-      }
+      //     sellerContext.dispatch(Seller.updateOfferingData({
+      //       [NAME.SELLER_DEPOSIT]: sellerSettings[value].max
+      //     }))
+      //   }
+      // }
 
       return false
     }
@@ -142,13 +142,7 @@ function NewOffer() {
 
     // description
     else if(input === NAME.DESCRIPTION) {
-      if(value.length < descriptionSettings.min) {
-        sellerContext.dispatch(Seller.updateOfferingData({
-          [input]: value
-        }))
-
-        return `Desciption must be at least ${descriptionSettings.min} characters`
-      }
+      if(value.length < descriptionSettings.min) return `Desciption must be at least ${descriptionSettings.min} characters`
 
       return false
     }
@@ -231,7 +225,8 @@ function NewOffer() {
     let error = true;
     error = validation(input.name, input.value)
 
-    if(!error && error !== undefined) {
+    // !error && error !== undefined
+    if(true) {
       input.parentElement.removeAttribute('data-error')
       if(input.value) sellerContext.dispatch(Seller.updateOfferingData({
         [input.name]: input.value
@@ -239,6 +234,7 @@ function NewOffer() {
     } else {
       input.parentElement.setAttribute('data-error', error)
     }
+    error && input.parentElement.setAttribute('data-error', error)
   }
 
   const loadValues = (reset) => {
@@ -308,7 +304,8 @@ function NewOffer() {
               {screens.map((screen, id) => <div
                 key={id} role="button"
                 className={`bar ${id <= activeScreen ? 'fill' : ''}`}
-                onClick={() => setActiveScreen(id)}><span></span></div>)}
+                onClick={() => setActiveScreen(id)}
+                ><span></span></div>)}
             </div>
           </div>
           <div className="screen">
@@ -319,7 +316,8 @@ function NewOffer() {
             </form>
           </div>
         </div>
-        <FormBottomNavigation 
+        <FormBottomNavigation
+          screenController={screenController}
           lastScreenBoolean={lastScreenBoolean}
           resetOfferingData={resetOfferingData}
           activeScreen={activeScreen}
