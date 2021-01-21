@@ -4,12 +4,9 @@ import QRCode from "qrcode.react";
 
 import "./StaticPage.scss"
 
-import { productAPI } from "../PlaceholderAPI"
 import { ROUTE } from '../helpers/Dictionary'
 
 function ShowQR(props) {
-    // const imageThumb = JSON.parse(localStorage.getItem('productsReviewed'))
-    // const imageThumbId = imageThumb[imageThumb.length - 1]
 
     const voucherId = props.match.params.id;
 
