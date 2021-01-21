@@ -17,11 +17,11 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
-import { MODAL_TYPES } from "../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary";
 import { decodeData, getEncodedTopic, useVoucherKernelContract } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Loading from "../components/offerFlow/Loading";
 
 
@@ -59,7 +59,7 @@ function ActivityVouchers() {
         let parsedVouchers = [];
 
         for (const voucher of rawVouchers.voucherData) {
-            let parsedVoucherSet = {
+            let parsedVoucher = {
                 id: voucher._id,
                 tokenIdVoucher: voucher._tokenIdVoucher,
                 title: voucher.title,
@@ -69,7 +69,7 @@ function ActivityVouchers() {
                 // deposit: ethers.utils.formatEther(voucher.buyerDeposit.$numberDecimal)
             };
 
-            parsedVouchers.push(parsedVoucherSet)
+            parsedVouchers.push(parsedVoucher)
         }
 
         setPreparedVouchers(parsedVouchers)
@@ -206,26 +206,29 @@ const InactiveView = () => {
 }
 
 const Block = (props) => {
-    const { title, image, price, qty } = props;
+    const { id, title, image, price, qty } = props;
 
     const currency = 'ETH'; // ToDo: implement it
 
     return (
         <div className="voucher-block flex">
-            <div className="thumb no-shrink">
-                <img src={ image } alt={ title }/>
-            </div>
-            <div className="info grow">
-                <div className="status">
-                    <p>VOUCHER</p>
+            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+                <div className="thumb no-shrink">
+                    <img src={ image } alt={ title }/>
                 </div>
-                <div className="title elipsis">{ title }</div>
-                <div className="price flex split">
-                    <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/> { price } { currency }
+                <div className="info grow">
+                    <div className="status">
+                        <p>VOUCHER</p>
                     </div>
-                    <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    <div className="title elipsis">{ title }</div>
+                    <div className="price flex split">
+                        <div className="value flex center"><img src="images/icon-eth.png"
+                                                                alt="eth"/> { price } { currency }
+                        </div>
+                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

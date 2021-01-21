@@ -39,6 +39,7 @@ export const ROUTE = {
     PARAMS: {
         ID: '/:id',
     },
+    VoucherQRCode: '/qr'
 }
 
 // affordances list
@@ -46,7 +47,7 @@ export const AFFMAP = {
     BACK_BUTTON: 'back-button',
     QR_CODE_READER: 'qr-code-reader',
     WALLET_CONNECTION: 'wallet-connection',
-  }
+}
 
 // ROUTE strings are used in NewOffer for input fields
 export const NAME = {
