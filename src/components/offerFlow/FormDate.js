@@ -13,10 +13,34 @@ function FormDate() {
   const sellerContext = useContext(SellerContext)
   const startDate = useRef()
   const endDate = useRef()
+  const dateRef = {
+    [NAME.DATE_START]: useRef(),
+    [NAME.DATE_END]: useRef(),
+  }
+
+  const yesterday = new Date().setDate(new Date().getDate() - 1)
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
+  const checkError = {
+    [NAME.DATE_START]: date => (
+      new Date(date).getTime() <= yesterday ? "Start Date can't be set before Today" :
+      new Date(date).getTime() >= new Date(getOfferingData(NAME.DATE_END)).getTime() ? "Start Date can't be set after the Expiry Date" :
+      false
+    ),
+    [NAME.DATE_END]: date => (
+      new Date(date).getTime() <= new Date(getOfferingData(NAME.DATE_START)).getTime() ?
+      "Expiry Date can't be set before Start Date." : false
+    ),
+  }
+
   const handleDateChange = (date, name) => {
+    dateRef[name].current.removeAttribute('data-error')
+
+    const error = checkError[name](date)
+    error ?
+    dateRef[name].current.setAttribute('data-error', error) :
+
     sellerContext.dispatch(Seller.updateOfferingData({
       [name]: date
     }))
@@ -41,13 +65,13 @@ function FormDate() {
   
 
   return (
-    <div className="date">
+    <div className="date"> 
       <div className="row">
         <div className="field">
           <div className="step-title">
             <label htmlFor="offer-start-date">Start Date</label>
           </div>
-          <div className="input relative">
+          <div ref={dateRef[NAME.DATE_START]} className="input relative">
             <DatePicker
               id="offer-start-date" name={NAME.DATE_START}
               
@@ -62,7 +86,7 @@ function FormDate() {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-expiry-date">Expiry Date</label>
-          <div className="input relative">
+          <div ref={dateRef[NAME.DATE_END]} className="input relative">
             <DatePicker
               id="offer-expiry-date" name={NAME.DATE_END}
               
