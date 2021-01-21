@@ -97,6 +97,15 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0);
         transition: 0.2s ease-in-out;
 
+        &.image-upload {
+          &::after {
+            top: auto;
+            bottom: calc(100% + 9px);
+            text-align: right;
+            line-height: 1.4;
+          }
+        }
+
         &::after {
           content: attr(data-error);
           display: block;

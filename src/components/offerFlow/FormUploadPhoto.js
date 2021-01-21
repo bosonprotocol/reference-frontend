@@ -22,6 +22,7 @@ const Image = {
 function UploadPhoto() {
   const sellerContext = useContext(SellerContext)
   const thumbnailRef = useRef()
+  const errorHandle = useRef()
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
@@ -32,6 +33,7 @@ function UploadPhoto() {
   }
 
   const imageUploadHandler = (e) => {
+    errorHandle.current.removeAttribute('data-error')
     const fileReader = new FileReader()
     fileReader.addEventListener('load', previewImage)
 
@@ -39,6 +41,8 @@ function UploadPhoto() {
     Image.size = e?.target?.files[0]?.size
     Image.type = e?.target?.files[0]?.type
 
+
+    console.log(maxSize / (1000 * 1000))
     // check for errors
     Image.rules = {
       size: Image.size > maxSize,
@@ -54,7 +58,12 @@ function UploadPhoto() {
 
       fileReader.readAsDataURL(e.target.files[0]) 
     } else {
-      // set errors
+      const error = 
+      Image.rules.type ? `This file type is not allowed.` :
+      Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
+      'There was an error. Please try again.'
+
+      errorHandle.current.setAttribute('data-error', error)
     }
   }
 
@@ -65,7 +74,7 @@ function UploadPhoto() {
       </div>
       <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
       <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getOfferingData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
-        <div className="image-upload">
+        <div ref={errorHandle} className="image-upload input">
           <div className="thumb-container">
             <img src={getOfferingData(NAME.IMAGE)} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
           </div>

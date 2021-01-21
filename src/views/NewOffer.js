@@ -62,7 +62,7 @@ const quantitySettings = {
 
 const titleSettings = {
   max: 50,
-  min: 3
+  // min: 3
 }
 
 function NewOffer() {
@@ -92,6 +92,7 @@ function NewOffer() {
   // const buyer = getData(NAME.BUYER_DEPOSIT)
 
   const validation = (input, value) => {
+
     // currency select inputs
     if(input === NAME.SELLER_DEPOSIT_C) {
       if(getData(NAME.SELLER_DEPOSIT)) {
@@ -115,6 +116,7 @@ function NewOffer() {
 
       return false
     }
+
     // price number inputs
     else if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
       if(isNaN(parseInt(value))) return 'Must be a valid number'
@@ -137,6 +139,7 @@ function NewOffer() {
 
       return false
     }
+
     // description
     else if(input === NAME.DESCRIPTION) {
       if(value.length < descriptionSettings.min) {
@@ -149,6 +152,7 @@ function NewOffer() {
 
       return false
     }
+
     // general
     else if(input === NAME.QUANTITY) {
       if(isNaN(parseInt(value))) return 'Must be a valid number'
@@ -223,6 +227,7 @@ function NewOffer() {
       }, 100)
     }
 
+    
     let error = true;
     error = validation(input.name, input.value)
 

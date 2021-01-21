@@ -37,6 +37,8 @@ function FormGeneral() {
       selectLabel(element)
       element.removeAttribute('transition');
     }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
