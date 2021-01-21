@@ -291,9 +291,9 @@ function NewOffer() {
   }, [])
 
   // show state on each change
-  useEffect(() => {
-    console.log('after', sellerContext.state.offeringData)
-  }, [sellerContext.state.offeringData])
+  // useEffect(() => {
+  //   console.log('after', sellerContext.state.offeringData)
+  // }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">

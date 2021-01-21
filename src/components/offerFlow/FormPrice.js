@@ -32,7 +32,9 @@ function FormPrice(props) {
       el.parentElement.classList.remove("focus")
 
       if(el.parentElement.getAttribute("data-error")) {
-        el.parentElement.removeAttribute("data-error")
+        setTimeout(() => {
+          el.parentElement.removeAttribute("data-error")
+        }, 2000);
       }
       // if(el.value > el.max) updateData(el.name, el.max, el)
     }
