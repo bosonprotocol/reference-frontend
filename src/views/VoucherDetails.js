@@ -12,7 +12,7 @@ import { DateTable, TableLocation, TableRow } from "../components/shared/TableCo
 
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
-import { Arrow, IconQR } from "../components/shared/Icons"
+import { Arrow } from "../components/shared/Icons"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
     const voucherId = props.match.params.id;
-    const { library, account } = useWeb3React();
+    const { account } = useWeb3React();
 
     console.log(voucherId);
 
