@@ -23,7 +23,7 @@ import { NAME, CURRENCY } from "../helpers/Dictionary"
 import { GetToday } from "../helpers/Misc"
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
-const listenerType = 'input'
+const listenerType = 'change'
 
 const priceSettings = {
   [CURRENCY.ETH]: {
