@@ -304,7 +304,7 @@ function NewOffer() {
               {screens.map((screen, id) => <div
                 key={id} role="button"
                 className={`bar ${id <= activeScreen ? 'fill' : ''}`}
-                onClick={() => setActiveScreen(id)}
+                // onClick={() => setActiveScreen(id)}
                 ><span></span></div>)}
             </div>
           </div>
