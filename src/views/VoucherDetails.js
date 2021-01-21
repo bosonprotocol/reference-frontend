@@ -30,16 +30,19 @@ function VoucherDetails(props) {
 
     useEffect(() => {
         async function initVoucherDetails() {
+            if (!account) {
+                return;
+            }
+
             const authData = getAccountStoredInLocalStorage(account);
             const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
             prepareVoucherDetails(rawVoucherDetails.voucher);
-            setEscrowData(prepareEscrowData(voucherDetails));
         }
 
         initVoucherDetails()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [account])
 
     const prepareVoucherDetails = (rawVoucher) => {
         console.log(rawVoucher);
@@ -60,6 +63,7 @@ function VoucherDetails(props) {
         };
 
         setVoucherDetails(parsedVoucher)
+        setEscrowData(prepareEscrowData(parsedVoucher));
     };
 
     const tableSellerInfo = [
