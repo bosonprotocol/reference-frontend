@@ -36,6 +36,7 @@ import { network } from "./connectors";
 import { ROUTE } from "./helpers/Dictionary"
 import ContextModal from "./components/shared/ContextModal";
 import ActivityVouchers from "./views/ActivityVouchers";
+import { authenticateUser, getAccountStoredInLocalStorage } from "./hooks/authenticate";
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -77,6 +78,9 @@ function App() {
     const context = useWeb3React();
     const {
         active,
+        account,
+        library,
+        chainId
     } = context;
 
     const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
@@ -90,6 +94,21 @@ function App() {
     }, [triedEager, networkActive, networkError, activateNetwork, active]);
 
     useInactiveListener(true)
+
+    useEffect(() => {
+        if (!account) {
+            return;
+        }
+
+        const localStoredAccountData = getAccountStoredInLocalStorage(account);
+
+        if (localStoredAccountData.activeToken) {
+            return;
+        }
+
+        authenticateUser(library, account, chainId);
+
+    }, [account, library, chainId]);
 
     return (
         // dark|light; (default: dark)
