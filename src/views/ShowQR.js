@@ -8,7 +8,6 @@ import { ROUTE } from '../helpers/Dictionary'
 
 function ShowQR(props) {
     const voucherId = props.match.params.id;
-    const qrValue = `${ process.env.REACT_APP_FRONTEND_URL }${ ROUTE.VoucherDetails }/${ voucherId }`;
 
     return (
         <section className="show-qr-code static-page atomic-scoped flex ai-center">
@@ -24,11 +23,10 @@ function ShowQR(props) {
                             {/*<img src={productAPI[imageThumbId].image} alt=""/>*/ }
                         </div>
                         <h1>Show the QR code to the seller</h1>
-                        <p className="descrption">Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry. Lorem Ipsum is simply dummy text.</p>
                         <div className="qr-container">
-                            <QRCode value={ qrValue } includeMargin={ true }/>
+                            <QRCode value={ voucherId } includeMargin={ true }/>
                         </div>
+                        <p className="descrption">{ voucherId }</p>
                     </div>
                 </div>
             </div>
