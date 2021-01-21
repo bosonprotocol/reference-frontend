@@ -11,9 +11,9 @@ import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 import VoucherDetails from "./views/VoucherDetails"
 
-import TopNavigation from "./components/shared/navigation/TopNavigation"
-import BottomNavigation from "./components/shared/navigation/BottomNavigation"
-import LocationManager from "./components/shared/navigation/LocationManager"
+// import TopNavigation from "./components/shared/navigation/TopNavigation"
+// import BottomNavigation from "./components/shared/navigation/BottomNavigation"
+// import LocationManager from "./components/shared/navigation/LocationManager"
 
 import { useEagerConnect, useInactiveListener } from './hooks'
 
@@ -101,8 +101,8 @@ function App() {
         <WalletContext.Provider value={walletContextValue}>
         <NavigationContext.Provider value={navigationContextValue}>
             <Router>
-                <LocationManager />
-                <TopNavigation />
+                {/* <LocationManager />
+                <TopNavigation /> */}
                 <Switch>
                 <Route exact strict path={ROUTE.Connect} component={Connect}/>
                 <Route exact path={ROUTE.Home} component={Home}/>
@@ -114,7 +114,7 @@ function App() {
                 <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
                 <Route path={ROUTE.VoucherDetails + ROUTE.PARAMS.ID} component={VoucherDetails}/>
                 </Switch>
-                <BottomNavigation />
+                {/* <BottomNavigation /> */}
             </Router>
             <ContextModal/>
         </NavigationContext.Provider>
