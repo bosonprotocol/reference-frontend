@@ -46,7 +46,7 @@ export const SellerReducer = (state, action) => {
   const actionList = {
 
     [DIC.SET_OFFERING_PROGRESS]: () => {
-      // localStorage.setItem('offeringProgress', JSON.stringify(action.payload))
+      localStorage.setItem('offeringProgress', JSON.stringify(action.payload))
 
       return {
         offeringProgress: action.payload
@@ -58,7 +58,7 @@ export const SellerReducer = (state, action) => {
         ...state.offeringData,
         ...action.payload
       }
-      // localStorage.setItem('offeringData', JSON.stringify(update))
+      localStorage.setItem('offeringData', JSON.stringify(update))
       return {
         offeringData: update
       }

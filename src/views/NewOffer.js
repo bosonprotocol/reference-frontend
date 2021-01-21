@@ -226,8 +226,6 @@ function NewOffer() {
     let error = true;
     error = validation(input.name, input.value)
 
-    console.error(error)
-
     if(!error && error !== undefined) {
       input.parentElement.removeAttribute('data-error')
       if(input.value) sellerContext.dispatch(Seller.updateOfferingData({
@@ -288,9 +286,9 @@ function NewOffer() {
   }, [])
 
   // show state on each change
-  // useEffect(() => {
-  //   console.log('after', sellerContext.state.offeringData)
-  // }, [sellerContext.state.offeringData])
+  useEffect(() => {
+    console.log('after', sellerContext.state.offeringData)
+  }, [sellerContext.state.offeringData])
 
   return (
     <section className="new-offer">
