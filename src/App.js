@@ -36,6 +36,7 @@ import { network } from "./connectors";
 import { ROUTE } from "./helpers/Dictionary"
 import ContextModal from "./components/shared/ContextModal";
 import ActivityVouchers from "./views/ActivityVouchers";
+import { authenticateUser, getAccountStoredInLocalStorage } from "./hooks/authenticate";
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -46,13 +47,13 @@ function App() {
     const [navigationState, navigationDispatch] = useReducer(NavigationReducer, NavigationInitialState);
 
     const redeemContextValue = {
-      state: buyerState,
-      dispatch: buyerDispatch
+        state: buyerState,
+        dispatch: buyerDispatch
     }
 
     const sellerContextValue = {
-      state: sellerState,
-      dispatch: sellerDispatch
+        state: sellerState,
+        dispatch: sellerDispatch
     }
 
     const modalContextValue = {
@@ -72,11 +73,14 @@ function App() {
     const navigationContextValue = {
         state: navigationState,
         dispatch: navigationDispatch
-      }
+    }
 
     const context = useWeb3React();
     const {
         active,
+        account,
+        library,
+        chainId
     } = context;
 
     const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
@@ -91,39 +95,58 @@ function App() {
 
     useInactiveListener(true)
 
+    useEffect(() => {
+        if (!account) {
+            return;
+        }
+
+        const localStoredAccountData = getAccountStoredInLocalStorage(account);
+
+        if (localStoredAccountData.activeToken) {
+            return;
+        }
+
+        authenticateUser(library, account, chainId);
+
+    }, [account, library, chainId]);
+
     return (
-    // dark|light; (default: dark)
-    <div className="emulate-mobile theme">
-        <ModalContext.Provider value={modalContextValue}>
-        <GlobalContext.Provider value={globalContextValue}>
-        <BuyerContext.Provider value={redeemContextValue}>
-        <SellerContext.Provider value={sellerContextValue}>
-        <WalletContext.Provider value={walletContextValue}>
-        <NavigationContext.Provider value={navigationContextValue}>
-            <Router>
-                {/* <LocationManager />
-                <TopNavigation /> */}
-                <Switch>
-                <Route exact strict path={ROUTE.Connect} component={Connect}/>
-                <Route exact path={ROUTE.Home} component={Home}/>
-                <Route path="/onboarding" component={OnboardingReset}/> {/* delete on prod */}
-                <Route path={ROUTE.ConnectToMetamask} component={ConnectToMetamask}/>
-                <Route path={ROUTE.ShowQR} component={ShowQR}/>
-                <Route path={ROUTE.NewOffer} component={NewOffer}/>
-                <Route path={ROUTE.Activity} component={Activity}/>
-                <Route path={ROUTE.ActivityVouchers} component={ActivityVouchers}/>
-                <Route path={ROUTE.VoucherDetails + ROUTE.PARAMS.ID} component={VoucherDetails}/>
-                </Switch>
-                {/* <BottomNavigation /> */}
-            </Router>
-            <ContextModal/>
-        </NavigationContext.Provider>
-        </WalletContext.Provider>
-        </SellerContext.Provider>
-        </BuyerContext.Provider>
-        </GlobalContext.Provider>
-        </ModalContext.Provider>
-    </div>
+        // dark|light; (default: dark)
+        <div className="emulate-mobile theme">
+            <ModalContext.Provider value={ modalContextValue }>
+                <GlobalContext.Provider value={ globalContextValue }>
+                    <BuyerContext.Provider value={ redeemContextValue }>
+                        <SellerContext.Provider value={ sellerContextValue }>
+                            <WalletContext.Provider value={ walletContextValue }>
+                                <NavigationContext.Provider value={ navigationContextValue }>
+                                    <Router>
+                                        {/* <LocationManager />
+                <TopNavigation /> */ }
+                                        <Switch>
+                                            <Route exact strict path={ ROUTE.Connect } component={ Connect }/>
+                                            <Route exact path={ ROUTE.Home } component={ Home }/>
+                                            <Route path="/onboarding"
+                                                   component={ OnboardingReset }/> {/* delete on prod */ }
+                                            <Route path={ ROUTE.ConnectToMetamask } component={ ConnectToMetamask }/>
+                                            <Route path={ ROUTE.NewOffer } component={ NewOffer }/>
+                                            <Route path={ ROUTE.Activity } component={ Activity }/>
+                                            <Route path={ ROUTE.ActivityVouchers } component={ ActivityVouchers }/>
+                                            <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode }
+                                                   component={ ShowQR }/>
+                                            <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID }
+                                                   component={ VoucherDetails }/>
+
+                                        </Switch>
+                                        {/* <BottomNavigation /> */ }
+                                    </Router>
+                                    <ContextModal/>
+                                </NavigationContext.Provider>
+                            </WalletContext.Provider>
+                        </SellerContext.Provider>
+                    </BuyerContext.Provider>
+                </GlobalContext.Provider>
+            </ModalContext.Provider>
+        </div>
     );
 }
 
