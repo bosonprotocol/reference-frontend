@@ -29,12 +29,12 @@ function VoucherDetails(props) {
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60*60*24*1000)) 
 
-    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate))
-    const daysAvailable = voucherDetails &&  convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate))
+    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
+    const daysAvailable = voucherDetails &&  convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const differenceInPercent = (x, y) => (x / y) * 100 === 100 ? 5 : (x / y) * 100
 
-    console.log(100 - differenceInPercent(daysPast, daysAvailable))
+    console.log(daysPast, daysAvailable)
 
     const expiryProgress = voucherDetails && 100 - differenceInPercent(daysPast, daysAvailable) + '%'
     
