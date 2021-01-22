@@ -73,6 +73,17 @@ function NavigationBar(props) {
         setLoading(1)
 
         const voucherSetInfo = getSelectedVoucherSet();
+        console.log(voucherSetInfo);
+
+        if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'The connected account is the owner of the voucher set'
+            }));
+            return;
+        }
+
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.buyerDeposit).toString();
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
