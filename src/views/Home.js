@@ -9,7 +9,7 @@ import ProductBlock from "../components/home/ProductBlock";
 import CardBlock from "../components/home/CardBlock";
 import CategoryMenu from "../components/home/CategoryMenu"
 import NavigationBar from "../components/shared/NavigationBar"
-import ProductListing from "../components/home/ProductListing"
+// import ProductListing from "../components/home/ProductListing"
 import ProductView from "../components/shared/ProductView"
 import Onboarding from '../views/Onboarding'
 import QRCodeScanner from "../components/shared/QRCodeScanner"
@@ -138,11 +138,11 @@ function Home() {
                             </Slider>
                         </div>
                     </section>
-                    <section className="home-products">
-                        <div className="container">
-                            <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>
-                        </div>
-                    </section>
+                    {/*<section className="home-products">*/}
+                    {/*    <div className="container">*/}
+                    {/*        <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>*/}
+                    {/*    </div>*/}
+                    {/*</section>*/}
                     {
                         globalContext.state.productView.open ?
                             <ProductView/> :
