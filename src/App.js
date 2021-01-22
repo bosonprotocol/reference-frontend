@@ -10,6 +10,7 @@ import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 import VoucherDetails from "./views/VoucherDetails"
+import QRScanner from "./views/QRScanner"
 
 // import TopNavigation from "./components/shared/navigation/TopNavigation"
 // import BottomNavigation from "./components/shared/navigation/BottomNavigation"
@@ -123,6 +124,7 @@ function App() {
                                         {/* <LocationManager />
                 <TopNavigation /> */ }
                                         <Switch>
+                                            <Route exact path={ ROUTE.CodeScanner } component={ QRScanner }/>
                                             <Route exact strict path={ ROUTE.Connect } component={ Connect }/>
                                             <Route exact path={ ROUTE.Home } component={ Home }/>
                                             <Route path="/onboarding"
