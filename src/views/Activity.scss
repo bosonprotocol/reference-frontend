@@ -51,6 +51,7 @@ section.activity {
     .voucher-block {
       a,
       &.solo {
+        width: 100%;
         display: flex;
         max-height: 150px;
         border-radius: 8px;
