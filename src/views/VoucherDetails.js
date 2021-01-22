@@ -123,7 +123,13 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                         <div className="section expiration">
-                            <div className="expiration"></div>
+                            <div className="expiration-container flex split">
+                                <p>Expiration Time</p>
+                                <div className="time-left flex column center">
+                                    <p>2 DAYS LEFT</p>
+                                    <div className="progress"></div>
+                                </div>
+                            </div>
                         </div>
                         <div className="section escrow">
                             <EscrowDiagram escrowData={ escrowData } status={ 'commited' }/>
