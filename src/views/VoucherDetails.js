@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import { useHistory } from "react-router"
 
@@ -16,15 +16,15 @@ import { Arrow } from "../components/shared/Icons"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
 import { Link } from "react-router-dom";
-import { ROUTE } from "../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary";
+import { ModalContext, ModalResolver } from "../contexts/Modal";
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
     const voucherId = props.match.params.id;
     const { account } = useWeb3React();
-
-    console.log(voucherId);
+    const modalContext = useContext(ModalContext);
 
     const history = useHistory()
 
@@ -35,6 +35,16 @@ function VoucherDetails(props) {
             }
 
             const authData = getAccountStoredInLocalStorage(account);
+
+            if (!authData.activeToken) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
+                }));
+                return;
+            }
+
             const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
             prepareVoucherDetails(rawVoucherDetails.voucher);
         }
@@ -59,8 +69,18 @@ function VoucherDetails(props) {
             qty: rawVoucher.qty,
             startDate: rawVoucher.startDate,
             expiryDate: rawVoucher.expiryDate,
-            category: [['Category', rawVoucher.category]]
+            category: [['Category', rawVoucher.category]],
+            voucherOwner: rawVoucher.voucherOwner,
+            holder: rawVoucher._holder,
+            CANCELLED: rawVoucher.CANCELLED,
+            COMMITTED: rawVoucher.COMMITTED,
+            COMPLAINED: rawVoucher.COMPLAINED,
+            FINALIZED: rawVoucher.FINALIZED,
+            REDEEMED: rawVoucher.REDEEMED,
+            REFUNDED: rawVoucher.REFUNDED
         };
+
+        console.log(parsedVoucher);
 
         setVoucherDetails(parsedVoucher)
         setEscrowData(prepareEscrowData(parsedVoucher));
@@ -148,10 +168,17 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                     </div>
+                    {/*ToDo: Demo implementation should be implemented better*/ }
                     <div className="control-wrap">
-                        <Link to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                            <div className="button primary" role="button">REDEEM</div>
-                        </Link>
+                        { account?.toLowerCase() === voucherDetails?.voucherOwner.toLowerCase()
+                        && voucherDetails?.COMMITTED !== null && voucherDetails?.REDEEMED === null ?
+                            < div className="button gray" disabled role="button">Cancel or fault</div>
+                            : account?.toLowerCase() === voucherDetails?.holder.toLowerCase() && voucherDetails?.REDEEMED === null ?
+                                <Link
+                                    to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+                                    <div className="button primary" role="button">REDEEM</div>
+                                </Link> : null
+                        }
                     </div>
                 </div>
             </section>

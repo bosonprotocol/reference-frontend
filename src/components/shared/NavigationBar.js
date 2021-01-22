@@ -76,6 +76,7 @@ function NavigationBar(props) {
         console.log(voucherSetInfo);
 
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
