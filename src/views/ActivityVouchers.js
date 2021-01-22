@@ -66,7 +66,6 @@ function ActivityVouchers() {
         }
 
         setPreparedVouchers(parsedVouchers)
-        console.log(parsedVouchers);
     };
 
     return (

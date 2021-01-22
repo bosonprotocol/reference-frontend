@@ -22,6 +22,7 @@ const Image = {
 function UploadPhoto() {
   const sellerContext = useContext(SellerContext)
   const thumbnailRef = useRef()
+  const errorHandle = useRef()
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
@@ -32,12 +33,14 @@ function UploadPhoto() {
   }
 
   const imageUploadHandler = (e) => {
+    errorHandle.current.removeAttribute('data-error')
     const fileReader = new FileReader()
     fileReader.addEventListener('load', previewImage)
 
     Image.name = e?.target?.files[0]?.name
     Image.size = e?.target?.files[0]?.size
     Image.type = e?.target?.files[0]?.type
+
 
     // check for errors
     Image.rules = {
@@ -46,16 +49,27 @@ function UploadPhoto() {
       existing: !Image.name
     }
 
+    const error = 
+    Image.rules.type ? `This file type is not allowed.` :
+    Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
+    false
+
+    error && errorHandle.current.setAttribute('data-error', error)
+
+    sellerContext.dispatch(Seller.updateOfferingData({
+      [NAME.SELECTED_FILE]: e.target.files[0]
+    }))
     if(!Image.rules.size && !Image.rules.type && !Image.rules.existing) {
-
-      sellerContext.dispatch(Seller.updateOfferingData({
-        [NAME.SELECTED_FILE]: e.target.files[0]
-      }))
-
       fileReader.readAsDataURL(e.target.files[0]) 
-    } else {
-      // set errors
     }
+    //  else {
+    //   const error = 
+    //   Image.rules.type ? `This file type is not allowed.` :
+    //   Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
+    //   'There was an error. Please try again.'
+
+    //   errorHandle.current.setAttribute('data-error', error)
+    // }
   }
 
   return ( 
@@ -65,7 +79,7 @@ function UploadPhoto() {
       </div>
       <input id="offer-image-upload" type="file" onChange={(e) => imageUploadHandler(e)}/>
       <div className={`image-upload-container flex center ${sellerContext.state.offeringData && (getOfferingData(NAME.IMAGE) ? 'uploaded' : 'awaiting')}`}>
-        <div className="image-upload">
+        <div ref={errorHandle} className="image-upload input">
           <div className="thumb-container">
             <img src={getOfferingData(NAME.IMAGE)} ref={thumbnailRef} className="thumbnail" alt="thmbnail"/> 
           </div>

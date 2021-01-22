@@ -1,11 +1,17 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useContext } from 'react'
 
 import { NAME } from "../../helpers/Dictionary"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 function FormGeneral() {
   const conditionTarget = useRef()
   const titleInput = useRef()
   const titleClear = useRef()
+
+  const sellerContext = useContext(SellerContext)
+  const getOfferingData = getData(sellerContext.state.offeringData)
+  
+  const selectedCategory = getOfferingData(NAME.CONDITION)
 
   const selectLabel = (el) => {
     Array.from(el.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
@@ -19,14 +25,20 @@ function FormGeneral() {
   }
 
   useEffect(() => {
-    let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
-    let element = conditionTarget.current?.querySelector(`[data-condition="${fetchedBackup?.condition}"]`)
+    // localStorage
+    // let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
+    // let element = conditionTarget.current?.querySelector(`[data-condition="${fetchedBackup?.condition}"]`)
+
+    // state
+    let element = conditionTarget.current?.querySelector(`[data-condition="${selectedCategory}"]`)
     
     if(element) {
       element.style.transition = 'none'
       selectLabel(element)
       element.removeAttribute('transition');
     }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

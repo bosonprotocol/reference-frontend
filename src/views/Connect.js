@@ -60,7 +60,7 @@ export default function Connect() {
             <div className="container l">
                 <div className="top-navigation flex ai-center">
                     <div className="button square dark" role="button" 
-                    onClick={() => history.push("/")}
+                    onClick={() => history.goBack()}
                     >
                     <Arrow color="#80F0BE" />
                     </div>

@@ -32,7 +32,7 @@ export const parseLocalStorage = (raw, key) => {
     try {
         parsed = JSON.parse(localStorage[key]);
     } catch {
-        if (key) console.log(`Invalid localStorage object for "${ key }"`);
+        if (key) console.error(`Invalid localStorage object for "${ key }"`);
     }
     return parsed;
 };
