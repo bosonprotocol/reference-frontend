@@ -4,10 +4,9 @@ import { useHistory } from "react-router"
 
 import { Link } from 'react-router-dom'
 
-import { GlobalContext, Action } from '../../../contexts/Global'
 import { NavigationContext } from '../../../contexts/Navigation'
 
-import { AFFMAP } from "../../../helpers/Dictionary"
+import { AFFMAP, ROUTE } from "../../../helpers/Dictionary"
 
 import "./TopNavigation.scss"
 
@@ -19,7 +18,6 @@ import MetaMaskLogo from "../../../images/metamask.png";
 import WalletConnectLogo from "../../../images/walletconnect.svg";
 
 function TopNavigation() {
-  const globalContext = useContext(GlobalContext);
   const navigationContext = useContext(NavigationContext);
   const history = useHistory()
 
@@ -48,10 +46,9 @@ function TopNavigation() {
 
           {/* QR Reader button */}
           { navigationContext.state.top[AFFMAP.QR_CODE_READER] ?
-            <div className="qr-icon" role="button"
-            onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }>
-              <IconQR color="#8393A6" noBorder/>
-            </div>
+            <Link to={ROUTE.CodeScanner} >
+              <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
+            </Link>
           : null}
 
         </nav>

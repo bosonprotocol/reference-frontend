@@ -8,6 +8,10 @@ html {
   font-size: 16px;
 }
 
+:root {
+  --progress-percentage: 10px;
+}
+
 
 html, body {
   min-height: 100%;
@@ -24,7 +28,6 @@ html, body {
   line-height: $height-regular;
   font-weight: 500;
   color: $text-1;
-  font-size: 16px;
   background: #181A29;
 
   // simulate mobile
