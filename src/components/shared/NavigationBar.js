@@ -73,7 +73,6 @@ function NavigationBar(props) {
         setLoading(1)
 
         const voucherSetInfo = getSelectedVoucherSet();
-        console.log(voucherSetInfo);
 
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
