@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from "react-router"
 
 import "./Activity.scss"
@@ -13,13 +13,15 @@ import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import { ROUTE } from "../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary";
 import { Link } from "react-router-dom";
+import { ModalContext, ModalResolver } from "../contexts/Modal";
 
 function ActivityVouchers() {
     const [preparedVouchers, setPreparedVouchers] = useState([])
 
     const { account } = useWeb3React();
+    const modalContext = useContext(ModalContext);
 
     const history = useHistory();
 
@@ -30,6 +32,15 @@ function ActivityVouchers() {
             }
 
             const authData = getAccountStoredInLocalStorage(account);
+
+            if (!authData.activeToken) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
+                }));
+                return;
+            }
 
             const allAccountVouchers = await getVouchers(authData.authToken);
             prepareVouchersData(allAccountVouchers);
@@ -74,7 +85,7 @@ function ActivityVouchers() {
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
-                    <Link to={ROUTE.CodeScanner} >
+                    <Link to={ ROUTE.CodeScanner }>
                         <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
                     </Link>
                 </div>

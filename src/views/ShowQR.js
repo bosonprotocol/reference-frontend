@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import QRCode from "qrcode.react";
 
 import "./StaticPage.scss"
@@ -22,6 +22,7 @@ function ShowQR(props) {
     const modalContext = useContext(ModalContext);
     const [loading, setLoading] = useState(0);
     const location = useLocation();
+    const history = useHistory();
 
     const voucherKernelContract = useVoucherKernelContract();
 
@@ -72,6 +73,7 @@ function ShowQR(props) {
 
             const redeemResponse = await updateVoucher(data, authData.authToken);
             console.log(redeemResponse);
+            history.push(ROUTE.Home)
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
