@@ -104,7 +104,7 @@ function ShowQR(props) {
                                 </div>
                                 <h1>Show the QR code to the seller</h1>
                                 <div className="qr-container">
-                                    <QRCode value={ voucherId } includeMargin={ true }/>
+                                    <QRCode size="170" value={ voucherId } includeMargin={ true }/>
                                 </div>
                                 <p className="descrption">{ voucherId }</p>
                             </div>

@@ -9,7 +9,7 @@ html {
 }
 
 :root {
-  --progress-percentage: 10px;
+  --progress-percentage: 0;
 }
 
 
@@ -160,4 +160,10 @@ ul {
 
 .td-none {
   text-decoration: none;
+}
+
+body {
+  a {
+    text-decoration: none;
+  }
 }
