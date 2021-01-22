@@ -26,31 +26,6 @@ function VoucherDetails(props) {
     const expiryProgressBar = useRef()
 
     const statusColor = 1
-    // very beautiful function that finds the difference between dates
-
-
-    // const dateDiffernce = () =>
-    // //  voucherDetails && (new Date(voucherDetails.startDate).getTime() / (60*60*24*1000))
-    // voucherDetails && 
-    // (
-    //     (
-    //         ((
-    //             parseInt((
-    //                 (new Date(voucherDetails.startDate).getTime()) /
-    //                 (new Date(voucherDetails.expiryDate).getTime())
-    //             ) / (60*60*24*1000)) + 1
-    //         ) /
-    //         (
-    //             parseInt((
-    //                 (new Date(voucherDetails.expiryDate).getTime())
-    //             ) / (60*60*24*1000)) -
-    //             parseInt((
-    //                 (new Date(voucherDetails.startDate).getTime())
-    //             ) / (60*60*24*1000))
-    //         ))
-    //         // * 100
-    //     )
-    // ) + '%'
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60*60*24*1000)) 
 
