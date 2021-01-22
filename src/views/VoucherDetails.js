@@ -24,7 +24,7 @@ function VoucherDetails(props) {
     const voucherId = props.match.params.id;
     const { account } = useWeb3React();
 
-    console.log(voucherId);
+    const statusColor = 1
 
     const history = useHistory()
 
@@ -115,7 +115,12 @@ function VoucherDetails(props) {
                         </div>
                         <div className="section status">
                             <h2>Status</h2>
-                            <div className="status"></div>
+                            <div className="status-container flex">
+                                <div className={`status-block color_${statusColor}`}>
+                                    <h3 className="status-name">COMMITED</h3>
+                                    <p className="status-detils">Oct 27th 2020</p>
+                                </div>
+                            </div>
                         </div>
                         <div className="section expiration">
                             <div className="expiration"></div>
