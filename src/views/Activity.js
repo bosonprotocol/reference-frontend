@@ -71,9 +71,9 @@ function Activity() {
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
-                    <div className="qr-icon" role="button"
-                         onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6"
-                                                                                                    noBorder/></div>
+                    <Link to={ROUTE.CodeScanner} >
+                        <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
+                    </Link>
                 </div>
                 <div className="title">
                     <h1>Activity</h1>
