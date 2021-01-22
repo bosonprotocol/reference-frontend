@@ -118,7 +118,7 @@ function VoucherDetails(props) {
                             <div className="status-container flex">
                                 <div className={`status-block color_${statusColor}`}>
                                     <h3 className="status-name">COMMITED</h3>
-                                    <p className="status-detils">Oct 27th 2020</p>
+                                    <p className="status-details">Oct 27th 2020</p>
                                 </div>
                             </div>
                         </div>
