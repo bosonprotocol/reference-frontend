@@ -1,8 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import { Link } from 'react-router-dom'
-
-import { GlobalContext, Action } from '../../contexts/Global'
 
 import { IconQR } from "../shared/Icons"
 import { useWeb3React } from "@web3-react/core";
@@ -11,8 +9,9 @@ import { injected, walletconnect } from "../../connectors";
 import MetaMaskLogo from "../../images/metamask.png";
 import WalletConnectLogo from "../../images/walletconnect.svg";
 
+import { ROUTE } from "../../helpers/Dictionary"
+
 function Header() {
-    const globalContext = useContext(GlobalContext);
     const { account, connector } = useWeb3React();
 
     return (
@@ -37,8 +36,9 @@ function Header() {
                 </Link>
                 {/*<div className="search flex center" role="button"><IconList/>*/ }
                 {/*    <p>Search</p></div>*/ }
-                <div className="qr-icon" role="button"
-                     onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR/></div>
+                <Link to={ROUTE.CodeScanner} >
+                    <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
+                </Link>
             </nav>
         </header>
     )

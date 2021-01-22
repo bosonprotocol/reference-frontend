@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router"
 
 import "./Activity.scss"
-
-import { GlobalContext, Action } from '../contexts/Global'
 
 import { getVouchers } from "../hooks/api";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
@@ -20,7 +18,6 @@ import { Link } from "react-router-dom";
 
 function ActivityVouchers() {
     const [preparedVouchers, setPreparedVouchers] = useState([])
-    const globalContext = useContext(GlobalContext);
 
     const { account } = useWeb3React();
 
@@ -77,9 +74,9 @@ function ActivityVouchers() {
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
-                    <div className="qr-icon" role="button"
-                         onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6"
-                                                                                                    noBorder/></div>
+                    <Link to={ROUTE.CodeScanner} >
+                        <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
+                    </Link>
                 </div>
                 <div className="title">
                     <h1>Activity</h1>

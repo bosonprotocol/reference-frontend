@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import { useHistory } from "react-router"
 
@@ -23,10 +23,27 @@ function VoucherDetails(props) {
     const [escrowData, setEscrowData] = useState(null)
     const voucherId = props.match.params.id;
     const { account } = useWeb3React();
+    const expiryProgressBar = useRef()
 
-    console.log(voucherId);
+    const statusColor = 1
+
+    const convertToDays = (date) => parseInt((date.getTime()) / (60*60*24*1000)) 
+
+    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
+    const daysAvailable = voucherDetails &&  convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
+
+    const differenceInPercent = (x, y) => (x / y) * 100 === 100 ? 5 : (x / y) * 100
+
+    console.log(daysPast, daysAvailable)
+
+    const expiryProgress = voucherDetails && 100 - differenceInPercent(daysPast, daysAvailable) + '%'
+    
 
     const history = useHistory()
+
+    useEffect(() => {
+        if(document.documentElement) document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
+    }, [expiryProgress])
 
     useEffect(() => {
         async function initVoucherDetails() {
@@ -45,8 +62,6 @@ function VoucherDetails(props) {
     }, [account])
 
     const prepareVoucherDetails = (rawVoucher) => {
-        console.log(rawVoucher);
-
         let parsedVoucher = {
             id: rawVoucher._id,
             title: rawVoucher.title,
@@ -59,7 +74,8 @@ function VoucherDetails(props) {
             qty: rawVoucher.qty,
             startDate: rawVoucher.startDate,
             expiryDate: rawVoucher.expiryDate,
-            category: [['Category', rawVoucher.category]]
+            category: [['Category', rawVoucher.category]],
+            commitedDate: rawVoucher.COMMITTED,
         };
 
         setVoucherDetails(parsedVoucher)
@@ -115,10 +131,21 @@ function VoucherDetails(props) {
                         </div>
                         <div className="section status">
                             <h2>Status</h2>
-                            <div className="status"></div>
+                            <div className="status-container flex">
+                                <div className={`status-block color_${statusColor}`}>
+                                    <h3 className="status-name">COMMITED</h3>
+                                    <p className="status-details">{formatDate(voucherDetails?.commitedDate, 'string')}</p>
+                                </div>
+                            </div>
                         </div>
                         <div className="section expiration">
-                            <div className="expiration"></div>
+                            <div className="expiration-container flex split">
+                                <p>Expiration Time</p>
+                                <div className="time-left flex column center">
+                                    <p>{daysAvailable - daysPast} DAY{daysAvailable - daysPast > 1 ? 'S' : null} LEFT</p>
+                                    <div ref={expiryProgressBar} className="progress"></div>
+                                </div>
+                            </div>
                         </div>
                         <div className="section escrow">
                             <EscrowDiagram escrowData={ escrowData } status={ 'commited' }/>
