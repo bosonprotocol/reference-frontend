@@ -4,9 +4,11 @@ import QRCodeScanner from "../components/shared/QRCodeScanner"
 function QRScanner() {
   return (
     <section className="qr-scanner">
-      <div className="container">
-        <QRCodeScanner />
+      <div className="target">
+        <div className="layer-1"></div>
+        <div className="layer-2"></div>
       </div>
+      <QRCodeScanner />
     </section>
   )
 }
