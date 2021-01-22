@@ -91,6 +91,13 @@
       }
     }
   }
+  .button-container {
+    z-index: 2;
+    position: absolute;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   .cancel {
     width: 42px;
     height: 42px;
@@ -108,11 +115,6 @@
     position: absolute;
 
     &.new {
-      z-index: 2;
-      position: absolute;
-      bottom: 10vh;
-      left: 50%;
-      transform: translateX(-50%);
       background: #192028;
       border-radius: 11.4286px;
       border: none;
@@ -123,6 +125,12 @@
         &::after {
           background-color: #80F0BE;
         }
+      }
+
+      &:hover {
+        border: none;
+        opacity: 0.9;
+        transform: scale(1.1);
       }
 
     }
