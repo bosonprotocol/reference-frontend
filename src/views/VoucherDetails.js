@@ -3,12 +3,15 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useHistory } from "react-router"
 
 import * as ethers from "ethers";
-import { getVoucherDetails } from "../hooks/api";
+import { getVoucherDetails, updateVoucher } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
 import "./VoucherDetails.scss"
 
 import { DateTable, TableLocation, TableRow } from "../components/shared/TableContent"
+import { decodeData, getEncodedTopic, useVoucherKernelContract } from "../hooks/useContract";
+import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
+import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
@@ -18,14 +21,19 @@ import { useWeb3React } from "@web3-react/core";
 import { Link } from "react-router-dom";
 import { MODAL_TYPES, ROUTE, STATUS } from "../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
+import Loading from "../components/offerFlow/Loading";
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
     const voucherId = props.match.params.id;
-    const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
     const expiryProgressBar = useRef()
+    const [loading, setLoading] = useState(0);
+    const voucherKernelContract = useVoucherKernelContract();
+    const { library, account } = useWeb3React();
+
+
 
     const statusColor = 1
 
@@ -93,6 +101,7 @@ function VoucherDetails(props) {
             REDEEMED: rawVoucher.REDEEMED,
             REFUNDED: rawVoucher.REFUNDED,
             commitedDate: rawVoucher.COMMITTED,
+            _tokenIdVoucher: rawVoucher._tokenIdVoucher,
         };
 
         console.log(parsedVoucher);
@@ -182,13 +191,74 @@ function VoucherDetails(props) {
                 <div className="button primary" role="button">REDEEM</div>
             </Link>
         ),
-        [STATUS.HOLDER_COMMITED]: () => (
-            < div className="button red" role="button">COMPLAIN</div>
+        [STATUS.HOLDER_REDEEMED]: () => (
+            < div className="button red" role="button" onClick={ () => onComplain()}>COMPLAIN</div>
         ),
+    }
+
+    async function onComplain() {
+        if (!library || !account) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please connect your wallet account'
+            }));
+            return;
+        }
+
+        setLoading(1);
+
+        let tx;
+        let data;
+        const authData = getAccountStoredInLocalStorage(account);
+
+        console.log(voucherDetails);
+
+        try {
+            // what do we call here
+            tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
+
+            const receipt = await tx.wait();
+
+            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
+            console.log("Complain event data");
+            console.log(data);
+
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message + ' :233'
+            }));
+            return;
+        }
+
+
+        try {
+            const data = {
+                _id: voucherId,
+                status: VOUCHER_STATUSES.COMPLAINED
+            };
+
+            const complainResponse = await updateVoucher(data, authData.authToken);
+            console.log(complainResponse);
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message + ' :252'
+            }));
+        }
+
+        setLoading(0)
     }
 
     return (
         <>
+            { loading ? <Loading/> : null }
             <section className="voucher-details no-bg">
                 <div className="container erase">
                     <div className="button square new" role="button"
