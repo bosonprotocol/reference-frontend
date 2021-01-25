@@ -100,7 +100,7 @@ function VoucherDetails(props) {
         setVoucherDetails(parsedVoucher)
         setEscrowData(prepareEscrowData(parsedVoucher));
     };
-
+  
     const tableSellerInfo = [
         ['Seller', 'David'],
         ['Phone', '1-415-542-5050'],
@@ -164,22 +164,26 @@ function VoucherDetails(props) {
 
     // perform a check on the current voucher and return relevant status
     const findRelevantControls = () => {
-        if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_CANCEL
-        if(VouherStatus.holder && !VouherStatus.redeemed) return STATUS.HOLDER_REDEEM
+        if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_GENERAL
+        if(VouherStatus.holder && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.HOLDER_COMMITED
+        if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed) return STATUS.HOLDER_REDEEMED
     }
 
     const getRelevantControls = findRelevantControls()
 
     // assign controlset to statuses
     const controlList = {
-        [STATUS.OWNER_CANCEL]: () => (
+        [STATUS.OWNER_GENERAL]: () => (
             < div className="button gray" disabled role="button">Cancel or fault</div>
         ),
-        [STATUS.HOLDER_REDEEM]: () => (
+        [STATUS.HOLDER_COMMITED]: () => (
             <Link
                 to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
                 <div className="button primary" role="button">REDEEM</div>
             </Link>
+        ),
+        [STATUS.HOLDER_COMMITED]: () => (
+            < div className="button red" role="button">COMPLAIN</div>
         ),
     }
 

@@ -81,6 +81,7 @@ export const CURRENCY = {
 }
 
 export const STATUS = {
-    OWNER_CANCEL: 'owner_cancel',
-    HOLDER_REDEEM: 'holder_redeem',
+    OWNER_GENERAL: 'owner_general',
+    HOLDER_COMMITED: 'holder_commited',
+    HOLDER_REDEEMED: 'holder_redeemed',
 }

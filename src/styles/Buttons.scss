@@ -45,6 +45,28 @@
     }
   }
 
+  &.red {
+    padding: 12px 11px;
+    border-radius: 8px;
+    border: 1px solid #F35D7C;
+
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 19px;
+    /* identical to box height */
+
+    text-align: center;
+    text-transform: uppercase;
+
+    color: #F35D7C;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
   &.text {
     background: transparent;
     border: none;
