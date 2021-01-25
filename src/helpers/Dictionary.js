@@ -79,3 +79,8 @@ export const CURRENCY = {
     ETH: 'ETH',
     BSN: 'BSN',
 }
+
+export const STATUS = {
+    OWNER_CANCEL: 'owner_cancel',
+    HOLDER_REDEEM: 'holder_redeem',
+}

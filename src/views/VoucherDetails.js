@@ -16,7 +16,7 @@ import { Arrow } from "../components/shared/Icons"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
 import { Link } from "react-router-dom";
-import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE, STATUS } from "../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 
 function VoucherDetails(props) {
@@ -35,8 +35,6 @@ function VoucherDetails(props) {
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const differenceInPercent = (x, y) => (x / y) * 100
-
-    console.log(daysPast, daysAvailable)
 
     const expiryProgress = voucherDetails && differenceInPercent(daysPast, daysAvailable) + '%';
 
@@ -139,7 +137,51 @@ function VoucherDetails(props) {
         }
     }
 
+    // technical information about the voucher
+    const VouherStatus = {
+        owner: null,
+        holder: null,
+        commited: null,
+        redeemed: null,
+    }
 
+    // define checks for the current voucher
+    const isOwner = (voucher) => voucher ? voucher.voucherOwner.toLowerCase() === account?.toLowerCase() : null
+    const isHolder = (voucher) => voucher ? voucher.holder.toLowerCase() === account?.toLowerCase() : null
+    const isCommited = (voucher) => voucher ? voucher.COMMITTED !== null : null
+    const isRedeemed = (voucher) => voucher ? voucher.REDEEMED !== null : null
+
+    // update the information about the voucher by running defined checks
+    const updateVoucherStatus = (voucher) => {
+        VouherStatus.owner = isOwner(voucher)
+        VouherStatus.holder = isHolder(voucher)
+        VouherStatus.commited = isCommited(voucher)
+        VouherStatus.redeemed = isRedeemed(voucher)
+    }
+
+    // run checks
+    updateVoucherStatus(voucherDetails)
+
+    // perform a check on the current voucher and return relevant status
+    const findRelevantControls = () => {
+        if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_CANCEL
+        if(VouherStatus.holder && !VouherStatus.redeemed) return STATUS.HOLDER_REDEEM
+    }
+
+    const getRelevantControls = findRelevantControls()
+
+    // assign controlset to statuses
+    const controlList = {
+        [STATUS.OWNER_CANCEL]: () => (
+            < div className="button gray" disabled role="button">Cancel or fault</div>
+        ),
+        [STATUS.HOLDER_REDEEM]: () => (
+            <Link
+                to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+                <div className="button primary" role="button">REDEEM</div>
+            </Link>
+        ),
+    }
 
     return (
         <>
@@ -200,17 +242,10 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                     </div> 
-                    {/*ToDo: Demo implementation should be implemented better*/ }
                     <div className="control-wrap">
-                        { account?.toLowerCase() === voucherDetails?.voucherOwner.toLowerCase()
-                        && voucherDetails?.COMMITTED !== null && voucherDetails?.REDEEMED === null ?
-                            < div className="button gray" disabled role="button">Cancel or fault</div>
-                            : account?.toLowerCase() === voucherDetails?.holder.toLowerCase() && voucherDetails?.REDEEMED === null ?
-                                <Link
-                                    to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                                    <div className="button primary" role="button">REDEEM</div>
-                                </Link> : null
-                        }
+                    { getRelevantControls ? 
+                        controlList[getRelevantControls]()
+                    : null }
                     </div>
                 </div>
             </section>
