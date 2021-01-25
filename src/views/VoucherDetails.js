@@ -115,27 +115,31 @@ function VoucherDetails(props) {
 
     const tableLocation = 'Los Angeles';
 
+    const currency = 'ETH'
+
     //ToDo: Handle position based on voucher status and user role;
     //ToDo: Apply not only ETH version
     function prepareEscrowData(voucherDetails) {
         return {
             PAYMENT: {
                 title: 'PAYMENT',
-                value: `${ voucherDetails?.price } ETH`,
+                value: `${ voucherDetails?.price } ${currency}`,
                 position: 2,
             },
             BUYER_DEPOSIT: {
                 title: 'BUYER DEPOSIT',
-                value: `${ voucherDetails?.buyerDeposit } ETH`,
+                value: `${ voucherDetails?.buyerDeposit } ${currency}`,
                 position: 2,
             },
             SELLER_DEPOSIT: {
                 title: 'SELLER DEPOSIT',
-                value: `${ voucherDetails?.sellerDeposit } ETH`,
+                value: `${ voucherDetails?.sellerDeposit } ${currency}`,
                 position: 2,
             },
         }
     }
+
+
 
     return (
         <>
@@ -195,7 +199,7 @@ function VoucherDetails(props) {
                                 { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
                             </div>
                         </div>
-                    </div>
+                    </div> 
                     {/*ToDo: Demo implementation should be implemented better*/ }
                     <div className="control-wrap">
                         { account?.toLowerCase() === voucherDetails?.voucherOwner.toLowerCase()
