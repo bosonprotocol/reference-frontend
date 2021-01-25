@@ -53,7 +53,7 @@ export const DateTable = (props) => {
       {start ? 
       <div className="block flex">
         <div className="icon">
-          <IconCalendar />
+          <IconCalendar direction />
         </div>
         <div className="text">
           <p className="title">Start Date</p>

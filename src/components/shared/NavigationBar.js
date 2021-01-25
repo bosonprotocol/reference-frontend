@@ -73,6 +73,17 @@ function NavigationBar(props) {
         setLoading(1)
 
         const voucherSetInfo = getSelectedVoucherSet();
+
+        if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'The connected account is the owner of the voucher set'
+            }));
+            return;
+        }
+
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.buyerDeposit).toString();
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
@@ -131,7 +142,7 @@ function NavigationBar(props) {
     }
 
     return (
-        <>
+        <div>
             { loading ? <Loading/> : null }
             <nav className={ `navigation-bar flex ${ transitionState } ${ transitionTrigger }` }>
                 <div className="nav-container flex center">
@@ -155,7 +166,7 @@ function NavigationBar(props) {
                                  onClick={ () => buyerContext.dispatch(Buyer.commitToBuy()) }
                             >
                                 <ContractInteractionButton
-                                    className="button button -green"
+                                    className="button -green"
                                     handleClick={ onCommitToBuy }
                                     label="COMMIT TO BUY"
                                     sourcePath={ location.pathname }
@@ -172,7 +183,7 @@ function NavigationBar(props) {
                     }
                 </div>
             </nav>
-        </>
+        </div>
     )
 }
 

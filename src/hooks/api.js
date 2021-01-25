@@ -28,6 +28,14 @@ export const getVouchers = async (token) => {
     return allVouchers.data;
 };
 
+export const getVoucherDetails = async (voucherId, token) => {
+    const voucherDetails = await axiosInstance.get(`/vouchers/${ voucherId }/voucher-details`, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
+
+    return voucherDetails.data
+};
+
 export const getAllVoucherSets = async () => {
     const allVoucherSets = await axiosInstance.get(`/voucher-sets`);
     return allVoucherSets.data;
@@ -45,4 +53,12 @@ export const commitToBuy = async (supplyId, data, token) => {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
     return allVouchers.data;
+};
+
+export const updateVoucher = async (data, token) => {
+    const redeemResponse = await axiosInstance.patch(`/vouchers/update`, data, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
+
+    return redeemResponse.data;
 };

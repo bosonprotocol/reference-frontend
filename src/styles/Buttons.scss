@@ -146,6 +146,17 @@
       }
     }
 
+    &.new {
+      background-color: #25303D;
+
+      &:hover {
+        background-color: #2e3c4c;
+      }
+      &:active {
+        background-color: #1d2631;
+      }
+    }
+
     &:hover {
       background-color: #18384f;
     }

@@ -1,5 +1,8 @@
 import { createContext } from 'react'
 import { injected, walletconnect } from "../connectors";
+import { getData as getContextData } from "../helpers/Context"
+
+export const getData = getContextData
 
 export const WalletContext = createContext();
 

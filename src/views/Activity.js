@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from "react-router"
+import { Link } from 'react-router-dom'
 
 import "./Activity.scss"
 
@@ -7,6 +8,8 @@ import { GlobalContext, Action } from '../contexts/Global'
 
 import { getAllVoucherSets } from "../hooks/api";
 import * as ethers from "ethers";
+
+import { ROUTE } from "../helpers/Dictionary"
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
@@ -64,13 +67,13 @@ function Activity() {
             <div className="container">
                 <div className="top-navigation flex split">
                     <div className="button square dark" role="button"
-                         onClick={ () => history.push('/') }
+                         onClick={ () => history.goBack() }
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
-                    <div className="qr-icon" role="button"
-                         onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6"
-                                                                                                    noBorder/></div>
+                    <Link to={ROUTE.CodeScanner} >
+                        <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
+                    </Link>
                 </div>
                 <div className="title">
                     <h1>Activity</h1>
@@ -121,17 +124,9 @@ const InactiveView = () => {
 }
 
 const Block = (props) => {
-    const { title, image, price, qty, id } = props
+    const { title, image, price, qty } = props
 
     const globalContext = useContext(GlobalContext);
-
-    const openProduct = (product) => {
-        globalContext.dispatch(Action.openProduct(product));
-
-        // const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === product);
-
-        // globalContext.dispatch(Action.navigationControl(selectedProduct?.qty === 0 ? DIC.NAV.DEF : DIC.NAV.COMMIT))
-    };
 
     useEffect(() => {
         let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
@@ -182,8 +177,7 @@ const Block = (props) => {
     const currency = 'ETH'; // ToDo: implement it
 
     return (
-        <div className="voucher-block flex"
-        onClick={()=>openProduct(id)}>
+        <div className="voucher-block solo flex" >
             <div className="thumb no-shrink">
                 <img src={ image } alt={ title }/>
             </div>

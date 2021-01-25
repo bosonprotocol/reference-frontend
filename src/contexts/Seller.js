@@ -1,7 +1,11 @@
 import { createContext } from 'react'
 import { DIC } from "../helpers/Dictionary"
+import { getData as getContextData } from "../helpers/Context"
+
+export const getData = getContextData
 
 export const SellerContext = createContext()
+
 
 const fetchProgressFallback = parseInt(localStorage.getItem('offeringProgress'))
 
@@ -42,7 +46,7 @@ export const SellerReducer = (state, action) => {
   const actionList = {
 
     [DIC.SET_OFFERING_PROGRESS]: () => {
-      localStorage.setItem('offeringProgress', JSON.stringify(action.payload))
+      // localStorage.setItem('offeringProgress', JSON.stringify(action.payload))
 
       return {
         offeringProgress: action.payload
@@ -54,7 +58,7 @@ export const SellerReducer = (state, action) => {
         ...state.offeringData,
         ...action.payload
       }
-      localStorage.setItem('offeringData', JSON.stringify(update))
+      // localStorage.setItem('offeringData', JSON.stringify(update))
       return {
         offeringData: update
       }

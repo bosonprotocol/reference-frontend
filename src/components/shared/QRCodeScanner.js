@@ -3,11 +3,14 @@ import QrReader from "react-qr-reader";
 import "./QRCodeScanner.scss";
 import { useState, useContext } from "react";
 
-import { GlobalContext, Action} from '../../contexts/Global'
+import { GlobalContext, Action } from '../../contexts/Global'
+
+import { useHistory } from "react-router-dom";
 
 function QRCodeScanner() {
-    const globalContext = useContext(GlobalContext)
+    const globalContext = useContext(GlobalContext);
     const [delay, setDelay] = useState(300);
+    const history = useHistory();
 
     const stopRecording = () => {
         globalContext.dispatch(Action.toggleQRReader(0))
@@ -19,6 +22,8 @@ function QRCodeScanner() {
             console.log(data);
             //ToDo: Should validate the result
             // const { result, error } = validate(data);
+
+            history.push(`/voucher/${ data }`);
             stopRecording();
         }
     };

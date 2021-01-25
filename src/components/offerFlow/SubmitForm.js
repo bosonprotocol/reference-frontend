@@ -87,6 +87,15 @@ export default function SubmitForm(props) {
 
         const authData = getAccountStoredInLocalStorage(account);
 
+        if (!authData.activeToken) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
+            }));
+            return;
+        }
+
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
 

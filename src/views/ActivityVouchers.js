@@ -3,9 +3,7 @@ import { useHistory } from "react-router"
 
 import "./Activity.scss"
 
-import { GlobalContext, Action } from '../contexts/Global'
-
-import {  getVouchers } from "../hooks/api";
+import { getVouchers } from "../hooks/api";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -15,19 +13,34 @@ import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-
+import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary";
+import { Link } from "react-router-dom";
+import { ModalContext, ModalResolver } from "../contexts/Modal";
 
 function ActivityVouchers() {
     const [preparedVouchers, setPreparedVouchers] = useState([])
+
     const { account } = useWeb3React();
+    const modalContext = useContext(ModalContext);
 
-    const globalContext = useContext(GlobalContext);
-
-    const history = useHistory()
+    const history = useHistory();
 
     useEffect(() => {
         async function getAccountVouchers() {
+            if (!account) {
+                return;
+            }
+
             const authData = getAccountStoredInLocalStorage(account);
+
+            if (!authData.activeToken) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
+                }));
+                return;
+            }
 
             const allAccountVouchers = await getVouchers(authData.authToken);
             prepareVouchersData(allAccountVouchers);
@@ -35,7 +48,7 @@ function ActivityVouchers() {
 
         getAccountVouchers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [account])
 
 
     const prepareVouchersData = (rawVouchers) => {
@@ -47,8 +60,9 @@ function ActivityVouchers() {
         let parsedVouchers = [];
 
         for (const voucher of rawVouchers.voucherData) {
-            let parsedVoucherSet = {
+            let parsedVoucher = {
                 id: voucher._id,
+                tokenIdVoucher: voucher._tokenIdVoucher,
                 title: voucher.title,
                 image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
                 price: ethers.utils.formatEther(voucher.price.$numberDecimal),
@@ -56,7 +70,7 @@ function ActivityVouchers() {
                 // deposit: ethers.utils.formatEther(voucher.buyerDeposit.$numberDecimal)
             };
 
-            parsedVouchers.push(parsedVoucherSet)
+            parsedVouchers.push(parsedVoucher)
         }
 
         setPreparedVouchers(parsedVouchers)
@@ -71,9 +85,9 @@ function ActivityVouchers() {
                     >
                         <Arrow color="#80F0BE"/>
                     </div>
-                    <div className="qr-icon" role="button"
-                         onClick={ () => globalContext.dispatch(Action.toggleQRReader(1)) }><IconQR color="#8393A6"
-                                                                                                    noBorder/></div>
+                    <Link to={ ROUTE.CodeScanner }>
+                        <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
+                    </Link>
                 </div>
                 <div className="title">
                     <h1>Activity</h1>
@@ -99,13 +113,17 @@ function ActivityVouchers() {
 
 
 const ActiveView = (props) => {
-    const { products } = props
+    const { products } = props;
     return (
-        <div className="vouchers-container">
+        <>
             {
-                products.map((block, id) => <Block { ...block } key={ id }/>)
+                <div className="vouchers-container">
+                    {
+                        products.map((block, id) => <Block { ...block } key={ id }/>)
+                    }
+                </div>
             }
-        </div>
+        </>
     )
 }
 
@@ -118,26 +136,29 @@ const InactiveView = () => {
 }
 
 const Block = (props) => {
-    const { title, image, price, qty } = props;
+    const { id, title, image, price, qty } = props;
 
     const currency = 'ETH'; // ToDo: implement it
 
     return (
         <div className="voucher-block flex">
-            <div className="thumb no-shrink">
-                <img src={ image } alt={ title }/>
-            </div>
-            <div className="info grow">
-                <div className="status">
-                    <p>VOUCHER</p>
+            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+                <div className="thumb no-shrink">
+                    <img src={ image } alt={ title }/>
                 </div>
-                <div className="title elipsis">{ title }</div>
-                <div className="price flex split">
-                    <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/> { price } { currency }
+                <div className="info grow">
+                    <div className="status">
+                        <p>VOUCHER</p>
                     </div>
-                    <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    <div className="title elipsis">{ title }</div>
+                    <div className="price flex split">
+                        <div className="value flex center"><img src="images/icon-eth.png"
+                                                                alt="eth"/> { price } { currency }
+                        </div>
+                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

@@ -7,11 +7,11 @@ import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
 import { GlobalContext, Action } from "../../contexts/Global"
 import { DIC } from "../../helpers/Dictionary"
 
+import { formatDate } from "../../helpers/Format"
+
 // import EscrowDiagram from "./EscrowDiagram"
 
-
 const closePoint = window.innerHeight / 4
-
 
 function ProductView() {
     const productWindow = useRef();
@@ -35,24 +35,6 @@ function ProductView() {
         ['Buyer’s deposit', selectedProduct?.buyerDeposit, 'ETH', 1],
         ['Seller’s deposit', selectedProduct?.sellerDeposit, 'ETH', 1]
     ];
-
-    function formatDate(date) {
-        if (!date) {
-            return "NA";
-        }
-
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
 
     const tableDate = [
         formatDate(selectedProduct?.startDate),
@@ -122,7 +104,7 @@ function ProductView() {
         productWindow.current.style.transform = `translateY(${ delta.end }px)`
     }
 
-    useEffect(() => {
+    useEffect( () => {
         setTimeout(() => {
             windowContainer.current.classList.add('open')
         }, 100)
@@ -155,7 +137,7 @@ function ProductView() {
                         <div className="content">
                             {/* <div className="escrow-container">
                                 <EscrowDiagram status={ 'commited' }/>
-                            </div> */}
+                            </div> */ }
                             <div className="product-info">
                                 <h2 className="elipsis">{ selectedProduct?.title }</h2>
                                 <p>{ description }</p>
@@ -164,7 +146,7 @@ function ProductView() {
                             { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
                             { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
                             { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-                            {/* <div className="button refund" role="button">REFUND</div> */}
+                            {/* <div className="button refund" role="button">REFUND</div> */ }
                         </div>
                     </div>
                 </div>

@@ -21,3 +21,49 @@ export function slugify(str)
 
   return str;
 }
+
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
+const dayFormat = (day) => {
+    let t = day
+    if(day >= 4) {
+        t += 'th'
+    } else if(day === 1) {
+        t += 'st'
+    }
+    else if(day === 2) {
+        t += 'nd'
+    }
+    else if(day === 3) {
+        t += 'rd'
+    }
+
+    return t;
+}
+
+export function formatDate(date, type) {
+    let newFormat;
+    if (!date) {
+        return "NA";
+    }
+
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    if(type === 'string') {
+        newFormat = [monthNames[parseInt(month)], dayFormat(day), year].join(' ')
+    } else {
+        newFormat = [year, month, day].join('-')
+    }
+
+    return newFormat
+}
