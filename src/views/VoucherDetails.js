@@ -9,7 +9,7 @@ import { formatDate } from "../helpers/Format"
 import "./VoucherDetails.scss"
 
 import { DateTable, TableLocation, TableRow } from "../components/shared/TableContent"
-import { decodeData, getEncodedTopic, useVoucherKernelContract } from "../hooks/useContract";
+import { getEncodedTopic, useVoucherKernelContract } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
@@ -209,21 +209,20 @@ function VoucherDetails(props) {
         setLoading(1);
 
         let tx;
-        let data;
         const authData = getAccountStoredInLocalStorage(account);
 
         console.log(voucherDetails);
 
         try {
             // what do we call here
+            console.log('call .complain')
             tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
 
             const receipt = await tx.wait();
+            console.log(receipt, 'receipt')
 
             let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
-            console.log("Complain event data");
-            console.log(data);
+            console.log(encodedTopic, 'encodedTopic')
 
         } catch (e) {
             setLoading(0);
