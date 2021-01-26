@@ -24,6 +24,14 @@ import Loading from "../components/offerFlow/Loading";
 
 import { prepareVoucherDetails } from "../helpers/VoucherParsers"
 
+const escrowPositionMapping = {
+    [STATUS.HOLDER_REDEEMED]: {
+        PAYMENT: 2,
+        BUYER_DEPOSIT: 2,
+        SELLER_DEPOSIT: 2,
+    }
+}
+
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
@@ -34,6 +42,7 @@ function VoucherDetails(props) {
     const voucherKernelContract = useVoucherKernelContract();
     const { library, account } = useWeb3React();
     const history = useHistory()
+    const [voucherStatus, setVoucherStatus] = useState();
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
@@ -45,9 +54,20 @@ function VoucherDetails(props) {
 
     const statusColor = 1
 
-    const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId }
+    const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId, voucherStatus }
 
-    const VoucherStatus = determineStatus(sharedProps)
+    useEffect(() => {
+        setVoucherStatus(determineStatus(sharedProps))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [voucherDetails, account])
+
+    useEffect(() => {
+        console.log(voucherStatus)
+        setEscrowData(prepareEscrowData(sharedProps))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [voucherStatus])
 
     useEffect(() => {
         if (document.documentElement) document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
@@ -71,12 +91,10 @@ function VoucherDetails(props) {
             }
 
             const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-            console.log(rawVoucherDetails)
             const parsedVoucher = prepareVoucherDetails(rawVoucherDetails.voucher);
 
             if(parsedVoucher) {
                 setVoucherDetails(parsedVoucher)
-                setEscrowData(prepareEscrowData(parsedVoucher))
             }
         }
 
@@ -95,33 +113,9 @@ function VoucherDetails(props) {
         formatDate(voucherDetails?.expiryDate)
     ];
 
-    const tableLocation = 'Los Angeles';
-
-    const currency = 'ETH'
+    const tableLocation = 'Los Angeles'
 
     const controls = getControlState(sharedProps)
-
-    //ToDo: Handle position based on voucher status and user role;
-    function prepareEscrowData(voucherDetails) {
-        return {
-            PAYMENT: {
-                title: 'PAYMENT',
-                value: `${ voucherDetails?.price } ${currency}`,
-                position: escrowPositionMapping[VoucherStatus]?.PAYMENT,
-            },
-            BUYER_DEPOSIT: {
-                title: 'BUYER DEPOSIT',
-                value: `${ voucherDetails?.buyerDeposit } ${currency}`,
-                position: escrowPositionMapping[VoucherStatus]?.BUYER_DEPOSIT,
-            },
-            SELLER_DEPOSIT: {
-                title: 'SELLER DEPOSIT',
-                value: `${ voucherDetails?.sellerDeposit } ${currency}`,
-                position: escrowPositionMapping[VoucherStatus]?.SELLER_DEPOSIT,
-            },
-        }
-    }
-    
 
     return (
         <>
@@ -156,7 +150,9 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                         <div className="section escrow">
-                            <EscrowDiagram escrowData={ escrowData } />
+                            {escrowData ?
+                                <EscrowDiagram escrowData={ escrowData } />
+                            :null}
                         </div>
                         <div className="section info">
                             <div className="section description">
@@ -192,16 +188,34 @@ function VoucherDetails(props) {
     )
 }
 
-const escrowPositionMapping = {
-    [STATUS.HOLDER_COMMITED]: {
-        PAYMENT: 2,
-        BUYER_DEPOSIT: 2,
-        SELLER_DEPOSIT: 2,
+const prepareEscrowData = (sharedProps) => {
+    const { voucherDetails, voucherStatus } = sharedProps
+
+    console.log(voucherDetails)
+    return escrowPositionMapping[voucherStatus] ?
+    {
+        PAYMENT: {
+            title: 'PAYMENT',
+            value: `${ voucherDetails?.price } ${voucherDetails?.currency}`,
+            position: escrowPositionMapping[voucherStatus]?.PAYMENT,
+        },
+        BUYER_DEPOSIT: {
+            title: 'BUYER DEPOSIT',
+            value: `${ voucherDetails?.buyerDeposit } ${voucherDetails?.currency}`,
+            position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
+        },
+        SELLER_DEPOSIT: {
+            title: 'SELLER DEPOSIT',
+            value: `${ voucherDetails?.sellerDeposit } ${voucherDetails?.currency}`,
+            position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
+        },
     }
+    : false
 }
 
 const determineStatus = (sharedProps) => {
     const { account, voucherDetails } = sharedProps
+
     // technical information about the voucher
     const VouherStatus = {
         owner: null,
@@ -236,7 +250,7 @@ const determineStatus = (sharedProps) => {
 const getControlState = (sharedProps) => {
     const { voucherDetails} = sharedProps
 
-    const getRelevantControls = determineStatus(sharedProps)
+    const voucherStatus = determineStatus(sharedProps)
 
     // assign controlset to statuses
     const controlList = {
@@ -254,8 +268,8 @@ const getControlState = (sharedProps) => {
         ),
     }
 
-    return getRelevantControls ? 
-        controlList[getRelevantControls]()
+    return voucherStatus ? 
+        controlList[voucherStatus]()
     : null
 }
 

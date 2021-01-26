@@ -92,6 +92,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
       REFUNDED: rawVoucher.REFUNDED,
       commitedDate: rawVoucher.COMMITTED,
       _tokenIdVoucher: rawVoucher._tokenIdVoucher,
+      currency: rawVoucher.currency ? rawVoucher._currency : 'ETH',
   };
 
   return parsedVoucher

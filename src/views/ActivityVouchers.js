@@ -133,7 +133,7 @@ const Block = (props) => {
                     <div className="title elipsis">{ title }</div>
                     <div className="price flex split">
                         <div className="value flex center"><img src="images/icon-eth.png"
-                                                                alt="eth"/> { price } { currency }
+                            alt="eth"/> { price } { currency }
                         </div>
                         <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>
