@@ -33,8 +33,7 @@ function VoucherDetails(props) {
     const [loading, setLoading] = useState(0);
     const voucherKernelContract = useVoucherKernelContract();
     const { library, account } = useWeb3React();
-
-    const statusColor = 1
+    const history = useHistory()
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
@@ -42,10 +41,9 @@ function VoucherDetails(props) {
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const differenceInPercent = (x, y) => (x / y) * 100
-
     const expiryProgress = voucherDetails && differenceInPercent(daysPast, daysAvailable) + '%';
 
-    const history = useHistory()
+    const statusColor = 1
 
     const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId }
 
@@ -102,7 +100,6 @@ function VoucherDetails(props) {
     const controls = getControlState(sharedProps)
 
     //ToDo: Handle position based on voucher status and user role;
-    //ToDo: Apply not only ETH version
     function prepareEscrowData(voucherDetails) {
         return {
             PAYMENT: {
@@ -193,8 +190,12 @@ function VoucherDetails(props) {
     )
 }
 
-const getControlState = (sharedProps) => {
-    const { account, voucherDetails} = sharedProps
+const escrowPositionMapping = {
+    [STATUS.HOLDER_COMMITED]: [2, 2, 2]
+}
+
+const determineStatus = (sharedProps) => {
+    const { account, voucherDetails } = sharedProps
     // technical information about the voucher
     const VouherStatus = {
         owner: null,
@@ -221,13 +222,15 @@ const getControlState = (sharedProps) => {
     updateVoucherStatus(voucherDetails)
 
     // perform a check on the current voucher and return relevant status
-    const findRelevantControls = () => {
-        if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_GENERAL
-        if(VouherStatus.holder && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.HOLDER_COMMITED
-        if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed) return STATUS.HOLDER_REDEEMED
-    }
+    if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_GENERAL
+    if(VouherStatus.holder && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.HOLDER_COMMITED
+    if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed) return STATUS.HOLDER_REDEEMED
+}
 
-    const getRelevantControls = findRelevantControls()
+const getControlState = (sharedProps) => {
+    const { voucherDetails} = sharedProps
+
+    const getRelevantControls = determineStatus(sharedProps)
 
     // assign controlset to statuses
     const controlList = {
