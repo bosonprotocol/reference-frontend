@@ -7,10 +7,9 @@ import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 import { updateVoucher } from "../hooks/api";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
+// ------------ Settings related to the status of the voucher
 
-
-// ------------ Settings related to the status of the vaucher
-
+// xy position of blocks on escrow table
 // falsy values will append "display: none"
 export const escrowPositionMapping = {
   [STATUS.HOLDER_REDEEMED]: {
@@ -52,7 +51,7 @@ export const controlList = (voucherDetails, sharedProps) => ({
 export const determineStatus = (sharedProps) => {
   const { account, voucherDetails } = sharedProps
 
-  // technical information about the voucher
+  // status information about the voucher
   const VouherStatus = {
       owner: null,
       holder: null,
@@ -86,6 +85,7 @@ export const determineStatus = (sharedProps) => {
   return STATUS.DEFAULT
 }
 
+// ------- Functions
 
 export const getControlState = (sharedProps) => {
   const { voucherDetails } = sharedProps

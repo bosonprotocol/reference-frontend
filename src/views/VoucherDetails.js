@@ -39,7 +39,7 @@ function VoucherDetails(props) {
 
     const voucherSets = globalContext.state.allVoucherSets
 
-    const instanceOfSet = voucherSets.find(set => set.id === voucherId)
+    const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
@@ -52,6 +52,8 @@ function VoucherDetails(props) {
     const statusColor = 1
 
     const PublicViewBool = voucherStatus === STATUS.PUBLIC_NOT_OWNER
+
+    const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
     // properties that are shared between functions which affect this component
     const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId, voucherStatus }
@@ -111,8 +113,8 @@ function VoucherDetails(props) {
     ];
 
     const tableDate = [
-        formatDate(voucherDetails?.startDate),
-        formatDate(voucherDetails?.expiryDate)
+        formatDate(getProp('startDate')),
+        formatDate(getProp('expiryDate'))
     ];
 
     const tableLocation = 'Los Angeles'
@@ -131,9 +133,9 @@ function VoucherDetails(props) {
                     </div>
                     <div className="content">
                         <div className="section title">
-                            <h1>{ voucherDetails?.title }</h1>
+                            <h1>{ getProp('title') }</h1>
                         </div>
-                        {!instanceOfSet ?
+                        {!voucherSetDetails ?
                             <div className="section status">
                             <h2>Status</h2>
                             <div className="status-container flex">
@@ -144,7 +146,7 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                         :null}
-                        {!instanceOfSet ?
+                        {!voucherSetDetails ?
                         <div className="section expiration">
                             <div className="expiration-container flex split">
                                 <p>Expiration Time</p>
@@ -155,7 +157,7 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                         :null}
-                        {!instanceOfSet ?
+                        {!voucherSetDetails ?
                             <div className="section escrow">
                             {escrowData ?
                                 <EscrowDiagram escrowData={ escrowData } />
@@ -167,22 +169,22 @@ function VoucherDetails(props) {
                                 <h2 className="flex split">
                                     <span>Description</span>
                                     <div className="image flex center">
-                                        <img src={ voucherDetails?.image } alt={ voucherDetails?.title }/>
+                                        <img src={ getProp('image') } alt={ getProp('title')}/>
                                     </div>
                                 </h2>
                                 <div className="description">
-                                    { voucherDetails?.description }
+                                    { getProp('description') }
                                 </div>
                             </div>
                             <div className="section general">
                                 { tableLocation ? <TableLocation data={ tableLocation }/> : null }
                                 { voucherDetails?.category.some(item => item) ?
-                                    <TableRow data={ voucherDetails?.category }/> : null }
+                                    <TableRow data={  voucherDetails?.category }/> : null }
                             </div>
                             <div className="section date">
                                 { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
                             </div>
-                            {!instanceOfSet ?
+                            {!voucherSetDetails ?
                                 <div className="section seller">
                                 { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
                             </div>
