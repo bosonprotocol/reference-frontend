@@ -47,6 +47,8 @@ function VoucherDetails(props) {
 
     const history = useHistory()
 
+    const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId }
+
     useEffect(() => {
         if (document.documentElement) document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
     }, [expiryProgress])
@@ -97,6 +99,8 @@ function VoucherDetails(props) {
 
     const currency = 'ETH'
 
+    const controls = getControlState(sharedProps)
+
     //ToDo: Handle position based on voucher status and user role;
     //ToDo: Apply not only ETH version
     function prepareEscrowData(voucherDetails) {
@@ -118,58 +122,7 @@ function VoucherDetails(props) {
             },
         }
     }
-
-    // technical information about the voucher
-    const VouherStatus = {
-        owner: null,
-        holder: null,
-        commited: null,
-        redeemed: null,
-    }
-
-    // define checks for the current voucher
-    const isOwner = (voucher) => voucher ? voucher.voucherOwner.toLowerCase() === account?.toLowerCase() : null
-    const isHolder = (voucher) => voucher ? voucher.holder.toLowerCase() === account?.toLowerCase() : null
-    const isCommited = (voucher) => voucher ? voucher.COMMITTED !== null : null
-    const isRedeemed = (voucher) => voucher ? voucher.REDEEMED !== null : null
-
-    // update the information about the voucher by running defined checks
-    const updateVoucherStatus = (voucher) => {
-        VouherStatus.owner = isOwner(voucher)
-        VouherStatus.holder = isHolder(voucher)
-        VouherStatus.commited = isCommited(voucher)
-        VouherStatus.redeemed = isRedeemed(voucher)
-    }
-
-    // run checks
-    updateVoucherStatus(voucherDetails)
-
-    // perform a check on the current voucher and return relevant status
-    const findRelevantControls = () => {
-        if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_GENERAL
-        if(VouherStatus.holder && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.HOLDER_COMMITED
-        if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed) return STATUS.HOLDER_REDEEMED
-    }
-
-    const getRelevantControls = findRelevantControls()
-
-    // assign controlset to statuses
-    const controlList = {
-        [STATUS.OWNER_GENERAL]: () => (
-            < div className="button gray" disabled role="button">Cancel or fault</div>
-        ),
-        [STATUS.HOLDER_COMMITED]: () => (
-            <Link
-                to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                <div className="button primary" role="button">REDEEM</div>
-            </Link>
-        ),
-        [STATUS.HOLDER_REDEEMED]: () => (
-            < div className="button red" role="button" onClick={ () => onComplain({
-                modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId
-            })}>COMPLAIN</div>
-        ),
-    }
+    
 
     return (
         <>
@@ -232,14 +185,69 @@ function VoucherDetails(props) {
                         </div>
                     </div> 
                     <div className="control-wrap">
-                    { getRelevantControls ? 
-                        controlList[getRelevantControls]()
-                    : null }
+                    {controls}
                     </div>
                 </div>
             </section>
         </>
     )
+}
+
+const getControlState = (sharedProps) => {
+    const { account, voucherDetails} = sharedProps
+    // technical information about the voucher
+    const VouherStatus = {
+        owner: null,
+        holder: null,
+        commited: null,
+        redeemed: null,
+    }
+
+    // define checks for the current voucher
+    const isOwner = (voucher) => voucher ? voucher.voucherOwner.toLowerCase() === account?.toLowerCase() : null
+    const isHolder = (voucher) => voucher ? voucher.holder.toLowerCase() === account?.toLowerCase() : null
+    const isCommited = (voucher) => voucher ? voucher.COMMITTED !== null : null
+    const isRedeemed = (voucher) => voucher ? voucher.REDEEMED !== null : null
+
+    // update the information about the voucher by running defined checks
+    const updateVoucherStatus = (voucher) => {
+        VouherStatus.owner = isOwner(voucher)
+        VouherStatus.holder = isHolder(voucher)
+        VouherStatus.commited = isCommited(voucher)
+        VouherStatus.redeemed = isRedeemed(voucher)
+    }
+
+    // run checks
+    updateVoucherStatus(voucherDetails)
+
+    // perform a check on the current voucher and return relevant status
+    const findRelevantControls = () => {
+        if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_GENERAL
+        if(VouherStatus.holder && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.HOLDER_COMMITED
+        if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed) return STATUS.HOLDER_REDEEMED
+    }
+
+    const getRelevantControls = findRelevantControls()
+
+    // assign controlset to statuses
+    const controlList = {
+        [STATUS.OWNER_GENERAL]: () => (
+            < div className="button gray" disabled role="button">Cancel or fault</div>
+        ),
+        [STATUS.HOLDER_COMMITED]: () => (
+            <Link
+                to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+                <div className="button primary" role="button">REDEEM</div>
+            </Link>
+        ),
+        [STATUS.HOLDER_REDEEMED]: () => (
+            < div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
+        ),
+    }
+
+    return getRelevantControls ? 
+        controlList[getRelevantControls]()
+    : null
 }
 
 async function onComplain(props) {
