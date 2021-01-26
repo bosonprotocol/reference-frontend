@@ -29,7 +29,17 @@ const escrowPositionMapping = {
         PAYMENT: 2,
         BUYER_DEPOSIT: 2,
         SELLER_DEPOSIT: 2,
-    }
+    },
+    [STATUS.HOLDER_COMMITED]: {
+        PAYMENT: 2,
+        BUYER_DEPOSIT: 2,
+        SELLER_DEPOSIT: 2,
+    },
+    [STATUS.DEFAULT]: {
+        PAYMENT: 1,
+        BUYER_DEPOSIT: 2,
+        SELLER_DEPOSIT: 3,
+    },
 }
 
 function VoucherDetails(props) {
@@ -63,11 +73,10 @@ function VoucherDetails(props) {
     }, [voucherDetails, account])
 
     useEffect(() => {
-        console.log(voucherStatus)
-        setEscrowData(prepareEscrowData(sharedProps))
+        voucherDetails && setEscrowData(prepareEscrowData(sharedProps))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [voucherStatus])
+    }, [voucherStatus, voucherDetails])
 
     useEffect(() => {
         if (document.documentElement) document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
@@ -191,7 +200,6 @@ function VoucherDetails(props) {
 const prepareEscrowData = (sharedProps) => {
     const { voucherDetails, voucherStatus } = sharedProps
 
-    console.log(voucherDetails)
     return escrowPositionMapping[voucherStatus] ?
     {
         PAYMENT: {
@@ -229,6 +237,7 @@ const determineStatus = (sharedProps) => {
     const isHolder = (voucher) => voucher ? voucher.holder.toLowerCase() === account?.toLowerCase() : null
     const isCommited = (voucher) => voucher ? voucher.COMMITTED !== null : null
     const isRedeemed = (voucher) => voucher ? voucher.REDEEMED !== null : null
+    const isComplained = (voucher) => voucher ? voucher.COMPLAINED !== null : null
 
     // update the information about the voucher by running defined checks
     const updateVoucherStatus = (voucher) => {
@@ -236,6 +245,7 @@ const determineStatus = (sharedProps) => {
         VouherStatus.holder = isHolder(voucher)
         VouherStatus.commited = isCommited(voucher)
         VouherStatus.redeemed = isRedeemed(voucher)
+        VouherStatus.complained = isComplained(voucher)
     }
 
     // run checks
@@ -244,7 +254,8 @@ const determineStatus = (sharedProps) => {
     // perform a check on the current voucher and return relevant status
     if(VouherStatus.owner && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.OWNER_GENERAL
     if(VouherStatus.holder && VouherStatus.commited && !VouherStatus.redeemed) return STATUS.HOLDER_COMMITED
-    if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed) return STATUS.HOLDER_REDEEMED
+    if(VouherStatus.holder && VouherStatus.commited && VouherStatus.redeemed && !VouherStatus.complained) return STATUS.HOLDER_REDEEMED
+    return STATUS.DEFAULT
 }
 
 const getControlState = (sharedProps) => {
@@ -265,6 +276,9 @@ const getControlState = (sharedProps) => {
         ),
         [STATUS.HOLDER_REDEEMED]: () => (
             < div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
+        ),
+        [STATUS.DEFAULT]: () => (
+            < div className="button gray" role="button" onClick={ () => onComplain(sharedProps)}>WAITING</div>
         ),
     }
 
