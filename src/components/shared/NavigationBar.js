@@ -115,7 +115,6 @@ function NavigationBar(props) {
         }
 
         metadata = {
-            txHash: tx.hash,
             _tokenIdSupply: supplyId,
             _tokenIdVoucher: data[0].toString(),
             _issuer: data[1],
