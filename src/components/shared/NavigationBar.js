@@ -36,8 +36,6 @@ function NavigationBar(props) {
     const { delay } = props
     const aniamtionTimout = 300
 
-    console.log(getSelectedVoucherSet())
-
 
     useEffect(() => {
         // use this to compare {previus} screen and {current} screen
@@ -60,7 +58,6 @@ function NavigationBar(props) {
 
         return globalContext.state.allVoucherSets.find(x => x.id === productsReviewed[productsReviewed.length - 1]);
     }
-    console.log(getSelectedVoucherSet())
 
     const cashierContract = useCashierContract();
 
