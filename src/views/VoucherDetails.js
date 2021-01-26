@@ -20,6 +20,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Link } from "react-router-dom";
 import { MODAL_TYPES, ROUTE, STATUS } from "../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
+import { GlobalContext } from "../contexts/Global";
 import Loading from "../components/offerFlow/Loading";
 
 import { prepareVoucherDetails } from "../helpers/VoucherParsers"
@@ -47,12 +48,17 @@ function VoucherDetails(props) {
     const [escrowData, setEscrowData] = useState(null)
     const voucherId = props.match.params.id;
     const modalContext = useContext(ModalContext);
+    const globalContext = useContext(GlobalContext);
     const expiryProgressBar = useRef()
     const [loading, setLoading] = useState(0);
     const voucherKernelContract = useVoucherKernelContract();
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
+
+    const voucherSets = globalContext.state.allVoucherSets
+
+    const instanceOfSet = voucherSets.find(set => set.id === voucherId)
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
@@ -73,13 +79,16 @@ function VoucherDetails(props) {
     }, [voucherDetails, account])
 
     useEffect(() => {
-        voucherDetails && setEscrowData(prepareEscrowData(sharedProps))
+        (voucherDetails && voucherStatus !== STATUS.PUBLIC_NOT_OWNER) && setEscrowData(prepareEscrowData(sharedProps))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [voucherStatus, voucherDetails])
 
     useEffect(() => {
-        if (document.documentElement) document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
+        if (document.documentElement && voucherStatus !== STATUS.PUBLIC_NOT_OWNER)
+            document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [expiryProgress])
 
     useEffect(() => {
@@ -107,7 +116,7 @@ function VoucherDetails(props) {
             }
         }
 
-        initVoucherDetails()
+        voucherStatus !== STATUS.PUBLIC_NOT_OWNER && initVoucherDetails()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
@@ -140,7 +149,8 @@ function VoucherDetails(props) {
                         <div className="section title">
                             <h1>{ voucherDetails?.title }</h1>
                         </div>
-                        <div className="section status">
+                        {!instanceOfSet ?
+                            <div className="section status">
                             <h2>Status</h2>
                             <div className="status-container flex">
                                 <div className={ `status-block color_${ statusColor }` }>
@@ -149,6 +159,8 @@ function VoucherDetails(props) {
                                 </div>
                             </div>
                         </div>
+                        :null}
+                        {!instanceOfSet ?
                         <div className="section expiration">
                             <div className="expiration-container flex split">
                                 <p>Expiration Time</p>
@@ -158,11 +170,14 @@ function VoucherDetails(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="section escrow">
+                        :null}
+                        {!instanceOfSet ?
+                            <div className="section escrow">
                             {escrowData ?
                                 <EscrowDiagram escrowData={ escrowData } />
                             :null}
-                        </div>
+                            </div>
+                        :null}
                         <div className="section info">
                             <div className="section description">
                                 <h2 className="flex split">
@@ -183,9 +198,11 @@ function VoucherDetails(props) {
                             <div className="section date">
                                 { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
                             </div>
-                            <div className="section seller">
+                            {!instanceOfSet ?
+                                <div className="section seller">
                                 { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
                             </div>
+                            :null}
                         </div>
                     </div> 
                     <div className="control-wrap">

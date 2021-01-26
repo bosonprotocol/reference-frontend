@@ -84,5 +84,6 @@ export const STATUS = {
     OWNER_GENERAL: 'owner_general',
     HOLDER_COMMITED: 'holder_commited',
     HOLDER_REDEEMED: 'holder_redeemed',
+    PUBLIC_NOT_OWNER: 'public_not_owner',
     DEFAULT: 'default',
 }
