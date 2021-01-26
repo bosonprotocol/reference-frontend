@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import { useHistory } from "react-router"
+import { useCashierContract } from "../hooks/useContract";
+
 
 import { getVoucherDetails } from "../hooks/api";
 import { useVoucherKernelContract } from "../hooks/useContract";
@@ -36,6 +38,7 @@ function VoucherDetails(props) {
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
+    const cashierContract = useCashierContract();
 
     const voucherSets = globalContext.state.allVoucherSets
 
@@ -56,7 +59,7 @@ function VoucherDetails(props) {
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
     // properties that are shared between functions which affect this component
-    const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId, voucherStatus }
+    const sharedProps = { voucherSetDetails, history, cashierContract, modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId, voucherStatus }
 
     useEffect(() => {
         setVoucherStatus(determineStatus(sharedProps))
