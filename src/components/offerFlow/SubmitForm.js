@@ -136,7 +136,6 @@ export default function SubmitForm(props) {
         formData.append('contact', "Contact");
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
-        formData.append('txHash', parsedEvent.txHash);
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
     }
 
