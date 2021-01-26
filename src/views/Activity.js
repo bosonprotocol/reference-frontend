@@ -6,9 +6,6 @@ import "./Activity.scss"
 
 import { GlobalContext, Action } from '../contexts/Global'
 
-import { getAllVoucherSets } from "../hooks/api";
-import * as ethers from "ethers";
-
 import { ROUTE } from "../helpers/Dictionary"
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
@@ -109,44 +106,8 @@ const Block = (props) => {
         if (parseInt(openProductView))
             globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
 
-        async function getVoucherSets() {
-            const allVoucherSets = await getAllVoucherSets();
-            prepareVoucherSetData(allVoucherSets);
-        }
-
-        getVoucherSets()
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    const prepareVoucherSetData = (rawVoucherSets) => {
-
-        let parsedVoucherSets = [];
-
-
-        for (const voucherSet of rawVoucherSets.voucherSupplies) {
-            let parsedVoucherSet = {
-                id: voucherSet._id,
-                title: voucherSet.title,
-                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-                buyerDeposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
-                sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
-                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
-                description: voucherSet.description,
-                category: voucherSet.category,
-                startDate: voucherSet.startDate,
-                expiryDate: voucherSet.expiryDate,
-                qty: voucherSet.qty,
-                setId: voucherSet._tokenIdSupply,
-                voucherOwner: voucherSet.voucherOwner
-            };
-
-            parsedVoucherSets.push(parsedVoucherSet)
-        }
-
-        globalContext.dispatch(Action.allVoucherSets(parsedVoucherSets));
-    };
 
     const currency = 'ETH'; // ToDo: implement it
 
