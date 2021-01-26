@@ -18,9 +18,12 @@ import FormBottomNavigation from "../components/offerFlow/FormBottomNavigation"
 import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/shared/Icons"
 
-import { NAME, CURRENCY } from "../helpers/Dictionary"
+import { NAME, CURRENCY, MODAL_TYPES, ROUTE } from "../helpers/Dictionary"
 
 import { GetToday } from "../helpers/Misc"
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { ModalContext, ModalResolver } from "../contexts/Modal";
+import { useWeb3React } from "@web3-react/core";
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'change'
@@ -34,7 +37,7 @@ const priceSettings = {
   }
 }
 
-const sellerSettings = { 
+const sellerSettings = {
   [CURRENCY.ETH]: {
     max: 0.1
   },
@@ -72,12 +75,13 @@ function NewOffer() {
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
+  const modalContext = useContext(ModalContext);
 
   const inputFallback = {
     // [NAME.PRICE]: '0',
     [NAME.PRICE_C]: CURRENCY.ETH,
-    // [NAME.SELLER_DEPOSIT]: '0', 
-    [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH, 
+    // [NAME.SELLER_DEPOSIT]: '0',
+    [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
     // [NAME.BUYER_DEPOSIT]: '0',
     [NAME.DATE_START]: GetToday(),
     // [NAME.DATE_END]: GetToday(1),
@@ -97,7 +101,7 @@ function NewOffer() {
     if(input === NAME.SELLER_DEPOSIT_C) {
       // if(getData(NAME.SELLER_DEPOSIT)) {
       //   if(getData(NAME.SELLER_DEPOSIT) > sellerSettings[value].max) {
-          
+
       //     sellerContext.dispatch(Seller.updateOfferingData({
       //       [NAME.SELLER_DEPOSIT]: sellerSettings[value].max
       //     }))
@@ -170,7 +174,7 @@ function NewOffer() {
     <FormUploadPhoto />,
     <FormGeneral />,
     <FormDescription />,
-    <FormPrice 
+    <FormPrice
       priceSettings={priceSettings}
       sellerSettings={sellerSettings}
       buyerSettings={buyerSettings}
@@ -197,7 +201,7 @@ function NewOffer() {
     sellerContext.dispatch(Seller.updateOfferingData({
       ...inputFallback
     }))
-    
+
     // remove class active from active screen
     removeActiveItems()
   }
@@ -212,7 +216,7 @@ function NewOffer() {
 
   const updateData = (input) => {
     if(input.tagName === 'SELECT') {
-      currencyList.map(currency => 
+      currencyList.map(currency =>
         input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
       )
 
@@ -221,7 +225,7 @@ function NewOffer() {
       }, 100)
     }
 
-    
+
     let error = true;
     error = validation(input.name, input.value)
 
@@ -250,13 +254,13 @@ function NewOffer() {
       if(input.tagName === 'SELECT') {
         let assign = retrieveState ? retrieveState :
           (inputFallback[input.name] ? inputFallback[input.name] : '')
-        
-        currencyList.map(currency => 
+
+        currencyList.map(currency =>
           input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
         )
 
         input.parentElement.getElementsByClassName('icons')[0].classList.add(assign)
-      } 
+      }
 
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
       input.addEventListener(listenerType, (e) => updateData(e.target))
@@ -267,6 +271,8 @@ function NewOffer() {
     loadValues()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeScreen, init])
+
+  const { account } = useWeb3React();
 
   // check for backup
   useEffect(() => {
@@ -282,6 +288,18 @@ function NewOffer() {
     sellerContext.dispatch(Seller.getOfferingProgress())
 
     triggerInit(init * -1)
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      history.push(ROUTE.Home);
+
+      modalContext.dispatch(ModalResolver.showModal({
+        show: true,
+        type: MODAL_TYPES.GENERIC_ERROR,
+        content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed'
+      }));
+    }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

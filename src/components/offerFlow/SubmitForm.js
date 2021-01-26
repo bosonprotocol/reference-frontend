@@ -55,6 +55,17 @@ export default function SubmitForm(props) {
             return;
         }
 
+        const authData = getAccountStoredInLocalStorage(account);
+
+        if (!authData.activeToken) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed'
+            }));
+            return;
+        }
+
         setLoading(1)
 
         let dataArr = [
@@ -85,28 +96,14 @@ export default function SubmitForm(props) {
             return;
         }
 
-        const authData = getAccountStoredInLocalStorage(account);
-
-        if (!authData.activeToken) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
-            }));
-            return;
-        }
-
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
 
-            const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
+            await createVoucherSet(formData, authData.authToken);
 
             setLoading(0)
-
-            if (voucherSetResponse.success) {
-                resetOfferingData()
-                setRedirect(1)
-            }
+            resetOfferingData()
+            setRedirect(1)
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,

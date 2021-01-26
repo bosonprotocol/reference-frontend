@@ -70,6 +70,17 @@ function NavigationBar(props) {
             return;
         }
 
+        const authData = getAccountStoredInLocalStorage(account);
+
+        if (!authData.activeToken) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed'
+            }));
+            return;
+        }
+
         setLoading(1)
 
         const voucherSetInfo = getSelectedVoucherSet();
@@ -120,8 +131,6 @@ function NavigationBar(props) {
             _issuer: data[1],
             _holder: data[2]
         };
-
-        const authData = getAccountStoredInLocalStorage(account);
 
         try {
             const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
