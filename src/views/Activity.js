@@ -95,7 +95,7 @@ const InactiveView = () => {
 }
 
 const Block = (props) => {
-    const { title, image, price, qty } = props
+    const { title, image, price, qty, id } = props
 
     // const globalContext = useContext(GlobalContext);
 
@@ -112,21 +112,24 @@ const Block = (props) => {
     const currency = 'ETH'; // ToDo: implement it
 
     return (
-        <div className="voucher-block solo flex" >
-            <div className="thumb no-shrink">
-                <img src={ image } alt={ title }/>
-            </div>
-            <div className="info grow">
-                <div className="status">
-                    <p>VOUCHER SET</p>
+        <div className="voucher-block flex">
+            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+                <div className="thumb no-shrink">
+                    <img src={ image } alt={ title }/>
                 </div>
-                <div className="title elipsis">{ title }</div>
-                <div className="price flex split">
-                    <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/> { price } { currency }
+                <div className="info grow">
+                    <div className="status">
+                        <p>VOUCHER</p>
                     </div>
-                    <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    <div className="title elipsis">{ title }</div>
+                    <div className="price flex split">
+                        <div className="value flex center"><img src="images/icon-eth.png"
+                            alt="eth"/> { price } { currency }
+                        </div>
+                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

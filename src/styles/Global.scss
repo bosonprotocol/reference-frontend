@@ -42,6 +42,7 @@ section:not(.no-bg) {
 a,
 input[type="submit"] {
   transition: $ease-flash;
+  color: #FFFFFF;
 
   @media (min-width: 769px) {
     &:hover {

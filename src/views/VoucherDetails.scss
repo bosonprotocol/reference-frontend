@@ -160,6 +160,9 @@
 
           .thumbnail {
             margin-bottom: 30px;
+            img {
+              max-height: 40vh;
+            }
           }
           .image {
             width: 35px;
