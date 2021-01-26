@@ -102,7 +102,7 @@ function VoucherDetails(props) {
             }
         }
 
-        !PublicViewBool && initVoucherDetails()
+        if(!voucherSetDetails) initVoucherDetails()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
