@@ -165,67 +165,10 @@ function VoucherDetails(props) {
             </Link>
         ),
         [STATUS.HOLDER_REDEEMED]: () => (
-            < div className="button red" role="button" onClick={ () => onComplain()}>COMPLAIN</div>
+            < div className="button red" role="button" onClick={ () => onComplain({
+                modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId
+            })}>COMPLAIN</div>
         ),
-    }
-
-    async function onComplain() {
-        if (!library || !account) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: 'Please connect your wallet account'
-            }));
-            return;
-        }
-
-        setLoading(1);
-
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
-        console.log(voucherDetails);
-
-        try {
-            // what do we call here
-            console.log('call .complain')
-            tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
-
-            const receipt = await tx.wait();
-            console.log(receipt, 'receipt')
-
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            console.log(encodedTopic, 'encodedTopic')
-
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :233'
-            }));
-            return;
-        }
-
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.COMPLAINED
-            };
-
-            const complainResponse = await updateVoucher(data, authData.authToken);
-            console.log(complainResponse);
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
-        }
-
-        setLoading(0)
     }
 
     return (
@@ -297,6 +240,63 @@ function VoucherDetails(props) {
             </section>
         </>
     )
+}
+
+async function onComplain(props) {
+    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
+    
+    if (!library || !account) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'Please connect your wallet account'
+        }));
+        return;
+    }
+
+    setLoading(1);
+
+    let tx;
+    const authData = getAccountStoredInLocalStorage(account);
+
+    try {
+        tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
+
+        const receipt = await tx.wait();
+        console.log(receipt, 'receipt')
+
+        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+        console.log(encodedTopic, 'encodedTopic')
+
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :233'
+        }));
+        return;
+    }
+
+
+    try {
+        const data = {
+            _id: voucherId,
+            status: VOUCHER_STATUSES.COMPLAINED
+        };
+
+        const complainResponse = await updateVoucher(data, authData.authToken);
+        console.log(complainResponse);
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :252'
+        }));
+    }
+
+    setLoading(0)
 }
 
 export default VoucherDetails
