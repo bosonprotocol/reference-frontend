@@ -21,45 +21,19 @@ import ProductView from "../components/shared/ProductView"
 
 function Activity() {
     const [productBlocks, setProductBlocks] = useState([])
-
     const globalContext = useContext(GlobalContext);
+    
+    const voucherSets = globalContext.state.allVoucherSets
 
     const history = useHistory()
 
     useEffect(() => {
-        async function getVoucherSets() {
-            const allVoucherSets = await getAllVoucherSets();
-            prepareVoucherSetData(allVoucherSets)
-        }
+        voucherSets ?
+            setProductBlocks(voucherSets)
+            : setProductBlocks([])
 
-        getVoucherSets()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-
-    const prepareVoucherSetData = (rawVoucherSets) => {
-        if (!rawVoucherSets) {
-            setProductBlocks([])
-            return;
-        }
-
-        let parsedVoucherSets = [];
-
-        for (const voucherSet of rawVoucherSets.voucherSupplies) {
-            let parsedVoucherSet = {
-                id: voucherSet._id,
-                title: voucherSet.title,
-                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
-                qty: voucherSet.qty
-            };
-
-            parsedVoucherSets.push(parsedVoucherSet)
-        }
-
-        setProductBlocks(parsedVoucherSets)
-    };
+    }, [voucherSets])
 
     return (
         <>
