@@ -8,7 +8,7 @@ import { formatDate } from "../helpers/Format"
 
 import "./VoucherDetails.scss"
 
-import { DateTable, TableLocation, TableRow } from "../components/shared/TableContent"
+import { DateTable, TableLocation, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent"
 
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
@@ -112,9 +112,24 @@ function VoucherDetails(props) {
         ['Phone', '1-415-542-5050'],
     ];
 
+    // int on index #2 is the X position of the block
+    const tablePrices = [
+        ['Payment Price', getProp('price'), 'ETH', 0],
+        false,
+        ['Buyer’s deposit', getProp('deposit'), 'ETH', 1],
+        ['Seller’s deposit', getProp('sellerDeposit'), 'ETH', 1]
+    ];
+
+    console.log(getProp('price'))
+
     const tableDate = [
         formatDate(getProp('startDate')),
         formatDate(getProp('expiryDate'))
+    ];
+
+    const tableCategory = [
+        ['Category', getProp('category')],
+        // ['Remaining Quantity', selectedProduct?.qty],
     ];
 
     const tableLocation = 'Los Angeles'
@@ -166,26 +181,27 @@ function VoucherDetails(props) {
                         :null}
                         <div className="section info">
                             <div className="section description">
-                                <h2 className="flex split">
-                                    <span>Description</span>
-                                    <div className="image flex center">
-                                        <img src={ getProp('image') } alt={ getProp('title')}/>
-                                    </div>
-                                </h2>
-                                <div className="description">
-                                    { getProp('description') }
-                                </div>
+                            <div className="thumbnail flex center">
+                                <img className="mw100" src={ getProp('image') } alt={ getProp('image') }/>
+                            </div>
+                                {<DescriptionBlock voucherSetDetails={voucherSetDetails} getProp={getProp} />}
+                            </div>
+                            <div className="section category">
                             </div>
                             <div className="section general">
                                 { tableLocation ? <TableLocation data={ tableLocation }/> : null }
-                                { voucherDetails?.category.some(item => item) ?
-                                    <TableRow data={  voucherDetails?.category }/> : null }
+                                { getProp('category') ? <TableRow data={ tableCategory }/> : null }   
                             </div>
+                            {voucherSetDetails ?
+                            <div className="section price">
+                                { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
+                            </div>
+                            :null}
                             <div className="section date">
                                 { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
                             </div>
                             {!voucherSetDetails ?
-                                <div className="section seller">
+                            <div className="section seller">
                                 { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
                             </div>
                             :null}

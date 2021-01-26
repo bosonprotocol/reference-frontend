@@ -10,6 +10,24 @@ function setRows(list, howMany) {
   return result
 }
 
+export const DescriptionBlock = (props) => {
+  const { voucherSetDetails, getProp } = props
+  return (
+    <>
+      <h2 className="flex split">
+          <span>Description</span>
+          {!voucherSetDetails ?
+              <div className="image flex center">
+              <img src={ getProp('image') } alt={ getProp('title')}/>
+          </div>
+          :null}
+      </h2>
+      <div className="description">
+          { getProp('description') }
+      </div>
+    </>
+  )
+}
 
 
 export const PriceTable = (props) => {
