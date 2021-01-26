@@ -44,6 +44,30 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
   return parsedVoucherSets
 }
 
+export const prepareVoucherData = (rawVouchers) => {
+  let parsedVouchers = [];
+  
+  if(!rawVouchers) return
+
+  for (const voucher of rawVouchers) {
+      let parsedVoucher = {
+          id: voucher._id,
+          visible: voucher.visible,
+          title: voucher.title,
+          qty: voucher.qty,
+          price: ethers.utils.formatEther(voucher.price.$numberDecimal),
+          image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+          expiryDate: voucher.expiryDate,
+          description: voucher.description,
+          category: voucher.category,
+      };
+
+      parsedVouchers.push(parsedVoucher)
+  }
+
+  return parsedVouchers
+}
+
 export const prepareVoucherDetails = (rawVoucher) => {
   let parsedVoucher = {
       id: rawVoucher._id,

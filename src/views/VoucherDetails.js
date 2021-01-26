@@ -2,8 +2,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import { useHistory } from "react-router"
 
-import * as ethers from "ethers";
-import { getVoucherDetails, updateVoucher, getAllVoucherSets } from "../hooks/api";
+import { getVoucherDetails, updateVoucher } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
 import "./VoucherDetails.scss"
@@ -23,6 +22,8 @@ import { MODAL_TYPES, ROUTE, STATUS } from "../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import Loading from "../components/offerFlow/Loading";
 
+import { prepareVoucherDetails } from "../helpers/VoucherParsers"
+
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
@@ -32,13 +33,6 @@ function VoucherDetails(props) {
     const [loading, setLoading] = useState(0);
     const voucherKernelContract = useVoucherKernelContract();
     const { library, account } = useWeb3React();
-    const asd = async () =>  {
-        const a = await getAllVoucherSets()
-
-        return a
-    }
-
-    console.log(asd())
 
     const statusColor = 1
 
@@ -75,45 +69,19 @@ function VoucherDetails(props) {
             }
 
             const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-            prepareVoucherDetails(rawVoucherDetails.voucher);
+            console.log(rawVoucherDetails)
+            const parsedVoucher = prepareVoucherDetails(rawVoucherDetails.voucher);
+
+            if(parsedVoucher) {
+                setVoucherDetails(parsedVoucher)
+                setEscrowData(prepareEscrowData(parsedVoucher))
+            }
         }
 
         initVoucherDetails()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
-
-    const prepareVoucherDetails = (rawVoucher) => {
-        let parsedVoucher = {
-            id: rawVoucher._id,
-            title: rawVoucher.title,
-            description: rawVoucher.description,
-            //ToDo: Image should be get from voucher set
-            // image: rawVoucher.imagefiles[0]?.url ? rawVoucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-            price: ethers.utils.formatEther(rawVoucher?.price.$numberDecimal),
-            buyerDeposit: ethers.utils.formatEther(rawVoucher?.buyerDeposit.$numberDecimal),
-            sellerDeposit: ethers.utils.formatEther(rawVoucher?.sellerDeposit.$numberDecimal),
-            qty: rawVoucher.qty,
-            startDate: rawVoucher.startDate,
-            expiryDate: rawVoucher.expiryDate,
-            category: [['Category', rawVoucher.category]],
-            voucherOwner: rawVoucher.voucherOwner,
-            holder: rawVoucher._holder,
-            CANCELLED: rawVoucher.CANCELLED,
-            COMMITTED: rawVoucher.COMMITTED,
-            COMPLAINED: rawVoucher.COMPLAINED,
-            FINALIZED: rawVoucher.FINALIZED,
-            REDEEMED: rawVoucher.REDEEMED,
-            REFUNDED: rawVoucher.REFUNDED,
-            commitedDate: rawVoucher.COMMITTED,
-            _tokenIdVoucher: rawVoucher._tokenIdVoucher,
-        };
-
-        console.log(parsedVoucher);
-
-        setVoucherDetails(parsedVoucher)
-        setEscrowData(prepareEscrowData(parsedVoucher));
-    };
   
     const tableSellerInfo = [
         ['Seller', 'David'],

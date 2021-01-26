@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import "./Activity.scss"
 
-import { GlobalContext, Action } from '../contexts/Global'
+import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
@@ -97,17 +97,17 @@ const InactiveView = () => {
 const Block = (props) => {
     const { title, image, price, qty } = props
 
-    const globalContext = useContext(GlobalContext);
+    // const globalContext = useContext(GlobalContext);
 
-    useEffect(() => {
-        let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
-        let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
+    // useEffect(() => {
+    //     let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
+    //     let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
 
-        if (parseInt(openProductView))
-            globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
+    //     if (parseInt(openProductView))
+    //         globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
 
     const currency = 'ETH'; // ToDo: implement it
 
