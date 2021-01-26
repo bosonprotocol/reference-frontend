@@ -15,7 +15,7 @@ import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 import { Arrow } from "../components/shared/Icons"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
-import { MODAL_TYPES, STATUS } from "../helpers/Dictionary";
+import { MODAL_TYPES, SCENARIO } from "../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import Loading from "../components/offerFlow/Loading";
@@ -51,7 +51,7 @@ function VoucherDetails(props) {
 
     const statusColor = 1
 
-    const PublicViewBool = voucherStatus === STATUS.PUBLIC_NOT_OWNER
+    const PublicViewBool = voucherStatus === SCENARIO.PUBLIC_NOT_OWNER
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 

@@ -80,7 +80,7 @@ export const CURRENCY = {
     BSN: 'BSN',
 }
 
-export const STATUS = {
+export const SCENARIO = {
     OWNER_GENERAL: 'owner_general',
     HOLDER_COMMITED: 'holder_commited',
     HOLDER_REDEEMED: 'holder_redeemed',
