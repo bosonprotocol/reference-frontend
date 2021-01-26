@@ -22,9 +22,6 @@ import { cardBlocks } from "../PlaceholderAPI"
 import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
 
-import { getAllVoucherSets } from "../hooks/api";
-import * as ethers from "ethers";
-
 function Home() {
     const [productBlocks, setProductBlocks] = useState([]);
     const homepage = useRef()
@@ -32,8 +29,11 @@ function Home() {
     const screensRef = useRef()
     const onboardingModalRef = useRef()
 
+
     const redeemContext = useContext(BuyerContext)
     const globalContext = useContext(GlobalContext)
+
+    const voucherSets = globalContext.state.allVoucherSets
 
     const modalCloseTimeout = 900;
 
@@ -44,49 +44,19 @@ function Home() {
         if (parseInt(openProductView))
             globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
 
-        async function getVoucherSets() {
-            const allVoucherSets = await getAllVoucherSets();
-            prepareVoucherSetData(allVoucherSets);
-        }
-
-        getVoucherSets()
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const prepareVoucherSetData = (rawVoucherSets) => {
-        if (!rawVoucherSets) {
+    useEffect(() => {
+        if(voucherSets) {
+            setProductBlocks(voucherSets)
+            productListSettings.infinite = voucherSets.length > 4;
+        } else {
             setProductBlocks([])
-            return;
         }
 
-        let parsedVoucherSets = [];
-
-        for (const voucherSet of rawVoucherSets.voucherSupplies) {
-            let parsedVoucherSet = {
-                id: voucherSet._id,
-                title: voucherSet.title,
-                image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-                price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-                buyerDeposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
-                sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
-                deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
-                description: voucherSet.description,
-                category: voucherSet.category,
-                startDate: voucherSet.startDate,
-                expiryDate: voucherSet.expiryDate,
-                qty: voucherSet.qty,
-                setId: voucherSet._tokenIdSupply,
-                voucherOwner: voucherSet.voucherOwner
-            };
-
-            parsedVoucherSets.push(parsedVoucherSet)
-        }
-
-        productListSettings.infinite = parsedVoucherSets.length > 4;
-        setProductBlocks(parsedVoucherSets);
-        globalContext.dispatch(Action.allVoucherSets(parsedVoucherSets));
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [voucherSets])
 
     useEffect(() => {
         setTimeout(() => {
