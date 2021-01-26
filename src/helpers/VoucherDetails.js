@@ -32,26 +32,30 @@ export const escrowPositionMapping = {
 }
 
 // assign controlset to statuses
-export const controlList = (voucherDetails, sharedProps) => ({
-  [SCENARIO.OWNER_GENERAL]: () => (
-    <div className="button gray" disabled role="button">Cancel or fault</div>
-  ),
-  [SCENARIO.HOLDER_COMMITED]: () => (
-    <Link
-      to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-      <div className="button primary" role="button">REDEEM</div>
-    </Link>
-  ),
-  [SCENARIO.HOLDER_REDEEMED]: () => (
-    <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
-  ),
-  [SCENARIO.DEFAULT]: () => (
-    <div className="button gray" role="button" disabled >WAITING</div>
-  ),
-  [SCENARIO.PUBLIC_NOT_OWNER]: () => (
-    <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO BUY</div>
-  ),
-})
+export const controlList = (sharedProps) => {
+  const { voucherDetails, voucherSetDetails } = sharedProps
+
+  return {
+    [SCENARIO.OWNER_GENERAL]: () => (
+      <div className="button gray" disabled role="button">Cancel or fault</div>
+    ),
+    [SCENARIO.HOLDER_COMMITED]: () => (
+      <Link
+        to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+        <div className="button primary" role="button">REDEEM</div>
+      </Link>
+    ),
+    [SCENARIO.HOLDER_REDEEMED]: () => (
+      <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
+    ),
+    [SCENARIO.DEFAULT]: () => (
+      <div className="button gray" role="button" disabled >WAITING</div>
+    ),
+    [SCENARIO.PUBLIC_NOT_OWNER]: () => (
+    <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO BUY {voucherSetDetails?.price}</div>
+    ),
+  }
+}
 
 export const determineStatus = (sharedProps) => {
   const { account, voucherDetails } = sharedProps
@@ -94,11 +98,9 @@ export const determineStatus = (sharedProps) => {
 // ------- Functions
 
 export const getControlState = (sharedProps) => {
-  const { voucherDetails } = sharedProps
-
   const voucherStatus = determineStatus(sharedProps)
 
-  const controls = controlList(voucherDetails, sharedProps)
+  const controls = controlList(sharedProps)
 
   return voucherStatus ? 
     controls[voucherStatus]()

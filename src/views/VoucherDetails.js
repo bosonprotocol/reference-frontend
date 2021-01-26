@@ -123,8 +123,6 @@ function VoucherDetails(props) {
         ['Seller’s deposit', getProp('sellerDeposit'), 'ETH', 1]
     ];
 
-    console.log(getProp('price'))
-
     const tableDate = [
         formatDate(getProp('startDate')),
         formatDate(getProp('expiryDate'))
