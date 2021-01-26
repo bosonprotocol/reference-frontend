@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useHistory } from "react-router"
 
 import * as ethers from "ethers";
-import { getVoucherDetails, updateVoucher } from "../hooks/api";
+import { getVoucherDetails, updateVoucher, getAllVoucherSets } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
 import "./VoucherDetails.scss"
@@ -32,8 +32,13 @@ function VoucherDetails(props) {
     const [loading, setLoading] = useState(0);
     const voucherKernelContract = useVoucherKernelContract();
     const { library, account } = useWeb3React();
+    const asd = async () =>  {
+        const a = await getAllVoucherSets()
 
+        return a
+    }
 
+    console.log(asd())
 
     const statusColor = 1
 

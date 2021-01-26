@@ -11,6 +11,7 @@ import NewOffer from "./views/NewOffer"
 import Activity from "./views/Activity"
 import VoucherDetails from "./views/VoucherDetails"
 import QRScanner from "./views/QRScanner"
+import GlobalListeners   from "./views/GlobalListeners"
 
 // import TopNavigation from "./components/shared/navigation/TopNavigation"
 // import BottomNavigation from "./components/shared/navigation/BottomNavigation"
@@ -120,6 +121,7 @@ function App() {
                         <SellerContext.Provider value={ sellerContextValue }>
                             <WalletContext.Provider value={ walletContextValue }>
                                 <NavigationContext.Provider value={ navigationContextValue }>
+                                    <GlobalListeners     />
                                     <Router>
                                         {/* <LocationManager />
                 <TopNavigation /> */ }

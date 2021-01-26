@@ -140,6 +140,8 @@ const Block = (props) => {
 
     const currency = 'ETH'; // ToDo: implement it
 
+    console.log(props)
+
     return (
         <div className="voucher-block flex">
             <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
