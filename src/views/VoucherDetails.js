@@ -47,6 +47,8 @@ function VoucherDetails(props) {
 
     const sharedProps = { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId }
 
+    const VoucherStatus = determineStatus(sharedProps)
+
     useEffect(() => {
         if (document.documentElement) document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
     }, [expiryProgress])
@@ -105,17 +107,17 @@ function VoucherDetails(props) {
             PAYMENT: {
                 title: 'PAYMENT',
                 value: `${ voucherDetails?.price } ${currency}`,
-                position: 2,
+                position: escrowPositionMapping[VoucherStatus]?.PAYMENT,
             },
             BUYER_DEPOSIT: {
                 title: 'BUYER DEPOSIT',
                 value: `${ voucherDetails?.buyerDeposit } ${currency}`,
-                position: 2,
+                position: escrowPositionMapping[VoucherStatus]?.BUYER_DEPOSIT,
             },
             SELLER_DEPOSIT: {
                 title: 'SELLER DEPOSIT',
                 value: `${ voucherDetails?.sellerDeposit } ${currency}`,
-                position: 2,
+                position: escrowPositionMapping[VoucherStatus]?.SELLER_DEPOSIT,
             },
         }
     }
@@ -154,7 +156,7 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                         <div className="section escrow">
-                            <EscrowDiagram escrowData={ escrowData } status={ 'commited' }/>
+                            <EscrowDiagram escrowData={ escrowData } />
                         </div>
                         <div className="section info">
                             <div className="section description">
@@ -191,7 +193,11 @@ function VoucherDetails(props) {
 }
 
 const escrowPositionMapping = {
-    [STATUS.HOLDER_COMMITED]: [2, 2, 2]
+    [STATUS.HOLDER_COMMITED]: {
+        PAYMENT: 2,
+        BUYER_DEPOSIT: 2,
+        SELLER_DEPOSIT: 2,
+    }
 }
 
 const determineStatus = (sharedProps) => {

@@ -38,7 +38,7 @@ const EscrowRow = (props) => {
         <div className="body-row flex ai-center">
             <div className={ `block cell set title color_${ color }` }>{ title }</div>
             <div className="block flex relative">
-                <div className={ `cell val position_${ position } color_${ color }` }>{ value }</div>
+                <div className={ `cell val position_${ position ? position : 'hide' } color_${ color }` }>{ value }</div>
                 <div className="cell"></div>
                 <div className="cell"></div>
                 <div className="cell"></div>
