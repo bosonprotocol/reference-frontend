@@ -79,3 +79,38 @@ export const CURRENCY = {
     ETH: 'ETH',
     BSN: 'BSN',
 }
+
+// this is a placeholder object
+export const STATUS = {
+    OFFERED: 'voucher_status_offered',
+    COMMITED: 'voucher_status_commited',
+    REDEEMED: 'voucher_status_redeemed',
+    COMPLAINED: 'voucher_status_complained',
+    REFUNDED: 'voucher_status_refunded',
+    CANCELLED: 'voucher_status_cancelled',
+    FINALIZED: 'voucher_status_finalized',
+}
+
+export const ROLE = {
+    BUYER: 'BUYER',
+    SELLER: 'SELLER',
+}
+
+const populateOfferFlowScenario = () => {
+    let object = {}
+
+    Object.entries(ROLE).forEach(role => {
+        object[role[0]] = {}
+    
+        Object.entries(STATUS).forEach(status => {
+            object[role[0]][status[1]] = `${role[1]}:${status[1]}`
+        })
+    })
+
+    return object
+}
+
+export const OFFER_FLOW_SCENARIO = populateOfferFlowScenario()
+
+
+

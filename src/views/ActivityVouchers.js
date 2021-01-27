@@ -6,8 +6,6 @@ import "./Activity.scss"
 import { getVouchers } from "../hooks/api";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
-import * as ethers from "ethers";
-
 
 import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
@@ -16,6 +14,8 @@ import 'react-tabs/style/react-tabs.css';
 import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary";
 import { Link } from "react-router-dom";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
+
+import { prepareVoucherData } from "../helpers/VoucherParsers"
 
 function ActivityVouchers() {
     const [preparedVouchers, setPreparedVouchers] = useState([])
@@ -43,38 +43,16 @@ function ActivityVouchers() {
             }
 
             const allAccountVouchers = await getVouchers(authData.authToken);
-            prepareVouchersData(allAccountVouchers);
+            const vouchersParsed = allAccountVouchers.voucherData && prepareVoucherData(allAccountVouchers.voucherData)
+
+            vouchersParsed ?
+                setPreparedVouchers(vouchersParsed)
+                : setPreparedVouchers([])
         }
 
         getAccountVouchers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
-
-
-    const prepareVouchersData = (rawVouchers) => {
-        if (!rawVouchers) {
-            setPreparedVouchers([]);
-            return;
-        }
-
-        let parsedVouchers = [];
-
-        for (const voucher of rawVouchers.voucherData) {
-            let parsedVoucher = {
-                id: voucher._id,
-                tokenIdVoucher: voucher._tokenIdVoucher,
-                title: voucher.title,
-                image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-                price: ethers.utils.formatEther(voucher.price.$numberDecimal),
-                qty: voucher.qty
-                // deposit: ethers.utils.formatEther(voucher.buyerDeposit.$numberDecimal)
-            };
-
-            parsedVouchers.push(parsedVoucher)
-        }
-
-        setPreparedVouchers(parsedVouchers)
-    };
 
     return (
         <section className="activity atomic-scoped">
@@ -153,7 +131,7 @@ const Block = (props) => {
                     <div className="title elipsis">{ title }</div>
                     <div className="price flex split">
                         <div className="value flex center"><img src="images/icon-eth.png"
-                                                                alt="eth"/> { price } { currency }
+                            alt="eth"/> { price } { currency }
                         </div>
                         <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>

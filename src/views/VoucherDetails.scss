@@ -34,7 +34,6 @@
       .row + .row  {
         margin-top: 18px;
       }
-      
       &.status {
         margin-top: 44px;
 
@@ -152,38 +151,47 @@
         padding-top: 30px;
 
         border-top: 1px solid rgba(255, 255, 255, 0.06);
-      }
-      &.description {
-        .image {
-          width: 35px;
-          height: 45px;
 
-          img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-          }
+        .section + .section {
+          margin-top: 30px;
         }
         .description {
           margin-top: 25px;
-        }
-      }
-      &.general {
-        margin-top: 42px;
 
-        .table:not(.location) {
-          margin-left: 24px;
+          .thumbnail {
+            margin-bottom: 30px;
+            img {
+              max-height: 40vh;
+            }
+          }
+          .image {
+            width: 35px;
+            height: 45px;
+  
+            img {
+              max-width: 100%;
+              max-height: 100%;
+              width: auto;
+              height: auto;
+            }
+          }
         }
-      }
-      &.date {
-        margin-top: 42px;
-      }
-      &.seller {
-        margin-top: 30px;
-        padding-top: 27px;
-
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        .general {
+          margin-top: 42px;
+  
+          .table:not(.location) {
+            margin-left: 24px;
+          }
+        }
+        .date {
+          margin-top: 42px;
+        }
+        .seller {
+          margin-top: 30px;
+          padding-top: 27px;
+  
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
       }
     }
   }

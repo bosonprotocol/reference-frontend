@@ -36,6 +36,7 @@ function NavigationBar(props) {
     const { delay } = props
     const aniamtionTimout = 300
 
+
     useEffect(() => {
         // use this to compare {previus} screen and {current} screen
         // setTransitionTrigger(transitionState)
@@ -95,10 +96,13 @@ function NavigationBar(props) {
             return;
         }
 
+        console.log(voucherSetInfo)
+
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.buyerDeposit).toString();
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
         const supplyId = voucherSetInfo.setId;
+        
 
         let tx;
         let metadata = {};
