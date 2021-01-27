@@ -11,25 +11,47 @@ import { commitToBuy } from "../hooks/api";
 
 // ------------ Settings related to the status of the voucher
 
+const setEscrowPositions = (status, object) => 
+escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.BUYER][status]] =
+escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.SELLER][status]] = object
 // xy position of blocks on escrow table
 // falsy values will append "display: none"
-export const escrowPositionMapping = {
-  [OFFER_FLOW_SCENARIO.HOLDER_REDEEMED]: {
-    PAYMENT: 2,
-    BUYER_DEPOSIT: 2,
-    SELLER_DEPOSIT: 2,
-  },
-  [OFFER_FLOW_SCENARIO.HOLDER_COMMITED]: {
-    PAYMENT: 2,
-    BUYER_DEPOSIT: 2,
-    SELLER_DEPOSIT: 2,
-  },
-  [OFFER_FLOW_SCENARIO.DEFAULT]: {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 1,
-    SELLER_DEPOSIT: 3,
-  },
-}
+export const escrowPositionMapping = { }
+setEscrowPositions(STATUS.OFFERED, {
+  PAYMENT: 1,
+  BUYER_DEPOSIT: 1,
+  SELLER_DEPOSIT: 2,
+})
+setEscrowPositions(STATUS.COMMITED, {
+  PAYMENT: 2,
+  BUYER_DEPOSIT: 2,
+  SELLER_DEPOSIT: 2,
+})
+setEscrowPositions(STATUS.REDEEMED, {
+  PAYMENT: 2,
+  BUYER_DEPOSIT: 2,
+  SELLER_DEPOSIT: 2,
+})
+setEscrowPositions(STATUS.COMPLAINED, {
+  PAYMENT: 1,
+  BUYER_DEPOSIT: 3,
+  SELLER_DEPOSIT: 1,
+})
+setEscrowPositions(STATUS.REFUNDED, {
+  PAYMENT: 1,
+  BUYER_DEPOSIT: 3,
+  SELLER_DEPOSIT: 1,
+})
+setEscrowPositions(STATUS.CANCELLED, {
+  PAYMENT: 1,
+  BUYER_DEPOSIT: 3,
+  SELLER_DEPOSIT: 1,
+})
+setEscrowPositions(STATUS.FINALIZED, {
+  PAYMENT: 3,
+  BUYER_DEPOSIT: 3,
+  SELLER_DEPOSIT: 1,
+})
 
 // assign controlset to statuses
 export const controlList = (sharedProps) => {
@@ -90,6 +112,7 @@ export const determineStatus = (sharedProps) => {
 
   const status = performStatusChecks()
   console.log(status)
+  console.log(voucherDetails)
   const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
 
   return OFFER_FLOW_SCENARIO[role][status]
