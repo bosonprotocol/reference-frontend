@@ -37,13 +37,16 @@ export const controlList = (sharedProps) => {
 
   return {
     [OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]]: () => (
-      <div className="button gray" disabled role="button">Cancel or fault</div>
+      <div className="button gray" onClick={ () => onCoF(sharedProps)} role="button">Cancel or fault</div>
     ),
     [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]]: () => (
-      <Link
-        to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-        <div className="button primary" role="button">REDEEM</div>
-      </Link>
+      <div className="flex dual split">
+        <div className="button refund" role="button" onClick={ () => onRefund(sharedProps)}>REFUND</div>
+        <Link
+          to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+          <div className="button primary" role="button">REDEEM</div>
+        </Link>
+      </div>
     ),
     [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]]: () => (
       <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
@@ -68,22 +71,25 @@ export const determineStatus = (sharedProps) => {
     redeemed: voucherDetails.REDEEMED !== null,
     complained: voucherDetails.COMPLAINED !== null,
     refunded: voucherDetails.REFUNDED !== null,
-    // canceled: voucherDetails.CANCELED !== null,
+    cancelled: voucherDetails.CANCELLED !== null,
+    finalized: voucherDetails.FINALIZED !== null,
   } : {}
 
   const performStatusChecks = () => {
     return (
+      (voucher.finalized) ? STATUS.FINALIZED:
+      (voucher.cancelled) ? STATUS.CANCELLED:
+      (voucher.refunded) ? STATUS.REFUNDED:
+      (voucher.complained) ? STATUS.COMPLAINED:
       (!voucherDetails) ? STATUS.OFFERED:
       (voucher.commited && !voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.COMMITED:
       (voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.REDEEMED:
-      (voucher.complained) ? STATUS.COMPLAINED:
-      (voucher.refunded) ? STATUS.REFUNDED:
-      // (voucher.canceled) ? STATUS.CANCELED:
       false
     )
   }
 
   const status = performStatusChecks()
+  console.log(status)
   const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
 
   return OFFER_FLOW_SCENARIO[role][status]
@@ -96,8 +102,10 @@ export const getControlState = (sharedProps) => {
 
   const controls = controlList(sharedProps)
 
+  console.log('status: ', voucherStatus)
+
   return voucherStatus ? 
-    controls[voucherStatus]()
+  controls[voucherStatus] && controls[voucherStatus]()
   : null
 }
 
@@ -231,6 +239,120 @@ export async function onComplain(props) {
 
     const complainResponse = await updateVoucher(data, authData.authToken);
     console.log(complainResponse)
+  } catch (e) {
+    setLoading(0);
+    modalContext.dispatch(ModalResolver.showModal({
+      show: true,
+      type: MODAL_TYPES.GENERIC_ERROR,
+      content: e.message + ' :252'
+    }));
+  }
+
+  setLoading(0)
+}
+
+export async function onRefund(props) {
+  const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
+  
+  if (!library || !account) {
+    modalContext.dispatch(ModalResolver.showModal({
+      show: true,
+      type: MODAL_TYPES.GENERIC_ERROR,
+      content: 'Please connect your wallet account'
+    }));
+    return;
+  }
+
+  setLoading(1);
+
+  let tx;
+  const authData = getAccountStoredInLocalStorage(account);
+
+  try {
+    tx = await voucherKernelContract.refund(voucherDetails._tokenIdVoucher);
+
+    const receipt = await tx.wait();
+    console.log(receipt, 'receipt')
+
+    let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+    console.log(encodedTopic, 'encodedTopic')
+
+  } catch (e) {
+    setLoading(0);
+    modalContext.dispatch(ModalResolver.showModal({
+      show: true,
+      type: MODAL_TYPES.GENERIC_ERROR,
+      content: e.message + ' :233'
+    }));
+    return;
+  }
+
+
+  try {
+    const data = {
+      _id: voucherId,
+      status: VOUCHER_STATUSES.REFUNDED
+    };
+
+    const refundResponse = await updateVoucher(data, authData.authToken);
+    console.log(refundResponse)
+  } catch (e) {
+    setLoading(0);
+    modalContext.dispatch(ModalResolver.showModal({
+      show: true,
+      type: MODAL_TYPES.GENERIC_ERROR,
+      content: e.message + ' :252'
+    }));
+  }
+
+  setLoading(0)
+}
+
+export async function onCoF(props) {
+  const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
+  
+  if (!library || !account) {
+    modalContext.dispatch(ModalResolver.showModal({
+      show: true,
+      type: MODAL_TYPES.GENERIC_ERROR,
+      content: 'Please connect your wallet account'
+    }));
+    return;
+  }
+
+  setLoading(1);
+
+  let tx;
+  const authData = getAccountStoredInLocalStorage(account);
+
+  try {
+    tx = await voucherKernelContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+
+    const receipt = await tx.wait();
+    console.log(receipt, 'receipt')
+
+    let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+    console.log(encodedTopic, 'encodedTopic')
+
+  } catch (e) {
+    setLoading(0);
+    modalContext.dispatch(ModalResolver.showModal({
+      show: true,
+      type: MODAL_TYPES.GENERIC_ERROR,
+      content: e.message + ' :233'
+    }));
+    return;
+  }
+
+
+  try {
+    const data = {
+      _id: voucherId,
+      status: VOUCHER_STATUSES.CANCELLED
+    };
+
+    const cancelResponse = await updateVoucher(data, authData.authToken);
+    console.log(cancelResponse)
   } catch (e) {
     setLoading(0);
     modalContext.dispatch(ModalResolver.showModal({
