@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MODAL_TYPES, ROUTE, SCENARIO } from "../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE, OFFER_FLOW_SCENARIO, STATUS, ROLE } from "../helpers/Dictionary";
 import { ModalResolver } from "../contexts/Modal";
 import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
@@ -14,17 +14,17 @@ import { commitToBuy } from "../hooks/api";
 // xy position of blocks on escrow table
 // falsy values will append "display: none"
 export const escrowPositionMapping = {
-  [SCENARIO.HOLDER_REDEEMED]: {
+  [OFFER_FLOW_SCENARIO.HOLDER_REDEEMED]: {
     PAYMENT: 2,
     BUYER_DEPOSIT: 2,
     SELLER_DEPOSIT: 2,
   },
-  [SCENARIO.HOLDER_COMMITED]: {
+  [OFFER_FLOW_SCENARIO.HOLDER_COMMITED]: {
     PAYMENT: 2,
     BUYER_DEPOSIT: 2,
     SELLER_DEPOSIT: 2,
   },
-  [SCENARIO.DEFAULT]: {
+  [OFFER_FLOW_SCENARIO.DEFAULT]: {
     PAYMENT: 1,
     BUYER_DEPOSIT: 1,
     SELLER_DEPOSIT: 3,
@@ -36,23 +36,23 @@ export const controlList = (sharedProps) => {
   const { voucherDetails, voucherSetDetails } = sharedProps
 
   return {
-    [SCENARIO.OWNER_GENERAL]: () => (
+    [OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]]: () => (
       <div className="button gray" disabled role="button">Cancel or fault</div>
     ),
-    [SCENARIO.HOLDER_COMMITED]: () => (
+    [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]]: () => (
       <Link
         to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
         <div className="button primary" role="button">REDEEM</div>
       </Link>
     ),
-    [SCENARIO.HOLDER_REDEEMED]: () => (
+    [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]]: () => (
       <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
     ),
-    [SCENARIO.DEFAULT]: () => (
-      <div className="button gray" role="button" disabled >WAITING</div>
-    ),
-    [SCENARIO.PUBLIC_NOT_OWNER]: () => (
+    [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]]: () => (
     <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO BUY {voucherSetDetails?.price}</div>
+    ),
+    [OFFER_FLOW_SCENARIO.DEFAULT]: () => ( // TESTS - THIS SHOULDNT SHOW UP
+      <div className="button gray" role="button" disabled >WAITING</div>
     ),
   }
 }
@@ -61,38 +61,35 @@ export const determineStatus = (sharedProps) => {
   const { account, voucherDetails } = sharedProps
 
   // status information about the voucher
-  const voucherInfo = {
-    owner: null,
-    holder: null,
-    commited: null,
-    redeemed: null,
+  const voucher = voucherDetails ?  {
+    owner: voucherDetails.voucherOwner.toLowerCase() === account?.toLowerCase(),
+    holder: voucherDetails.holder.toLowerCase() === account?.toLowerCase(),
+    commited: voucherDetails.COMMITTED !== null,
+    redeemed: voucherDetails.REDEEMED !== null,
+    complained: voucherDetails.COMPLAINED !== null,
+    refunded: voucherDetails.REFUNDED !== null,
+    // canceled: voucherDetails.CANCELED !== null,
+  } : {}
+
+  console.log(voucher, voucherDetails)
+
+  const performStatusChecks = () => {
+    return (
+      (!voucherDetails) ? STATUS.OFFERED:
+      (voucher.commited && !voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.COMMITED:
+      (voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.REDEEMED:
+      (voucher.complained) ? STATUS.COMPLAINED:
+      (voucher.refunded) ? STATUS.REFUNDED:
+      // (voucher.canceled) ? STATUS.CANCELED:
+      false
+    )
   }
 
-  // define checks for the current voucher
-  const isOwner = (voucher) => voucher ? voucher.voucherOwner.toLowerCase() === account?.toLowerCase() : null
-  const isHolder = (voucher) => voucher ? voucher.holder.toLowerCase() === account?.toLowerCase() : null
-  const isCommited = (voucher) => voucher ? voucher.COMMITTED !== null : null
-  const isRedeemed = (voucher) => voucher ? voucher.REDEEMED !== null : null
-  const isComplained = (voucher) => voucher ? voucher.COMPLAINED !== null : null
+  const status = performStatusChecks()
+  console.log(status)
+  const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
 
-  // update the information about the voucher by running defined checks
-  const updateVoucherStatus = (voucher) => {
-    voucherInfo.owner = isOwner(voucher)
-    voucherInfo.holder = isHolder(voucher)
-    voucherInfo.commited = isCommited(voucher)
-    voucherInfo.redeemed = isRedeemed(voucher)
-    voucherInfo.complained = isComplained(voucher)
-  }
-
-  // run checks
-  updateVoucherStatus(voucherDetails)
-
-  // perform a check on the current voucher and return relevant SCENARIO
-  if(!voucherInfo.owner && !voucherInfo.commited && !voucherInfo.redeemed) return SCENARIO.PUBLIC_NOT_OWNER
-  if(voucherInfo.owner && voucherInfo.commited && !voucherInfo.redeemed) return SCENARIO.OWNER_GENERAL
-  if(voucherInfo.holder && voucherInfo.commited && !voucherInfo.redeemed) return SCENARIO.HOLDER_COMMITED
-  if(voucherInfo.holder && voucherInfo.commited && voucherInfo.redeemed && !voucherInfo.complained) return SCENARIO.HOLDER_REDEEMED
-  return SCENARIO.DEFAULT
+  return OFFER_FLOW_SCENARIO[role][status]
 }
 
 // ------- Functions
@@ -101,6 +98,8 @@ export const getControlState = (sharedProps) => {
   const voucherStatus = determineStatus(sharedProps)
 
   const controls = controlList(sharedProps)
+
+  console.log(voucherStatus)
 
   return voucherStatus ? 
     controls[voucherStatus]()
