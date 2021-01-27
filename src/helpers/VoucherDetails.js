@@ -14,6 +14,7 @@ import { commitToBuy } from "../hooks/api";
 const setEscrowPositions = (status, object) => 
 escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.BUYER][status]] =
 escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.SELLER][status]] = object
+
 // xy position of blocks on escrow table
 // falsy values will append "display: none"
 export const escrowPositionMapping = { }
@@ -130,6 +131,30 @@ export const getControlState = (sharedProps) => {
   return voucherStatus ? 
   controls[voucherStatus] && controls[voucherStatus]()
   : null
+}
+
+export const prepareEscrowData = (sharedProps) => {
+  const { voucherDetails, voucherStatus } = sharedProps
+
+  return escrowPositionMapping[voucherStatus] ?
+  {
+    PAYMENT: {
+      title: 'PAYMENT',
+      value: `${ voucherDetails?.price } ${voucherDetails?.currency}`,
+      position: escrowPositionMapping[voucherStatus]?.PAYMENT,
+    },
+    BUYER_DEPOSIT: {
+      title: 'BUYER DEPOSIT',
+      value: `${ voucherDetails?.buyerDeposit } ${voucherDetails?.currency}`,
+      position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
+    },
+    SELLER_DEPOSIT: {
+      title: 'SELLER DEPOSIT',
+      value: `${ voucherDetails?.sellerDeposit } ${voucherDetails?.currency}`,
+      position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
+    },
+  }
+  : false
 }
 
 export async function onCommitToBuy(props) {
@@ -386,28 +411,4 @@ export async function onCoF(props) {
   }
 
   setLoading(0)
-}
-
-export const prepareEscrowData = (sharedProps) => {
-  const { voucherDetails, voucherStatus } = sharedProps
-
-  return escrowPositionMapping[voucherStatus] ?
-  {
-    PAYMENT: {
-      title: 'PAYMENT',
-      value: `${ voucherDetails?.price } ${voucherDetails?.currency}`,
-      position: escrowPositionMapping[voucherStatus]?.PAYMENT,
-    },
-    BUYER_DEPOSIT: {
-      title: 'BUYER DEPOSIT',
-      value: `${ voucherDetails?.buyerDeposit } ${voucherDetails?.currency}`,
-      position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
-    },
-    SELLER_DEPOSIT: {
-      title: 'SELLER DEPOSIT',
-      value: `${ voucherDetails?.sellerDeposit } ${voucherDetails?.currency}`,
-      position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
-    },
-  }
-  : false
 }
