@@ -71,8 +71,6 @@ export const determineStatus = (sharedProps) => {
     // canceled: voucherDetails.CANCELED !== null,
   } : {}
 
-  console.log(voucher, voucherDetails)
-
   const performStatusChecks = () => {
     return (
       (!voucherDetails) ? STATUS.OFFERED:
@@ -86,7 +84,6 @@ export const determineStatus = (sharedProps) => {
   }
 
   const status = performStatusChecks()
-  console.log(status)
   const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
 
   return OFFER_FLOW_SCENARIO[role][status]
@@ -98,8 +95,6 @@ export const getControlState = (sharedProps) => {
   const voucherStatus = determineStatus(sharedProps)
 
   const controls = controlList(sharedProps)
-
-  console.log(voucherStatus)
 
   return voucherStatus ? 
     controls[voucherStatus]()
