@@ -7,6 +7,7 @@ import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 import { commitToBuy, getPaymentsDetails, updateVoucher } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 
 // ------------ Settings related to the status of the voucher
 
@@ -55,68 +56,68 @@ setEscrowPositions(STATUS.FINALIZED, {
 
 // assign controlset to statuses
 export const controlList = (sharedProps) => {
-    const { voucherDetails, voucherSetDetails } = sharedProps
+  const { voucherDetails, voucherSetDetails } = sharedProps
+  const CASE = {}
 
-    return {
-        [OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]]: () => (
-            <div className="button gray" onClick={ () => onCoF(sharedProps) } role="button">Cancel or fault</div>
-        ),
-        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]]: () => (
-            <div className="flex dual split">
-                <div className="button refund" role="button" onClick={ () => onRefund(sharedProps) }>REFUND</div>
-                <Link
-                    to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                    <div className="button primary" role="button">REDEEM</div>
-                </Link>
-            </div>
-        ),
-        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]]: () => (
-            <div className="button red" role="button" onClick={ () => onComplain(sharedProps) }>COMPLAIN</div>
-        ),
-        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]]: () => (
-            <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO
-                BUY { voucherSetDetails?.price }</div>
-        ),
-        [OFFER_FLOW_SCENARIO.DEFAULT]: () => ( // TESTS - THIS SHOULDNT SHOW UP
-            <div className="button gray" role="button" disabled>WAITING</div>
-        ),
-    }
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+    <div className="button gray" onClick={ () => onCoF(sharedProps)} role="button">Cancel or fault</div>
+  )
+
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
+    <div className="flex dual split">
+      <div className="button refund" role="button" onClick={ () => onRefund(sharedProps)}>REFUND</div>
+      <Link
+        to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+        <div className="button primary" role="button">REDEEM</div>
+      </Link>
+    </div>
+  )
+
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+    <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
+  )
+
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = () => (
+    <ContractInteractionButton
+        className="button primary"
+        handleClick={ () => onCommitToBuy(sharedProps) }
+        label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+    />
+  )
+
+  return CASE
 }
 
 export const determineStatus = (sharedProps) => {
-    const { account, voucherDetails } = sharedProps
+  const { account, voucherDetails, voucherSetDetails } = sharedProps
 
-    // status information about the voucher
-    const voucher = voucherDetails ? {
-        owner: voucherDetails.voucherOwner.toLowerCase() === account?.toLowerCase(),
-        holder: voucherDetails.holder.toLowerCase() === account?.toLowerCase(),
-        commited: voucherDetails.COMMITTED !== null,
-        redeemed: voucherDetails.REDEEMED !== null,
-        complained: voucherDetails.COMPLAINED !== null,
-        refunded: voucherDetails.REFUNDED !== null,
-        cancelled: voucherDetails.CANCELLED !== null,
-        finalized: voucherDetails.FINALIZED !== null,
-    } : {}
+  const voucherResource = voucherDetails ? voucherDetails : (voucherSetDetails ? voucherSetDetails : false)
 
-    const performStatusChecks = () => {
-        return (
-            (voucher.finalized) ? STATUS.FINALIZED :
-                (voucher.cancelled) ? STATUS.CANCELLED :
-                    (voucher.refunded) ? STATUS.REFUNDED :
-                        (voucher.complained) ? STATUS.COMPLAINED :
-                            (!voucherDetails) ? STATUS.OFFERED :
-                                (voucher.commited && !voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.COMMITED :
-                                    (voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.REDEEMED :
-                                        false
-        )
-    }
+  const voucherRoles = {
+    owner: voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase(),
+    holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase(),
+  }
 
-    const status = performStatusChecks()
-    console.log(status)
-    console.log(voucherDetails)
-    const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
+  const statusPropagate = () => (
+    voucherResource.FINALIZED ? STATUS.FINALIZED:
+    voucherResource.CANCELLED ? STATUS.CANCELLED:
+    voucherResource.COMPLAINED ? STATUS.COMPLAINED:
+    voucherResource.REFUNDED ? STATUS.REFUNDED:
+    voucherResource.REDEEMED ? STATUS.REDEEMED:
+    voucherResource.COMMITTED ? STATUS.COMMITED:
+    !voucherResource?.qty ? STATUS.VIEW_ONLY:
+    !voucherResource.COMMITTED ? STATUS.OFFERED:
+    false
+  )
 
-    return OFFER_FLOW_SCENARIO[role][status]
+  const role = voucherRoles.owner ? ROLE.SELLER : ROLE.BUYER
+  const status = voucherResource && statusPropagate()
+
+  return OFFER_FLOW_SCENARIO[role][status]
 }
 
 // ------- Functions

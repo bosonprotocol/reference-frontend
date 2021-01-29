@@ -82,6 +82,7 @@ export const CURRENCY = {
 
 // this is a placeholder object
 export const STATUS = {
+    VIEW_ONLY: 'voucher_status_view_only',
     OFFERED: 'voucher_status_offered',
     COMMITED: 'voucher_status_commited',
     REDEEMED: 'voucher_status_redeemed',
