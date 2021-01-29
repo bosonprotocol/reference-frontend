@@ -27,7 +27,7 @@ export default function ContractInteractionButton(props) {
     }
 
     function goToConnectScreen() {
-        history.push("/connect", { sourcePath: props.sourcePath });
+        history.push("/connect");
     }
 
     return (

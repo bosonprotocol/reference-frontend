@@ -8,6 +8,7 @@ import { updateVoucher } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { commitToBuy } from "../hooks/api";
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 
 // ------------ Settings related to the status of the voucher
 
@@ -82,7 +83,11 @@ export const controlList = (sharedProps) => {
   )
 
   CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = () => (
-    <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO BUY {voucherSetDetails?.price}</div>
+    <ContractInteractionButton
+        className="button primary"
+        handleClick={ () => onCommitToBuy(sharedProps) }
+        label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+    />
   )
 
   return CASE
