@@ -95,6 +95,7 @@ export const STATUS = {
 export const ROLE = {
     BUYER: 'BUYER',
     SELLER: 'SELLER',
+    NON_BUYER_SELLER: 'NON_BUYER_SELLER',
 }
 
 const populateOfferFlowScenario = () => {

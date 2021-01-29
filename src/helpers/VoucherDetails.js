@@ -9,50 +9,13 @@ import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 
-// ------------ Settings related to the status of the voucher
-
-const setEscrowPositions = (status, object) =>
-    escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.BUYER][status]] =
-        escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.SELLER][status]] = object
-
 // xy position of blocks on escrow table
 // falsy values will append "display: none"
-export const escrowPositionMapping = {}
-setEscrowPositions(STATUS.OFFERED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 1,
-    SELLER_DEPOSIT: 2,
-})
-setEscrowPositions(STATUS.COMMITED, {
-    PAYMENT: 2,
-    BUYER_DEPOSIT: 2,
-    SELLER_DEPOSIT: 2,
-})
-setEscrowPositions(STATUS.REDEEMED, {
-    PAYMENT: 2,
-    BUYER_DEPOSIT: 2,
-    SELLER_DEPOSIT: 2,
-})
-setEscrowPositions(STATUS.COMPLAINED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
-setEscrowPositions(STATUS.REFUNDED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
-setEscrowPositions(STATUS.CANCELLED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
-setEscrowPositions(STATUS.FINALIZED, {
-    PAYMENT: 3,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
+export const escrowPositionMapping = {
+  PAYMENT: [0],
+  BUYER_DEPOSIT: [0],
+  SELLER_DEPOSIT: [0],
+}
 
 // assign controlset to statuses
 export const controlList = (sharedProps) => {
@@ -114,7 +77,7 @@ export const determineStatus = (sharedProps) => {
     false
   )
 
-  const role = voucherRoles.owner ? ROLE.SELLER : ROLE.BUYER
+  const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
   const status = voucherResource && statusPropagate()
 
   return OFFER_FLOW_SCENARIO[role][status]
@@ -127,49 +90,68 @@ export const getControlState = (sharedProps) => {
 
     const controls = controlList(sharedProps)
 
-    console.log('status: ', voucherStatus)
-
     return voucherStatus ?
         controls[voucherStatus] && controls[voucherStatus]()
         : null
 }
 
 export const prepareEscrowData = async (sharedProps) => {
-    const { voucherDetails, voucherStatus, account, modalContext } = sharedProps;
+    const { voucherDetails, account, modalContext } = sharedProps;
     const payments = await getPayments(voucherDetails, account, modalContext);
-    console.log(payments);
 
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.buyer));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.seller));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.escrow));
+    const getPaymentMatrixSet = (row, column) => ethers.utils.formatEther(payments.distributedAmounts[row][column])
 
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.buyer));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.seller));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.escrow));
+    const tableMatrixSet = (row) => {
+      const positionArray = [];
 
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.buyer));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.seller));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.escrow));
+      if(payments?.distributedAmounts[row]) {
 
-    return escrowPositionMapping[voucherStatus] ?
-        {
-            PAYMENT: {
-                title: 'PAYMENT',
-                value: `${ voucherDetails?.price } ${ voucherDetails?.currency }`,
-                position: escrowPositionMapping[voucherStatus]?.PAYMENT,
-            },
-            BUYER_DEPOSIT: {
-                title: 'BUYER DEPOSIT',
-                value: `${ voucherDetails?.buyerDeposit } ${ voucherDetails?.currency }`,
-                position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
-            },
-            SELLER_DEPOSIT: {
-                title: 'SELLER DEPOSIT',
-                value: `${ voucherDetails?.sellerDeposit } ${ voucherDetails?.currency }`,
-                position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
-            },
-        }
-        : false
+        positionArray.push(Number(getPaymentMatrixSet(row, 'buyer')))
+        positionArray.push(Number(getPaymentMatrixSet(row, 'escrow')))
+        positionArray.push(Number(getPaymentMatrixSet(row, 'seller')))
+      }
+      
+      return positionArray
+    }
+    // voucherDetails?.sellerDeposit
+    const tablePositions = {}
+    let isCommitState = 1
+
+    tablePositions.paymentArray = tableMatrixSet('payment')
+    tablePositions.buyerDepositArray = tableMatrixSet('buyerDeposit')
+    tablePositions.sellerDepositArray = tableMatrixSet('sellerDeposit')
+
+    Object.values(tablePositions).map(col =>
+      col.map(row => row && --isCommitState)
+    )
+
+    if(isCommitState > 0) {
+      tablePositions.paymentArray[1] = voucherDetails?.price
+      tablePositions.buyerDepositArray[1] = voucherDetails?.buyerDeposit
+      tablePositions.sellerDepositArray[1] = voucherDetails?.sellerDeposit
+    }
+
+    // Array.from(tablePositions).map(row=>console.log(row))
+
+    return (
+      {
+        PAYMENT: {
+            title: 'PAYMENT',
+            currency: voucherDetails?.currency,
+            position: tablePositions.paymentArray,
+        },
+        BUYER_DEPOSIT: {
+            title: 'BUYER DEPOSIT',
+            currency: voucherDetails?.currency,
+            position: tablePositions.buyerDepositArray,
+        },
+        SELLER_DEPOSIT: {
+            title: 'SELLER DEPOSIT',
+            currency: voucherDetails?.currency,
+            position: tablePositions.sellerDepositArray,
+        },
+      }
+    )
 }
 
 async function getPayments(voucherDetails, account, modalContext) {

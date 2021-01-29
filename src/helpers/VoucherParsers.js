@@ -81,7 +81,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
       qty: rawVoucher.qty,
       startDate: rawVoucher.startDate,
       expiryDate: rawVoucher.expiryDate,
-      category: [['Category', rawVoucher.category]],
+      category: rawVoucher.category,
       voucherOwner: rawVoucher.voucherOwner,
       holder: rawVoucher._holder,
       CANCELLED: rawVoucher.CANCELLED,
