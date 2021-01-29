@@ -17,7 +17,7 @@ import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 import { Arrow } from "../components/shared/Icons"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
-import { MODAL_TYPES } from "../helpers/Dictionary";
+import { MODAL_TYPES, ROLE } from "../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import Loading from "../components/offerFlow/Loading";
@@ -73,7 +73,7 @@ function VoucherDetails(props) {
 
     useEffect(() => {
         if (document.documentElement)
-            document.documentElement.style.setProperty('--progress-percentage', expiryProgress);
+            document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(expiryProgress.split('%')[0]) > 100 ? '100%' : expiryProgress : null);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [expiryProgress])
@@ -149,7 +149,7 @@ function VoucherDetails(props) {
                         <div className="section title">
                             <h1>{ getProp('title') }</h1>
                         </div>
-                        {!voucherSetDetails ?
+                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                             <div className="section status">
                             <h2>Status</h2>
                             <div className="status-container flex">
@@ -160,18 +160,18 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                         :null}
-                        {!voucherSetDetails ?
+                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                         <div className="section expiration">
                             <div className="expiration-container flex split">
                                 <p>Expiration Time</p>
                                 <div className="time-left flex column center">
-                                    <p>{ daysAvailable - daysPast } DAY{ daysAvailable - daysPast > 1 ? 'S' : null } LEFT</p>
+                                    <p>{daysAvailable - daysPast > 0 ? `${daysAvailable - daysPast} DAY${daysAvailable - daysPast > 1 ? 'S' : null} LEFT` : 'EXPIRED'}</p>
                                     <div ref={ expiryProgressBar } className="progress"></div>
                                 </div>
                             </div>
                         </div>
                         :null}
-                        {!voucherSetDetails ?
+                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                             <div className="section escrow">
                             {escrowData ?
                                 <EscrowDiagram escrowData={ escrowData } />
