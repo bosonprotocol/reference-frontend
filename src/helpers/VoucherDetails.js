@@ -115,40 +115,32 @@ export const prepareEscrowData = async (sharedProps) => {
     }
     // voucherDetails?.sellerDeposit
     const tablePositions = {}
-    let isCommitState = 1
+    
 
-    tablePositions.paymentArray = tableMatrixSet('payment')
-    tablePositions.buyerDepositArray = tableMatrixSet('buyerDeposit')
-    tablePositions.sellerDepositArray = tableMatrixSet('sellerDeposit')
+    tablePositions.price = tableMatrixSet('payment')
+    tablePositions.buyerDeposit = tableMatrixSet('buyerDeposit')
+    tablePositions.sellerDeposit = tableMatrixSet('sellerDeposit')
 
-    Object.values(tablePositions).map(col =>
-      col.map(row => row && --isCommitState)
-    )
 
-    if(isCommitState > 0) {
-      tablePositions.paymentArray[1] = voucherDetails?.price
-      tablePositions.buyerDepositArray[1] = voucherDetails?.buyerDeposit
-      tablePositions.sellerDepositArray[1] = voucherDetails?.sellerDeposit
-    }
-
-    // Array.from(tablePositions).map(row=>console.log(row))
+    // this is to check if the block should be positioned in the escrow column
+    Object.entries(tablePositions).forEach(entry => tablePositions[entry[0]][1] = entry[1].reduce((acc, val) => acc + val) ? tablePositions[entry[0]][1] : voucherDetails[entry[0]]) // only god can judge me
 
     return (
       {
         PAYMENT: {
             title: 'PAYMENT',
             currency: voucherDetails?.currency,
-            position: tablePositions.paymentArray,
+            position: tablePositions.price,
         },
         BUYER_DEPOSIT: {
             title: 'BUYER DEPOSIT',
             currency: voucherDetails?.currency,
-            position: tablePositions.buyerDepositArray,
+            position: tablePositions.buyerDeposit,
         },
         SELLER_DEPOSIT: {
             title: 'SELLER DEPOSIT',
             currency: voucherDetails?.currency,
-            position: tablePositions.sellerDepositArray,
+            position: tablePositions.sellerDeposit,
         },
       }
     )

@@ -42,7 +42,6 @@ function ShowQR(props) {
         let data;
         const authData = getAccountStoredInLocalStorage(account);
         const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-        console.log(voucherDetails);
 
         try {
             tx = await voucherKernelContract.redeem(voucherDetails.voucher._tokenIdVoucher);
