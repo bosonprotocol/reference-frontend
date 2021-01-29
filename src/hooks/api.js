@@ -62,3 +62,11 @@ export const updateVoucher = async (data, token) => {
 
     return redeemResponse.data;
 };
+
+export const getPaymentsDetails = async (tokenVoucherId, token) => {
+    const paymentsResponse = await axiosInstance.get(`/payments/${ tokenVoucherId }`, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
+
+    return paymentsResponse.data;
+};
