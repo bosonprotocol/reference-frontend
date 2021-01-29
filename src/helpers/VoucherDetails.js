@@ -1,414 +1,450 @@
 import { Link } from "react-router-dom";
-import { MODAL_TYPES, ROUTE, OFFER_FLOW_SCENARIO, STATUS, ROLE } from "../helpers/Dictionary";
+import { MODAL_TYPES, OFFER_FLOW_SCENARIO, ROLE, ROUTE, STATUS } from "../helpers/Dictionary";
 import { ModalResolver } from "../contexts/Modal";
-import { getEncodedTopic, decodeData } from "../hooks/useContract";
+import { decodeData, getEncodedTopic } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
-import { updateVoucher } from "../hooks/api";
+import { commitToBuy, getPaymentsDetails, updateVoucher } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { commitToBuy } from "../hooks/api";
 
 // ------------ Settings related to the status of the voucher
 
-const setEscrowPositions = (status, object) => 
-escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.BUYER][status]] =
-escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.SELLER][status]] = object
+const setEscrowPositions = (status, object) =>
+    escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.BUYER][status]] =
+        escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.SELLER][status]] = object
 
 // xy position of blocks on escrow table
 // falsy values will append "display: none"
-export const escrowPositionMapping = { }
+export const escrowPositionMapping = {}
 setEscrowPositions(STATUS.OFFERED, {
-  PAYMENT: 1,
-  BUYER_DEPOSIT: 1,
-  SELLER_DEPOSIT: 2,
+    PAYMENT: 1,
+    BUYER_DEPOSIT: 1,
+    SELLER_DEPOSIT: 2,
 })
 setEscrowPositions(STATUS.COMMITED, {
-  PAYMENT: 2,
-  BUYER_DEPOSIT: 2,
-  SELLER_DEPOSIT: 2,
+    PAYMENT: 2,
+    BUYER_DEPOSIT: 2,
+    SELLER_DEPOSIT: 2,
 })
 setEscrowPositions(STATUS.REDEEMED, {
-  PAYMENT: 2,
-  BUYER_DEPOSIT: 2,
-  SELLER_DEPOSIT: 2,
+    PAYMENT: 2,
+    BUYER_DEPOSIT: 2,
+    SELLER_DEPOSIT: 2,
 })
 setEscrowPositions(STATUS.COMPLAINED, {
-  PAYMENT: 1,
-  BUYER_DEPOSIT: 3,
-  SELLER_DEPOSIT: 1,
+    PAYMENT: 1,
+    BUYER_DEPOSIT: 3,
+    SELLER_DEPOSIT: 1,
 })
 setEscrowPositions(STATUS.REFUNDED, {
-  PAYMENT: 1,
-  BUYER_DEPOSIT: 3,
-  SELLER_DEPOSIT: 1,
+    PAYMENT: 1,
+    BUYER_DEPOSIT: 3,
+    SELLER_DEPOSIT: 1,
 })
 setEscrowPositions(STATUS.CANCELLED, {
-  PAYMENT: 1,
-  BUYER_DEPOSIT: 3,
-  SELLER_DEPOSIT: 1,
+    PAYMENT: 1,
+    BUYER_DEPOSIT: 3,
+    SELLER_DEPOSIT: 1,
 })
 setEscrowPositions(STATUS.FINALIZED, {
-  PAYMENT: 3,
-  BUYER_DEPOSIT: 3,
-  SELLER_DEPOSIT: 1,
+    PAYMENT: 3,
+    BUYER_DEPOSIT: 3,
+    SELLER_DEPOSIT: 1,
 })
 
 // assign controlset to statuses
 export const controlList = (sharedProps) => {
-  const { voucherDetails, voucherSetDetails } = sharedProps
+    const { voucherDetails, voucherSetDetails } = sharedProps
 
-  return {
-    [OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]]: () => (
-      <div className="button gray" onClick={ () => onCoF(sharedProps)} role="button">Cancel or fault</div>
-    ),
-    [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]]: () => (
-      <div className="flex dual split">
-        <div className="button refund" role="button" onClick={ () => onRefund(sharedProps)}>REFUND</div>
-        <Link
-          to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-          <div className="button primary" role="button">REDEEM</div>
-        </Link>
-      </div>
-    ),
-    [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]]: () => (
-      <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
-    ),
-    [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]]: () => (
-    <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO BUY {voucherSetDetails?.price}</div>
-    ),
-    [OFFER_FLOW_SCENARIO.DEFAULT]: () => ( // TESTS - THIS SHOULDNT SHOW UP
-      <div className="button gray" role="button" disabled >WAITING</div>
-    ),
-  }
+    return {
+        [OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]]: () => (
+            <div className="button gray" onClick={ () => onCoF(sharedProps) } role="button">Cancel or fault</div>
+        ),
+        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]]: () => (
+            <div className="flex dual split">
+                <div className="button refund" role="button" onClick={ () => onRefund(sharedProps) }>REFUND</div>
+                <Link
+                    to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+                    <div className="button primary" role="button">REDEEM</div>
+                </Link>
+            </div>
+        ),
+        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]]: () => (
+            <div className="button red" role="button" onClick={ () => onComplain(sharedProps) }>COMPLAIN</div>
+        ),
+        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]]: () => (
+            <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO
+                BUY { voucherSetDetails?.price }</div>
+        ),
+        [OFFER_FLOW_SCENARIO.DEFAULT]: () => ( // TESTS - THIS SHOULDNT SHOW UP
+            <div className="button gray" role="button" disabled>WAITING</div>
+        ),
+    }
 }
 
 export const determineStatus = (sharedProps) => {
-  const { account, voucherDetails } = sharedProps
+    const { account, voucherDetails } = sharedProps
 
-  // status information about the voucher
-  const voucher = voucherDetails ?  {
-    owner: voucherDetails.voucherOwner.toLowerCase() === account?.toLowerCase(),
-    holder: voucherDetails.holder.toLowerCase() === account?.toLowerCase(),
-    commited: voucherDetails.COMMITTED !== null,
-    redeemed: voucherDetails.REDEEMED !== null,
-    complained: voucherDetails.COMPLAINED !== null,
-    refunded: voucherDetails.REFUNDED !== null,
-    cancelled: voucherDetails.CANCELLED !== null,
-    finalized: voucherDetails.FINALIZED !== null,
-  } : {}
+    // status information about the voucher
+    const voucher = voucherDetails ? {
+        owner: voucherDetails.voucherOwner.toLowerCase() === account?.toLowerCase(),
+        holder: voucherDetails.holder.toLowerCase() === account?.toLowerCase(),
+        commited: voucherDetails.COMMITTED !== null,
+        redeemed: voucherDetails.REDEEMED !== null,
+        complained: voucherDetails.COMPLAINED !== null,
+        refunded: voucherDetails.REFUNDED !== null,
+        cancelled: voucherDetails.CANCELLED !== null,
+        finalized: voucherDetails.FINALIZED !== null,
+    } : {}
 
-  const performStatusChecks = () => {
-    return (
-      (voucher.finalized) ? STATUS.FINALIZED:
-      (voucher.cancelled) ? STATUS.CANCELLED:
-      (voucher.refunded) ? STATUS.REFUNDED:
-      (voucher.complained) ? STATUS.COMPLAINED:
-      (!voucherDetails) ? STATUS.OFFERED:
-      (voucher.commited && !voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.COMMITED:
-      (voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.REDEEMED:
-      false
-    )
-  }
+    const performStatusChecks = () => {
+        return (
+            (voucher.finalized) ? STATUS.FINALIZED :
+                (voucher.cancelled) ? STATUS.CANCELLED :
+                    (voucher.refunded) ? STATUS.REFUNDED :
+                        (voucher.complained) ? STATUS.COMPLAINED :
+                            (!voucherDetails) ? STATUS.OFFERED :
+                                (voucher.commited && !voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.COMMITED :
+                                    (voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.REDEEMED :
+                                        false
+        )
+    }
 
-  const status = performStatusChecks()
-  console.log(status)
-  console.log(voucherDetails)
-  const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
+    const status = performStatusChecks()
+    console.log(status)
+    console.log(voucherDetails)
+    const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
 
-  return OFFER_FLOW_SCENARIO[role][status]
+    return OFFER_FLOW_SCENARIO[role][status]
 }
 
 // ------- Functions
 
 export const getControlState = (sharedProps) => {
-  const voucherStatus = determineStatus(sharedProps)
+    const voucherStatus = determineStatus(sharedProps)
 
-  const controls = controlList(sharedProps)
+    const controls = controlList(sharedProps)
 
-  console.log('status: ', voucherStatus)
+    console.log('status: ', voucherStatus)
 
-  return voucherStatus ? 
-  controls[voucherStatus] && controls[voucherStatus]()
-  : null
+    return voucherStatus ?
+        controls[voucherStatus] && controls[voucherStatus]()
+        : null
 }
 
-export const prepareEscrowData = (sharedProps) => {
-  const { voucherDetails, voucherStatus } = sharedProps
+export const prepareEscrowData = async (sharedProps) => {
+    const { voucherDetails, voucherStatus, account, modalContext } = sharedProps;
+    const payments = await getPayments(voucherDetails, account, modalContext);
+    console.log(payments);
 
-  return escrowPositionMapping[voucherStatus] ?
-  {
-    PAYMENT: {
-      title: 'PAYMENT',
-      value: `${ voucherDetails?.price } ${voucherDetails?.currency}`,
-      position: escrowPositionMapping[voucherStatus]?.PAYMENT,
-    },
-    BUYER_DEPOSIT: {
-      title: 'BUYER DEPOSIT',
-      value: `${ voucherDetails?.buyerDeposit } ${voucherDetails?.currency}`,
-      position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
-    },
-    SELLER_DEPOSIT: {
-      title: 'SELLER DEPOSIT',
-      value: `${ voucherDetails?.sellerDeposit } ${voucherDetails?.currency}`,
-      position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
-    },
-  }
-  : false
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.buyer));
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.seller));
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.escrow));
+
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.buyer));
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.seller));
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.escrow));
+
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.buyer));
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.seller));
+    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.escrow));
+
+    return escrowPositionMapping[voucherStatus] ?
+        {
+            PAYMENT: {
+                title: 'PAYMENT',
+                value: `${ voucherDetails?.price } ${ voucherDetails?.currency }`,
+                position: escrowPositionMapping[voucherStatus]?.PAYMENT,
+            },
+            BUYER_DEPOSIT: {
+                title: 'BUYER DEPOSIT',
+                value: `${ voucherDetails?.buyerDeposit } ${ voucherDetails?.currency }`,
+                position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
+            },
+            SELLER_DEPOSIT: {
+                title: 'SELLER DEPOSIT',
+                value: `${ voucherDetails?.sellerDeposit } ${ voucherDetails?.currency }`,
+                position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
+            },
+        }
+        : false
+}
+
+async function getPayments(voucherDetails, account, modalContext) {
+    if (!account) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'Please connect your wallet account'
+        }));
+        return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    try {
+        return await getPaymentsDetails(voucherDetails.id, authData.authToken);
+    } catch (e) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message
+        }));
+    }
 }
 
 export async function onCommitToBuy(props) {
-  const { history, modalContext, library, account, setLoading, voucherSetDetails, cashierContract } = props
+    const { history, modalContext, library, account, setLoading, voucherSetDetails, cashierContract } = props
 
-  if (!library || !account) {
-      modalContext.dispatch(ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: 'Please connect your wallet account'
-      }));
-      return;
-  }
+    if (!library || !account) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'Please connect your wallet account'
+        }));
+        return;
+    }
 
-  setLoading(1)
+    setLoading(1)
 
-  const voucherSetInfo = voucherSetDetails;
+    const voucherSetInfo = voucherSetDetails;
 
-  if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
-      setLoading(0);
-      modalContext.dispatch(ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: 'The connected account is the owner of the voucher set'
-      }));
-      return;
-  }
+    if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'The connected account is the owner of the voucher set'
+        }));
+        return;
+    }
 
 
+    const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
+    const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
+    const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+    const supplyId = voucherSetInfo._tokenIdSupply;
 
-  const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
-  const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
-  const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
-  const supplyId = voucherSetInfo._tokenIdSupply;
+    let tx;
+    let metadata = {};
+    let data;
 
-  let tx;
-  let metadata = {};
-  let data;
+    try {
+        tx = await cashierContract.requestVoucher_ETH_ETH(supplyId, voucherSetInfo.voucherOwner, {
+            value: txValue.toString()
+        });
 
-  try {
-      tx = await cashierContract.requestVoucher_ETH_ETH(supplyId, voucherSetInfo.voucherOwner, {
-          value: txValue.toString()
-      });
+        const receipt = await tx.wait();
 
-      const receipt = await tx.wait();
+        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
 
-      let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
+        data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
 
-      data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message
+        }));
+        return;
+    }
 
-  } catch (e) {
-      setLoading(0);
-      modalContext.dispatch(ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message
-      }));
-      return;
-  }
+    metadata = {
+        txHash: tx.hash,
+        _tokenIdSupply: supplyId,
+        _tokenIdVoucher: data[0].toString(),
+        _issuer: data[1],
+        _holder: data[2]
+    };
 
-  metadata = {
-      txHash: tx.hash,
-      _tokenIdSupply: supplyId,
-      _tokenIdVoucher: data[0].toString(),
-      _issuer: data[1],
-      _holder: data[2]
-  };
+    const authData = getAccountStoredInLocalStorage(account);
 
-  const authData = getAccountStoredInLocalStorage(account);
+    try {
+        const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+        console.log(commitToBuyResponse);
 
-  try {
-      const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-      console.log(commitToBuyResponse);
+        history.push(ROUTE.ActivityVouchers)
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message
+        }));
+    }
 
-      history.push(ROUTE.ActivityVouchers)
-  } catch (e) {
-      setLoading(0);
-      modalContext.dispatch(ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message
-      }));
-  }
-
-  setLoading(0)
+    setLoading(0)
 }
 
 export async function onComplain(props) {
-  const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
-  
-  if (!library || !account) {
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: 'Please connect your wallet account'
-    }));
-    return;
-  }
+    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
 
-  setLoading(1);
+    if (!library || !account) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'Please connect your wallet account'
+        }));
+        return;
+    }
 
-  let tx;
-  const authData = getAccountStoredInLocalStorage(account);
+    setLoading(1);
 
-  try {
-    tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
+    let tx;
+    const authData = getAccountStoredInLocalStorage(account);
 
-    const receipt = await tx.wait();
-    console.log(receipt, 'receipt')
+    try {
+        tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
 
-    let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-    console.log(encodedTopic, 'encodedTopic')
+        const receipt = await tx.wait();
+        console.log(receipt, 'receipt')
 
-  } catch (e) {
-    setLoading(0);
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: e.message + ' :233'
-    }));
-    return;
-  }
+        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+        console.log(encodedTopic, 'encodedTopic')
+
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :233'
+        }));
+        return;
+    }
 
 
-  try {
-    const data = {
-      _id: voucherId,
-      status: VOUCHER_STATUSES.COMPLAINED
-    };
+    try {
+        const data = {
+            _id: voucherId,
+            status: VOUCHER_STATUSES.COMPLAINED
+        };
 
-    const complainResponse = await updateVoucher(data, authData.authToken);
-    console.log(complainResponse)
-  } catch (e) {
-    setLoading(0);
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: e.message + ' :252'
-    }));
-  }
+        const complainResponse = await updateVoucher(data, authData.authToken);
+        console.log(complainResponse)
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :252'
+        }));
+    }
 
-  setLoading(0)
+    setLoading(0)
 }
 
 export async function onRefund(props) {
-  const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
-  
-  if (!library || !account) {
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: 'Please connect your wallet account'
-    }));
-    return;
-  }
+    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
 
-  setLoading(1);
+    if (!library || !account) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'Please connect your wallet account'
+        }));
+        return;
+    }
 
-  let tx;
-  const authData = getAccountStoredInLocalStorage(account);
+    setLoading(1);
 
-  try {
-    tx = await voucherKernelContract.refund(voucherDetails._tokenIdVoucher);
+    let tx;
+    const authData = getAccountStoredInLocalStorage(account);
 
-    const receipt = await tx.wait();
-    console.log(receipt, 'receipt')
+    try {
+        tx = await voucherKernelContract.refund(voucherDetails._tokenIdVoucher);
 
-    let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-    console.log(encodedTopic, 'encodedTopic')
+        const receipt = await tx.wait();
+        console.log(receipt, 'receipt')
 
-  } catch (e) {
-    setLoading(0);
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: e.message + ' :233'
-    }));
-    return;
-  }
+        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+        console.log(encodedTopic, 'encodedTopic')
+
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :233'
+        }));
+        return;
+    }
 
 
-  try {
-    const data = {
-      _id: voucherId,
-      status: VOUCHER_STATUSES.REFUNDED
-    };
+    try {
+        const data = {
+            _id: voucherId,
+            status: VOUCHER_STATUSES.REFUNDED
+        };
 
-    const refundResponse = await updateVoucher(data, authData.authToken);
-    console.log(refundResponse)
-  } catch (e) {
-    setLoading(0);
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: e.message + ' :252'
-    }));
-  }
+        const refundResponse = await updateVoucher(data, authData.authToken);
+        console.log(refundResponse)
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :252'
+        }));
+    }
 
-  setLoading(0)
+    setLoading(0)
 }
 
 export async function onCoF(props) {
-  const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
-  
-  if (!library || !account) {
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: 'Please connect your wallet account'
-    }));
-    return;
-  }
+    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
 
-  setLoading(1);
+    if (!library || !account) {
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: 'Please connect your wallet account'
+        }));
+        return;
+    }
 
-  let tx;
-  const authData = getAccountStoredInLocalStorage(account);
+    setLoading(1);
 
-  try {
-    tx = await voucherKernelContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+    let tx;
+    const authData = getAccountStoredInLocalStorage(account);
 
-    const receipt = await tx.wait();
-    console.log(receipt, 'receipt')
+    try {
+        tx = await voucherKernelContract.cancelOrFault(voucherDetails._tokenIdVoucher);
 
-    let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-    console.log(encodedTopic, 'encodedTopic')
+        const receipt = await tx.wait();
+        console.log(receipt, 'receipt')
 
-  } catch (e) {
-    setLoading(0);
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: e.message + ' :233'
-    }));
-    return;
-  }
+        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+        console.log(encodedTopic, 'encodedTopic')
+
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :233'
+        }));
+        return;
+    }
 
 
-  try {
-    const data = {
-      _id: voucherId,
-      status: VOUCHER_STATUSES.CANCELLED
-    };
+    try {
+        const data = {
+            _id: voucherId,
+            status: VOUCHER_STATUSES.CANCELLED
+        };
 
-    const cancelResponse = await updateVoucher(data, authData.authToken);
-    console.log(cancelResponse)
-  } catch (e) {
-    setLoading(0);
-    modalContext.dispatch(ModalResolver.showModal({
-      show: true,
-      type: MODAL_TYPES.GENERIC_ERROR,
-      content: e.message + ' :252'
-    }));
-  }
+        const cancelResponse = await updateVoucher(data, authData.authToken);
+        console.log(cancelResponse)
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :252'
+        }));
+    }
 
-  setLoading(0)
+    setLoading(0)
 }
