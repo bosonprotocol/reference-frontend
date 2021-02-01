@@ -44,7 +44,8 @@ export const controlList = (sharedProps) => {
     <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
   )
 
-  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = () => (
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = 
+  CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
     <ContractInteractionButton
         className="button primary"
         handleClick={ () => onCommitToBuy(sharedProps) }
@@ -80,6 +81,10 @@ export const determineStatus = (sharedProps) => {
   const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
   const status = voucherResource && statusPropagate()
 
+  console.log('status: ', OFFER_FLOW_SCENARIO[role][status])
+  console.log('voucher: ', voucherDetails ? voucherDetails : voucherSetDetails)
+
+  // status: undefined - user that has not logged in
   return OFFER_FLOW_SCENARIO[role][status]
 }
 
@@ -115,7 +120,6 @@ export const prepareEscrowData = async (sharedProps) => {
     }
     // voucherDetails?.sellerDeposit
     const tablePositions = {}
-    
 
     tablePositions.price = tableMatrixSet('payment')
     tablePositions.buyerDeposit = tableMatrixSet('buyerDeposit')
@@ -123,7 +127,7 @@ export const prepareEscrowData = async (sharedProps) => {
 
 
     // this is to check if the block should be positioned in the escrow column
-    Object.entries(tablePositions).forEach(entry => tablePositions[entry[0]][1] = entry[1].reduce((acc, val) => acc + val) ? tablePositions[entry[0]][1] : voucherDetails[entry[0]]) // only god can judge me
+    Object.entries(tablePositions)?.forEach(entry =>  tablePositions[entry[0]][1] = entry[1].length ? (entry[1]?.reduce((acc, val) => acc + val) ? tablePositions[entry[0]][1] : voucherDetails[entry[0]]) : 0) // only god can judge me
 
     return (
       {

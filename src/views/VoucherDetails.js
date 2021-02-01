@@ -11,6 +11,7 @@ import { formatDate } from "../helpers/Format"
 import "./VoucherDetails.scss"
 
 import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent"
+import { HorizontalScrollView } from "rc-horizontal-scroll";
 
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
@@ -51,8 +52,6 @@ function VoucherDetails(props) {
 
     const differenceInPercent = (x, y) => (x / y) * 100
     const expiryProgress = voucherDetails && differenceInPercent(daysPast, daysAvailable) + '%';
-
-    const statusColor = 1
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
@@ -135,6 +134,24 @@ function VoucherDetails(props) {
 
     const controls = getControlState(sharedProps)
 
+    console.log({ voucherDetails: voucherDetails, statusColor: 1, blockType: 'commited' })
+
+    const statusBlocks = voucherDetails ? [ ] : null
+
+    if(voucherDetails) {
+        if(voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
+        if(voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
+        if(voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })
+        if(voucherDetails.REFUNDED) statusBlocks.push({ title: 'REFUNDED', date: voucherDetails.REFUNDED })
+        if(voucherDetails.CANCELLED) statusBlocks.push({ title: 'CANCELLED', date: voucherDetails.CANCELLED })
+        if(voucherDetails.FINALIZED) statusBlocks.push({ title: 'FINALIZED', date: voucherDetails.FINALIZED })
+
+        statusBlocks[statusBlocks.length -1].color = 2
+        if(statusBlocks.length === 1) statusBlocks[0].color = 1
+    }
+
+    console.log(statusBlocks)
+
     return (
         <>
             { loading ? <Loading/> : null }
@@ -149,14 +166,17 @@ function VoucherDetails(props) {
                         <div className="section title">
                             <h1>{ getProp('title') }</h1>
                         </div>
-                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
+                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks ?
                             <div className="section status">
                             <h2>Status</h2>
                             <div className="status-container flex">
-                                <div className={ `status-block color_${ statusColor }` }>
-                                    <h3 className="status-name">COMMITED</h3>
-                                    <p className="status-details">{ formatDate(voucherDetails?.commitedDate, 'string') }</p>
-                                </div>
+                            <HorizontalScrollView
+                                items={statusBlocks}
+                                ItemComponent={statusBlockComponent}
+                                defaultSpace='0'
+                                spaceBetweenItems='8px'
+                                moveSpeed={1}
+                            />
                             </div>
                         </div>
                         :null}
@@ -165,7 +185,7 @@ function VoucherDetails(props) {
                             <div className="expiration-container flex split">
                                 <p>Expiration Time</p>
                                 <div className="time-left flex column center">
-                                    <p>{daysAvailable - daysPast > 0 ? `${daysAvailable - daysPast} DAY${daysAvailable - daysPast > 1 ? 'S' : null} LEFT` : 'EXPIRED'}</p>
+                                    <p>{daysAvailable - daysPast > 0 ? `${daysAvailable - daysPast} DAY${daysAvailable - daysPast > 1 ? 'S' : ''} LEFT` : 'EXPIRED'}</p>
                                     <div ref={ expiryProgressBar } className="progress"></div>
                                 </div>
                             </div>
@@ -214,5 +234,14 @@ function VoucherDetails(props) {
         </>
     )
 }
+
+function statusBlockComponent({ item, index }) {
+    return (
+        <div key={index} className={`status-block color_${ item.color }`}>
+            <h3 className="status-name">{item.title}</h3>
+            <p className="status-details">{formatDate(item.date, 'string')}</p>
+        </div>
+    );
+  }
 
 export default VoucherDetails

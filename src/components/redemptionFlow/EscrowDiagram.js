@@ -16,7 +16,7 @@ function EscrowDiagram(props) {
                     <section className="escrow-diagram vertical no-bg">
                         <div className="section-title flex split">
                             <h2>Payment and Deposits</h2>
-                            <div className="info" role="button">?</div>
+                            {/* <div className="info" role="button">?</div> */}
                         </div>
                         <div className="semi-container">
                             <div className="top-row flex ai-center jc-end">
@@ -46,7 +46,7 @@ const EscrowRow = (props) => {
             <div className="block flex relative">
                 
                 {
-                    position.map((block, index) => block ? <div className={ `cell val position_${ index+1 } color_${ color }` }>{ `${block} ${currency}` }</div> : null) 
+                    position.map((block, index) => block ? <div key={index} className={ `cell val position_${ index+1 } color_${ color }` }>{ `${block} ${currency}` }</div> : null) 
                 }
                 <div className="cell"></div>
                 <div className="cell"></div>

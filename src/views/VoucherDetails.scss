@@ -30,6 +30,15 @@
     @include table;
 
     .section {
+      .table {
+        & > .row {
+          .block:nth-child(even) {
+            .text {
+              text-align: right;
+            }
+          }
+        }
+      }
       .table + .table,
       .row + .row  {
         margin-top: 18px;
@@ -51,6 +60,7 @@
             background: #25303D;
             box-sizing: border-box;
             border-radius: 8px;
+            border: 1px solid #4C6581;
 
             & + .status-block {
               margin-left: 8px;
@@ -58,10 +68,17 @@
 
             &.color {
               &_1 {
-                border: 2px solid #4DC0FD;
+                border: 1px solid #4DC0FD;
                 
                 .status-name {
                   color: #4DC0FD;
+                }
+              }
+              &_2 {
+                border: 1px solid #77F2BC;
+                
+                .status-name {
+                  color: #77F2BC;
                 }
               }
             }
@@ -197,5 +214,33 @@
   }
   .control-wrap {
     margin-top: 30px;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.rc__horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.rc__horizontal-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.rc__horizontal-scroll {
+  position: relative;
+
+  &::before {
+    content: '';
+    width: 100%;
+    position: absolute;
+    top: calc(50% - 2px);
+    left: 0;
+    right: 0;
+    border-top: 2px dashed #4C6581;
+  }
+  .rc__item-container {
+    z-index: 2;
   }
 }
