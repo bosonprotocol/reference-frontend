@@ -7,116 +7,80 @@ import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 import { commitToBuy, getPaymentsDetails, updateVoucher } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-
-// ------------ Settings related to the status of the voucher
-
-const setEscrowPositions = (status, object) =>
-    escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.BUYER][status]] =
-        escrowPositionMapping[OFFER_FLOW_SCENARIO[ROLE.SELLER][status]] = object
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 
 // xy position of blocks on escrow table
 // falsy values will append "display: none"
-export const escrowPositionMapping = {}
-setEscrowPositions(STATUS.OFFERED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 1,
-    SELLER_DEPOSIT: 2,
-})
-setEscrowPositions(STATUS.COMMITED, {
-    PAYMENT: 2,
-    BUYER_DEPOSIT: 2,
-    SELLER_DEPOSIT: 2,
-})
-setEscrowPositions(STATUS.REDEEMED, {
-    PAYMENT: 2,
-    BUYER_DEPOSIT: 2,
-    SELLER_DEPOSIT: 2,
-})
-setEscrowPositions(STATUS.COMPLAINED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
-setEscrowPositions(STATUS.REFUNDED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
-setEscrowPositions(STATUS.CANCELLED, {
-    PAYMENT: 1,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
-setEscrowPositions(STATUS.FINALIZED, {
-    PAYMENT: 3,
-    BUYER_DEPOSIT: 3,
-    SELLER_DEPOSIT: 1,
-})
+export const escrowPositionMapping = {
+  PAYMENT: [0],
+  BUYER_DEPOSIT: [0],
+  SELLER_DEPOSIT: [0],
+}
 
 // assign controlset to statuses
 export const controlList = (sharedProps) => {
-    const { voucherDetails, voucherSetDetails } = sharedProps
+  const { voucherDetails, voucherSetDetails } = sharedProps
+  const CASE = {}
 
-    return {
-        [OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]]: () => (
-            <div className="button gray" onClick={ () => onCoF(sharedProps) } role="button">Cancel or fault</div>
-        ),
-        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]]: () => (
-            <div className="flex dual split">
-                <div className="button refund" role="button" onClick={ () => onRefund(sharedProps) }>REFUND</div>
-                <Link
-                    to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                    <div className="button primary" role="button">REDEEM</div>
-                </Link>
-            </div>
-        ),
-        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]]: () => (
-            <div className="button red" role="button" onClick={ () => onComplain(sharedProps) }>COMPLAIN</div>
-        ),
-        [OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]]: () => (
-            <div className="button primary" role="button" onClick={ () => onCommitToBuy(sharedProps) }>COMMIT TO
-                BUY { voucherSetDetails?.price }</div>
-        ),
-        [OFFER_FLOW_SCENARIO.DEFAULT]: () => ( // TESTS - THIS SHOULDNT SHOW UP
-            <div className="button gray" role="button" disabled>WAITING</div>
-        ),
-    }
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+    <div className="button gray" onClick={ () => onCoF(sharedProps)} role="button">Cancel or fault</div>
+  )
+
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
+    <div className="flex dual split">
+      <div className="button refund" role="button" onClick={ () => onRefund(sharedProps)}>REFUND</div>
+      <Link
+        to={ `${ ROUTE.VoucherDetails }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+        <div className="button primary" role="button">REDEEM</div>
+      </Link>
+    </div>
+  )
+
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+    <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
+  )
+
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = () => (
+    <ContractInteractionButton
+        className="button primary"
+        handleClick={ () => onCommitToBuy(sharedProps) }
+        label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+    />
+  )
+
+  return CASE
 }
 
 export const determineStatus = (sharedProps) => {
-    const { account, voucherDetails } = sharedProps
+  const { account, voucherDetails, voucherSetDetails } = sharedProps
 
-    // status information about the voucher
-    const voucher = voucherDetails ? {
-        owner: voucherDetails.voucherOwner.toLowerCase() === account?.toLowerCase(),
-        holder: voucherDetails.holder.toLowerCase() === account?.toLowerCase(),
-        commited: voucherDetails.COMMITTED !== null,
-        redeemed: voucherDetails.REDEEMED !== null,
-        complained: voucherDetails.COMPLAINED !== null,
-        refunded: voucherDetails.REFUNDED !== null,
-        cancelled: voucherDetails.CANCELLED !== null,
-        finalized: voucherDetails.FINALIZED !== null,
-    } : {}
+  const voucherResource = voucherDetails ? voucherDetails : (voucherSetDetails ? voucherSetDetails : false)
 
-    const performStatusChecks = () => {
-        return (
-            (voucher.finalized) ? STATUS.FINALIZED :
-                (voucher.cancelled) ? STATUS.CANCELLED :
-                    (voucher.refunded) ? STATUS.REFUNDED :
-                        (voucher.complained) ? STATUS.COMPLAINED :
-                            (!voucherDetails) ? STATUS.OFFERED :
-                                (voucher.commited && !voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.COMMITED :
-                                    (voucher.redeemed && !voucher.refunded && !voucher.canceled) ? STATUS.REDEEMED :
-                                        false
-        )
-    }
+  const voucherRoles = {
+    owner: voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase(),
+    holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase(),
+  }
 
-    const status = performStatusChecks()
-    console.log(status)
-    console.log(voucherDetails)
-    const role = voucher.owner ? ROLE.SELLER : ROLE.BUYER
+  const statusPropagate = () => (
+    voucherResource.FINALIZED ? STATUS.FINALIZED:
+    voucherResource.CANCELLED ? STATUS.CANCELLED:
+    voucherResource.COMPLAINED ? STATUS.COMPLAINED:
+    voucherResource.REFUNDED ? STATUS.REFUNDED:
+    voucherResource.REDEEMED ? STATUS.REDEEMED:
+    voucherResource.COMMITTED ? STATUS.COMMITED:
+    !voucherResource?.qty ? STATUS.VIEW_ONLY:
+    !voucherResource.COMMITTED ? STATUS.OFFERED:
+    false
+  )
 
-    return OFFER_FLOW_SCENARIO[role][status]
+  const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
+  const status = voucherResource && statusPropagate()
+
+  return OFFER_FLOW_SCENARIO[role][status]
 }
 
 // ------- Functions
@@ -126,49 +90,60 @@ export const getControlState = (sharedProps) => {
 
     const controls = controlList(sharedProps)
 
-    console.log('status: ', voucherStatus)
-
     return voucherStatus ?
         controls[voucherStatus] && controls[voucherStatus]()
         : null
 }
 
 export const prepareEscrowData = async (sharedProps) => {
-    const { voucherDetails, voucherStatus, account, modalContext } = sharedProps;
+    const { voucherDetails, account, modalContext } = sharedProps;
     const payments = await getPayments(voucherDetails, account, modalContext);
-    console.log(payments);
 
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.buyer));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.seller));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.payment?.escrow));
+    const getPaymentMatrixSet = (row, column) => ethers.utils.formatEther(payments.distributedAmounts[row][column])
 
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.buyer));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.seller));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.buyerDeposit?.escrow));
+    const tableMatrixSet = (row) => {
+      const positionArray = [];
 
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.buyer));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.seller));
-    console.log(ethers.utils.formatEther(payments?.distributedAmounts?.sellerDeposit?.escrow));
+      if(payments?.distributedAmounts[row]) {
 
-    return escrowPositionMapping[voucherStatus] ?
-        {
-            PAYMENT: {
-                title: 'PAYMENT',
-                value: `${ voucherDetails?.price } ${ voucherDetails?.currency }`,
-                position: escrowPositionMapping[voucherStatus]?.PAYMENT,
-            },
-            BUYER_DEPOSIT: {
-                title: 'BUYER DEPOSIT',
-                value: `${ voucherDetails?.buyerDeposit } ${ voucherDetails?.currency }`,
-                position: escrowPositionMapping[voucherStatus]?.BUYER_DEPOSIT,
-            },
-            SELLER_DEPOSIT: {
-                title: 'SELLER DEPOSIT',
-                value: `${ voucherDetails?.sellerDeposit } ${ voucherDetails?.currency }`,
-                position: escrowPositionMapping[voucherStatus]?.SELLER_DEPOSIT,
-            },
-        }
-        : false
+        positionArray.push(Number(getPaymentMatrixSet(row, 'buyer')))
+        positionArray.push(Number(getPaymentMatrixSet(row, 'escrow')))
+        positionArray.push(Number(getPaymentMatrixSet(row, 'seller')))
+      }
+      
+      return positionArray
+    }
+    // voucherDetails?.sellerDeposit
+    const tablePositions = {}
+    
+
+    tablePositions.price = tableMatrixSet('payment')
+    tablePositions.buyerDeposit = tableMatrixSet('buyerDeposit')
+    tablePositions.sellerDeposit = tableMatrixSet('sellerDeposit')
+
+
+    // this is to check if the block should be positioned in the escrow column
+    Object.entries(tablePositions).forEach(entry => tablePositions[entry[0]][1] = entry[1].reduce((acc, val) => acc + val) ? tablePositions[entry[0]][1] : voucherDetails[entry[0]]) // only god can judge me
+
+    return (
+      {
+        PAYMENT: {
+            title: 'PAYMENT',
+            currency: voucherDetails?.currency,
+            position: tablePositions.price,
+        },
+        BUYER_DEPOSIT: {
+            title: 'BUYER DEPOSIT',
+            currency: voucherDetails?.currency,
+            position: tablePositions.buyerDeposit,
+        },
+        SELLER_DEPOSIT: {
+            title: 'SELLER DEPOSIT',
+            currency: voucherDetails?.currency,
+            position: tablePositions.sellerDeposit,
+        },
+      }
+    )
 }
 
 async function getPayments(voucherDetails, account, modalContext) {
