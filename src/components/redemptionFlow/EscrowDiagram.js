@@ -16,7 +16,7 @@ function EscrowDiagram(props) {
                     <section className="escrow-diagram vertical no-bg">
                         <div className="section-title flex split">
                             <h2>Payment and Deposits</h2>
-                            <div className="info" role="button">?</div>
+                            {/* <div className="info" role="button">?</div> */}
                         </div>
                         <div className="semi-container">
                             <div className="top-row flex ai-center jc-end">
