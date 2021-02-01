@@ -30,6 +30,15 @@
     @include table;
 
     .section {
+      .table {
+        & > .row {
+          .block:nth-child(even) {
+            .text {
+              text-align: right;
+            }
+          }
+        }
+      }
       .table + .table,
       .row + .row  {
         margin-top: 18px;
