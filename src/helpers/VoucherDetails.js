@@ -81,11 +81,19 @@ export const determineStatus = (sharedProps) => {
   const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
   const status = voucherResource && statusPropagate()
 
+  // don't show actions if:
+  const blockActionConditions = [
+    new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
+    new Date() <= new Date(voucherResource?.startDate), // has future start date
+    voucherResource?.qty <= 0, // no quantity
+  ]
+
   console.log('status: ', OFFER_FLOW_SCENARIO[role][status])
-  console.log('voucher: ', voucherDetails ? voucherDetails : voucherSetDetails)
+  console.log('voucher: ', voucherResource)
+  console.log('block action conditions: ', blockActionConditions)
 
   // status: undefined - user that has not logged in
-  return OFFER_FLOW_SCENARIO[role][status]
+  return !blockActionConditions.includes(true) ? OFFER_FLOW_SCENARIO[role][status] : undefined
 }
 
 // ------- Functions
