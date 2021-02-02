@@ -35,6 +35,7 @@ export const ROUTE = {
     Activity: '/activity',
     ActivityVouchers: '/activity-vouchers',
     VoucherDetails: '/voucher',
+    VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
     Default: '/default',
     PARAMS: {

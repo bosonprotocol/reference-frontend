@@ -113,7 +113,7 @@ const Block = (props) => {
 
     return (
         <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+            <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>

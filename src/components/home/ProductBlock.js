@@ -24,7 +24,7 @@ function ProductBlock(props) {
     // };
 
     return (
-        <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+        <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
         <div
             // onClick={ openProduct }
             className={ `product-block ${ productType }  ${ animate ? 'animate' : '' }` }
