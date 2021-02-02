@@ -29,6 +29,22 @@ const sortBlocks = (blocksArray) => {
     return sortedBlocks
 }
 
+const getDesiredBlockType = (blockType, props, id) => ( blockType === blockTypes.account ?
+    <SingleVoucherBlock { ...props } key={id} />:
+    <VoucherSetBlock { ...props } key={id} />
+)
+
+const ActiveTab = (props) => {
+    const { products, blockType } = props
+    return (
+        <div className="vouchers-container">
+            {
+                products.map((block, id) => getDesiredBlockType(blockType, block, id))
+            }
+        </div>
+    )
+}
+
 function ActivityView(props) {
     const { voucherBlocks, blockType } = props
     const history = useHistory()
@@ -111,22 +127,6 @@ export function ActivityAccountVouchers() {
     return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.account} /> : null
 }
 
-const getDesiredBlockType = (blockType, props, id) => ( blockType = blockTypes.account ?
-    <SingleVoucherBlock { ...props } key={id} />:
-    <VoucherSetBlock { ...props } key={id} />
-)
-
-const ActiveTab = (props) => {
-    const { products, blockType } = props
-    return (
-        <div className="vouchers-container">
-            {
-                products.map((block, id) => getDesiredBlockType(blockType, block, id))
-            }
-        </div>
-    )
-}
-
 const VoucherSetBlock = (props) => {
     const { title, image, price, qty, id } = props
 
@@ -140,7 +140,7 @@ const VoucherSetBlock = (props) => {
                 </div>
                 <div className="info grow">
                     <div className="status">
-                        <p>VOUCHER</p>
+                        <p>VOUCHER SET</p>
                     </div>
                     <div className="title elipsis">{ title }</div>
                     <div className="price flex split">
