@@ -1,5 +1,10 @@
 import { getAllVoucherSets } from "../hooks/api";
 import * as ethers from "ethers";
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { MODAL_TYPES } from "../helpers/Dictionary";
+import { getVouchers } from "../hooks/api";
+import { ModalResolver } from "../contexts/Modal";
+
 
 export async function fetchVoucherSets() {
   const allVoucherSets = await getAllVoucherSets();
@@ -66,6 +71,28 @@ export const prepareVoucherData = (rawVouchers) => {
   }
 
   return parsedVouchers
+}
+
+export async function getAccountVouchers(account, modalContext) {
+  if (!account) {
+      return;
+  }
+
+  const authData = getAccountStoredInLocalStorage(account);
+
+  if (!authData.activeToken) {
+      modalContext.dispatch(ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
+      }));
+      return;
+  }
+
+  const allAccountVouchers = await getVouchers(authData.authToken);
+  const vouchersParsed = allAccountVouchers.voucherData && prepareVoucherData(allAccountVouchers.voucherData)
+
+  return vouchersParsed ? vouchersParsed : undefined
 }
 
 export const prepareVoucherDetails = (rawVoucher) => {

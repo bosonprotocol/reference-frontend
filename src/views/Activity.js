@@ -13,24 +13,30 @@ import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import ProductView from "../components/shared/ProductView"
+const blockTypes = {
+    account: 1,
+    voucherSet: 2,
+}
 
+const sortBlocks = (blocksArray) => {
+    const sortedBlocks = {}
 
-function Activity() {
-    const [productBlocks, setProductBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
-    
-    const voucherSets = globalContext.state.allVoucherSets
+    console.log(blocksArray)
 
+    sortedBlocks.active = blocksArray.filter(block => block.qty > 0)
+    sortedBlocks.inactive = blocksArray.filter(block => block.qty <= 0)
+
+    return sortedBlocks
+}
+
+function ActivityView(props) {
+    const { voucherBlocks, blockType } = props
     const history = useHistory()
 
-    useEffect(() => {
-        voucherSets ?
-            setProductBlocks(voucherSets)
-            : setProductBlocks([])
+    const blocksSorted = sortBlocks(voucherBlocks)
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [voucherSets])
+    const activeVouchers = blocksSorted.active
+    const inactiveVouchers = blocksSorted.inactive
 
     return (
         <>
@@ -47,7 +53,7 @@ function Activity() {
                     </Link>
                 </div>
                 <div className="title">
-                    <h1>Activity</h1>
+                    <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
                 <Tabs>
                     <TabList>
@@ -56,58 +62,73 @@ function Activity() {
                     </TabList>
 
                     <TabPanel>
-                        { <ActiveView products={ productBlocks }/> }
+                        { <ActiveTab blockType={blockType} products={ activeVouchers }/> }
                     </TabPanel>
                     <TabPanel>
-                        { <InactiveView products={ productBlocks }/> }
+                        { <ActiveTab blockType={blockType} products={ inactiveVouchers }/> }
                     </TabPanel>
                 </Tabs>
 
             </div>
         </section>
-        {
-            globalContext.state.productView.open ?
-                <ProductView/> :
-                null
-        }
         </>
     )
 }
 
+export function ActivityVoucherSets() {
+    const [voucherBlocks, setVoucherBlocks] = useState([])
+    const globalContext = useContext(GlobalContext);
+    
+    const voucherSets = globalContext.state.allVoucherSets
 
-const ActiveView = (props) => {
-    const { products } = props
+    useEffect(() => {
+        voucherSets ?
+            setVoucherBlocks(voucherSets)
+            : setVoucherBlocks([])
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [voucherSets])
+
+    return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.voucherSet} /> : null
+}
+
+export function ActivityAccountVouchers() {
+    const [voucherBlocks, setVoucherBlocks] = useState([])
+    const globalContext = useContext(GlobalContext);
+    
+    const accountVouchers = globalContext.state.accountVouchers
+
+    console.log(accountVouchers)
+
+    useEffect(() => {
+        accountVouchers ?
+            setVoucherBlocks(accountVouchers)
+            : setVoucherBlocks([])
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountVouchers])
+
+    return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.account} /> : null
+}
+
+const getDesiredBlockType = (blockType, props, id) => ( blockType = blockTypes.account ?
+    <SingleVoucherBlock { ...props } key={id} />:
+    <VoucherSetBlock { ...props } key={id} />
+)
+
+const ActiveTab = (props) => {
+    const { products, blockType } = props
     return (
         <div className="vouchers-container">
             {
-                products.map((block, id) => <Block { ...block } key={ id }/>)
+                products.map((block, id) => getDesiredBlockType(blockType, block, id))
             }
         </div>
     )
 }
 
-const InactiveView = () => {
-    return (
-        <div className="vouchers-container">
-            ... No vouchers
-        </div>
-    )
-}
-
-const Block = (props) => {
+const VoucherSetBlock = (props) => {
     const { title, image, price, qty, id } = props
-
-    // const globalContext = useContext(GlobalContext);
-
-    // useEffect(() => {
-    //     let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
-    //     let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
-
-    //     if (parseInt(openProductView))
-    //         globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
-
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
 
     const currency = 'ETH'; // ToDo: implement it
 
@@ -134,4 +155,32 @@ const Block = (props) => {
     )
 }
 
-export default Activity
+const SingleVoucherBlock = (props) => {
+    const { title, image, price, qty, id } = props
+
+    const currency = 'ETH'; // ToDo: implement it
+
+    return (
+        <div className="voucher-block flex">
+            <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+                <div className="thumb no-shrink">
+                    <img src={ image } alt={ title }/>
+                </div>
+                <div className="info grow">
+                    <div className="status">
+                        <p>VOUCHER</p>
+                    </div>
+                    <div className="title elipsis">{ title }</div>
+                    <div className="price flex split">
+                        <div className="value flex center"><img src="images/icon-eth.png"
+                            alt="eth"/> { price } { currency }
+                        </div>
+                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    </div>
+                </div>
+            </Link>
+        </div>
+    )
+}
+
+
