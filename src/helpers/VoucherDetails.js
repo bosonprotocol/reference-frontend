@@ -88,10 +88,6 @@ export const determineStatus = (sharedProps) => {
     voucherResource?.qty <= 0, // no quantity
   ]
 
-  console.log('status: ', OFFER_FLOW_SCENARIO[role][status])
-  console.log('voucher: ', voucherResource)
-  console.log('block action conditions: ', blockActionConditions)
-
   // status: undefined - user that has not logged in
   return !blockActionConditions.includes(true) ? OFFER_FLOW_SCENARIO[role][status] : undefined
 }

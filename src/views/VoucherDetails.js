@@ -134,8 +134,6 @@ function VoucherDetails(props) {
 
     const controls = getControlState(sharedProps)
 
-    console.log({ voucherDetails: voucherDetails, statusColor: 1, blockType: 'commited' })
-
     const statusBlocks = voucherDetails ? [ ] : null
 
     if(voucherDetails) {
@@ -149,9 +147,7 @@ function VoucherDetails(props) {
         statusBlocks[statusBlocks.length -1].color = 2
         if(statusBlocks.length === 1) statusBlocks[0].color = 1
     }
-
-    console.log(statusBlocks)
-
+    
     return (
         <>
             { loading ? <Loading/> : null }
