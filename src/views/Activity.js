@@ -8,7 +8,7 @@ import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
-import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
+import { Arrow, IconQR, Quantity, QRCodeScaner } from "../components/shared/Icons"
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -128,7 +128,7 @@ export function ActivityAccountVouchers() {
 }
 
 const VoucherSetBlock = (props) => {
-    const { title, image, price, qty, id } = props
+    const { title, image, price, qty, } = props //id  
 
     const currency = 'ETH'; // ToDo: implement it
 
@@ -152,6 +152,19 @@ const VoucherSetBlock = (props) => {
                 </div>
             </div>
         </div>
+        // <div className="voucher-block solo sub flex ai-center">
+        //     <div className="img no-shrink">
+        //         <QRCodeScaner />
+        //     </div>
+        //     <div className="description">
+        //         <h2 className="title elipsis">Nike Adapt Self-Lacing...</h2>
+        //         <div className="expiration">2 days left before expire</div>
+        //     </div>
+        //     <div className="statuses">
+        //         <div className="label">COMMITED</div>
+        //         <div className="label">REDEEMED</div>
+        //     </div>
+        // </div>
     )
 }
 
@@ -166,11 +179,13 @@ const SingleVoucherBlock = (props) => {
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
-                <div className="info grow">
-                    <div className="status">
-                        <p>VOUCHER</p>
+                <div className="info grow flex jc-sb column">
+                    <div className="title-container">
+                        <div className="status">
+                            <p>VOUCHER</p>
+                        </div>
+                        <div className="title elipsis">{ title }</div>
                     </div>
-                    <div className="title elipsis">{ title }</div>
                     <div className="price flex split">
                         <div className="value flex center"><img src="images/icon-eth.png"
                             alt="eth"/> { price } { currency }

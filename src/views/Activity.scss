@@ -70,8 +70,54 @@ section.activity {
         }
       }
 
+      &.sub {
+        min-height: 92px;
+        padding-right: 100px;
+        position: relative
+        
+      }
+
       & + .voucher-block  {
         margin-top: 20px;
+      }
+
+      .description {
+        margin-left: 16px;
+
+        .expiration {
+          margin-top: 7px;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 14px;
+
+          color: #4C6581;
+        }
+      }
+
+      .statuses {
+        position: absolute;
+        top: 50%;
+        right: 13px;
+        transform: translateY(-50%);
+
+        .label {
+          background: #358EF5;
+          border-radius: 4px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: center;
+          color: #FFFFFF;
+
+          & + .label {
+            margin-top: 3px;
+            padding: 5px;
+          }
+        }
       }
 
       .status {

@@ -110,3 +110,17 @@ export const Quantity = (props) => (
     </defs>
   </svg>
 )
+
+export const QRCodeScaner = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38" fill="none">
+  <path d="M0 8C0 3.58172 3.58172 0 8 0H30C34.4183 0 38 3.58172 38 8V30C38 34.4183 34.4183 38 30 38H8C3.58172 38 0 34.4183 0 30V8Z" fill={props.fill ? props.fill : '#1D2834' }/>
+  <rect x="11.2061" y="12.2061" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
+  <rect x="11.2061" y="20.7563" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
+  <rect x="19.7578" y="20.7563" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
+  <rect x="19.7578" y="12.1948" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
+  <path d="M14.7689 9.00049H12.5286C10.0275 9.00049 8 11.028 8 13.5291V15.7694" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
+  <path d="M22.9626 30.7314L25.2029 30.7314C27.7039 30.7314 29.7314 28.7039 29.7314 26.2029L29.7314 23.9626" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
+  <path d="M8 23.9626L8 26.2029C8 28.7039 10.0275 30.7314 12.5286 30.7314L14.7689 30.7314" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
+  <path d="M29.7314 15.7689L29.7314 13.5286C29.7314 11.0275 27.7039 9 25.2029 9L22.9626 9" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
+  </svg>
+)
