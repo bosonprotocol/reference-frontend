@@ -70,7 +70,8 @@ section.activity {
         }
       }
 
-      &.sub {
+      &.sub,
+      a {
         min-height: 92px;
         padding-right: 100px;
         position: relative
@@ -112,10 +113,33 @@ section.activity {
           line-height: 14px;
           text-align: center;
           color: #FFFFFF;
+          padding: 5px;
 
+          &.color {
+            &_CANCELLED {
+              background: #69819B;
+            }
+            &_COMMITED {
+              background: #358EF5;
+            }
+            &_COMPLAINED {
+              background: #F35D7C;
+            }
+            &_FINALIZED {
+              background: #358EF5;
+            }
+            &_REDEEMED {
+              background: #15BB9D;
+            }
+            &_REFUNDED {
+              background: #E7B85E;
+            }
+            &_EXPIRED {
+              background: #8E80D1;
+            }
+          }
           & + .label {
-            margin-top: 3px;
-            padding: 5px;
+            margin-top: 5px;
           }
         }
       }

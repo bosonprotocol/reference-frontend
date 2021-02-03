@@ -16,14 +16,13 @@ import { HorizontalScrollView } from "rc-horizontal-scroll";
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
 import { Arrow } from "../components/shared/Icons"
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";
-import { MODAL_TYPES, ROLE } from "../helpers/Dictionary";
-import { ModalContext, ModalResolver } from "../contexts/Modal";
+import { ROLE } from "../helpers/Dictionary";
+import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import Loading from "../components/offerFlow/Loading";
 
-import { prepareVoucherDetails } from "../helpers/VoucherParsers"
+import { initVoucherDetails } from "../helpers/VoucherParsers"
 
 import { prepareEscrowData, determineStatus, getControlState } from "../helpers/VoucherDetails"
 
@@ -78,31 +77,11 @@ function VoucherDetails(props) {
     }, [expiryProgress])
 
     useEffect(() => {
-        async function initVoucherDetails() {
-            if (!account) {
-                return;
-            }
-
-            const authData = getAccountStoredInLocalStorage(account);
-
-            if (!authData.activeToken) {
-                modalContext.dispatch(ModalResolver.showModal({
-                    show: true,
-                    type: MODAL_TYPES.GENERIC_ERROR,
-                    content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
-                }));
-                return;
-            }
-
-            const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-            const parsedVoucher = prepareVoucherDetails(rawVoucherDetails.voucher);
-            
-            if(parsedVoucher) {
-                setVoucherDetails(parsedVoucher)
-            }
+        if(!voucherSetDetails && account) {
+            initVoucherDetails(account, modalContext, getVoucherDetails, voucherId).then(result => {
+                setVoucherDetails(result)
+            })
         }
-
-        if(!voucherSetDetails) initVoucherDetails()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
@@ -134,9 +113,9 @@ function VoucherDetails(props) {
 
     const controls = getControlState(sharedProps)
 
-    const statusBlocks = voucherDetails ? [ ] : null
+    const statusBlocks = voucherDetails ? [ ] : false
 
-    if(voucherDetails) {
+    if(!!voucherDetails) {
         if(voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
         if(voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
         if(voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })

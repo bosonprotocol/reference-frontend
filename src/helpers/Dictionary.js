@@ -19,6 +19,7 @@ export const DIC = {
     SHOW_MODAL: 'show_modal',
     ALL_VOUCHER_SETS: 'all_voucher_sets',
     ACCOUNT_VOUCHERS: 'account_vouchers',
+    UPDATE_ACCOUNT: 'update_account',
 }
 
 // CONTROL strings are used to execute commands related to Context

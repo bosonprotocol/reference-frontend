@@ -19,6 +19,7 @@ export const GlobalInitialState = {
   allVoucherSets: [],
   accountVouchers: [],
   fetchVoucherSets: 1,
+  account: null,
 };
 
 export const Action = {
@@ -53,6 +54,11 @@ export const Action = {
 
   fetchVoucherSets: () => ({
     type: DIC.FETCH_VOUCHER_SETS,
+  }),
+
+  updateAccount: (account) => ({
+    type: DIC.UPDATE_ACCOUNT,
+    payload: account,
   }),
 }
 
@@ -100,6 +106,11 @@ export const GlobalReducer = (state, action) => {
     [DIC.ACCOUNT_VOUCHERS]: () => {
       return {
         accountVouchers: action.payload
+      }
+    },
+    [DIC.UPDATE_ACCOUNT]: () => {
+      return {
+        account: action.payload
       }
     },
     [DIC.FETCH_VOUCHER_SETS]: () => {

@@ -25,6 +25,8 @@ function PopulateVouchers() {
     getAccountVouchers(account, modalContext).then(result => {
       globalContext.dispatch(Action.accountVouchers(result))
     })
+
+    globalContext.dispatch(Action.updateAccount(account))
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
 

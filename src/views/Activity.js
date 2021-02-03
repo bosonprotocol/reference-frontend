@@ -10,6 +10,10 @@ import { ROUTE } from "../helpers/Dictionary"
 
 import { Arrow, IconQR, Quantity, QRCodeScaner } from "../components/shared/Icons"
 
+import { initVoucherDetails } from "../helpers/VoucherParsers"
+import { ModalContext } from "../contexts/Modal";
+import { getVoucherDetails } from "../hooks/api";
+
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
@@ -169,9 +173,21 @@ const VoucherSetBlock = (props) => {
 }
 
 const SingleVoucherBlock = (props) => {
-    const { title, image, price, qty, id } = props
+    const { title, image, price, id } = props
+
+    const globalContext = useContext(GlobalContext);
+    const modalContext = useContext(ModalContext);
+    const [voucherData, setVoucherData] = useState()
+
 
     const currency = 'ETH'; // ToDo: implement it
+
+    useEffect(() => {
+        initVoucherDetails(globalContext.state.account, modalContext, getVoucherDetails, id).then(result => {
+            setVoucherData(result)
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <div className="voucher-block flex">
@@ -190,8 +206,16 @@ const SingleVoucherBlock = (props) => {
                         <div className="value flex center"><img src="images/icon-eth.png"
                             alt="eth"/> { price } { currency }
                         </div>
-                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>
+                </div>
+                <div className="statuses">
+                    {voucherData?.FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null}
+                    {voucherData ? new Date() > new Date(voucherData.expiryDate) ? <div className="label color_EXPIRED">EXPIRED</div> : null : null}
+                    {voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null}
+                    {voucherData?.COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null}
+                    {voucherData?.COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null}
+                    {voucherData?.REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null}
+                    {voucherData?.REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null}
                 </div>
             </Link>
         </div>
