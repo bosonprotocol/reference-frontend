@@ -127,20 +127,22 @@ export function ActivityAccountVouchers() {
     return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.account} /> : null
 }
 
-const ChildVoucherBlock = ({title, expiration}) => (
-    <div className="voucher-block solo sub flex ai-center">
-        <div className="img no-shrink">
-            <QRCodeScaner />
+const ChildVoucherBlock = ({title, expiration, id}) => (
+    <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+        <div className="voucher-block solo sub flex ai-center">
+            <div className="img no-shrink">
+                <QRCodeScaner />
+            </div>
+            <div className="description">
+                <h2 className="title elipsis">{title}</h2>
+                {/* <div className="expiration">{expiration}</div> */}
+            </div>
+            {/* <div className="statuses">
+                <div className="label">COMMITED</div>
+                <div className="label">REDEEMED</div>
+            </div> */}
         </div>
-        <div className="description">
-            <h2 className="title elipsis">{title}</h2>
-            {/* <div className="expiration">{expiration}</div> */}
-        </div>
-        {/* <div className="statuses">
-            <div className="label">COMMITED</div>
-            <div className="label">REDEEMED</div>
-        </div> */}
-    </div>
+    </Link>
 )
 
 const VoucherSetBlock = (props) => {
@@ -151,7 +153,7 @@ const VoucherSetBlock = (props) => {
 
     useEffect(() => {
         if(globalContext.state.allVoucherSets) setMatchingVouchers(globalContext.state.allVoucherSets.filter(voucher => voucher.id === _id))
-        
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -177,7 +179,7 @@ const VoucherSetBlock = (props) => {
                 </div>
             </div>
             <div className="child-vouchers">
-                {matchingVouchers ? matchingVouchers.map(voucher => <ChildVoucherBlock key={voucher.id} title={voucher.title} expiration={2} />) : null}
+                {matchingVouchers ? matchingVouchers.map(voucher => <ChildVoucherBlock key={voucher.id} id={voucher.id} title={voucher.title} expiration={2} />) : null}
             </div>
         </div>
     )
