@@ -118,9 +118,9 @@ export const QRCodeScaner = (props) => (
   <rect x="11.2061" y="20.7563" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
   <rect x="19.7578" y="20.7563" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
   <rect x="19.7578" y="12.1948" width="6.76889" height="6.76889" rx="1.94082" fill={props.color ? props.color : '#BDC9D7'}/>
-  <path d="M14.7689 9.00049H12.5286C10.0275 9.00049 8 11.028 8 13.5291V15.7694" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
-  <path d="M22.9626 30.7314L25.2029 30.7314C27.7039 30.7314 29.7314 28.7039 29.7314 26.2029L29.7314 23.9626" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
-  <path d="M8 23.9626L8 26.2029C8 28.7039 10.0275 30.7314 12.5286 30.7314L14.7689 30.7314" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
-  <path d="M29.7314 15.7689L29.7314 13.5286C29.7314 11.0275 27.7039 9 25.2029 9L22.9626 9" stroke={props.color ? props.color : '#BDC9D7'} stroke-width="1.16069"/>
+  <path d="M14.7689 9.00049H12.5286C10.0275 9.00049 8 11.028 8 13.5291V15.7694" stroke={props.color ? props.color : '#BDC9D7'} strokeWidth="1.16069"/>
+  <path d="M22.9626 30.7314L25.2029 30.7314C27.7039 30.7314 29.7314 28.7039 29.7314 26.2029L29.7314 23.9626" stroke={props.color ? props.color : '#BDC9D7'} strokeWidth="1.16069"/>
+  <path d="M8 23.9626L8 26.2029C8 28.7039 10.0275 30.7314 12.5286 30.7314L14.7689 30.7314" stroke={props.color ? props.color : '#BDC9D7'} strokeWidth="1.16069"/>
+  <path d="M29.7314 15.7689L29.7314 13.5286C29.7314 11.0275 27.7039 9 25.2029 9L22.9626 9" stroke={props.color ? props.color : '#BDC9D7'} strokeWidth="1.16069"/>
   </svg>
 )

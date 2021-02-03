@@ -8,7 +8,7 @@ import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
-import { Arrow, IconQR, Quantity, QRCodeScaner } from "../components/shared/Icons"
+import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
 
 import { initVoucherDetails } from "../helpers/VoucherParsers"
 import { ModalContext } from "../contexts/Modal";
@@ -17,34 +17,40 @@ import { getVoucherDetails } from "../hooks/api";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-const blockTypes = {
-    account: 1,
-    voucherSet: 2,
+import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+
+export function ActivityAccountVouchers() {
+    const [voucherBlocks, setVoucherBlocks] = useState([])
+    const globalContext = useContext(GlobalContext);
+    
+    const accountVouchers = globalContext.state.accountVouchers
+  
+    useEffect(() => {
+        accountVouchers ?
+            setVoucherBlocks(accountVouchers)
+            : setVoucherBlocks([])
+  
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountVouchers])
+  
+    return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.account} /> : null
 }
 
-const sortBlocks = (blocksArray) => {
-    const sortedBlocks = {}
+export function ActivityVoucherSets() {
+    const [voucherBlocks, setVoucherBlocks] = useState([])
+    const globalContext = useContext(GlobalContext);
+    
+    const voucherSets = globalContext.state.allVoucherSets
 
-    sortedBlocks.active = blocksArray.filter(block => block.qty > 0)
-    sortedBlocks.inactive = blocksArray.filter(block => block.qty <= 0)
+    useEffect(() => {
+        voucherSets ?
+            setVoucherBlocks(voucherSets)
+            : setVoucherBlocks([])
 
-    return sortedBlocks
-}
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [voucherSets])
 
-const getDesiredBlockType = (blockType, props, id) => ( blockType === blockTypes.account ?
-    <SingleVoucherBlock { ...props } key={id} />:
-    <VoucherSetBlock { ...props } key={id} />
-)
-
-const ActiveTab = (props) => {
-    const { products, blockType } = props
-    return (
-        <div className="vouchers-container">
-            {
-                products.map((block, id) => getDesiredBlockType(blockType, block, id))
-            }
-        </div>
-    )
+    return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.voucherSet} /> : null
 }
 
 function ActivityView(props) {
@@ -93,59 +99,7 @@ function ActivityView(props) {
     )
 }
 
-export function ActivityVoucherSets() {
-    const [voucherBlocks, setVoucherBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
-    
-    const voucherSets = globalContext.state.allVoucherSets
-
-    useEffect(() => {
-        voucherSets ?
-            setVoucherBlocks(voucherSets)
-            : setVoucherBlocks([])
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [voucherSets])
-
-    return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.voucherSet} /> : null
-}
-
-export function ActivityAccountVouchers() {
-    const [voucherBlocks, setVoucherBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
-    
-    const accountVouchers = globalContext.state.accountVouchers
-
-    useEffect(() => {
-        accountVouchers ?
-            setVoucherBlocks(accountVouchers)
-            : setVoucherBlocks([])
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accountVouchers])
-
-    return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.account} /> : null
-}
-
-const ChildVoucherBlock = ({title, expiration, id}) => (
-    <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
-        <div className="voucher-block solo sub flex ai-center">
-            <div className="img no-shrink">
-                <QRCodeScaner />
-            </div>
-            <div className="description">
-                <h2 className="title elipsis">{title}</h2>
-                {/* <div className="expiration">{expiration}</div> */}
-            </div>
-            {/* <div className="statuses">
-                <div className="label">COMMITED</div>
-                <div className="label">REDEEMED</div>
-            </div> */}
-        </div>
-    </Link>
-)
-
-const VoucherSetBlock = (props) => {
+export const VoucherSetBlock = (props) => {
     const [expand, setExpand] = useState(-1)
     const [matchingVouchers, setMatchingVouchers] = useState([])
     const { title, image, price, qty, currency, _id } = props //id  
@@ -185,7 +139,7 @@ const VoucherSetBlock = (props) => {
     )
 }
 
-const SingleVoucherBlock = (props) => {
+export const SingleVoucherBlock = (props) => {
     const { title, image, price, currency, id } = props
 
     const globalContext = useContext(GlobalContext);
