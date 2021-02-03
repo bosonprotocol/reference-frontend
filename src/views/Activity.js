@@ -25,8 +25,6 @@ const blockTypes = {
 const sortBlocks = (blocksArray) => {
     const sortedBlocks = {}
 
-    console.log(blocksArray)
-
     sortedBlocks.active = blocksArray.filter(block => block.qty > 0)
     sortedBlocks.inactive = blocksArray.filter(block => block.qty <= 0)
 
@@ -118,8 +116,6 @@ export function ActivityAccountVouchers() {
     
     const accountVouchers = globalContext.state.accountVouchers
 
-    console.log(accountVouchers)
-
     useEffect(() => {
         accountVouchers ?
             setVoucherBlocks(accountVouchers)
@@ -131,56 +127,68 @@ export function ActivityAccountVouchers() {
     return voucherBlocks.length ? <ActivityView voucherBlocks={voucherBlocks} blockType={blockTypes.account} /> : null
 }
 
-const VoucherSetBlock = (props) => {
-    const { title, image, price, qty, } = props //id  
+const ChildVoucherBlock = ({title, expiration}) => (
+    <div className="voucher-block solo sub flex ai-center">
+        <div className="img no-shrink">
+            <QRCodeScaner />
+        </div>
+        <div className="description">
+            <h2 className="title elipsis">{title}</h2>
+            {/* <div className="expiration">{expiration}</div> */}
+        </div>
+        {/* <div className="statuses">
+            <div className="label">COMMITED</div>
+            <div className="label">REDEEMED</div>
+        </div> */}
+    </div>
+)
 
-    const currency = 'ETH'; // ToDo: implement it
+const VoucherSetBlock = (props) => {
+    const [expand, setExpand] = useState(-1)
+    const [matchingVouchers, setMatchingVouchers] = useState([])
+    const { title, image, price, qty, currency, _id } = props //id  
+    const globalContext = useContext(GlobalContext);
+
+    useEffect(() => {
+        if(globalContext.state.allVoucherSets) setMatchingVouchers(globalContext.state.allVoucherSets.filter(voucher => voucher.id === _id))
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
-        <div className="voucher-block solo flex">
-            <div className="thumb no-shrink">
-                <img src={ image } alt={ title }/>
+        <div className={`collapsible state_${expand > 0 ? 'opened' : 'collapsed'}`}>
+            <div className="voucher-block solo flex relative" onClick={() => setExpand(expand*-1)}>
+                <div className="thumb no-shrink">
+                    <img src={ image } alt={ title }/>
+                </div>
+                <div className="info grow flex column jc-sb">
+                    <div className="title-container">
+                        <div className="status">
+                            <p>VOUCHER SET</p>
+                        </div>
+                        <div className="title elipsis">{ title }</div>
+                    </div>
+                    <div className="price flex split">
+                        <div className="value flex center"><img src="images/icon-eth.png"
+                            alt="eth"/> { price } { currency }
+                        </div>
+                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                    </div>
+                </div>
             </div>
-            <div className="info grow flex column jc-sb">
-                <div className="title-container">
-                    <div className="status">
-                        <p>VOUCHER SET</p>
-                    </div>
-                    <div className="title elipsis">{ title }</div>
-                </div>
-                <div className="price flex split">
-                    <div className="value flex center"><img src="images/icon-eth.png"
-                        alt="eth"/> { price } { currency }
-                    </div>
-                    <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
-                </div>
+            <div className="child-vouchers">
+                {matchingVouchers ? matchingVouchers.map(voucher => <ChildVoucherBlock key={voucher.id} title={voucher.title} expiration={2} />) : null}
             </div>
         </div>
-        // <div className="voucher-block solo sub flex ai-center">
-        //     <div className="img no-shrink">
-        //         <QRCodeScaner />
-        //     </div>
-        //     <div className="description">
-        //         <h2 className="title elipsis">Nike Adapt Self-Lacing...</h2>
-        //         <div className="expiration">2 days left before expire</div>
-        //     </div>
-        //     <div className="statuses">
-        //         <div className="label">COMMITED</div>
-        //         <div className="label">REDEEMED</div>
-        //     </div>
-        // </div>
     )
 }
 
 const SingleVoucherBlock = (props) => {
-    const { title, image, price, id } = props
+    const { title, image, price, currency, id } = props
 
     const globalContext = useContext(GlobalContext);
     const modalContext = useContext(ModalContext);
     const [voucherData, setVoucherData] = useState()
-
-
-    const currency = 'ETH'; // ToDo: implement it
 
     useEffect(() => {
         initVoucherDetails(globalContext.state.account, modalContext, getVoucherDetails, id).then(result => {

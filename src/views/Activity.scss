@@ -48,6 +48,23 @@ section.activity {
   }
   .vouchers-container {
     margin-top: 40px;
+
+    .collapsible {
+      .voucher-block {
+        margin-top: 10px;
+      }
+      &.state {
+        &_collapsed {
+          .child-vouchers {
+            display: none;
+          }
+        }
+      }
+
+      & + .collapsible {
+        margin-top: 20px;
+      }
+    }
     .voucher-block {
       a,
       &.solo {

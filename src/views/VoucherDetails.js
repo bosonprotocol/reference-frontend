@@ -24,7 +24,7 @@ import Loading from "../components/offerFlow/Loading";
 
 import { initVoucherDetails } from "../helpers/VoucherParsers"
 
-import { prepareEscrowData, determineStatus, getControlState } from "../helpers/VoucherDetails"
+import { prepareEscrowData, determineStatus, getControlState } from "../helpers/VoucherDetailsHelper"
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)

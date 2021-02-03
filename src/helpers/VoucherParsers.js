@@ -1,8 +1,7 @@
-import { getAllVoucherSets } from "../hooks/api";
+import { getAllVoucherSets, getVouchers } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { MODAL_TYPES } from "../helpers/Dictionary";
-import { getVouchers } from "../hooks/api";
 import { ModalResolver } from "../contexts/Modal";
 
 
@@ -37,6 +36,7 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
           startDate: voucherSet.startDate,
           txHash: voucherSet.txHash,
           visible: voucherSet.visible,
+          currency: voucherSet.currency ? voucherSet._currency : 'ETH',
           voucherOwner: voucherSet.voucherOwner,
           __v: voucherSet.__v,
           _id: voucherSet._id,
@@ -65,6 +65,7 @@ export const prepareVoucherData = (rawVouchers) => {
           expiryDate: voucher.expiryDate,
           description: voucher.description,
           category: voucher.category,
+          currency: voucher.currency ? voucher._currency : 'ETH',
       };
 
       parsedVouchers.push(parsedVoucher)
@@ -132,7 +133,6 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
   }
   
   const authData = getAccountStoredInLocalStorage(account);
-
 
   if (!authData.activeToken) {
       modalContext.dispatch(ModalResolver.showModal({

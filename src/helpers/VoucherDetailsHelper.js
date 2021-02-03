@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MODAL_TYPES, OFFER_FLOW_SCENARIO, ROLE, ROUTE, STATUS } from "../helpers/Dictionary";
+import { MODAL_TYPES, OFFER_FLOW_SCENARIO, ROLE, ROUTE, STATUS } from "./Dictionary";
 import { ModalResolver } from "../contexts/Modal";
 import { decodeData, getEncodedTopic } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";

@@ -16,6 +16,7 @@ export const GlobalInitialState = {
     state: DIC.NAV.DEF
   },
   qrReaderActivated: 0,
+  allVouchers: [],
   allVoucherSets: [],
   accountVouchers: [],
   fetchVoucherSets: 1,
@@ -44,6 +45,11 @@ export const Action = {
 
   allVoucherSets: (state) => ({
     type: DIC.ALL_VOUCHER_SETS,
+    payload: state
+  }),
+
+  updateAllVouchers: (state) => ({
+    type: DIC.ALL_VOUCHERS,
     payload: state
   }),
 
@@ -116,6 +122,11 @@ export const GlobalReducer = (state, action) => {
     [DIC.FETCH_VOUCHER_SETS]: () => {
       return {
         fetchVoucherSets: state.fetchVoucherSets * -1
+      }
+    },
+    [DIC.ALL_VOUCHERS]: () => {
+      return {
+        allVouchers: action.payload
       }
     },
   };
