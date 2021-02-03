@@ -103,7 +103,6 @@ export const GlobalReducer = (state, action) => {
       }
     },
     [DIC.FETCH_VOUCHER_SETS]: () => {
-      console.log(state)
       return {
         fetchVoucherSets: state.fetchVoucherSets * -1
       }

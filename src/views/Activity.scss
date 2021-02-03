@@ -5,7 +5,7 @@ section.activity {
   min-height: 100vh;
   padding-top: 60px;
   
-  .title {
+  .page-title {
     margin-top: 21px;
     margin-bottom: 28px;
 
@@ -106,6 +106,7 @@ section.activity {
         font-style: normal;
         font-weight: 500;
         position: relative;
+        padding: 10px 0;
 
         width: calc(80% - 80px);
         flex: 8 0 auto;
@@ -135,19 +136,15 @@ section.activity {
         }
         .title {
           font-weight: 500;
-          font-size: 14px;
+          font-size: 16px;
           line-height: 17px;
+          padding: 7px 0;
 
           color: #FFFFFF;
 
           @media (min-width: 1366px) {
             font-size: 20px;
           }
-        }
-        .price {
-          width: 100%;
-          position: absolute;
-          bottom: 12px;
         }
         .value {
           text-transform: uppercase;

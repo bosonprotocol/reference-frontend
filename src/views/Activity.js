@@ -68,7 +68,7 @@ function ActivityView(props) {
                         <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
                     </Link>
                 </div>
-                <div className="title">
+                <div className="page-title">
                     <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
                 <Tabs>
@@ -133,24 +133,24 @@ const VoucherSetBlock = (props) => {
     const currency = 'ETH'; // ToDo: implement it
 
     return (
-        <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
-                <div className="thumb no-shrink">
-                    <img src={ image } alt={ title }/>
-                </div>
-                <div className="info grow">
+        <div className="voucher-block solo flex">
+            <div className="thumb no-shrink">
+                <img src={ image } alt={ title }/>
+            </div>
+            <div className="info grow flex column jc-sb">
+                <div className="title-container">
                     <div className="status">
                         <p>VOUCHER SET</p>
                     </div>
                     <div className="title elipsis">{ title }</div>
-                    <div className="price flex split">
-                        <div className="value flex center"><img src="images/icon-eth.png"
-                            alt="eth"/> { price } { currency }
-                        </div>
-                        <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
-                    </div>
                 </div>
-            </Link>
+                <div className="price flex split">
+                    <div className="value flex center"><img src="images/icon-eth.png"
+                        alt="eth"/> { price } { currency }
+                    </div>
+                    <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
+                </div>
+            </div>
         </div>
     )
 }

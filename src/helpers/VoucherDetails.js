@@ -40,6 +40,7 @@ export const controlList = (sharedProps) => {
   )
 
   CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
   CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
     <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
   )
