@@ -9,6 +9,7 @@ export const DIC = {
     UPDATE_OFFERING_DATA: 'update_offering_data',
     LOAD_OFFERING_BACKUP: 'load_offering_backup',
     RESET_OFFERING_DATA: 'reset_offering_data',
+    FETCH_VOUCHER_SETS: 'fetch_voucher_sets',
     NAV: {
         CONTROL: 'navigationControl',
         DEF: 'default_view',
@@ -16,7 +17,10 @@ export const DIC = {
         REDEEM: 'redeem',
     },
     SHOW_MODAL: 'show_modal',
-    ALL_VOUCHER_SETS: 'all_voucher_sets'
+    ALL_VOUCHER_SETS: 'all_voucher_sets',
+    ALL_VOUCHERS: 'all_vouchers',
+    ACCOUNT_VOUCHERS: 'account_vouchers',
+    UPDATE_ACCOUNT: 'update_account',
 }
 
 // CONTROL strings are used to execute commands related to Context
@@ -32,9 +36,10 @@ export const ROUTE = {
     ConnectToMetamask: '/connect-to-metamask',
     ShowQR: '/show-qr-code',
     NewOffer: '/new-offer',
-    Activity: '/activity',
-    ActivityVouchers: '/activity-vouchers',
+    Activity: '/voucher-sets',
+    ActivityVouchers: '/voucher-activity',
     VoucherDetails: '/voucher',
+    VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
     Default: '/default',
     PARAMS: {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MODAL_TYPES, OFFER_FLOW_SCENARIO, ROLE, ROUTE, STATUS } from "../helpers/Dictionary";
+import { MODAL_TYPES, OFFER_FLOW_SCENARIO, ROLE, ROUTE, STATUS } from "./Dictionary";
 import { ModalResolver } from "../contexts/Modal";
 import { decodeData, getEncodedTopic } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
@@ -40,6 +40,7 @@ export const controlList = (sharedProps) => {
   )
 
   CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
+  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
   CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
     <div className="button red" role="button" onClick={ () => onComplain(sharedProps)}>COMPLAIN</div>
   )
@@ -81,11 +82,15 @@ export const determineStatus = (sharedProps) => {
   const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
   const status = voucherResource && statusPropagate()
 
-  console.log('status: ', OFFER_FLOW_SCENARIO[role][status])
-  console.log('voucher: ', voucherDetails ? voucherDetails : voucherSetDetails)
+  // don't show actions if:
+  const blockActionConditions = [
+    new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
+    new Date() <= new Date(voucherResource?.startDate), // has future start date
+    voucherResource?.qty <= 0, // no quantity
+  ]
 
   // status: undefined - user that has not logged in
-  return OFFER_FLOW_SCENARIO[role][status]
+  return !blockActionConditions.includes(true) ? OFFER_FLOW_SCENARIO[role][status] : undefined
 }
 
 // ------- Functions

@@ -16,7 +16,11 @@ export const GlobalInitialState = {
     state: DIC.NAV.DEF
   },
   qrReaderActivated: 0,
-  allVoucherSets: []
+  allVouchers: [],
+  allVoucherSets: [],
+  accountVouchers: [],
+  fetchVoucherSets: 1,
+  account: null,
 };
 
 export const Action = {
@@ -42,7 +46,26 @@ export const Action = {
   allVoucherSets: (state) => ({
     type: DIC.ALL_VOUCHER_SETS,
     payload: state
-  })
+  }),
+
+  updateAllVouchers: (state) => ({
+    type: DIC.ALL_VOUCHERS,
+    payload: state
+  }),
+
+  accountVouchers: (state) => ({
+    type: DIC.ACCOUNT_VOUCHERS,
+    payload: state
+  }),
+
+  fetchVoucherSets: () => ({
+    type: DIC.FETCH_VOUCHER_SETS,
+  }),
+
+  updateAccount: (account) => ({
+    type: DIC.UPDATE_ACCOUNT,
+    payload: account,
+  }),
 }
 
 export const GlobalReducer = (state, action) => {
@@ -85,7 +108,27 @@ export const GlobalReducer = (state, action) => {
       return {
         allVoucherSets: action.payload
       }
-    }
+    },
+    [DIC.ACCOUNT_VOUCHERS]: () => {
+      return {
+        accountVouchers: action.payload
+      }
+    },
+    [DIC.UPDATE_ACCOUNT]: () => {
+      return {
+        account: action.payload
+      }
+    },
+    [DIC.FETCH_VOUCHER_SETS]: () => {
+      return {
+        fetchVoucherSets: state.fetchVoucherSets * -1
+      }
+    },
+    [DIC.ALL_VOUCHERS]: () => {
+      return {
+        allVouchers: action.payload
+      }
+    },
   };
 
   return {

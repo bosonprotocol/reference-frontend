@@ -124,21 +124,21 @@ function NewOffer() {
     // price number inputs
     else if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
       if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value <= 0) return 'Value cannot be less or equal to 0'
       if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
 
       return false
     }
     else if(input === NAME.SELLER_DEPOSIT && getData(NAME.SELLER_DEPOSIT_C)) {
       if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value <= 0) return 'Value cannot be less or equal to 0'
       if(value > sellerSettings[sellerCurrency].max) return `The maximum value is ${sellerSettings[sellerCurrency].max}`
 
       return false
     }
     else if(input === NAME.BUYER_DEPOSIT && getData(NAME.PRICE_C)) {
       if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot less or equal to 0'
+      if(value <= 0) return 'Value cannot be less or equal to 0'
       if(value > buyerSettings[priceCurrency].max) return `The maximum value is ${buyerSettings[priceCurrency].max}`
 
       return false
