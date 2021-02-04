@@ -4,17 +4,16 @@ import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import MessageScreen from "../shared/MessageScreen"
 
 import Loading from "./Loading"
-
-import { Redirect } from "react-router-dom"
 
 import { SellerContext } from "../../contexts/Seller"
 import { GlobalContext, Action } from "../../contexts/Global"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
-import { MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
+import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 
 export default function SubmitForm(props) {
@@ -26,6 +25,8 @@ export default function SubmitForm(props) {
     const location = useLocation();
 
     const globalContext = useContext(GlobalContext)
+
+    const messageTitle = "Voucher Sets was published";
 
     const {
         start_date,
@@ -167,7 +168,7 @@ export default function SubmitForm(props) {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <Redirect exact to={ ROUTE.Activity }/>
+                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Activity} />
             }
         </>
     );

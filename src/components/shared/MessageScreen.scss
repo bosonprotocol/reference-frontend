@@ -1,0 +1,55 @@
+.message {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+
+  .container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    padding-top: 200px;
+    padding-bottom: 66px;
+
+    .action .button {
+      position: relative;
+    }
+  }
+
+  .top-side {
+    max-width: 260px;
+  }
+
+  .title {
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 111.4%;
+    /* or 29px */
+
+    margin-top: 50px;
+    text-align: center;
+
+    color: #FFFFFF;
+  }
+
+  .description {
+    margin-top: 20px;
+    font-family: 'Barlow', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 157.4%;
+    /* or 22px */
+
+    text-align: center;
+
+    color: #C1C7CE;
+  }
+}
