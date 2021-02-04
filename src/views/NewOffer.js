@@ -263,7 +263,10 @@ function NewOffer() {
       }
 
       input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
-      input.addEventListener(listenerType, (e) => updateData(e.target))
+      const listenerExceptions = [NAME.DESCRIPTION]
+      const appendListener = listenerExceptions.includes(input.name) ? 'input' : listenerType
+      
+      input.addEventListener(appendListener, (e) => updateData(e.target))
     })
   }
 

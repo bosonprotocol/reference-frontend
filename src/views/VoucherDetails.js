@@ -211,7 +211,6 @@ function VoucherDetails(props) {
 }
 
 function statusBlockComponent({ item, index }) {
-    console.log(item, index)
     return (
         <div key={index} className={`status-block color_${ item.color }`}>
             <h3 className="status-name">{item.title}</h3>
