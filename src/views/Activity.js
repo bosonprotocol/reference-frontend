@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useHistory } from "react-router"
 import { Link } from 'react-router-dom'
 
 import "./Activity.scss"
@@ -8,7 +7,7 @@ import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
-import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
+import { Quantity } from "../components/shared/Icons"
 
 import { initVoucherDetails } from "../helpers/VoucherParsers"
 import { ModalContext } from "../contexts/Modal";
@@ -55,7 +54,6 @@ export function ActivityVoucherSets() {
 
 function ActivityView(props) {
     const { voucherBlocks, blockType } = props
-    const history = useHistory()
 
     const blocksSorted = sortBlocks(voucherBlocks)
 
@@ -66,16 +64,6 @@ function ActivityView(props) {
         <>
         <section className="activity atomic-scoped">
             <div className="container">
-                <div className="top-navigation flex split">
-                    <div className="button square dark" role="button"
-                         onClick={ () => history.goBack() }
-                    >
-                        <Arrow color="#80F0BE"/>
-                    </div>
-                    <Link to={ROUTE.CodeScanner} >
-                        <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
-                    </Link>
-                </div>
                 <div className="page-title">
                     <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
