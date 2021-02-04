@@ -8,7 +8,7 @@ import Home from './views/Home'
 import Connect from "./views/Connect";
 import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
-import Activity from "./views/Activity"
+import { ActivityVoucherSets, ActivityAccountVouchers } from "./views/Activity"
 import VoucherDetails from "./views/VoucherDetails"
 import QRScanner from "./views/QRScanner"
 import GlobalListeners   from "./views/GlobalListeners"
@@ -37,7 +37,6 @@ import { network } from "./connectors";
 
 import { ROUTE } from "./helpers/Dictionary"
 import ContextModal from "./components/shared/ContextModal";
-import ActivityVouchers from "./views/ActivityVouchers";
 import { authenticateUser, getAccountStoredInLocalStorage } from "./hooks/authenticate";
 
 function App() {
@@ -133,13 +132,11 @@ function App() {
                                                    component={ OnboardingReset }/> {/* delete on prod */ }
                                             <Route path={ ROUTE.ConnectToMetamask } component={ ConnectToMetamask }/>
                                             <Route path={ ROUTE.NewOffer } component={ NewOffer }/>
-                                            <Route path={ ROUTE.Activity } component={ Activity }/>
-                                            <Route path={ ROUTE.ActivityVouchers } component={ ActivityVouchers }/>
-                                            <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode }
-                                                   component={ ShowQR }/>
-                                            <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID }
-                                                   component={ VoucherDetails }/>
-
+                                            <Route path={ ROUTE.Activity } component={ ActivityVoucherSets }/>
+                                            <Route path={ ROUTE.ActivityVouchers } component={ ActivityAccountVouchers }/>
+                                            <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } component={ ShowQR }/>
+                                            <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
+                                            <Route path={ ROUTE.VoucherSetDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
                                         </Switch>
                                         {/* <BottomNavigation /> */ }
                                     </Router>

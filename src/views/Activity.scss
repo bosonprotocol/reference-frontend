@@ -5,7 +5,7 @@ section.activity {
   min-height: 100vh;
   padding-top: 60px;
   
-  .title {
+  .page-title {
     margin-top: 21px;
     margin-bottom: 28px;
 
@@ -48,6 +48,23 @@ section.activity {
   }
   .vouchers-container {
     margin-top: 40px;
+
+    .collapsible {
+      .voucher-block {
+        margin-top: 10px;
+      }
+      &.state {
+        &_collapsed {
+          .child-vouchers {
+            display: none;
+          }
+        }
+      }
+
+      & + .collapsible {
+        margin-top: 20px;
+      }
+    }
     .voucher-block {
       a,
       &.solo {
@@ -70,8 +87,78 @@ section.activity {
         }
       }
 
+      &.sub,
+      a {
+        min-height: 92px;
+        padding-right: 100px;
+        position: relative
+        
+      }
+
       & + .voucher-block  {
         margin-top: 20px;
+      }
+
+      .description {
+        margin-left: 16px;
+
+        .expiration {
+          margin-top: 7px;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 14px;
+
+          color: #4C6581;
+        }
+      }
+
+      .statuses {
+        position: absolute;
+        top: 50%;
+        right: 13px;
+        transform: translateY(-50%);
+
+        .label {
+          background: #358EF5;
+          border-radius: 4px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: center;
+          color: #FFFFFF;
+          padding: 5px;
+
+          &.color {
+            &_CANCELLED {
+              background: #69819B;
+            }
+            &_COMMITED {
+              background: #358EF5;
+            }
+            &_COMPLAINED {
+              background: #F35D7C;
+            }
+            &_FINALIZED {
+              background: #358EF5;
+            }
+            &_REDEEMED {
+              background: #15BB9D;
+            }
+            &_REFUNDED {
+              background: #E7B85E;
+            }
+            &_EXPIRED {
+              background: #8E80D1;
+            }
+          }
+          & + .label {
+            margin-top: 5px;
+          }
+        }
       }
 
       .status {
@@ -106,6 +193,7 @@ section.activity {
         font-style: normal;
         font-weight: 500;
         position: relative;
+        padding: 10px 0;
 
         width: calc(80% - 80px);
         flex: 8 0 auto;
@@ -135,19 +223,15 @@ section.activity {
         }
         .title {
           font-weight: 500;
-          font-size: 14px;
+          font-size: 16px;
           line-height: 17px;
+          padding: 7px 0;
 
           color: #FFFFFF;
 
           @media (min-width: 1366px) {
             font-size: 20px;
           }
-        }
-        .price {
-          width: 100%;
-          position: absolute;
-          bottom: 12px;
         }
         .value {
           text-transform: uppercase;

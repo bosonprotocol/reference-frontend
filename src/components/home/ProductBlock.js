@@ -13,18 +13,8 @@ function ProductBlock(props) {
     const { id, title, image, price, deposit, col, delay, animate } = props
     const productType = col ? "col" : ""
 
-    // const globalContext = useContext(GlobalContext)
-
-    // const openProduct = () => {
-    //     globalContext.dispatch(Action.openProduct(id));
-
-    //     const selectedProduct = globalContext.state.allVoucherSets.find(x => x.id === id);
-
-    //     globalContext.dispatch(Action.navigationControl(selectedProduct?.qty === 0 ? DIC.NAV.DEF : DIC.NAV.COMMIT))
-    // };
-
     return (
-        <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+        <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
         <div
             // onClick={ openProduct }
             className={ `product-block ${ productType }  ${ animate ? 'animate' : '' }` }

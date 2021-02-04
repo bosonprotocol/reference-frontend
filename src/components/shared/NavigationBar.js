@@ -159,7 +159,7 @@ function NavigationBar(props) {
                     { transitionState === DIC.NAV.DEF ?
                         <div className={ `control-wrap flex center ${ DIC.NAV.DEF }` }>
                             <div className="control list flex center" role="button">
-                                <IconList/>
+                                <Link to={ ROUTE.Activity }><IconList/></Link>
                             </div>
                             <div className="control add-product flex center animate" role="button"
                                  style={ { transitionDelay: delay } }>

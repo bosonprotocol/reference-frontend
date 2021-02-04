@@ -10,6 +10,7 @@ import Loading from "./Loading"
 import { Redirect } from "react-router-dom"
 
 import { SellerContext } from "../../contexts/Seller"
+import { GlobalContext, Action } from "../../contexts/Global"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
@@ -23,6 +24,8 @@ export default function SubmitForm(props) {
     const sellerContext = useContext(SellerContext)
     const modalContext = useContext(ModalContext);
     const location = useLocation();
+
+    const globalContext = useContext(GlobalContext)
 
     const {
         start_date,
@@ -100,6 +103,8 @@ export default function SubmitForm(props) {
             prepareVoucherFormData(parsedEvent, dataArr);
 
             await createVoucherSet(formData, authData.authToken);
+
+            globalContext.dispatch(Action.fetchVoucherSets())
 
             setLoading(0)
             resetOfferingData()
