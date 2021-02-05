@@ -5,7 +5,7 @@ import { NavigationContext, Action } from '../../../contexts/Navigation'
 import { ROUTE, AFFMAP } from "../../../helpers/Dictionary"
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
-const affordances = { }
+let affordances = { }
 
 // recieve an array with affordances that should be dispplayed
 const enableControl = (affordancesArray) => {
@@ -45,7 +45,8 @@ function LocationManager() {
   const pageRoute = '/' + location.pathname.split('/')[1]
 
   useEffect(() => {
-    Object.keys(AFFMAP).map(entryKey => affordances[entryKey] = false)
+    affordances = {}
+    Object.keys(AFFMAP).map(entryKey => console.log(entryKey))
     switchLocationMap(pageRoute)
 
     navigationContext.dispatch(Action.updateLocation())

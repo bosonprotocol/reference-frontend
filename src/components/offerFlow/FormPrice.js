@@ -14,31 +14,9 @@ function FormPrice(props) {
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  // const price = getOfferingData(NAME.PRICE)
   const priceCurrency = getOfferingData(NAME.PRICE_C)
-  // const seller = getOfferingData(NAME.SELLER_DEPOSIT)
   const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C)
   const buyer = getOfferingData(NAME.BUYER_DEPOSIT)
-
-  // const focusHandler = (el, toggle) => {
-  //   // focus
-  //   if(toggle) {
-  //     el.parentElement.classList.add("focus")
-
-  //     if(el.value !== getOfferingData(el.name)) el.value = getOfferingData(el.name)
-  //   } 
-  //   // blur
-  //   else {
-  //     el.parentElement.classList.remove("focus")
-
-  //     if(el.parentElement.getAttribute("data-error")) {
-  //       setTimeout(() => {
-  //         el.parentElement.removeAttribute("data-error")
-  //       }, 2000);
-  //     }
-  //     if(el.value > el.max) updateData(el.name, el.max, el)
-  //   }
-  // }
 
   return (
     <div className="price">
@@ -52,10 +30,7 @@ function FormPrice(props) {
           <div className="bind">
             <Currencies name={NAME.PRICE_C} />
             <div className="input relative focus">
-              {/* <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${price} ${priceCurrency}`}</div> */}
               <input
-              // onFocus={(e) => focusHandler(e.target, 1)}
-              // onBlur={(e) => focusHandler(e.target, 0)}
               id="offer-price" type="number" name={NAME.PRICE} />
               <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
             </div>
@@ -68,10 +43,7 @@ function FormPrice(props) {
           <div className="bind">
             <Currencies name={NAME.SELLER_DEPOSIT_C} />
             <div className="input relative focus">
-              {/* <div name={NAME.SELLER_SUFFIX} className="pseudo">{`${seller} ${sellerCurrency}`}</div> */}
               <input
-              // onFocus={(e) => focusHandler(e.target, 1)}
-              // onBlur={(e) => focusHandler(e.target, 0)}
               id="offer-seller-deposit" type="number" name={NAME.SELLER_DEPOSIT} />
               <div className="max">max {sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : null} {sellerCurrency}</div>
             </div>
@@ -84,8 +56,6 @@ function FormPrice(props) {
           <div className="input relative focus">
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
             <input id="offer-buyer-deposit"
-            // onFocus={(e) => focusHandler(e.target, 1)}
-            // onBlur={(e) => focusHandler(e.target, 0)}
             type="number" name={NAME.BUYER_DEPOSIT} />
             <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div> 
           </div>

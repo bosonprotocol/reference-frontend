@@ -33,10 +33,6 @@ function Categories(props) {
   }
 
   useEffect(() => {
-    // localstorage
-    // let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
-    // let element = categoryList.current?.querySelector(`[data-category="${fetchedBackup?.category}"]`)
-
     // state
     let element = categoryList.current?.querySelector(`[data-category="${selectedCategory}"]`)
     
