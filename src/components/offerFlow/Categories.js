@@ -7,8 +7,7 @@ import { NAME } from "../../helpers/Dictionary"
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
-function Categories(props) {
-  const { listenerType } = props
+function Categories({inputValueReceiver}) {
   const categoryTarget = useRef()
   const categoryList = useRef()
 
@@ -17,10 +16,9 @@ function Categories(props) {
   
   const selectedCategory = getOfferingData(NAME.CATEGORY)
 
-  const customChange = new Event(listenerType)
-
   // (html element, name to set on input field)
   const setCategory = (el, id) => {
+    console.log('setting cat', el)
     categoryTarget.current.value = id
 
     Array.from(el.parentElement.querySelectorAll('[data-category]')).forEach(category => {
@@ -28,8 +26,8 @@ function Categories(props) {
     })
 
     el.classList.add('active')
-
-    categoryTarget.current.dispatchEvent(customChange)
+    inputValueReceiver(id);
+    
   }
 
   useEffect(() => {
@@ -58,7 +56,7 @@ function Categories(props) {
           }
         </ul>
       </div>
-      <input ref={categoryTarget} id="offer-category" type="text" name={NAME.CATEGORY} />
+      <input ref={categoryTarget} id="offer-category" type="text" onChange={(e) => console.log(e)}/>
     </div>
   )
 }

@@ -14,7 +14,6 @@ export const SellerInitialState = {
   offeringData: {}
 };
 
-// payload resolver
 export const Seller = {
   setOfferingProgress: (value) => ({
     type: DIC.SET_OFFERING_PROGRESS,
@@ -39,6 +38,7 @@ export const SellerReducer = (state, action) => {
   const actionList = {
 
     [DIC.SET_OFFERING_PROGRESS]: () => {
+      // localStorage.setItem('offeringProgress', JSON.stringify(action.payload))
 
       return {
         offeringProgress: action.payload
@@ -54,6 +54,14 @@ export const SellerReducer = (state, action) => {
         offeringData: update
       }
     },
+
+    [DIC.LOAD_OFFERING_BACKUP]: () => ({
+      offeringData: JSON.parse(localStorage.getItem('offeringData'))
+    }),
+
+    [DIC.GET_OFFERING_PROGRESS]: () => ({
+      offeringProgress: parseInt(localStorage.getItem('offeringProgress'))
+    }),
 
     [DIC.RESET_OFFERING_DATA]: () => ({
       offeringData: {}

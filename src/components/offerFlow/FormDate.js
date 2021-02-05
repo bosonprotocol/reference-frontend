@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { NAME } from "../../helpers/Dictionary"
 
-function FormDate() {
+function FormDate({startDateValueReceiver, endDateValueReceiver}) {
   const sellerContext = useContext(SellerContext)
   const startDate = useRef()
   const endDate = useRef()
@@ -39,14 +39,16 @@ function FormDate() {
 
   const handleDateChange = (date, name) => {
     dateRef[name].current.removeAttribute('data-error')
-
+console.log('asdasdasd', name)
     const error = checkError[name](date)
-    error ?
-    dateRef[name].current.setAttribute('data-error', error) :
+    if(error) {
+      dateRef[name].current.setAttribute('data-error', error)
+    } else {
+      name === NAME.DATE_START ? startDateValueReceiver(date) : endDateValueReceiver(date)
+    }
+     
 
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [name]: date
-    }))
+  
   }
 
   const setDefaultValue = (name) => {

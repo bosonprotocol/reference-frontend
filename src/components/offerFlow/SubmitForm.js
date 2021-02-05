@@ -42,8 +42,6 @@ export default function SubmitForm(props) {
         selected_file, // switch with image to use blob
     } = sellerContext.state.offeringData
 
-    const { resetOfferingData } = props
-
     const { library, account } = useWeb3React();
 
     const cashierContract = useCashierContract();
@@ -108,7 +106,6 @@ export default function SubmitForm(props) {
             globalContext.dispatch(Action.fetchVoucherSets())
 
             setLoading(0)
-            resetOfferingData()
             setRedirect(1)
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({

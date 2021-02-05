@@ -3,7 +3,7 @@ import React from 'react'
 import { CURRENCY } from "../../helpers/Dictionary"
 
 function Currencies(props) {
-  const { name } = props
+  const { name, inputValueHandler } = props
   return (
     <span className="currencies-container">
       <span className="icons">

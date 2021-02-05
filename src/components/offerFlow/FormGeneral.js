@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useContext } from 'react'
 import { NAME } from "../../helpers/Dictionary"
 import { SellerContext, getData } from "../../contexts/Seller"
 
-function FormGeneral() {
+function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueReceiver, titleErrorMessage}) {
   const conditionTarget = useRef()
   const titleInput = useRef()
   const titleClear = useRef()
@@ -12,12 +12,13 @@ function FormGeneral() {
   const getOfferingData = getData(sellerContext.state.offeringData)
   
   const selectedCategory = getOfferingData(NAME.CONDITION)
-
+console.log('asdasdasdasdasdasdasd', titleErrorMessage)
   const selectLabel = (el) => {
     Array.from(el.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
       label.classList.remove('active')
     })
-    el.parentElement.querySelector('label').classList.add('active') 
+    el.parentElement.querySelector('label').classList.add('active') ;
+    conditionValueReceiver(el.value)
   }
   
   const handleClearField = (e) => {
@@ -46,8 +47,8 @@ function FormGeneral() {
               <h1>Title</h1>
             </div>
           </label>
-          <div className="input focus">
-            <input ref={titleInput} id="offer-title" type="text" name={NAME.TITLE} />
+          <div className="input focus" data-error={titleErrorMessage}>
+            <input ref={titleInput} id="offer-title" type="text" onChange={(e) => titleValueReceiver(e.target ? e.target.value : null)}/>
             <div 
               ref={titleClear}
               className={`clear-field ${titleInput.current && (titleInput.current.value !== '' ? 'active' : 'hidden')}`}
@@ -60,7 +61,7 @@ function FormGeneral() {
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
           <div className="input focus">
-            <input id="offer-quantity" type="number" name={NAME.QUANTITY}/>
+            <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
           </div>
         </div>
       </div>
@@ -68,13 +69,11 @@ function FormGeneral() {
         <div className="field radio-label">
           <label data-condition="new" htmlFor="condition-new">New</label>
           <input className="hidden" id="condition-new" value="new" type="radio" 
-          name={NAME.CONDITION} 
           onClick={(e) => selectLabel(e.target)} />
         </div>
         <div className="field radio-label">
           <label data-condition="used" htmlFor="condition-used">Used</label>
           <input className="hidden" id="condition-used" value="used" type="radio"
-          name={NAME.CONDITION} 
           onClick={(e) => selectLabel(e.target)} />
         </div>
       </div>

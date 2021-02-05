@@ -19,7 +19,7 @@ const Image = {
   rules: null,
 }
 
-function UploadPhoto() {
+function UploadPhoto({inputValueReceiver}) {
   const sellerContext = useContext(SellerContext)
   const thumbnailRef = useRef()
   const errorHandle = useRef()
@@ -56,20 +56,10 @@ function UploadPhoto() {
 
     error && errorHandle.current.setAttribute('data-error', error)
 
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [NAME.SELECTED_FILE]: e.target.files[0]
-    }))
+    inputValueReceiver(e.target.files[0]);
     if(!Image.rules.size && !Image.rules.type && !Image.rules.existing) {
       fileReader.readAsDataURL(e.target.files[0]) 
     }
-    //  else {
-    //   const error = 
-    //   Image.rules.type ? `This file type is not allowed.` :
-    //   Image.rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
-    //   'There was an error. Please try again.'
-
-    //   errorHandle.current.setAttribute('data-error', error)
-    // }
   }
 
   return ( 
