@@ -102,8 +102,9 @@ function App() {
         }
 
         const localStoredAccountData = getAccountStoredInLocalStorage(account);
+        const onboardingCompleted = localStorage.getItem('onboarding-completed');
 
-        if (localStoredAccountData.activeToken) {
+        if (!onboardingCompleted || localStoredAccountData.activeToken) {
             return;
         }
 
