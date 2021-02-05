@@ -5,7 +5,7 @@ import { MESSAGE } from "../../helpers/Dictionary"
 
 import "./MessageScreen.scss"
 
-function MessageScreen({messageType, title, text, link}) {
+function MessageScreen({messageType, title, text, link, setMessageType}) {
   const history = useHistory()
  
   return (
@@ -23,7 +23,7 @@ function MessageScreen({messageType, title, text, link}) {
           <p className="description">{text}</p>
         </div>
         <div className="action">
-          <div className="button primary" onClick={()=>history.push(link)}>CLOSE</div>
+          <div className="button primary" onClick={()=> !setMessageType ? history.push(link) : setMessageType(false)}>CLOSE</div>
         </div>
       </div>
     </section>
