@@ -78,51 +78,20 @@ function NewOffer() {
   const modalContext = useContext(ModalContext);
 
   const inputFallback = {
-    // [NAME.PRICE]: '0',
     [NAME.PRICE_C]: CURRENCY.ETH,
-    // [NAME.SELLER_DEPOSIT]: '0',
     [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
-    // [NAME.BUYER_DEPOSIT]: '0',
     [NAME.DATE_START]: GetToday(),
-    // [NAME.DATE_END]: GetToday(1),
   }
 
   const getData = name => sellerContext.state.offeringData[name]
 
-  // const price = getData(NAME.PRICE)
   const priceCurrency = getData(NAME.PRICE_C)
-  // const seller = getData(NAME.SELLER_DEPOSIT)
   const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
-  // const buyer = getData(NAME.BUYER_DEPOSIT)
 
   const validation = (input, value) => {
 
-    // currency select inputs
-    if(input === NAME.SELLER_DEPOSIT_C) {
-      // if(getData(NAME.SELLER_DEPOSIT)) {
-      //   if(getData(NAME.SELLER_DEPOSIT) > sellerSettings[value].max) {
-
-      //     sellerContext.dispatch(Seller.updateOfferingData({
-      //       [NAME.SELLER_DEPOSIT]: sellerSettings[value].max
-      //     }))
-      //   }
-      // }
-
-      return false
-    }
-    else if(input === NAME.PRICE_C) {
-      if(getData(NAME.PRICE) > priceSettings[value].max) sellerContext.dispatch(Seller.updateOfferingData({
-        [NAME.PRICE]: priceSettings[value].max
-      }))
-      if(getData(NAME.BUYER_DEPOSIT) > buyerSettings[value].max) sellerContext.dispatch(Seller.updateOfferingData({
-        [NAME.BUYER_DEPOSIT]: buyerSettings[value].max
-      }))
-
-      return false
-    }
-
     // price number inputs
-    else if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
+    if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
       if(isNaN(parseInt(value))) return 'Must be a valid number'
       if(value <= 0) return 'Value cannot be less or equal to 0'
       if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
@@ -279,16 +248,9 @@ function NewOffer() {
 
   // check for backup
   useEffect(() => {
-    // check for data
-    localStorage.getItem('offeringData') ?
-    sellerContext.dispatch(Seller.loadOfferingBackup()) :
     sellerContext.dispatch(Seller.updateOfferingData({
       ...inputFallback
     }))
-
-    // check for page
-    localStorage.getItem('offeringProgress') &&
-    sellerContext.dispatch(Seller.getOfferingProgress())
 
     triggerInit(init * -1)
 
@@ -307,11 +269,6 @@ function NewOffer() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // show state on each change
-  // useEffect(() => {
-  //   console.log('after', sellerContext.state.offeringData)
-  // }, [sellerContext.state.offeringData])
-
   return (
     <section className="new-offer">
       <div className="container l flex column jc-sb">
@@ -325,7 +282,6 @@ function NewOffer() {
               {screens.map((screen, id) => <div
                 key={id} role="button"
                 className={`bar ${id <= activeScreen ? 'fill' : ''}`}
-                // onClick={() => setActiveScreen(id)}
                 ><span></span></div>)}
             </div>
           </div>

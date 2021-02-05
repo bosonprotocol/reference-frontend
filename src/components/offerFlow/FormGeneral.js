@@ -25,10 +25,6 @@ function FormGeneral() {
   }
 
   useEffect(() => {
-    // localStorage
-    // let fetchedBackup = localStorage.getItem('offeringData') && JSON.parse(localStorage.getItem('offeringData'))
-    // let element = conditionTarget.current?.querySelector(`[data-condition="${fetchedBackup?.condition}"]`)
-
     // state
     let element = conditionTarget.current?.querySelector(`[data-condition="${selectedCategory}"]`)
     

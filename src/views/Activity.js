@@ -9,8 +9,9 @@ import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity } from "../components/shared/Icons"
 
-import { initVoucherDetails } from "../helpers/VoucherParsers"
+import { initVoucherDetails, getAccountVouchers } from "../helpers/VoucherParsers"
 import { ModalContext } from "../contexts/Modal";
+import { useWeb3React } from "@web3-react/core";
 import { getVoucherDetails } from "../hooks/api";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -20,9 +21,16 @@ import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers
 
 export function ActivityAccountVouchers() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
+    const [accountVouchers, setAccountVouchers] = useState()
+    const { account } = useWeb3React();
+    const modalContext = useContext(ModalContext);
     
-    const accountVouchers = globalContext.state.accountVouchers
+    useEffect(() => {
+        getAccountVouchers(account, modalContext).then(
+            result => setAccountVouchers(result)
+        )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [account])
   
     useEffect(() => {
         accountVouchers ?
