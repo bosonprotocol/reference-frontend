@@ -19,7 +19,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
-import { useWeb3React } from "@web3-react/core";
 import Loading from "../components/offerFlow/Loading";
 
 export function ActivityAccountVouchers() {
@@ -42,7 +41,7 @@ export function ActivityAccountVouchers() {
 
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
-            accountVouchers = result;
+            setAccountVouchers(result)
             accountVouchers ?
                 setVoucherBlocks(accountVouchers)
                 : setVoucherBlocks([])
