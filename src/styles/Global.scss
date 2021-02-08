@@ -17,7 +17,7 @@ html {
 html, body {
   min-height: 100%;
   touch-action: manipulation;
-  background-color: $background-primary;
+  background-color: var(--page-color);
 }
 
 #root {
@@ -29,15 +29,10 @@ html, body {
   line-height: $height-regular;
   font-weight: 500;
   color: $text-1;
-  background: #181A29;
 
   // simulate mobile
   align-items: center;
   justify-content: center;
-}
-
-section:not(.no-bg) {
-  background-color: $background-primary;
 }
 
 a,
@@ -111,8 +106,6 @@ h2:not(.def) {
   overflow-x: hidden;
   display: block;
   position: relative;
-
-  background-color: $background-primary;
 
   @media (max-width: 375px) {
     border-radius: 0;
