@@ -3,6 +3,7 @@ import { useLocation } from "react-router"
 import { NavigationContext, Action } from '../../../contexts/Navigation'
 
 import { ROUTE, AFFMAP } from "../../../helpers/Dictionary"
+import { updateBackgroundColor, bgColorPrimary, bgColorSecondary } from "../../../helpers/CSS"
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
 let affordances = { }
@@ -18,15 +19,33 @@ const variation_3 = [AFFMAP.WALLET_CONNECTION, AFFMAP.QR_CODE_READER]
 
 // describe which affordances are available for the current page
 const locationMap = {
-  [ROUTE.Home]: () => enableControl(variation_3),
-  [ROUTE.Connect]: () => enableControl(variation_1),
-  // [ROUTE.NewOffer]: () => enableControl(variation_1), // !TODO
-  [ROUTE.Activity]: () => enableControl(variation_2),
-  [ROUTE.ActivityVouchers]: () => enableControl(variation_2),
-  [ROUTE.VoucherDetails]: () => enableControl(variation_1),
-
+  [ROUTE.Home]: () => {
+    enableControl(variation_3)
+    updateBackgroundColor(bgColorPrimary)
+  },
+  [ROUTE.Connect]: () => {
+    enableControl(variation_1)
+    updateBackgroundColor(bgColorSecondary)
+  },
+  [ROUTE.Activity]: () => {
+    enableControl(variation_2)
+    updateBackgroundColor(bgColorSecondary)
+  },
+  [ROUTE.ActivityVouchers]: () => {
+    enableControl(variation_2)
+    updateBackgroundColor(bgColorSecondary)
+  },
+  [ROUTE.VoucherDetails]: () => {
+    enableControl(variation_1)
+    updateBackgroundColor(bgColorSecondary)
+  },
+  
   // page not matching any
-  [ROUTE.Default]: () => enableControl(variation_1)
+  [ROUTE.Default]: () => {
+    enableControl(variation_1)
+    updateBackgroundColor(bgColorSecondary)
+  },
+  // [ROUTE.NewOffer]: () => enableControl(variation_1), // !TODO
 }
 
 const switchLocationMap = (pageRoute) => {

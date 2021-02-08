@@ -14,7 +14,7 @@ import QRScanner from "./views/QRScanner"
 import GlobalListeners   from "./views/GlobalListeners"
 
 import TopNavigation from "./components/shared/navigation/TopNavigation"
-import BottomNavigation from "./components/shared/navigation/BottomNavigation"
+// import BottomNavigation from "./components/shared/navigation/BottomNavigation"
 import LocationManager from "./components/shared/navigation/LocationManager"
 
 import { useEagerConnect, useInactiveListener } from './hooks'
@@ -139,7 +139,7 @@ function App() {
                                             <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
                                             <Route path={ ROUTE.VoucherSetDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
                                         </Switch>
-                                        <BottomNavigation />
+                                        {/* <BottomNavigation /> */}
                                     </Router>
                                     <ContextModal/>
                                 </NavigationContext.Provider>

@@ -10,6 +10,7 @@ html {
 
 :root {
   --progress-percentage: 0;
+  --page-color: #000;
 }
 
 
@@ -175,7 +176,7 @@ header.top-navigation {
   top: 0;
   left: 0;
   right: 0;
-  background: #000;
+  background: var(--page-color);
   height: 100px;
   display: flex;
   align-items: center;
