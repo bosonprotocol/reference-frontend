@@ -51,7 +51,6 @@ function FormBottomNavigation(props) {
           }
         }) 
       }
-      console.log(errorMessages)
       Object.keys(errorMessages).forEach((key) => {
         if(errorMessages[key] && activeScreenFieldNames.includes(key)) {
           disable = true;
