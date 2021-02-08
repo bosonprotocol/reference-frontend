@@ -20,6 +20,8 @@ import { cardBlocks } from "../PlaceholderAPI"
 
 import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
+import { useWeb3React } from "@web3-react/core";
+import { authenticateUser, getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
 function Home() {
     const [productBlocks, setProductBlocks] = useState([]);
@@ -28,6 +30,7 @@ function Home() {
     const screensRef = useRef()
     const onboardingModalRef = useRef()
 
+    const {account, library, chainId} = useWeb3React();
 
     const redeemContext = useContext(BuyerContext)
     const globalContext = useContext(GlobalContext)
@@ -72,6 +75,19 @@ function Home() {
         setTimeout(() => {
             setNewUser(false)
         }, modalCloseTimeout);
+
+        if (!account) {
+            return;
+        }
+
+        const localStoredAccountData = getAccountStoredInLocalStorage(account);
+        const onboardingCompleted = localStorage.getItem('onboarding-completed');
+
+        if (!onboardingCompleted || localStoredAccountData.activeToken) {
+            return;
+        }
+
+        authenticateUser(library, account, chainId);
     }
 
     return (
