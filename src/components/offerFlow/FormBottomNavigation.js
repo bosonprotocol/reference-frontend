@@ -19,7 +19,7 @@ function FormBottomNavigation(props) {
       [NAME.CATEGORY],
     ],
     1: [
-      [NAME.SELECTED_FILE],
+      [NAME.IMAGE],
     ],
     2: [
       [NAME.TITLE],
@@ -39,26 +39,29 @@ function FormBottomNavigation(props) {
       [NAME.DATE_END],
     ],
   }
-  console.log(screenFields[activeScreen])
   // check if all fields are filled with no errors
   useEffect(() => {
-    let disable = false;
-    const activeScreenFieldNames = screenFields[activeScreen].map(x => x[0]);
-    if(screenFields[activeScreen]) {
-      activeScreenFieldNames.forEach((field) => {
-        if(!getOfferingData(field)) {
+    if(activeScreen !== undefined && activeScreen !== null &&  screenFields[activeScreen]) {
+      let disable = false;
+      const activeScreenFieldNames = screenFields[activeScreen].map(x => x[0]);
+      if(screenFields[activeScreen]) {
+        activeScreenFieldNames.forEach((field) => {
+          if(!getOfferingData(field)) {
+            disable = true;
+          }
+        }) 
+      }
+      console.log(errorMessages)
+      Object.keys(errorMessages).forEach((key) => {
+        if(errorMessages[key] && activeScreenFieldNames.includes(key)) {
           disable = true;
         }
-      }) 
+      })
+      setDisabled(disable);
     }
-    Object.keys(errorMessages).forEach((key) => {
-      if(errorMessages[key] && activeScreenFieldNames.includes(key)) {
-        disable = true;
-      }
-    })
-    setDisabled(disable);
+    
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeScreen, sellerContext.state.offeringData])
+  }, [activeScreen, sellerContext.state.offeringData, errorMessages])
   
   return (
     <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
+import { useState } from 'react/cjs/react.development'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
 import { NAME } from "../../helpers/Dictionary"
 
-function FormDescription({descriptionValueReceiver}) {
+function FormDescription({descriptionValueReceiver, descriptionErrorMessage}) {
   const sellerContext = useContext(SellerContext)
-
   const getOfferingData = getData(sellerContext.state.offeringData)
 
   const description = getOfferingData(NAME.DESCRIPTION)
@@ -22,7 +22,7 @@ function FormDescription({descriptionValueReceiver}) {
             </div>
           </label>
           <div className="area relative">
-            <div className="input focus">
+            <div className="input focus" data-error={descriptionErrorMessage}>
               <textarea 
                 maxLength={maxSymbols} id="offer-description" onChange={(e) => descriptionValueReceiver(e.target ? e.target.value : null)} form="offer-form">              
               </textarea>

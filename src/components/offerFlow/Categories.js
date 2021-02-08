@@ -1,54 +1,34 @@
-import React, { useRef, useEffect, useContext } from 'react'
-
+import React, { useRef } from 'react'
 import "./Categories.scss"
-
 import { categories } from "../../PlaceholderAPI"
-import { NAME } from "../../helpers/Dictionary"
-
-import { SellerContext, getData } from "../../contexts/Seller"
+import { useState } from 'react/cjs/react.development'
 
 function Categories({inputValueReceiver}) {
   const categoryTarget = useRef()
   const categoryList = useRef()
 
-  const sellerContext = useContext(SellerContext)
-  const getOfferingData = getData(sellerContext.state.offeringData)
-  
-  const selectedCategory = getOfferingData(NAME.CATEGORY)
+  const [isCategoryActive, setIsCategoryActive] = useState(Array.from({length: categories.length},() => false));  
 
-  // (html element, name to set on input field)
-  const setCategory = (el, id) => {
-    console.log('setting cat', el)
-    categoryTarget.current.value = id
 
-    Array.from(el.parentElement.querySelectorAll('[data-category]')).forEach(category => {
-      category.classList.remove('active')
+  const setCategory = (el, id, index) => {
+    categoryTarget.current.value = id;
+    setIsCategoryActive((prev) => {
+      prev = prev.map(x => 0);
+      prev[index] = true;
+      return prev;
     })
 
-    el.classList.add('active')
     inputValueReceiver(id);
     
   }
-
-  useEffect(() => {
-    // state
-    let element = categoryList.current?.querySelector(`[data-category="${selectedCategory}"]`)
-    
-    if(element) {
-      element.style.transition = 'none'
-      setCategory(element, selectedCategory)
-      element.removeAttribute('transition');
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <div ref={categoryList} className="categories">
       <div className="input focus no-border">
         <ul>
           {
-            categories.map((category, id) => 
-              <li key={id} data-category={category.title} className="flex ai-center" onClick={(e) => setCategory(e.target, category.title)}>
+            categories.map((category, index) => 
+              <li key={index} data-category={category.title} className={isCategoryActive[index] ? 'active flex ai-center' : 'flex ai-center'} onClick={(e) => setCategory(e.target, category.title, index)}>
                 <img src={category.image} alt={category.title}/>
                 {category.title}
               </li>

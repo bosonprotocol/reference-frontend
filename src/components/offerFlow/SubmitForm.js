@@ -24,7 +24,7 @@ export default function SubmitForm(props) {
     const modalContext = useContext(ModalContext);
     const location = useLocation();
 
-    const globalContext = useContext(GlobalContext)
+    const globalContext = useContext(GlobalContext);
 
     const messageTitle = "Voucher Sets was published";
 
@@ -43,7 +43,6 @@ export default function SubmitForm(props) {
     } = sellerContext.state.offeringData
 
     const { library, account } = useWeb3React();
-
     const cashierContract = useCashierContract();
     let formData = new FormData();
 
@@ -137,6 +136,7 @@ export default function SubmitForm(props) {
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
+        console.log('final form data', formData)
     }
 
     // append blob

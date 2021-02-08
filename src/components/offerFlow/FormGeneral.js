@@ -3,16 +3,14 @@ import React, { useRef, useEffect, useContext } from 'react'
 import { NAME } from "../../helpers/Dictionary"
 import { SellerContext, getData } from "../../contexts/Seller"
 
-function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueReceiver, titleErrorMessage}) {
+function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueReceiver, titleErrorMessage, quantityErrorMessage}) {
   const conditionTarget = useRef()
   const titleInput = useRef()
   const titleClear = useRef()
 
   const sellerContext = useContext(SellerContext)
   const getOfferingData = getData(sellerContext.state.offeringData)
-  
   const selectedCategory = getOfferingData(NAME.CONDITION)
-console.log('asdasdasdasdasdasdasd', titleErrorMessage)
   const selectLabel = (el) => {
     Array.from(el.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
       label.classList.remove('active')
@@ -60,7 +58,7 @@ console.log('asdasdasdasdasdasdasd', titleErrorMessage)
       <div className="row">
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
-          <div className="input focus">
+          <div className="input focus" data-error={quantityErrorMessage}>
             <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
           </div>
         </div>

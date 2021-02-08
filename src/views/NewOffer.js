@@ -24,6 +24,7 @@ import { GetToday } from "../helpers/Misc"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
+import { checkForErrorsInNewOfferForm } from '../utils/new-offer-form-validator'
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'change'
@@ -83,82 +84,57 @@ function NewOffer() {
     [NAME.DATE_START]: GetToday(),
   }
 
-  const getData = name => sellerContext.state.offeringData[name]
+  const getData = name => sellerContext.state.offeringData[name];
 
-  const priceCurrency = getData(NAME.PRICE_C)
-  const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+  useEffect(() => {
 
-  Seller.resetOfferingData()
-  const validation = (input, value) => {
+      const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData);
+      setErrorMessages(newErrorMessages)
 
-    // price number inputs
-    if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot be less or equal to 0'
-      if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
+  
+  } ,[sellerContext]);
+  
+  useEffect(()=> {
+    sellerContext.dispatch(Seller.resetOfferingData())
 
-      return null
-    }
-    else if(input === NAME.SELLER_DEPOSIT && getData(NAME.SELLER_DEPOSIT_C)) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot be less or equal to 0'
-      if(value > sellerSettings[sellerCurrency].max) return `The maximum value is ${sellerSettings[sellerCurrency].max}`
-
-      return null
-    }
-    else if(input === NAME.BUYER_DEPOSIT && getData(NAME.PRICE_C)) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot be less or equal to 0'
-      if(value > buyerSettings[priceCurrency].max) return `The maximum value is ${buyerSettings[priceCurrency].max}`
-
-      return null
-    }
-
-    // description
-    else if(input === NAME.DESCRIPTION) {
-      if(value.length < descriptionSettings.min) return `Desciption must be at least ${descriptionSettings.min} characters`
-
-      return null
-    }
-
-    // general
-    else if(input === NAME.QUANTITY) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot less or equal to 0'
-      if(value > quantitySettings.max) return `Maximum quantity is ${quantitySettings.max}`
-
-      return null
-    }
-    else if(input === NAME.TITLE) {
-      console.log('in title', titleSettings)
-      if(value.length <= titleSettings.min) return `Title must be at least ${titleSettings.min + 1} characters long`
-      if(value.length > titleSettings.max) return `Title can't more than ${titleSettings.max} characters long`
-
-      return null
-    }
-
-    return null
-  }
-
+  }, [])
   const createInputValueReceiver = (inputName) => (value) => {
-    const errorMessage = validation(inputName, value);
-    console.log(errorMessages)
-    setErrorMessages((prev) => ({...prev, [inputName]: errorMessage}))
-    if(value){
-      sellerContext.dispatch(Seller.updateOfferingData({
-        [inputName]: value
-      }))
+
+    if(value || value === ''){
+
+       
+          if(!(inputName === NAME.IMAGE)) {
+         sellerContext.dispatch(Seller.updateOfferingData({
+           [inputName]: value
+         }))
+        } else {
+          sellerContext.dispatch(Seller.updateOfferingData({
+            [NAME.SELECTED_FILE]: value
+          }))
+          const fileReader = new FileReader();
+          fileReader.addEventListener('load', (e) => {
+               sellerContext.dispatch(Seller.updateOfferingData({[inputName]: e.currentTarget.result}));
+
+          }); 
+     
+          fileReader.readAsDataURL(value)
+        }
     } 
   }
   const screens = [
     <Categories inputValueReceiver={createInputValueReceiver(NAME.CATEGORY)} />,
-    <FormUploadPhoto inputValueReceiver={createInputValueReceiver(NAME.SELECTED_FILE)}/>,
+    <FormUploadPhoto inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
+    uploadImageErrorMessage={errorMessages[NAME.IMAGE]}/>,
     <FormGeneral titleValueReceiver={createInputValueReceiver(NAME.TITLE) }  
                  titleErrorMessage={errorMessages[NAME.TITLE]}
                  quantityValueReceiver={createInputValueReceiver(NAME.QUANTITY)}
+                 quantityErrorMessage={errorMessages[NAME.QUANTITY]}
                  conditionValueReceiver={createInputValueReceiver(NAME.CONDITION)}
                   />,
-    <FormDescription  descriptionValueReceiver={createInputValueReceiver(NAME.DESCRIPTION)}/>,
+    <FormDescription  
+    descriptionValueReceiver={createInputValueReceiver(NAME.DESCRIPTION)}
+    descriptionErrorMessage={errorMessages[NAME.DESCRIPTION]}
+    />,
     <FormPrice
       priceSettings={priceSettings}
       sellerSettings={sellerSettings}
@@ -169,10 +145,21 @@ function NewOffer() {
       sellerDepositValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT)}
       buyerPriceSuffixValueReceiver={createInputValueReceiver(NAME.PRICE_SUFFIX)}
       buyerDepositValueReceiver={createInputValueReceiver(NAME.BUYER_DEPOSIT)}
+      
+    
+
+      priceErrorMessage={errorMessages[NAME.PRICE]}
+      sellerDepositErrorMessage={errorMessages[NAME.SELLER_DEPOSIT]}
+      buyerDepositErrorMessage={errorMessages[NAME.BUYER_DEPOSIT]}
+
     />,
     <FormDate 
       startDateValueReceiver={createInputValueReceiver(NAME.DATE_START)}
-      endDateValueReceiver={createInputValueReceiver(NAME.DATE_END)}/>,
+      startDateErrorMessage={errorMessages[NAME.DATE_START]}
+      endDateValueReceiver={createInputValueReceiver(NAME.DATE_END)}
+      endDateErrorMessage={errorMessages[NAME.DATE_END]}
+
+     />,
     <FormSummary />,
   ]
 

@@ -9,7 +9,7 @@ import { NAME } from "../../helpers/Dictionary"
 
 function FormPrice(props) {
   const sellerContext = useContext(SellerContext)
-console.log(props)
+
   const { 
     priceSettings, 
     sellerSettings, 
@@ -19,7 +19,11 @@ console.log(props)
     sellerDepositCurrencyValueReceiver,
     sellerDepositValueReceiver,
     buyerPriceSuffixValueReceiver,
-    buyerDepositValueReceiver
+    buyerDepositValueReceiver,
+
+    sellerDepositErrorMessage,
+    priceErrorMessage,
+    buyerDepositErrorMessage
    } = props
 
   const getOfferingData = getData(sellerContext.state.offeringData)
@@ -39,7 +43,7 @@ console.log(props)
           </label>
           <div className="bind">
             <Currencies inputValueHandler={priceCurrencyReceiver}/>
-            <div className="input relative focus">
+            <div className="input relative focus" data-error={priceErrorMessage}>
               <input
               id="offer-price" type="number" onChange={(e) => priceValueReceiver(e.target ? e.target.value : null)}/>
               <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
@@ -52,7 +56,7 @@ console.log(props)
           <label htmlFor="offer-seller-deposit">Seller’s Deposit</label>
           <div className="bind">
             <Currencies inputValueHandler={sellerDepositCurrencyValueReceiver} />
-            <div className="input relative focus">
+            <div className="input relative focus" data-error={sellerDepositErrorMessage}>
               <input
               id="offer-seller-deposit" type="number" onChange={(e) => sellerDepositValueReceiver(e.target ? e.target.value : null)} />
               <div className="max">max {sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : null} {sellerCurrency}</div>
@@ -63,7 +67,7 @@ console.log(props)
       <div className="row">
         <div className="field">
           <label htmlFor="offer-buyer-deposit">Buyer’s Deposit</label>
-          <div className="input relative focus">
+          <div className="input relative focus" data-error={buyerDepositErrorMessage}>
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
             <input id="offer-buyer-deposit"
             type="number" name={NAME.BUYER_DEPOSIT} onChange={(e) => buyerDepositValueReceiver(e.target ? e.target.value : null)}/>
