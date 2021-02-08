@@ -50,8 +50,6 @@ function ShowQR(props) {
 
             let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
             data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
-            console.log("Redeem event data");
-            console.log(data);
 
         } catch (e) {
             setLoading(0);

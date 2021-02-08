@@ -20,30 +20,29 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const start_date = getOfferingData(NAME.DATE_START)
-  const end_date = getOfferingData(NAME.DATE_END)
- 
+  const start_date = getOfferingData(NAME.DATE_START);
+  const end_date = getOfferingData(NAME.DATE_END);
 
-  const setDefaultValue = (name) => {
-    let def = getOfferingData(name)
-    return (
-      def ?
-        new Date(def) :
-        new Date()
+  useEffect(() => {
+      startDateValueReceiver(null)
+  }, [])
+  const getCurrentValueValue = (name) => {
+    let currentValue = getOfferingData(name)
+    console.log('selected', currentValue)
+
+    return ( currentValue ? new Date(currentValue) : new Date()
     )
   }
 
-  useEffect(() => {
-    start_date && dateRef[NAME.DATE_START].current.querySelector('.field[role="button"]').classList.remove('await')
-    end_date && dateRef[NAME.DATE_END].current.querySelector('.field[role="button"]').classList.remove('await')
-  }, [start_date, end_date])
-
   const Field = forwardRef(
-    ({ value, onClick }, ref) => (
-      <div ref={ref} className="field" role="button" onClick={onClick}>
-        {value}
-      </div>
-    )
+    ({ value, onClick, dateFieldType} ,ref) => {
+      return (
+        <div ref={ref} className={`field ${!end_date && dateFieldType===NAME.DATE_END ? 'await': ''}`} role="button" onClick={onClick}>
+          {value}
+        </div>
+      )
+    }
+    
   )
   
 
@@ -58,9 +57,9 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
             <DatePicker
               id="offer-start-date" 
              
-              selected={setDefaultValue(NAME.DATE_START)}
+              selected={getCurrentValueValue(NAME.DATE_START)}
               onChange={(date) => startDateValueReceiver(date)}
-              customInput={<Field ref={startDate} />}
+              customInput={<Field ref={startDate} dateFieldType={NAME.DATE_START}/>}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
           </div>
@@ -72,12 +71,9 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
           <div ref={dateRef[NAME.DATE_END]}   data-error={endDateErrorMessage} className="input relative">
             <DatePicker
               id="offer-expiry-date"
-            
-
-              selected={setDefaultValue(NAME.DATE_END)}
-                      
+              selected={getCurrentValueValue(NAME.DATE_END)}
               onChange={(date) => endDateValueReceiver(date)}
-              customInput={<Field ref={endDate} />}
+              customInput={<Field ref={endDate} dateFieldType={NAME.DATE_END}/>}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
           </div>

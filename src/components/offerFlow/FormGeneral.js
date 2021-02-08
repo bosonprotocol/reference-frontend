@@ -21,6 +21,8 @@ function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueRec
   
   const handleClearField = (e) => {
     e.target.parentElement.getElementsByTagName('input')[0].value = ''
+    titleValueReceiver('')
+
   }
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { NAME, CURRENCY } from "../helpers/Dictionary"
+import { NAME, CURRENCY } from "./Dictionary"
 
 const priceSettings = {
     [CURRENCY.ETH]: {
@@ -41,7 +41,7 @@ const priceSettings = {
   }
 
   
-const checkForErrorsInNewOfferForm = (errorMessages, getData) => {
+const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName) => {
     let newErrorMessages = {...errorMessages};
 
     let priceErrorMessage = null;
@@ -169,7 +169,7 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData) => {
     let dateEndErrorMessage = null;
     const currentDateEndValue = getData(NAME.DATE_END);
 
-     if (currentDateStartValue) {
+     if (currentDateStartValue  && lastInputChangeName === NAME.DATE_START) {
   
       
       const yesterday = new Date().setDate(new Date().getDate() - 1);
@@ -178,12 +178,11 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData) => {
         null;
 
     }
-    if(currentDateEndValue) {
+    if(currentDateEndValue && lastInputChangeName === NAME.DATE_END) {
       dateEndErrorMessage =  new Date(currentDateEndValue).getTime() <= new Date(currentDateStartValue).getTime() ?
         "Expiry Date can't be set before Start Date." : null;
 
     }
-console.log(newErrorMessages, dateEndErrorMessage, dateStartErrorMessage)
     return {...newErrorMessages, [NAME.DATE_END]: dateEndErrorMessage, [NAME.DATE_START]: dateStartErrorMessage};
   }
 

@@ -4,16 +4,14 @@ import { categories } from "../../PlaceholderAPI"
 import { useState } from 'react/cjs/react.development'
 
 function Categories({inputValueReceiver}) {
-  const categoryTarget = useRef()
   const categoryList = useRef()
 
   const [isCategoryActive, setIsCategoryActive] = useState(Array.from({length: categories.length},() => false));  
 
 
   const setCategory = (el, id, index) => {
-    categoryTarget.current.value = id;
     setIsCategoryActive((prev) => {
-      prev = prev.map(x => 0);
+      prev = prev.map(x => false);
       prev[index] = true;
       return prev;
     })
@@ -36,7 +34,6 @@ function Categories({inputValueReceiver}) {
           }
         </ul>
       </div>
-      <input ref={categoryTarget} id="offer-category" type="text" onChange={(e) => console.log(e)}/>
     </div>
   )
 }

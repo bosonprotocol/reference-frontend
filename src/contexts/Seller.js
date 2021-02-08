@@ -12,7 +12,9 @@ const fetchProgressFallback = parseInt(localStorage.getItem('offeringProgress'))
 export const SellerInitialState = {
   offeringProgress: fetchProgressFallback ? fetchProgressFallback : 0,
   offeringData: {
-    [NAME.DATE_START]: new Date(),
+    // [NAME.DATE_START]: new Date(),
+    // // [NAME.DATE_END]: new Date(),
+
   }
 };
 
@@ -37,7 +39,7 @@ export const Seller = {
 }
 
 export const SellerReducer = (state, action) => {
-  console.log('in seller context', state, action)
+  console.log(action, state)
   const actionList = {
 
     [DIC.SET_OFFERING_PROGRESS]: () => {
@@ -68,7 +70,8 @@ export const SellerReducer = (state, action) => {
 
     [DIC.RESET_OFFERING_DATA]: () => ({
       offeringData: {
-        [NAME.DATE_START]: new Date(),
+        // [NAME.DATE_START]: new Date(),
+        // [NAME.DATE_END]: new Date(),
       },
       offeringProgress: 0
     }),

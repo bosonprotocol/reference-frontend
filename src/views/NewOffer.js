@@ -24,7 +24,7 @@ import { GetToday } from "../helpers/Misc"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
-import { checkForErrorsInNewOfferForm } from '../utils/new-offer-form-validator'
+import { checkForErrorsInNewOfferForm } from '../helpers/NewOfferFormValidator'
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const listenerType = 'change'
@@ -78,21 +78,22 @@ function NewOffer() {
   const history = useHistory()
   const modalContext = useContext(ModalContext);
   const [errorMessages, setErrorMessages] = useState({});
+  const [lastInputChangeName, setLastInputChangeName] = useState(null);
   const inputFallback = {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
-    [NAME.DATE_START]: GetToday(),
+    [NAME.DATE_START]: new Date(),
   }
 
   const getData = name => sellerContext.state.offeringData[name];
 
   useEffect(() => {
-
-      const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData);
+    if(lastInputChangeName) {
+      const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData, lastInputChangeName);
       setErrorMessages(newErrorMessages)
 
-  
-  } ,[sellerContext]);
+    }
+  } ,[sellerContext, lastInputChangeName]);
   
   useEffect(()=> {
     sellerContext.dispatch(Seller.resetOfferingData())
@@ -119,6 +120,7 @@ function NewOffer() {
      
           fileReader.readAsDataURL(value)
         }
+        setLastInputChangeName(inputName);
     } 
   }
   const screens = [

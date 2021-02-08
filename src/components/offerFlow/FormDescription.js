@@ -1,12 +1,14 @@
 import React, { useContext } from 'react'
-import { useState } from 'react/cjs/react.development'
+import { useEffect, useState } from 'react/cjs/react.development'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
 import { NAME } from "../../helpers/Dictionary"
 
+
 function FormDescription({descriptionValueReceiver, descriptionErrorMessage}) {
   const sellerContext = useContext(SellerContext)
+
   const getOfferingData = getData(sellerContext.state.offeringData)
 
   const description = getOfferingData(NAME.DESCRIPTION)

@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
+import { toFixed } from "../../utils/format-utils";
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
@@ -69,9 +70,10 @@ export default function SubmitForm(props) {
 
         setLoading(1)
 
+
         let dataArr = [
-            new Date(start_date) / 1000,
-            new Date(end_date) / 1000,
+            toFixed(new Date(start_date) / 1000, 0),
+            toFixed(new Date(end_date) / 1000, 0),
             ethers.utils.parseEther(price).toString(),
             ethers.utils.parseEther(seller_deposit).toString(),
             ethers.utils.parseEther(buyer_deposit).toString(),
@@ -126,6 +128,7 @@ export default function SubmitForm(props) {
         formData.append('category', category);
         formData.append('startDate', startDate.getTime());
         formData.append('expiryDate', endDate.getTime());
+        console.log('submitting', startDate.getTime(), endDate.getTime())
         formData.append('offeredDate', Date.now());
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
