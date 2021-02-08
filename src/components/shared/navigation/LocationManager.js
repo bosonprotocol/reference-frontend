@@ -49,7 +49,6 @@ function LocationManager() {
     Object.keys(AFFMAP).map(entryKey => console.log(entryKey))
     switchLocationMap(pageRoute)
 
-
     navigationContext.dispatch(Action.updateLocation())
     navigationContext.dispatch(Action.updateAffordances(
       affordances
