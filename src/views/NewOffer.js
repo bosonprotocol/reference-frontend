@@ -19,18 +19,14 @@ import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/shared/Icons"
 
 import { NAME, CURRENCY, MODAL_TYPES, ROUTE } from "../helpers/Dictionary"
-
-import { GetToday } from "../helpers/Misc"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
 import { checkForErrorsInNewOfferForm } from '../helpers/NewOfferFormValidator'
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
-const listenerType = 'change'
-
 const priceSettings = {
-  [CURRENCY.ETH]: {
+  [CURRENCY.ETH]: { 
     max: 2
   },
   [CURRENCY.BSN]: {
@@ -56,19 +52,6 @@ const buyerSettings = {
   }
 }
 
-const descriptionSettings = {
-  min: 10
-}
-
-const quantitySettings = {
-  max: 10
-}
-
-const titleSettings = {
-  max: 50,
-  // min: 3
-}
-
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
@@ -85,20 +68,21 @@ function NewOffer() {
     [NAME.DATE_START]: new Date(),
   }
 
-  const getData = name => sellerContext.state.offeringData[name];
 
   useEffect(() => {
+    const getData = name => sellerContext.state.offeringData[name];
+
     if(lastInputChangeName) {
       const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData, lastInputChangeName);
       setErrorMessages(newErrorMessages)
 
     }
-  } ,[sellerContext, lastInputChangeName]);
+  } ,[sellerContext, lastInputChangeName, errorMessages]);
   
   useEffect(()=> {
     sellerContext.dispatch(Seller.resetOfferingData())
 
-  }, [])
+  }, [sellerContext])
   const createInputValueReceiver = (inputName) => (value) => {
 
     if(value || value === ''){
