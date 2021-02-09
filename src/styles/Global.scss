@@ -180,7 +180,7 @@ header.top-navigation {
   z-index: 10;
 }
 
-.bottom-navigation {
+.bottom-navigation:not(.relative) {
   background: #{'rgba(var(--page-color), 0.9)'};
   position: fixed;
   left: 0;

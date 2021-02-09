@@ -58,13 +58,6 @@ export default function Connect() {
     return (
         <section className="connect activity">
             <div className="container l">
-                <div className="top-navigation flex ai-center">
-                    <div className="button square dark" role="button" 
-                    onClick={() => history.goBack()}
-                    >
-                    <Arrow color="#80F0BE" />
-                    </div>
-                </div>
                 <h1>Wallet</h1>
                 {ConnectedWallet}
             </div>
