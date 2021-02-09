@@ -4,11 +4,9 @@ import "./Home.scss"
 
 import Slider from "react-slick";
 
-import Header from "../components/home/Header";
 import ProductBlock from "../components/home/ProductBlock";
 import CardBlock from "../components/home/CardBlock";
 import CategoryMenu from "../components/home/CategoryMenu"
-import NavigationBar from "../components/shared/NavigationBar"
 // import ProductListing from "../components/home/ProductListing"
 import ProductView from "../components/shared/ProductView"
 import Onboarding from '../views/Onboarding'
@@ -103,7 +101,6 @@ function Home() {
             <div className={ `screens ${ newUser ? 'new-user' : '' }` } ref={ screensRef }>
                 <div ref={ homepage } className="home relative atomic-scoped">
                     <div className="container o-hidden">
-                        <Header />
                         <CategoryMenu/>
                     </div>
                     <section className="product-list">
@@ -134,7 +131,6 @@ function Home() {
                             <ProductView/> :
                             null
                     }
-                    <NavigationBar delay={ animateDel.NAV }/>
                 </div>
             </div>
         </>

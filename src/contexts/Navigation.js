@@ -15,6 +15,7 @@ export const NavigationInitialState = {
     [AFFMAP.BACK_BUTTON]: false,
     [AFFMAP.QR_CODE_READER]: false,
   },
+  bottomNavItem: null
 };
 
 export const Action = {
@@ -26,6 +27,10 @@ export const Action = {
     type: CONTROL.UPDATE_AFFORDANCES,
     payload: location
   }),
+  bottomNavListSelectedItem: (item) => ({
+    type: CONTROL.UPDATE_BOTTOM_NAV,
+    payload: item
+  })
 }
 
 export const NavigationReducer = (state, action) => {
@@ -38,6 +43,11 @@ export const NavigationReducer = (state, action) => {
     [CONTROL.UPDATE_AFFORDANCES]: () => {
       return {
         top: action.payload
+      }
+    },
+    [CONTROL.UPDATE_BOTTOM_NAV]: () => {
+      return {
+        bottomNavItem: action.payload
       }
     },
   }

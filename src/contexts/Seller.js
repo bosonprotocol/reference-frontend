@@ -14,13 +14,6 @@ export const SellerInitialState = {
   offeringData: {}
 };
 
-// enable to init offeringData with default value
-// const defaultValue = null
-// Object.entries(NAME).map((name) => 
-//   SellerInitialState.offeringData[name[1]] = defaultValue
-// )
-
-
 // payload resolver
 export const Seller = {
   setOfferingProgress: (value) => ({
@@ -46,7 +39,6 @@ export const SellerReducer = (state, action) => {
   const actionList = {
 
     [DIC.SET_OFFERING_PROGRESS]: () => {
-      // localStorage.setItem('offeringProgress', JSON.stringify(action.payload))
 
       return {
         offeringProgress: action.payload
@@ -58,19 +50,10 @@ export const SellerReducer = (state, action) => {
         ...state.offeringData,
         ...action.payload
       }
-      // localStorage.setItem('offeringData', JSON.stringify(update))
       return {
         offeringData: update
       }
     },
-
-    [DIC.LOAD_OFFERING_BACKUP]: () => ({
-      offeringData: JSON.parse(localStorage.getItem('offeringData'))
-    }),
-
-    [DIC.GET_OFFERING_PROGRESS]: () => ({
-      offeringProgress: parseInt(localStorage.getItem('offeringProgress'))
-    }),
 
     [DIC.RESET_OFFERING_DATA]: () => ({
       offeringData: {}
