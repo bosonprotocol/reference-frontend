@@ -8,10 +8,8 @@ import { useEagerConnect } from "../hooks";
 import { NetworkContextName } from "../constants";
 import { network } from "../connectors";
 // import { shortenAddress } from "../utils";
-import { useHistory } from "react-router-dom";
 
 import './Connect.scss';
-import { Arrow } from "../components/shared/Icons";
 
 const ACTION = {
     GET_DATA: {
@@ -21,7 +19,6 @@ const ACTION = {
 
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
-    const history = useHistory();
     const context = useWeb3React();
     const {
         active,
