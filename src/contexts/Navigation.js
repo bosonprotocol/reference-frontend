@@ -14,12 +14,13 @@ export const NavigationInitialState = {
     [AFFMAP.WALLET_CONNECTION]: false,
     [AFFMAP.BACK_BUTTON]: false,
     [AFFMAP.QR_CODE_READER]: false,
+    [AFFMAP.OFFER_FLOW_SET]: false,
   },
   bottom: {
     type: BOTTOM_NAV_TYPE.DEFAULT,
     mainNavigationItem: null,
-    formNavigation: null,
-  }
+  },
+  offerFlowControl: false
 };
 
 export const Action = {
@@ -76,10 +77,7 @@ export const NavigationReducer = (state, action) => {
     },
     [CONTROL.SET_FORM_NAVIGATION]: () => {
       return {
-        bottom: { 
-          ...state.bottom,
-          formNavigation: action.payload
-        }
+        offerFlowControl: action.payload
       }
     },
   }

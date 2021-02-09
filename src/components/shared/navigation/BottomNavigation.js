@@ -12,7 +12,7 @@ function BottomNavigation() {
   const navigationContext = useContext(NavigationContext)
   const [selected, setSelected] = useState(new Array(5).fill(0))
   const selectedNavitem = navigationContext.state.bottom.mainNavigationItem
-  const formNavigation = navigationContext.state.bottom.formNavigation
+  const formNavigation = navigationContext.state.offerFlowControl
   const navType = navigationContext.state.bottom.type
 
   const routing = {

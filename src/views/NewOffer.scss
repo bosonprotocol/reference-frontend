@@ -1,46 +1,11 @@
 @import "../styles/Settings.scss";
 
 .new-offer {
+  height: 100%;
   .top-navigation {
     margin-top: 48px;
   }
-  .progress-bar {
-    margin-left: 22px;
 
-    .bar {
-      padding: 20px 0;
-      cursor: auto;
-      span {
-        display: block;
-        background: #132C3D;
-        width: 11px;
-        height: 2px;
-        transition: 0.2s ease-in-out;
-      }
-
-      &.fill {
-        span {
-          background: #80F0BE;
-        }
-      }
-
-      & + .bar {
-        margin-left: 2px;
-      }
-      &:first-child {
-        span {
-          border-top-left-radius: 24px;
-          border-bottom-left-radius: 24px;
-        }
-      }
-      &:last-child {
-        span {
-          border-top-right-radius: 24px;
-          border-bottom-right-radius: 24px;
-        }
-      }
-    }
-  }
   .bottom-navigation {
     height: 97px;
 

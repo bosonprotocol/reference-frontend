@@ -17,6 +17,8 @@ import { injected, walletconnect } from "../../../connectors";
 import MetaMaskLogo from "../../../images/metamask.png";
 import WalletConnectLogo from "../../../images/walletconnect.svg";
 
+import OfferFlowSet from "./OfferFlowSet"
+
 function TopNavigation() {
   const navigationContext = useContext(NavigationContext);
   const history = useHistory()
@@ -49,6 +51,11 @@ function TopNavigation() {
             <Link to={ROUTE.CodeScanner} >
               <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
             </Link>
+          : null}
+
+          {/* NewOffer Set */}
+          { navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ?
+            <OfferFlowSet />
           : null}
 
         </nav>

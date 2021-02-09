@@ -62,6 +62,7 @@ export const AFFMAP = {
     BACK_BUTTON: 'back-button',
     QR_CODE_READER: 'qr-code-reader',
     WALLET_CONNECTION: 'wallet-connection',
+    OFFER_FLOW_SET: 'offer_flow_set',
 }
 
 // ROUTE strings are used in NewOffer for input fields
