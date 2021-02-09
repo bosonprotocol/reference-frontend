@@ -9,9 +9,8 @@ import ContractInteractionButton from "../components/shared/ContractInteractionB
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { getVoucherDetails, updateVoucher } from "../hooks/api";
-import { decodeData, getEncodedTopic, useVoucherKernelContract } from "../hooks/useContract";
-import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
-import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
+import {  useVoucherKernelContract } from "../hooks/useContract";
+import { VOUCHER_STATUSES } from "../hooks/configs";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from 'react'
 import Loading from "../components/offerFlow/Loading";
@@ -45,19 +44,17 @@ function ShowQR(props) {
         setLoading(1);
 
         let tx;
-        let data;
+        // let data;
         const authData = getAccountStoredInLocalStorage(account);
         const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
 
         try {
             tx = await voucherKernelContract.redeem(voucherDetails.voucher._tokenIdVoucher);
 
-            const receipt = await tx.wait();
+            await tx.wait();
 
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
-            console.log("Redeem event data");
-            console.log(data);
+            // let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+            // data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
 
         } catch (e) {
             setLoading(0);

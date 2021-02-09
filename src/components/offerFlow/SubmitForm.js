@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
+import { toFixed } from "../../utils/format-utils";
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
@@ -24,7 +25,7 @@ export default function SubmitForm(props) {
     const modalContext = useContext(ModalContext);
     const location = useLocation();
 
-    const globalContext = useContext(GlobalContext)
+    const globalContext = useContext(GlobalContext);
 
     const messageTitle = "Voucher Sets was published";
 
@@ -42,10 +43,7 @@ export default function SubmitForm(props) {
         selected_file, // switch with image to use blob
     } = sellerContext.state.offeringData
 
-    const { resetOfferingData } = props
-
     const { library, account } = useWeb3React();
-
     const cashierContract = useCashierContract();
     let formData = new FormData();
 
@@ -72,15 +70,16 @@ export default function SubmitForm(props) {
 
         setLoading(1)
 
+
         let dataArr = [
-            new Date(start_date) / 1000,
-            new Date(end_date) / 1000,
+            toFixed(new Date(start_date) / 1000, 0),
+            toFixed(new Date(end_date) / 1000, 0),
             ethers.utils.parseEther(price).toString(),
             ethers.utils.parseEther(seller_deposit).toString(),
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-
+console.log(dataArr[0], dataArr[1])
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
         let tx;
@@ -108,7 +107,6 @@ export default function SubmitForm(props) {
             globalContext.dispatch(Action.fetchVoucherSets())
 
             setLoading(0)
-            resetOfferingData()
             setRedirect(1)
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -130,6 +128,7 @@ export default function SubmitForm(props) {
         formData.append('category', category);
         formData.append('startDate', startDate.getTime());
         formData.append('expiryDate', endDate.getTime());
+        console.log('submitting', startDate.getTime(), endDate.getTime())
         formData.append('offeredDate', Date.now());
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
@@ -140,6 +139,7 @@ export default function SubmitForm(props) {
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
+        console.log('final form data', formData)
     }
 
     // append blob

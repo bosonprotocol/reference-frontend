@@ -184,5 +184,3 @@ export const SingleVoucherBlock = (props) => {
         </div>
     )
 }
-
-

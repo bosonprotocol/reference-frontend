@@ -19,17 +19,14 @@ import { SellerContext, Seller } from "../contexts/Seller"
 import { Arrow } from "../components/shared/Icons"
 
 import { NAME, CURRENCY, MODAL_TYPES, ROUTE } from "../helpers/Dictionary"
-
-import { GetToday } from "../helpers/Misc"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
+import { checkForErrorsInNewOfferForm } from '../helpers/NewOfferFormValidator'
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
-const listenerType = 'change'
-
 const priceSettings = {
-  [CURRENCY.ETH]: {
+  [CURRENCY.ETH]: { 
     max: 2
   },
   [CURRENCY.BSN]: {
@@ -55,19 +52,6 @@ const buyerSettings = {
   }
 }
 
-const descriptionSettings = {
-  min: 10
-}
-
-const quantitySettings = {
-  max: 10
-}
-
-const titleSettings = {
-  max: 50,
-  // min: 3
-}
-
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
@@ -76,79 +60,93 @@ function NewOffer() {
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
   const history = useHistory()
   const modalContext = useContext(ModalContext);
-
+  const [errorMessages, setErrorMessages] = useState({});
+  const [lastInputChangeName, setLastInputChangeName] = useState(null);
   const inputFallback = {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
-    [NAME.DATE_START]: GetToday(),
+    [NAME.DATE_START]: new Date(),
   }
 
-  const getData = name => sellerContext.state.offeringData[name]
 
-  const priceCurrency = getData(NAME.PRICE_C)
-  const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+  useEffect(() => {
+    const getData = name => sellerContext.state.offeringData[name];
 
-  const validation = (input, value) => {
+    if(lastInputChangeName) {
+      const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData, lastInputChangeName);
+      setErrorMessages(newErrorMessages)
 
-    // price number inputs
-    if(input === NAME.PRICE && getData(NAME.PRICE_C)) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot be less or equal to 0'
-      if(value > priceSettings[priceCurrency].max) return `The maximum value is ${priceSettings[priceCurrency].max}`
-
-      return false
     }
-    else if(input === NAME.SELLER_DEPOSIT && getData(NAME.SELLER_DEPOSIT_C)) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot be less or equal to 0'
-      if(value > sellerSettings[sellerCurrency].max) return `The maximum value is ${sellerSettings[sellerCurrency].max}`
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  } ,[sellerContext.state.offeringData, lastInputChangeName]);
+  
+  useEffect(()=> {
+    sellerContext.dispatch(Seller.resetOfferingData())
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+  const createInputValueReceiver = (inputName) => (value) => {
 
-      return false
-    }
-    else if(input === NAME.BUYER_DEPOSIT && getData(NAME.PRICE_C)) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot be less or equal to 0'
-      if(value > buyerSettings[priceCurrency].max) return `The maximum value is ${buyerSettings[priceCurrency].max}`
+    if(value || value === ''){
+console.log(inputName, value)
+       
+          if(!(inputName === NAME.IMAGE)) {
+         sellerContext.dispatch(Seller.updateOfferingData({
+           [inputName]: value
+         }))
+        } else {
+          sellerContext.dispatch(Seller.updateOfferingData({
+            [NAME.SELECTED_FILE]: value
+          }))
+          const fileReader = new FileReader();
+          fileReader.addEventListener('load', (e) => {
+               sellerContext.dispatch(Seller.updateOfferingData({[inputName]: e.currentTarget.result}));
 
-      return false
-    }
-
-    // description
-    else if(input === NAME.DESCRIPTION) {
-      if(value.length < descriptionSettings.min) return `Desciption must be at least ${descriptionSettings.min} characters`
-
-      return false
-    }
-
-    // general
-    else if(input === NAME.QUANTITY) {
-      if(isNaN(parseInt(value))) return 'Must be a valid number'
-      if(value <= 0) return 'Value cannot less or equal to 0'
-      if(value > quantitySettings.max) return `Maximum quantity is ${quantitySettings.max}`
-
-      return false
-    }
-    else if(input === NAME.TITLE) {
-      if(value.length <= titleSettings.min) return `Title must be at least ${titleSettings.min + 1} characters long`
-      if(value.length > titleSettings.max) return `Title can't more than ${titleSettings.max} characters long`
-
-      return false
-    }
-
-    return false
+          }); 
+     
+          fileReader.readAsDataURL(value)
+        }
+        setLastInputChangeName(inputName);
+    } 
   }
-
   const screens = [
-    <Categories listenerType={listenerType} />,
-    <FormUploadPhoto />,
-    <FormGeneral />,
-    <FormDescription />,
+    <Categories inputValueReceiver={createInputValueReceiver(NAME.CATEGORY)} />,
+    <FormUploadPhoto inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
+    uploadImageErrorMessage={errorMessages[NAME.IMAGE]}/>,
+    <FormGeneral titleValueReceiver={createInputValueReceiver(NAME.TITLE) }  
+                 titleErrorMessage={errorMessages[NAME.TITLE]}
+                 quantityValueReceiver={createInputValueReceiver(NAME.QUANTITY)}
+                 quantityErrorMessage={errorMessages[NAME.QUANTITY]}
+                 conditionValueReceiver={createInputValueReceiver(NAME.CONDITION)}
+                  />,
+    <FormDescription  
+    descriptionValueReceiver={createInputValueReceiver(NAME.DESCRIPTION)}
+    descriptionErrorMessage={errorMessages[NAME.DESCRIPTION]}
+    />,
     <FormPrice
       priceSettings={priceSettings}
       sellerSettings={sellerSettings}
       buyerSettings={buyerSettings}
+      priceValueReceiver={createInputValueReceiver(NAME.PRICE)}
+      priceCurrencyReceiver={createInputValueReceiver(NAME.PRICE_C)}
+      sellerDepositCurrencyValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT_C)}
+      sellerDepositValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT)}
+      buyerPriceSuffixValueReceiver={createInputValueReceiver(NAME.PRICE_SUFFIX)}
+      buyerDepositValueReceiver={createInputValueReceiver(NAME.BUYER_DEPOSIT)}
+      
+    
+
+      priceErrorMessage={errorMessages[NAME.PRICE]}
+      sellerDepositErrorMessage={errorMessages[NAME.SELLER_DEPOSIT]}
+      buyerDepositErrorMessage={errorMessages[NAME.BUYER_DEPOSIT]}
+
     />,
-    <FormDate />,
+    <FormDate 
+      startDateValueReceiver={createInputValueReceiver(NAME.DATE_START)}
+      startDateErrorMessage={errorMessages[NAME.DATE_START]}
+      endDateValueReceiver={createInputValueReceiver(NAME.DATE_END)}
+      endDateErrorMessage={errorMessages[NAME.DATE_END]}
+
+     />,
     <FormSummary />,
   ]
 
@@ -159,90 +157,6 @@ function NewOffer() {
     return backToHome ? history.goBack() :
     inScreenRange(target) && sellerContext.dispatch(Seller.setOfferingProgress(target))
   }
-
-  const resetOfferingData = () => {
-    localStorage.removeItem('offeringData')
-    sellerContext.dispatch(Seller.resetOfferingData())
-    loadValues(true) // call with reset
-    sellerContext.dispatch(Seller.setOfferingProgress(0))
-
-    // load fallback
-    sellerContext.dispatch(Seller.updateOfferingData({
-      ...inputFallback
-    }))
-
-    // remove class active from active screen
-    removeActiveItems()
-  }
-
-  const removeActiveItems = () => {
-    screenController.current.querySelectorAll('.active').forEach(item => {
-      item.classList.remove('active')
-    })
-  }
-
-  const currencyList = Object.keys(CURRENCY)
-
-  const updateData = (input) => {
-    if(input.tagName === 'SELECT') {
-      currencyList.map(currency =>
-        input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
-      )
-
-      setTimeout(() => {
-        input.parentElement.getElementsByClassName('icons')[0].classList.add(`${input.value}`)
-      }, 100)
-    }
-
-
-    let error = true;
-    error = validation(input.name, input.value)
-
-    // !error && error !== undefined
-    if(true) {
-      input.parentElement.removeAttribute('data-error')
-      if(input.value) sellerContext.dispatch(Seller.updateOfferingData({
-        [input.name]: input.value
-      }))
-    } else {
-      input.parentElement.setAttribute('data-error', error)
-    }
-    error && input.parentElement.setAttribute('data-error', error)
-  }
-
-  const loadValues = (reset) => {
-    Array.from(screenController.current.querySelectorAll('[name]')).forEach(input => {
-      if(reset) {
-        input.value = null
-        return
-      }
-
-      let retrieveState = sellerContext.state.offeringData[input.name]
-
-      // currencies
-      if(input.tagName === 'SELECT') {
-        let assign = retrieveState ? retrieveState :
-          (inputFallback[input.name] ? inputFallback[input.name] : '')
-
-        currencyList.map(currency =>
-          input.parentElement.getElementsByClassName('icons')[0].classList.remove(currency)
-        )
-
-        input.parentElement.getElementsByClassName('icons')[0].classList.add(assign)
-      }
-
-      input.value = retrieveState ? retrieveState : (inputFallback[input.name] ? inputFallback[input.name] : null)
-      const listenerExceptions = [NAME.DESCRIPTION]
-      const appendListener = listenerExceptions.includes(input.name) ? 'input' : listenerType
-      
-      input.addEventListener(appendListener, (e) => updateData(e.target))
-    })
-  }
-
-  useEffect(() => {
-    loadValues()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeScreen, init])
 
   const { account } = useWeb3React();
 
@@ -288,7 +202,11 @@ function NewOffer() {
           <div className="screen">
             <form id="offer-form">
               <div ref={screenController} className="screen-controller">
-                {screens[activeScreen]}
+                {screens.map((screen, index) => {
+                  return (
+                    <div key={index} style={{ display: activeScreen === index ? "block" : "none" }}>{screen}</div>
+                  )
+                })}
               </div>
             </form>
           </div>
@@ -296,9 +214,9 @@ function NewOffer() {
         <FormBottomNavigation
           screenController={screenController}
           lastScreenBoolean={lastScreenBoolean}
-          resetOfferingData={resetOfferingData}
           activeScreen={activeScreen}
           setActiveScreen={setActiveScreen}
+          errorMessages={errorMessages}
         />
       </div>
     </section>
