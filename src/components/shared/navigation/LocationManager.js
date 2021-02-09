@@ -65,8 +65,15 @@ function LocationManager() {
   const pageRoute = '/' + location.pathname.split('/')[1]
 
   const switchLocationMap = (pageRoute) => {
-    (pageRoute === ROUTE.NewOffer) ? navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) :
-    navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.DEFAULT))
+    if(pageRoute === ROUTE.NewOffer) {
+      navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) 
+    } 
+    else if(pageRoute === ROUTE.VoucherDetails || pageRoute === ROUTE.VoucherSetDetails) {
+      navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER))
+    }
+    else {
+      navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.DEFAULT))
+    }
 
     // trigger a function that will enable relative affordances to the current page
     return callLocationAttributes[pageRoute] ? 

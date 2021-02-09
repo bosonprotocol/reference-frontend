@@ -13,6 +13,7 @@ function BottomNavigation() {
   const [selected, setSelected] = useState(new Array(5).fill(0))
   const selectedNavitem = navigationContext.state.bottom.mainNavigationItem
   const formNavigation = navigationContext.state.offerFlowControl
+  const voucherControls = navigationContext.state.redemptionFlowControl
   const navType = navigationContext.state.bottom.type
 
   const routing = {
@@ -46,11 +47,19 @@ function BottomNavigation() {
                   <Link to={ROUTE[route[0]]}>{route[1]}</Link>
                 </div>)}
               </div>
-            </div>
-            :
+            </div> :
+
+            navType === BOTTOM_NAV_TYPE.OFFER ?
             <div className="offer-nav flex ai-center jc-end w100">
               <FormBottomNavigation {...formNavigation} />
-            </div>
+            </div> :
+
+            navType === BOTTOM_NAV_TYPE.VOUCHER ?
+            <div className="control-wrap">
+              {voucherControls}
+            </div> :
+
+            null
           }
           
         </nav>

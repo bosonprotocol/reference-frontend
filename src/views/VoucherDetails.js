@@ -19,6 +19,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ROLE } from "../helpers/Dictionary";
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
+import { NavigationContext, Action } from "../contexts/Navigation";
 import Loading from "../components/offerFlow/Loading";
 
 import { initVoucherDetails } from "../helpers/VoucherParsers"
@@ -31,6 +32,7 @@ function VoucherDetails(props) {
     const voucherId = props.match.params.id;
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
+    const navigationContext = useContext(NavigationContext);
     const expiryProgressBar = useRef()
     const [loading, setLoading] = useState(0);
     const voucherKernelContract = useVoucherKernelContract();
@@ -121,6 +123,13 @@ function VoucherDetails(props) {
         statusBlocks[statusBlocks.length -1].color = 2
         if(statusBlocks.length === 1) statusBlocks[0].color = 1
     }
+
+    // useEffect(() => {
+    //     navigationContext.dispatch(Action.setRedemptionControl({
+    //         controls: controls
+    //     }))
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [controls])
     
     return (
         <>
