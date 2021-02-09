@@ -139,7 +139,7 @@ function App() {
                                             <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } component={ ShowQR }/>
                                             <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
                                             <Route path={ ROUTE.VoucherSetDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
-                                            <Route component={NotFound} />
+                                            <Route component={ NotFound } />
                                         </Switch>
                                         <BottomNavigation />
                                     </Router>

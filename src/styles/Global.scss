@@ -101,6 +101,7 @@ h2:not(.def) {
 
 .emulate-mobile {
   padding-top: 100px;
+  padding-bottom: 81px;
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
@@ -159,6 +160,9 @@ ul {
 }
 
 body {
+  @media (min-width: 961px) {
+    overflow-y: scroll
+  }
   a {
     text-decoration: none;
   }
@@ -175,6 +179,33 @@ header.top-navigation {
   align-items: center;
   z-index: 10;
   box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.15);
+}
+
+.bottom-navigation {
+  background: var(--page-color);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding-bottom: 15px;
+  padding-top: 15px;
+
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+  nav {
+    $nav-width: 375px;
+    width: $nav-width;
+
+    .link > a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: calc(#{$nav-width} / 5);
+      padding: 13px;
+    }
+  }
 }
 
 .not-found {
