@@ -13,6 +13,10 @@ html {
   --page-color: #000;
 }
 
+html, body, #root, .emulate-mobile {
+  min-height: 100vh;
+}
+
 
 html, body {
   min-height: 100%;
@@ -108,6 +112,8 @@ h2:not(.def) {
   display: block;
   position: relative;
 
+  height: 100%;
+
   @media (max-width: 375px) {
     border-radius: 0;
     height: 100vh;
@@ -160,8 +166,6 @@ ul {
 }
 
 body {
-  min-height: 100vh;
-  
   @media (min-width: 961px) {
     overflow-y: scroll
   }
