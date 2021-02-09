@@ -135,7 +135,7 @@ function NavigationBar(props) {
         };
 
         try {
-            const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+            await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
             history.push(ROUTE.ActivityVouchers)
         } catch (e) {
             setLoading(0);

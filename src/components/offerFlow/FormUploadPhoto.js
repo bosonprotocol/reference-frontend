@@ -1,6 +1,6 @@
-import React, { useRef, useContext } from 'react'
+import React, {  useContext } from 'react'
 
-import { SellerContext, Seller, getData } from "../../contexts/Seller"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 import "./FormUploadPhoto.scss"
 

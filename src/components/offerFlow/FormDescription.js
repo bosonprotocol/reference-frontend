@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import { useEffect, useState } from 'react/cjs/react.development'
-
 import { SellerContext, getData } from "../../contexts/Seller"
 
 import { NAME } from "../../helpers/Dictionary"
