@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { CONTROL, AFFMAP } from "../helpers/Dictionary"
+import { CONTROL, AFFMAP, BOTTOM_NAV_TYPE } from "../helpers/Dictionary"
 import { getData as getContextData } from "../helpers/Context"
 
 export const MAP = CONTROL
@@ -16,6 +16,7 @@ export const NavigationInitialState = {
     [AFFMAP.QR_CODE_READER]: false,
   },
   bottom: {
+    type: BOTTOM_NAV_TYPE.DEFAULT,
     mainNavigationItem: null,
     formNavigation: null,
   }
@@ -33,7 +34,15 @@ export const Action = {
   bottomNavListSelectedItem: (item) => ({
     type: CONTROL.UPDATE_BOTTOM_NAV,
     payload: item
-  })
+  }),
+  setFormNavigation: (object) => ({
+    type: CONTROL.SET_FORM_NAVIGATION,
+    payload: object
+  }),
+  setBottomNavType: (type) => ({
+    type: CONTROL.SET_BOTTOM_NAV_TYPE,
+    payload: type
+  }),
 }
 
 export const NavigationReducer = (state, action) => {
@@ -48,11 +57,28 @@ export const NavigationReducer = (state, action) => {
         top: action.payload
       }
     },
+    [CONTROL.SET_BOTTOM_NAV_TYPE]: () => {
+      console.log(action.payload)
+      return {
+        bottom: { 
+          ...state.bottom,
+          type: action.payload
+        }
+      }
+    },
     [CONTROL.UPDATE_BOTTOM_NAV]: () => {
       return {
         bottom: { 
           ...state.bottom,
           mainNavigationItem: action.payload
+        }
+      }
+    },
+    [CONTROL.SET_FORM_NAVIGATION]: () => {
+      return {
+        bottom: { 
+          ...state.bottom,
+          formNavigation: action.payload
         }
       }
     },

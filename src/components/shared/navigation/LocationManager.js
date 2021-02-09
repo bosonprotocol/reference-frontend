@@ -2,12 +2,12 @@ import { useContext, useEffect } from 'react'
 import { useLocation } from "react-router"
 import { NavigationContext, Action } from '../../../contexts/Navigation'
 
-import { ROUTE, AFFMAP } from "../../../helpers/Dictionary"
+import { ROUTE, AFFMAP, BOTTOM_NAV_TYPE } from "../../../helpers/Dictionary"
 import { updateBackgroundColor, bgColorPrimary, bgColorSecondary } from "../../../helpers/CSS"
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
 let affordances = { }
-let bottomNavCurrent = false
+let bottomNavCurrent = -1
 
 // recieve an array with affordances that should be dispplayed
 const enableControl = (affordancesArray) => {
@@ -44,21 +44,16 @@ callLocationAttributes[ROUTE.VoucherDetails] =
 callLocationAttributes[ROUTE.VoucherSetDetails] = () => {
   enableControl(controlset_1)
   updateBackgroundColor(bgColorSecondary)
+  bottomNavCurrent = -1
 }
 
 // page not matching any
 callLocationAttributes[ROUTE.Default] = () => {
   updateBackgroundColor(bgColorPrimary)
+  
 }
 callLocationAttributes[ROUTE.NewOffer] = () => {
-
-}
-
-const switchLocationMap = (pageRoute) => {
-  // trigger a function that will enable relative affordances to the current page
-  return callLocationAttributes[pageRoute] ? 
-  callLocationAttributes[pageRoute]() : 
-  callLocationAttributes[ROUTE.Default]()
+  
 }
 
 
@@ -69,11 +64,21 @@ function LocationManager() {
 
   const pageRoute = '/' + location.pathname.split('/')[1]
 
+  const switchLocationMap = (pageRoute) => {
+    (pageRoute === ROUTE.NewOffer) ? navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) :
+    navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.DEFAULT))
+
+    // trigger a function that will enable relative affordances to the current page
+    return callLocationAttributes[pageRoute] ? 
+    callLocationAttributes[pageRoute]() : 
+    callLocationAttributes[ROUTE.Default]()
+  }
+
   useEffect(() => {
     affordances = {}
     switchLocationMap(pageRoute)
 
-    if(bottomNavCurrent !== false) navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
+    navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
 
     navigationContext.dispatch(Action.updateLocation())
     navigationContext.dispatch(Action.updateAffordances(

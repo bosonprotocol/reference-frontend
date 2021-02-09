@@ -197,20 +197,18 @@ header.top-navigation {
   padding-bottom: 15px;
   padding-top: 15px;
 
-  .container {
-    display: flex;
-    justify-content: center;
-  }
-  nav {
-    $nav-width: 375px;
-    width: $nav-width;
+  .default-nav  {
+    .nav-container {
+      $nav-width: 375px;
+      width: $nav-width;
 
-    .link > a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: calc(#{$nav-width} / 5);
-      padding: 13px;
+      .link > a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: calc(#{$nav-width} / 5);
+        padding: 13px;
+      }
     }
   }
 }

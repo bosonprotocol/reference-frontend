@@ -27,7 +27,9 @@ export const DIC = {
 export const CONTROL = {
     UPDATE_LOCATION: 'updateLocation',
     UPDATE_AFFORDANCES: 'updateAffordances',
-    UPDATE_BOTTOM_NAV: 'update_bottom_nav'
+    UPDATE_BOTTOM_NAV: 'update_bottom_nav',
+    SET_FORM_NAVIGATION: 'set-form-navigation',
+    SET_BOTTOM_NAV_TYPE: 'set-bottom-navigation-type',
 }
 
 // ROUTE strings are used to navigate to url
@@ -47,6 +49,12 @@ export const ROUTE = {
         ID: '/:id',
     },
     VoucherQRCode: '/qr'
+}
+
+export const BOTTOM_NAV_TYPE = {
+    DEFAULT: 'bottom_navigation_default',
+    OFFER: 'bottom_navigation_offer',
+    VOUCHER: 'bottom_navigation_voucher',
 }
 
 // affordances list

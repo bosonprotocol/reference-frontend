@@ -13,9 +13,9 @@ import FormDescription from "../components/offerFlow/FormDescription"
 import FormPrice from "../components/offerFlow/FormPrice"
 import FormDate from "../components/offerFlow/FormDate"
 import FormSummary from "../components/offerFlow/FormSummary"
-import FormBottomNavigation from "../components/offerFlow/FormBottomNavigation"
 
 import { SellerContext, Seller } from "../contexts/Seller"
+import { NavigationContext, Action } from "../contexts/Navigation"
 import { Arrow } from "../components/shared/Icons"
 
 import { NAME, CURRENCY, MODAL_TYPES, ROUTE } from "../helpers/Dictionary"
@@ -55,6 +55,7 @@ const buyerSettings = {
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
+  const navigationContext = useContext(NavigationContext)
   const [init, triggerInit] = useState(1)
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
@@ -84,6 +85,7 @@ function NewOffer() {
     sellerContext.dispatch(Seller.resetOfferingData())
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
   const createInputValueReceiver = (inputName) => (value) => {
 
     if(value || value === ''){
@@ -183,6 +185,17 @@ console.log(inputName, value)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(()=> {
+    navigationContext.dispatch(Action.setFormNavigation({
+      screenController: screenController,
+      lastScreenBoolean: lastScreenBoolean,
+      activeScreen: activeScreen,
+      setActiveScreen: setActiveScreen,
+      errorMessages: errorMessages,
+    }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screenController, lastScreenBoolean, activeScreen, errorMessages])
+
   return (
     <section className="new-offer">
       <div className="container l flex column jc-sb">
@@ -211,13 +224,6 @@ console.log(inputName, value)
             </form>
           </div>
         </div>
-        <FormBottomNavigation
-          screenController={screenController}
-          lastScreenBoolean={lastScreenBoolean}
-          activeScreen={activeScreen}
-          setActiveScreen={setActiveScreen}
-          errorMessages={errorMessages}
-        />
       </div>
     </section>
   )
