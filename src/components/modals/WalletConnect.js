@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
-// import Web3, {Eth} from "web3";
+import Web3 from "web3";
 import { usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
 // import Modal from "../shared/Modal";
@@ -211,7 +211,8 @@ function WalletListItem({
 
 function WalletAccount() {
     const { account, connector } = useWeb3React();
-    // const web3 = new Web3();
+    const [connectedNetowrk, setConnectedNetowrk] = useState()
+    const web3 = new Web3(window.ethereum);
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -237,23 +238,10 @@ function WalletAccount() {
         <span style={ { marginLeft: "4px" } }>Copy Address</span>
     </CopyHelper>
 
-// web3.eth.net.getId().then(netId => {
-//     switch (netId) {
-//       case 1:
-//         console.log('This is mainnet')
-//         break
-//       case 2:
-//         console.log('This is the deprecated Morden test network.')
-//         break
-//       case 3:
-//         console.log('This is the ropsten test network.')
-//         break
-//       default:
-//         console.log('This is an unknown network.')
-//     }
-//   })
 
-// web3.eth.net.getId().then(res=>console.log(res));
+    web3?.eth?.net?.getNetworkType()?.then(netId => {
+        setConnectedNetowrk(netId)
+    })
 
 
     return (
@@ -261,7 +249,7 @@ function WalletAccount() {
             <div className="connected-wallet">
                 <div className="address relative">
                     <div className="netowrk-info flex center">
-                        Rinkeby
+                        <span className="net-name">{connectedNetowrk}</span>
                     </div>
                     <div className="url flex ai-center">{ getStatusIcon() }{ shortenAddress(account) }</div>
                     <div className="copy">{ copyButton }</div>

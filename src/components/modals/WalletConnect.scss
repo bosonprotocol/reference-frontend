@@ -86,4 +86,8 @@
 
     color: #F08D1A;
   }
+
+  .net-name::first-letter {
+    text-transform: uppercase;
+  }
 }
