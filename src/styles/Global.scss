@@ -163,8 +163,16 @@ body {
   @media (min-width: 961px) {
     overflow-y: scroll
   }
-  a {
+  a,
+  a:focus,
+  a:active {
     text-decoration: none;
+
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
   }
 }
 
