@@ -60,7 +60,7 @@ function FormBottomNavigation(props) {
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeScreen, sellerContext.state.offeringData, errorMessages])
+  }, [activeScreen, errorMessages ])
   
   return (
     <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>

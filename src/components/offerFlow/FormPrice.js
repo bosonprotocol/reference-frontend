@@ -7,24 +7,21 @@ import Currencies from "./Currencies"
 import { NAME } from "../../helpers/Dictionary"
 
 
-function FormPrice(props) {
+function FormPrice({
+  priceSettings, 
+  sellerSettings, 
+  buyerSettings,
+  priceValueReceiver,
+  priceCurrencyReceiver,
+  sellerDepositCurrencyValueReceiver,
+  sellerDepositValueReceiver,
+  buyerDepositValueReceiver,
+
+  sellerDepositErrorMessage,
+  priceErrorMessage,
+  buyerDepositErrorMessage
+}) {
   const sellerContext = useContext(SellerContext)
-
-  const { 
-    priceSettings, 
-    sellerSettings, 
-    buyerSettings,
-    priceValueReceiver,
-    priceCurrencyReceiver,
-    sellerDepositCurrencyValueReceiver,
-    sellerDepositValueReceiver,
-    buyerPriceSuffixValueReceiver,
-    buyerDepositValueReceiver,
-
-    sellerDepositErrorMessage,
-    priceErrorMessage,
-    buyerDepositErrorMessage
-   } = props
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 

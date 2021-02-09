@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { DIC, NAME } from "../helpers/Dictionary"
+import { DIC } from "../helpers/Dictionary"
 import { getData as getContextData } from "../helpers/Context"
 
 export const getData = getContextData
@@ -11,11 +11,7 @@ const fetchProgressFallback = parseInt(localStorage.getItem('offeringProgress'))
 
 export const SellerInitialState = {
   offeringProgress: fetchProgressFallback ? fetchProgressFallback : 0,
-  offeringData: {
-    // [NAME.DATE_START]: new Date(),
-    // // [NAME.DATE_END]: new Date(),
-
-  }
+  offeringData: {}
 };
 
 export const Seller = {
@@ -69,10 +65,7 @@ export const SellerReducer = (state, action) => {
     }),
 
     [DIC.RESET_OFFERING_DATA]: () => ({
-      offeringData: {
-        // [NAME.DATE_START]: new Date(),
-        // [NAME.DATE_END]: new Date(),
-      },
+      offeringData: {},
       offeringProgress: 0
     }),
 

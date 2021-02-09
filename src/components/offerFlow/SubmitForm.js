@@ -79,7 +79,7 @@ export default function SubmitForm(props) {
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-
+console.log(dataArr[0], dataArr[1])
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
         let tx;

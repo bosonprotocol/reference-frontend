@@ -1,6 +1,6 @@
 import React, { useRef, useContext, forwardRef, useEffect } from 'react'
 
-import { SellerContext, Seller, getData } from "../../contexts/Seller"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 import DatePicker from "react-datepicker";
  
@@ -20,15 +20,13 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const start_date = getOfferingData(NAME.DATE_START);
   const end_date = getOfferingData(NAME.DATE_END);
 
   useEffect(() => {
       startDateValueReceiver(null)
-  }, [])
-  const getCurrentValueValue = (name) => {
+  })
+  const getCurrentDateValue = (name) => {
     let currentValue = getOfferingData(name)
-    console.log('selected', currentValue)
 
     return ( currentValue ? new Date(currentValue) : new Date()
     )
@@ -57,8 +55,8 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
             <DatePicker
               id="offer-start-date" 
              
-              selected={getCurrentValueValue(NAME.DATE_START)}
-              onChange={(date) => startDateValueReceiver(date)}
+              selected={getCurrentDateValue(NAME.DATE_START)}
+              onChange={(date) => startDateValueReceiver(date.setHours(0,0,0,0))}
               customInput={<Field ref={startDate} dateFieldType={NAME.DATE_START}/>}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
@@ -71,8 +69,8 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
           <div ref={dateRef[NAME.DATE_END]}   data-error={endDateErrorMessage} className="input relative">
             <DatePicker
               id="offer-expiry-date"
-              selected={getCurrentValueValue(NAME.DATE_END)}
-              onChange={(date) => endDateValueReceiver(date)}
+              selected={getCurrentDateValue(NAME.DATE_END)}
+              onChange={(date) => endDateValueReceiver(date.setHours(23,59,59,999))}
               customInput={<Field ref={endDate} dateFieldType={NAME.DATE_END}/>}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
