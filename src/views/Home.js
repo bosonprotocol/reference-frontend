@@ -7,7 +7,6 @@ import Slider from "react-slick";
 import ProductBlock from "../components/home/ProductBlock";
 import CardBlock from "../components/home/CardBlock";
 import CategoryMenu from "../components/home/CategoryMenu"
-import NavigationBar from "../components/shared/NavigationBar"
 // import ProductListing from "../components/home/ProductListing"
 import ProductView from "../components/shared/ProductView"
 import Onboarding from '../views/Onboarding'
@@ -132,7 +131,6 @@ function Home() {
                             <ProductView/> :
                             null
                     }
-                    <NavigationBar delay={ animateDel.NAV }/>
                 </div>
             </div>
         </>

@@ -27,6 +27,7 @@ export const DIC = {
 export const CONTROL = {
     UPDATE_LOCATION: 'updateLocation',
     UPDATE_AFFORDANCES: 'updateAffordances',
+    UPDATE_BOTTOM_NAV: 'update_bottom_nav'
 }
 
 // ROUTE strings are used to navigate to url

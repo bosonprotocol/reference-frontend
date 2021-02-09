@@ -11,7 +11,8 @@ import NewOffer from "./views/NewOffer"
 import { ActivityVoucherSets, ActivityAccountVouchers } from "./views/Activity"
 import VoucherDetails from "./views/VoucherDetails"
 import QRScanner from "./views/QRScanner"
-import GlobalListeners   from "./views/GlobalListeners"
+import GlobalListeners from "./views/GlobalListeners"
+import NotFound from "./views/NotFound"
 
 import TopNavigation from "./components/shared/navigation/TopNavigation"
 import BottomNavigation from "./components/shared/navigation/BottomNavigation"
@@ -138,6 +139,7 @@ function App() {
                                             <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } component={ ShowQR }/>
                                             <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
                                             <Route path={ ROUTE.VoucherSetDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
+                                            <Route component={ NotFound } />
                                         </Switch>
                                         <BottomNavigation />
                                     </Router>

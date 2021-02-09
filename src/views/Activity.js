@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useHistory } from "react-router"
 import { Link } from 'react-router-dom'
 
 import "./Activity.scss"
@@ -8,42 +7,38 @@ import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
-import { Arrow, IconQR, Quantity } from "../components/shared/Icons"
+import { Quantity } from "../components/shared/Icons"
 
 import { getAccountVouchers, initVoucherDetails } from "../helpers/VoucherParsers"
+
 import { ModalContext } from "../contexts/Modal";
+import { useWeb3React } from "@web3-react/core";
 import { getVoucherDetails } from "../hooks/api";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
-import { useWeb3React } from "@web3-react/core";
 import Loading from "../components/offerFlow/Loading";
 
 export function ActivityAccountVouchers() {
-    const [voucherBlocks, setVoucherBlocks] = useState([])
-    const modalContext = useContext(ModalContext);
+    const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
+    const modalContext = useContext(ModalContext);
     const [loading, setLoading] = useState(0)
-
+  
     useEffect(() => {
-        let accountVouchers;
-
         setLoading(1);
 
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
-            accountVouchers = result;
-            accountVouchers ?
-                setVoucherBlocks(accountVouchers)
-                : setVoucherBlocks([])
+            setAccountVouchers(result)
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [account]);
 
-    return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
+    return accountVouchers?.length ?
+        <ActivityView voucherBlocks={ accountVouchers } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
 }
 
 export function ActivityVoucherSets() {
@@ -66,7 +61,6 @@ export function ActivityVoucherSets() {
 
 function ActivityView(props) {
     const { voucherBlocks, blockType } = props
-    const history = useHistory()
 
     const blocksSorted = sortBlocks(voucherBlocks)
 
@@ -75,34 +69,24 @@ function ActivityView(props) {
 
     return (
         <>
-            <section className="activity atomic-scoped">
-                <div className="container">
-                    <div className="top-navigation flex split">
-                        <div className="button square dark" role="button"
-                             onClick={ () => history.goBack() }
-                        >
-                            <Arrow color="#80F0BE"/>
-                        </div>
-                        <Link to={ ROUTE.CodeScanner }>
-                            <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
-                        </Link>
-                    </div>
-                    <div className="page-title">
-                        <h1>{ blockType === blockTypes.account ? 'Activity' : 'Voucher Sets' }</h1>
-                    </div>
-                    <Tabs>
-                        <TabList>
-                            <Tab>Active</Tab>
-                            <Tab>Inactive</Tab>
-                        </TabList>
+        <section className="activity atomic-scoped">
+            <div className="container">
+                <div className="page-title">
+                    <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
+                </div>
+                <Tabs>
+                    <TabList>
+                        <Tab>Active</Tab>
+                        <Tab>Inactive</Tab>
+                    </TabList>
 
-                        <TabPanel>
-                            { <ActiveTab blockType={ blockType } products={ activeVouchers }/> }
-                        </TabPanel>
-                        <TabPanel>
-                            { <ActiveTab blockType={ blockType } products={ inactiveVouchers }/> }
-                        </TabPanel>
-                    </Tabs>
+                    <TabPanel>
+                        { <ActiveTab blockType={blockType} products={ activeVouchers }/> }
+                    </TabPanel>
+                    <TabPanel>
+                        { <ActiveTab blockType={blockType} products={ inactiveVouchers }/> }
+                    </TabPanel>
+                </Tabs>
 
                 </div>
             </section>

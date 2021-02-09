@@ -15,7 +15,6 @@ import { HorizontalScrollView } from "rc-horizontal-scroll";
 
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
-import { Arrow } from "../components/shared/Icons"
 import { useWeb3React } from "@web3-react/core";
 import { ROLE } from "../helpers/Dictionary";
 import { ModalContext } from "../contexts/Modal";
@@ -132,11 +131,6 @@ function VoucherDetails(props) {
             { loading ? <Loading/> : null }
             <section className="voucher-details no-bg">
                 <div className="container erase">
-                    <div className="button square new" role="button"
-                         onClick={ () => history.goBack() }
-                    >
-                        <Arrow color="#80F0BE"/>
-                    </div>
                     <div className="content">
                         <div className="section title">
                             <h1>{ getProp('title') }</h1>

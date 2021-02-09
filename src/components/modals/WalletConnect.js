@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
+import Web3 from "web3";
 import { usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
 // import Modal from "../shared/Modal";
@@ -210,6 +211,8 @@ function WalletListItem({
 
 function WalletAccount() {
     const { account, connector } = useWeb3React();
+    const [connectedNetowrk, setConnectedNetowrk] = useState()
+    const web3 = new Web3(window.ethereum);
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -235,11 +238,20 @@ function WalletAccount() {
         <span style={ { marginLeft: "4px" } }>Copy Address</span>
     </CopyHelper>
 
+
+    web3?.eth?.net?.getNetworkType()?.then(netId => {
+        setConnectedNetowrk(netId)
+    })
+
+
     return (
         <>
             <div className="connected-wallet">
-                <div className="address flex split">
-                    <div className="url flex center">{ getStatusIcon() }{ shortenAddress(account) }</div>
+                <div className="address relative">
+                    <div className="netowrk-info flex center">
+                        <span className="net-name">{connectedNetowrk}</span>
+                    </div>
+                    <div className="url flex ai-center">{ getStatusIcon() }{ shortenAddress(account) }</div>
                     <div className="copy">{ copyButton }</div>
                 </div>
                 {/* <div className="control flex split">

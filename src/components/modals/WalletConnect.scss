@@ -62,3 +62,32 @@
     }
   }
 }
+
+.address {
+  .netowrk-info {
+    position: absolute;
+    top: 25px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background: #192028;
+    border-radius: 4px;
+
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #F08D1A;
+  }
+
+  .net-name::first-letter {
+    text-transform: uppercase;
+  }
+}
