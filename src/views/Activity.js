@@ -22,19 +22,10 @@ import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers
 import Loading from "../components/offerFlow/Loading";
 
 export function ActivityAccountVouchers() {
-    const [voucherBlocks, setVoucherBlocks] = useState([])
-
-    const [accountVouchers, setAccountVouchers] = useState()
+    const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
     const [loading, setLoading] = useState(0)
-    
-    useEffect(() => {
-        getAccountVouchers(account, modalContext).then(
-            result => setAccountVouchers(result)
-        )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [account])
   
     useEffect(() => {
         setLoading(1);
@@ -42,15 +33,12 @@ export function ActivityAccountVouchers() {
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
             setAccountVouchers(result)
-            accountVouchers ?
-                setVoucherBlocks(accountVouchers)
-                : setVoucherBlocks([])
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [account]);
 
-    return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
+    return accountVouchers?.length ?
+        <ActivityView voucherBlocks={ accountVouchers } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
 }
 
 export function ActivityVoucherSets() {

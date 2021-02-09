@@ -35,7 +35,7 @@ html, body {
   justify-content: center;
 }
 
-a,
+a:not(.def),
 input[type="submit"] {
   transition: $ease-flash;
   color: #FFFFFF;
@@ -174,5 +174,27 @@ header.top-navigation {
   display: flex;
   align-items: center;
   z-index: 10;
-  box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.15);
+}
+
+.not-found {
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20vh;
+  }
+  h1 {
+    color: #80F0BE;
+    font-size: clamp(110px, 15vw, 200px);
+  }
+  p {
+    color: #C1C7CE;
+    font-size: clamp(20px, 4vw, 50px);
+    font-weight: 300;
+  }
+  .button {
+    margin-top: 3vh;
+  }
 }

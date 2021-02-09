@@ -43,7 +43,6 @@ callLocationAttributes[ROUTE.VoucherSetDetails] = () => {
 
 // page not matching any
 callLocationAttributes[ROUTE.Default] = () => {
-  enableControl(controlset_1)
   updateBackgroundColor(bgColorPrimary)
 }
 // callLocationAttributes[ROUTE.NewOffer] = () => enableControl(controlset_1), // !TODO
