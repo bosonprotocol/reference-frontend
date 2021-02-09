@@ -10,7 +10,7 @@ const selectedColor = '#80F0BE'
 function BottomNavigation() {
   const navigationContext = useContext(NavigationContext)
   const [selected, setSelected] = useState(new Array(5).fill(0))
-  const selectedNavitem = navigationContext.state.bottomNavItem
+  const selectedNavitem = navigationContext.state.bottom.mainNavigationItem
 
   const routing = {
     Home: <IconHome color={selected[0] && selectedColor} />,

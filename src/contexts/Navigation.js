@@ -15,7 +15,10 @@ export const NavigationInitialState = {
     [AFFMAP.BACK_BUTTON]: false,
     [AFFMAP.QR_CODE_READER]: false,
   },
-  bottomNavItem: null
+  bottom: {
+    mainNavigationItem: null,
+    formNavigation: null,
+  }
 };
 
 export const Action = {
@@ -47,7 +50,10 @@ export const NavigationReducer = (state, action) => {
     },
     [CONTROL.UPDATE_BOTTOM_NAV]: () => {
       return {
-        bottomNavItem: action.payload
+        bottom: { 
+          ...state.bottom,
+          mainNavigationItem: action.payload
+        }
       }
     },
   }

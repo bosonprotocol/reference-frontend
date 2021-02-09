@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useContext } from 'react'
 
 import "./ProductView.scss"
 
-import { TableRow, DateTable, PriceTable, TableLocation } from "./TableContent"
+import { TableRow, DateTable, PriceTable } from "./TableContent"
 
 import { GlobalContext, Action } from "../../contexts/Global"
 import { DIC } from "../../helpers/Dictionary"
@@ -40,8 +40,6 @@ function ProductView() {
         formatDate(selectedProduct?.startDate),
         formatDate(selectedProduct?.expiryDate)
     ];
-
-    const tableLocation = 'Los Angeles';
 
     const delta = {
         offset: 0,
@@ -135,18 +133,13 @@ function ProductView() {
                             <img className="mw100" src={ selectedProduct?.image } alt={ selectedProduct?.title }/>
                         </div>
                         <div className="content">
-                            {/* <div className="escrow-container">
-                                <EscrowDiagram status={ 'commited' }/>
-                            </div> */ }
                             <div className="product-info">
                                 <h2 className="elipsis">{ selectedProduct?.title }</h2>
                                 <p>{ description }</p>
                             </div>
-                            { tableLocation ? <TableLocation data={ tableLocation }/> : null }
                             { tableContent.some(item => item) ? <TableRow data={ tableContent }/> : null }
                             { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
                             { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
-                            {/* <div className="button refund" role="button">REFUND</div> */ }
                         </div>
                     </div>
                 </div>

@@ -1,9 +1,6 @@
 @import "../styles/Settings.scss";
 
 .new-offer {
-  .container {
-    min-height: 100vh;
-  }
   .top-navigation {
     margin-top: 48px;
   }
@@ -26,12 +23,6 @@
           background: #80F0BE;
         }
       }
-
-      // &:hover {
-      //   span {
-      //     opacity: 0.6;
-      //   }
-      // }
 
       & + .bar {
         margin-left: 2px;

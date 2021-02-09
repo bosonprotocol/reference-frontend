@@ -84,11 +84,7 @@ function VoucherDetails(props) {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
-  
-    const tableSellerInfo = [
-        ['Seller', 'David'],
-        ['Phone', '1-415-542-5050'],
-    ];
+
 
     // int on index #2 is the X position of the block
     const tablePrices = [
@@ -188,11 +184,6 @@ function VoucherDetails(props) {
                             <div className="section date">
                                 { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
                             </div>
-                            {!voucherSetDetails ?
-                            <div className="section seller">
-                                { tableSellerInfo.some(item => item) ? <TableRow data={ tableSellerInfo }/> : null }
-                            </div>
-                            :null}
                         </div>
                     </div> 
                     <div className="control-wrap">

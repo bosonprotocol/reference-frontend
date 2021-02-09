@@ -207,7 +207,7 @@ export const categories = [
   },
   {
     image: 'images/temp/category-item-3.png',
-    title: 'Beaty & Health'
+    title: 'Beauty & Health'
   },
   {
     image: 'images/temp/category-item-4.png',

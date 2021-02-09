@@ -51,7 +51,7 @@ callLocationAttributes[ROUTE.Default] = () => {
   updateBackgroundColor(bgColorPrimary)
 }
 callLocationAttributes[ROUTE.NewOffer] = () => {
-  bottomNavCurrent = 2
+
 }
 
 const switchLocationMap = (pageRoute) => {
@@ -73,8 +73,9 @@ function LocationManager() {
     affordances = {}
     switchLocationMap(pageRoute)
 
+    if(bottomNavCurrent !== false) navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
+
     navigationContext.dispatch(Action.updateLocation())
-    navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
     navigationContext.dispatch(Action.updateAffordances(
       affordances
     ))
