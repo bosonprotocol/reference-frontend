@@ -264,6 +264,10 @@ header.top-navigation {
           text-align: center;
           color: #6E8298;
 
+          &.selected {
+            color: #80F0BE;
+          }
+
           svg {
             margin-bottom: 5px;;
           }

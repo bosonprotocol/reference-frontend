@@ -1,12 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import "./Categories.scss"
 import { categories } from "../../PlaceholderAPI"
-import { useState } from 'react/cjs/react.development'
 
 function Categories({inputValueReceiver}) {
   const categoryList = useRef()
 
-  const [isCategoryActive, setIsCategoryActive] = useState(() => Array.from({length: categories.length},() => false));  
+  const [isCategoryActive, setIsCategoryActive] = useState(Array.from({length: categories.length},() => false));  
 
 
   const setCategory = (el, id, index) => {
