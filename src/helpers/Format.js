@@ -50,7 +50,7 @@ export function formatDate(date, type) {
     }
 
     var d = new Date(date),
-        month = '' + (d.getMonth() ),
+        month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
 
@@ -60,7 +60,7 @@ export function formatDate(date, type) {
         day = '0' + day;
 
     if(type === 'string') {
-        newFormat = [monthNames[parseInt(month)], dayFormat(day), year].join(' ')
+        newFormat = [monthNames[parseInt(month - 1)], dayFormat(day), year].join(' ')
     } else {
         newFormat = [year, month, day].join('-')
     }
