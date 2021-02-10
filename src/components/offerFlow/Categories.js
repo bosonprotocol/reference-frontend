@@ -6,7 +6,7 @@ import { useState } from 'react/cjs/react.development'
 function Categories({inputValueReceiver}) {
   const categoryList = useRef()
 
-  const [isCategoryActive, setIsCategoryActive] = useState(Array.from({length: categories.length},() => false));  
+  const [isCategoryActive, setIsCategoryActive] = useState(() => Array.from({length: categories.length},() => false));  
 
 
   const setCategory = (el, id, index) => {
