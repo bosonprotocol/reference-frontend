@@ -27,7 +27,7 @@ export default function SubmitForm(props) {
 
     const globalContext = useContext(GlobalContext);
 
-    const messageTitle = "Voucher Sets was published";
+    const messageTitle = "Voucher Set published";
 
     const {
         start_date,
