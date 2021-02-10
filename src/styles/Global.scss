@@ -104,8 +104,10 @@ h2:not(.def) {
 }
 
 .emulate-mobile {
-  padding-top: 100px;
-  padding-bottom: 81px;
+  &:not(.disabled) {
+    padding-top: 100px;
+    padding-bottom: 81px;
+  }
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
@@ -113,6 +115,13 @@ h2:not(.def) {
   position: relative;
 
   height: 100%;
+
+  &.disabled {
+    .top-navigation,
+    .bottom-navigation {
+      display: none;
+    }
+  }
 
   @media (max-width: 375px) {
     border-radius: 0;

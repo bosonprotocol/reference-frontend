@@ -77,6 +77,12 @@ function LocationManager() {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.DEFAULT))
     }
 
+    if(pageRoute === ROUTE.CodeScanner) {
+      navigationContext.dispatch(Action.displayNavigation(false))
+    } else {
+      navigationContext.dispatch(Action.displayNavigation(true))
+    }
+
     // trigger a function that will enable relative affordances to the current page
     return callLocationAttributes[pageRoute] ? 
     callLocationAttributes[pageRoute]() : 

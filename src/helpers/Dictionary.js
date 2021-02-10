@@ -32,6 +32,7 @@ export const CONTROL = {
     SET_BOTTOM_NAV_TYPE: 'set-bottom-navigation-type',
     SET_REDEMPTION_CONTROL: 'redemption_flow_control',
     COMPLE_ONBOARDING: 'complete-onboarding',
+    DISPLAY_NAVIGATION: 'display-navigation',
 }
 
 // ROUTE strings are used to navigate to url
