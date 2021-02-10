@@ -253,7 +253,21 @@ header.top-navigation {
         justify-content: center;
         align-items: center;
         width: calc(#{$nav-width} / 5);
-        padding: 13px;
+        padding: 3px;
+
+        .set {
+          font-family: 'Barlow', sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: center;
+          color: #6E8298;
+
+          svg {
+            margin-bottom: 5px;;
+          }
+        }
       }
     }
   }
@@ -265,7 +279,6 @@ header.top-navigation {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-top: 20vh;
   }
   h1 {
     color: #80F0BE;
