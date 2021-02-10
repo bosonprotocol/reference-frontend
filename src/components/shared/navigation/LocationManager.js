@@ -3,7 +3,7 @@ import { useLocation } from "react-router"
 import { NavigationContext, Action } from '../../../contexts/Navigation'
 
 import { ROUTE, AFFMAP, BOTTOM_NAV_TYPE } from "../../../helpers/Dictionary"
-import { updateBackgroundColor, bgColorPrimary, bgColorSecondary } from "../../../helpers/CSS"
+import { updateBackgroundColor, bgColorPrimary, bgColorSecondary, bgColorBlack } from "../../../helpers/CSS"
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
 let affordances = { }
@@ -22,22 +22,22 @@ const controlset_3 = [AFFMAP.WALLET_CONNECTION, AFFMAP.QR_CODE_READER]
 const callLocationAttributes = { }
 callLocationAttributes[ROUTE.Home] = () => {
   enableControl(controlset_3)
-  updateBackgroundColor(bgColorPrimary)
+  updateBackgroundColor(bgColorBlack)
   bottomNavCurrent = 0
 }
 callLocationAttributes[ROUTE.Connect] = () => {
   enableControl(controlset_1)
-  updateBackgroundColor(bgColorPrimary)
+  updateBackgroundColor(bgColorBlack)
   bottomNavCurrent = 4
 }
 callLocationAttributes[ROUTE.Activity] = () => {
   enableControl(controlset_2)
-  updateBackgroundColor(bgColorPrimary)
+  updateBackgroundColor(bgColorBlack)
   bottomNavCurrent = 3
 }
 callLocationAttributes[ROUTE.ActivityVouchers] = () => {
   enableControl(controlset_2)
-  updateBackgroundColor(bgColorPrimary)
+  updateBackgroundColor(bgColorBlack)
   bottomNavCurrent = 1
 }
 callLocationAttributes[ROUTE.VoucherDetails] =
@@ -82,6 +82,8 @@ function LocationManager() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     affordances = {}
     switchLocationMap(pageRoute)
 

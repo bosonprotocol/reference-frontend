@@ -47,7 +47,7 @@ function TopNavigation() {
           {/* Back button */}
           { navigationContext.state.top[AFFMAP.BACK_BUTTON] ?
             <div className="button square new" role="button"
-            onClick={ () => history.goBack() } >
+            onClick={ () => history.push(ROUTE.Home) } >
               <Arrow color="#80F0BE"/>
             </div>
           : null}
