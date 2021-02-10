@@ -168,7 +168,7 @@ console.log(dataArr[0], dataArr[1])
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Activity} />
+                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Home} />
             }
         </>
     );

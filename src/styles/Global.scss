@@ -13,6 +13,10 @@ html {
   --page-color: #000;
 }
 
+html, body, #root, .emulate-mobile {
+  min-height: 100vh;
+}
+
 
 html, body {
   min-height: 100%;
@@ -108,6 +112,8 @@ h2:not(.def) {
   display: block;
   position: relative;
 
+  height: 100%;
+
   @media (max-width: 375px) {
     border-radius: 0;
     height: 100vh;
@@ -126,6 +132,7 @@ h2:not(.def) {
     transition: 0.7s 400ms ease-in-out;
     max-height: 100vh;
     overflow-y: hidden;
+    max-height: calc(100vh - 181px);
   }
 
   &.onboarding-done {
@@ -163,8 +170,16 @@ body {
   @media (min-width: 961px) {
     overflow-y: scroll
   }
-  a {
+  a,
+  a:focus,
+  a:active {
     text-decoration: none;
+
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
   }
 }
 
@@ -178,6 +193,44 @@ header.top-navigation {
   display: flex;
   align-items: center;
   z-index: 10;
+
+  .progress-bar {
+    margin-left: 22px;
+
+    .bar {
+      padding: 20px 0;
+      cursor: auto;
+      span {
+        display: block;
+        background: #132C3D;
+        width: 11px;
+        height: 2px;
+        transition: 0.2s ease-in-out;
+      }
+
+      &.fill {
+        span {
+          background: #80F0BE;
+        }
+      }
+
+      & + .bar {
+        margin-left: 2px;
+      }
+      &:first-child {
+        span {
+          border-top-left-radius: 24px;
+          border-bottom-left-radius: 24px;
+        }
+      }
+      &:last-child {
+        span {
+          border-top-right-radius: 24px;
+          border-bottom-right-radius: 24px;
+        }
+      }
+    }
+  }
 }
 
 .bottom-navigation:not(.relative) {
@@ -188,21 +241,20 @@ header.top-navigation {
   right: 0;
   padding-bottom: 15px;
   padding-top: 15px;
+  z-index: 11;
 
-  .container {
-    display: flex;
-    justify-content: center;
-  }
-  nav {
-    $nav-width: 375px;
-    width: $nav-width;
+  .default-nav  {
+    .nav-container {
+      $nav-width: 375px;
+      width: $nav-width;
 
-    .link > a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: calc(#{$nav-width} / 5);
-      padding: 13px;
+      .link > a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: calc(#{$nav-width} / 5);
+        padding: 13px;
+      }
     }
   }
 }

@@ -220,7 +220,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 //other
 @mixin d-none($selector) {
   .d-none#{$selector} {
-    display: none;
+    display: none !important;
   }
 }
 

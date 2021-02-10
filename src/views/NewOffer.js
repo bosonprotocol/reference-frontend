@@ -13,10 +13,9 @@ import FormDescription from "../components/offerFlow/FormDescription"
 import FormPrice from "../components/offerFlow/FormPrice"
 import FormDate from "../components/offerFlow/FormDate"
 import FormSummary from "../components/offerFlow/FormSummary"
-import FormBottomNavigation from "../components/offerFlow/FormBottomNavigation"
 
 import { SellerContext, Seller } from "../contexts/Seller"
-import { Arrow } from "../components/shared/Icons"
+import { NavigationContext, Action } from "../contexts/Navigation"
 
 import { NAME, CURRENCY, MODAL_TYPES, ROUTE } from "../helpers/Dictionary"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
@@ -55,6 +54,7 @@ const buyerSettings = {
 function NewOffer() {
   const screenController = useRef()
   const sellerContext = useContext(SellerContext)
+  const navigationContext = useContext(NavigationContext)
   const [init, triggerInit] = useState(1)
   const activeScreen = sellerContext.state.offeringProgress
   const inScreenRange = (target) => (target >= 0 && target < screens.length)
@@ -84,6 +84,7 @@ function NewOffer() {
     sellerContext.dispatch(Seller.resetOfferingData())
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
   const createInputValueReceiver = (inputName) => (value) => {
 
     if(value || value === ''){
@@ -183,22 +184,22 @@ console.log(inputName, value)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(()=> {
+    navigationContext.dispatch(Action.setFormNavigation({
+      screenController: screenController,
+      lastScreenBoolean: lastScreenBoolean,
+      activeScreen: activeScreen,
+      setActiveScreen: setActiveScreen,
+      errorMessages: errorMessages,
+      screens: screens,
+    }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screenController, lastScreenBoolean, activeScreen, errorMessages])
+
   return (
     <section className="new-offer">
       <div className="container l flex column jc-sb">
         <div className="bind column">
-          <div className="top-navigation flex ai-center">
-            <div className="button square" role="button"
-              onClick={() => setActiveScreen(activeScreen - 1, activeScreen === 0)} >
-              <Arrow />
-            </div>
-            <div className="progress-bar flex center">
-              {screens.map((screen, id) => <div
-                key={id} role="button"
-                className={`bar ${id <= activeScreen ? 'fill' : ''}`}
-                ><span></span></div>)}
-            </div>
-          </div>
           <div className="screen">
             <form id="offer-form">
               <div ref={screenController} className="screen-controller">
@@ -211,13 +212,6 @@ console.log(inputName, value)
             </form>
           </div>
         </div>
-        <FormBottomNavigation
-          screenController={screenController}
-          lastScreenBoolean={lastScreenBoolean}
-          activeScreen={activeScreen}
-          setActiveScreen={setActiveScreen}
-          errorMessages={errorMessages}
-        />
       </div>
     </section>
   )

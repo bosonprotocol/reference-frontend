@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { DIC } from "../helpers/Dictionary"
+import { DIC, CONTROL } from "../helpers/Dictionary"
 // import { disableScroll, enableScroll } from "../helpers/ScrollManipulation"
 import { getData as getContextData } from "../helpers/Context"
 
@@ -16,6 +16,7 @@ export const GlobalInitialState = {
     state: DIC.NAV.DEF
   },
   qrReaderActivated: 0,
+  onboardingCompleted: localStorage['onboarding-completed'],
   allVouchers: [],
   allVoucherSets: [],
   accountVouchers: [],
@@ -66,6 +67,11 @@ export const Action = {
     type: DIC.UPDATE_ACCOUNT,
     payload: account,
   }),
+
+  completeOnboarding: (val) => ({
+    type: CONTROL.COMPLETE_ONBOARDING,
+    payload: val
+  })
 }
 
 export const GlobalReducer = (state, action) => {
@@ -127,6 +133,12 @@ export const GlobalReducer = (state, action) => {
     [DIC.ALL_VOUCHERS]: () => {
       return {
         allVouchers: action.payload
+      }
+    },
+    [CONTROL.COMPLETE_ONBOARDING]: () => {
+      console.log(action.payload)
+      return {
+        onboardingCompleted: action.payload === undefined ? true : false
       }
     },
   };

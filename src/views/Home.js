@@ -67,6 +67,7 @@ function Home() {
 
     const completeOnboarding = () => {
         localStorage.setItem('onboarding-completed', '1')
+        globalContext.dispatch(Action.completeOnboarding())
 
         onboardingModalRef.current.classList.add('fade-out')
         screensRef.current.classList.add('onboarding-done')

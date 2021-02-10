@@ -64,12 +64,12 @@ function FormBottomNavigation(props) {
   
   return (
     <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
-      <SubmitForm/>
+      {lastScreenBoolean ? <SubmitForm/> :
       <div className="button primary" role="button"
         onClick={() => setActiveScreen(activeScreen + 1)}
         disabled={disabled} >
         NEXT
-      </div>
+      </div>}
     </div>
   )
 }

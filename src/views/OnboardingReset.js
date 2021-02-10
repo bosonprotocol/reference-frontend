@@ -1,15 +1,26 @@
-import React from 'react'
+import { useContext, useEffect } from 'react'
 
-import { Redirect } from "react-router-dom"
+import { useHistory } from 'react-router-dom'
+
+import { GlobalContext, Action } from "../contexts/Global"
 
 import { ROUTE } from "../helpers/Dictionary"
 
 function OnboardingReset() {
-  localStorage.removeItem('onboarding-completed')
-  localStorage.removeItem('onboarding-slide')
+  const globalContext = useContext(GlobalContext)
+  const history = useHistory()
+
+  useEffect(() => {
+    localStorage.removeItem('onboarding-completed')
+    localStorage.removeItem('onboarding-slide')
+    globalContext.dispatch(Action.completeOnboarding(false))
+    history.push(ROUTE.Home)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
 
   return (
-    <Redirect exact to={ROUTE.Home} />
+    null
   )
 }
 

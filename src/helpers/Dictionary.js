@@ -27,7 +27,11 @@ export const DIC = {
 export const CONTROL = {
     UPDATE_LOCATION: 'updateLocation',
     UPDATE_AFFORDANCES: 'updateAffordances',
-    UPDATE_BOTTOM_NAV: 'update_bottom_nav'
+    UPDATE_BOTTOM_NAV: 'update_bottom_nav',
+    SET_FORM_NAVIGATION: 'set-form-navigation',
+    SET_BOTTOM_NAV_TYPE: 'set-bottom-navigation-type',
+    SET_REDEMPTION_CONTROL: 'redemption_flow_control',
+    COMPLE_ONBOARDING: 'complete-onboarding',
 }
 
 // ROUTE strings are used to navigate to url
@@ -49,11 +53,18 @@ export const ROUTE = {
     VoucherQRCode: '/qr'
 }
 
+export const BOTTOM_NAV_TYPE = {
+    DEFAULT: 'bottom_navigation_default',
+    OFFER: 'bottom_navigation_offer',
+    VOUCHER: 'bottom_navigation_voucher',
+}
+
 // affordances list
 export const AFFMAP = {
     BACK_BUTTON: 'back-button',
     QR_CODE_READER: 'qr-code-reader',
     WALLET_CONNECTION: 'wallet-connection',
+    OFFER_FLOW_SET: 'offer_flow_set',
 }
 
 // ROUTE strings are used in NewOffer for input fields
