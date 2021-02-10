@@ -3,6 +3,7 @@ import { ROUTE, BOTTOM_NAV_TYPE } from "../../../helpers/Dictionary"
 import { IconHome, IconBuyer, IconNewOffer, IconSeller, IconWallet } from "../Icons"
 import { Link } from "react-router-dom"
 import { NavigationContext } from '../../../contexts/Navigation'
+import { GlobalContext } from '../../../contexts/Global'
 import FormBottomNavigation from "../../offerFlow/FormBottomNavigation"
 
 
@@ -10,6 +11,7 @@ const selectedColor = '#80F0BE'
 
 function BottomNavigation() {
   const navigationContext = useContext(NavigationContext)
+  const globalContext = useContext(GlobalContext)
   const [selected, setSelected] = useState(new Array(5).fill(0))
   const selectedNavitem = navigationContext.state.bottom.mainNavigationItem
   const formNavigation = navigationContext.state.offerFlowControl
@@ -37,7 +39,7 @@ function BottomNavigation() {
   }, [navType])
 
   return (
-    <section className="bottom-navigation">
+    <section className={`bottom-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
         <nav className="flex">
           { navType === BOTTOM_NAV_TYPE.DEFAULT ?

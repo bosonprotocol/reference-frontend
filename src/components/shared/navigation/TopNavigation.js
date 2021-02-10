@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { useHistory } from "react-router"
 
 import { Link } from 'react-router-dom'
 
 import { NavigationContext } from '../../../contexts/Navigation'
+import { GlobalContext } from '../../../contexts/Global'
 
 import { AFFMAP, ROUTE } from "../../../helpers/Dictionary"
 
@@ -21,12 +22,17 @@ import OfferFlowSet from "./OfferFlowSet"
 
 function TopNavigation() {
   const navigationContext = useContext(NavigationContext);
+  const globalContext = useContext(GlobalContext);
   const history = useHistory()
 
   const { account, connector } = useWeb3React();
 
+  useEffect(() => {
+    console.log(globalContext.state.onboardingCompleted)
+  }, [globalContext.state.onboardingCompleted])
+
   return (
-    <header className="top-navigation">
+    <header className={`top-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
         <nav className="flex split">
 

@@ -122,7 +122,7 @@ function App() {
                         <SellerContext.Provider value={ sellerContextValue }>
                             <WalletContext.Provider value={ walletContextValue }>
                                 <NavigationContext.Provider value={ navigationContextValue }>
-                                    <GlobalListeners     />
+                                    <GlobalListeners  />
                                     <Router>
                                         <LocationManager />
                                         <TopNavigation />

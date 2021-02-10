@@ -132,6 +132,7 @@ h2:not(.def) {
     transition: 0.7s 400ms ease-in-out;
     max-height: 100vh;
     overflow-y: hidden;
+    max-height: calc(100vh - 181px);
   }
 
   &.onboarding-done {

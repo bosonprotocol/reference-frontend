@@ -171,14 +171,14 @@ export const SingleVoucherBlock = (props) => {
                     </div>
                 </div>
                 <div className="statuses">
-                    { voucherData?.FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
-                    { voucherData ? new Date() > new Date(voucherData.expiryDate) ?
-                        <div className="label color_EXPIRED">EXPIRED</div> : null : null }
-                    { voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
                     { voucherData?.COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
-                    { voucherData?.COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
                     { voucherData?.REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
                     { voucherData?.REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
+                    { voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
+                    { voucherData?.COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
+                    { voucherData ? new Date() > new Date(voucherData.expiryDate) ?
+                        <div className="label color_EXPIRED">EXPIRED</div> : null : null }
+                    { voucherData?.FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
                 </div>
             </Link>
         </div>

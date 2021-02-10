@@ -3,7 +3,7 @@
 .onboarding-modal {
   height: 100%;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -241,7 +241,6 @@
     @media (min-width: 961px) {
       box-shadow: $container-shadow;
       border-radius: $container-radius;
-      padding: 90px 0;
     }
   }
 
