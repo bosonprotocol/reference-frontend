@@ -19,11 +19,11 @@ function BottomNavigation() {
   const navType = navigationContext.state.bottom.type
 
   const routing = {
-    Home: <div className="set flex column ai-center"><IconHome color={selected[0] && selectedColor} /> Home</div>,
-    ActivityVouchers: <div className="set flex column ai-center"><IconBuyer color={selected[1] && selectedColor} /> My Vouchers</div>,
-    NewOffer: <div className="set flex column ai-center"><IconNewOffer color={selected[2] && selectedColor} /> Add Offer</div>,
-    Activity: <div className="set flex column ai-center"><IconSeller color={selected[3] && selectedColor} /> Activity</div>,
-    Connect: <div className="set flex column ai-center"><IconWallet color={selected[4] && selectedColor} /> Wallet</div>,
+    Home: <div className={`set flex column ai-center ${selected[0] ? 'selected' : ''}`}><IconHome color={selected[0] && selectedColor} /> Home</div>,
+    ActivityVouchers: <div className={`set flex column ai-center ${selected[1] ? 'selected' : ''}`}><IconBuyer color={selected[1] && selectedColor} /> My Vouchers</div>,
+    NewOffer: <div className={`set flex column ai-center ${selected[2] ? 'selected' : ''}`}><IconNewOffer color={selected[2] && selectedColor} /> Add Offer</div>,
+    Activity: <div className={`set flex column ai-center ${selected[3] ? 'selected' : ''}`}><IconSeller color={selected[3] && selectedColor} /> Activity</div>,
+    Connect: <div className={`set flex column ai-center ${selected[4] ? 'selected' : ''}`}><IconWallet color={selected[4] && selectedColor} /> Wallet</div>,
   }
   
   useEffect(() => {
