@@ -21,7 +21,6 @@ import { NavigationContext } from "./contexts/Navigation"
 
 function Routes() {
   const navigationContext = useContext(NavigationContext)
-  console.log(navigationContext.state.navigationDisabled)
   const displayNav = navigationContext.state.displayNavigation
   return (
     // class - dark|light; (default: dark)
@@ -33,8 +32,7 @@ function Routes() {
               <Route exact path={ ROUTE.CodeScanner } component={ QRScanner }/>
               <Route exact strict path={ ROUTE.Connect } component={ Connect }/>
               <Route exact path={ ROUTE.Home } component={ Home }/>
-              <Route path="/onboarding"
-                      component={ OnboardingReset }/> {/* delete on prod */ }
+              <Route path="/onboarding" component={ OnboardingReset }/> {/* delete on prod */ }
               <Route path={ ROUTE.ConnectToMetamask } component={ ConnectToMetamask }/>
               <Route path={ ROUTE.NewOffer } component={ NewOffer }/>
               <Route path={ ROUTE.Activity } component={ ActivityVoucherSets }/>

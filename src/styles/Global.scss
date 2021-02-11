@@ -264,6 +264,26 @@ header.top-navigation {
         width: calc(#{$nav-width} / 5);
         padding: 3px;
 
+        &:hover {
+          .set {
+            color: #ACC5E1;
+
+            &:not(.selected) {
+              svg {
+                path {
+                  &[stroke] {
+                    stroke: #ACC5E1 !important;
+                  }
+                  &[fill] {
+                    fill: #ACC5E1 !important;
+                  }
+                }
+              }
+              
+            }
+          }
+        }
+
         .set {
           font-family: 'Barlow', sans-serif;
           font-style: normal;
