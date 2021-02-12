@@ -127,7 +127,8 @@ function VoucherDetails(props) {
     
         const statusPropagate = () => (
         voucherResource.FINALIZED ? STATUS.FINALIZED:
-        voucherResource.CANCELLED ? STATUS.CANCELLED:
+        voucherResource.CANCELLED ? 
+            (!voucherResource.COMPLAINED ? STATUS.CANCELLED : STATUS.COMPLANED_CANCELED):
         voucherResource.COMPLAINED ? STATUS.COMPLAINED:
         voucherResource.REFUNDED ? STATUS.REFUNDED:
         voucherResource.REDEEMED ? STATUS.REDEEMED:
@@ -144,7 +145,7 @@ function VoucherDetails(props) {
         const blockActionConditions = [
         new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
         new Date() <= new Date(voucherResource?.startDate), // has future start date
-        voucherResource?.qty <= 0, // no quantity
+        voucherSetDetails?.qty <= 0, // no quantity
         ]
     
         // status: undefined - user that has not logged in
@@ -177,22 +178,6 @@ function VoucherDetails(props) {
 
         statusBlocks[statusBlocks.length -1].color = 2
         if(statusBlocks.length === 1) statusBlocks[0].color = 1
-    }
-
-    // useEffect(() => {
-    //     navigationContext.dispatch(Action.setRedemptionControl({
-    //         controls: controls
-    //     }))
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [controls])
-
-
-    // xy position of blocks on escrow table
-    // falsy values will append "display: none"
-    const escrowPositionMapping = {
-        PAYMENT: [0],
-        BUYER_DEPOSIT: [0],
-        SELLER_DEPOSIT: [0],
     }
   
     const prepareEscrowData = async () => {
@@ -546,6 +531,13 @@ function VoucherDetails(props) {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account])
+
+    // useEffect(() => {
+    //     navigationContext.dispatch(Action.setRedemptionControl({
+    //         controls: controls
+    //     }))
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [controls])
     
     return (
         <>
