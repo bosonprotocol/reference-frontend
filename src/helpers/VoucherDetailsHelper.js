@@ -213,8 +213,6 @@ export async function onCommitToBuy(props) {
     let tx;
     let metadata = {};
     let data;
-    console.log("pricecalc", price, voucherSetInfo)
-console.log(txValue)
 
     try {
         tx = await bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
@@ -388,8 +386,6 @@ export async function onCoF(props) {
     const authData = getAccountStoredInLocalStorage(account);
 
     try {
-        console.log(authData)
-        console.log(voucherDetails._tokenIdVoucher)
         tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
 
       await tx.wait();

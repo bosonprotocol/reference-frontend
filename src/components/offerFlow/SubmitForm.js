@@ -87,13 +87,9 @@ export default function SubmitForm(props) {
 
         try {                          
             tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-            console.log(tx)
             receipt = await tx.wait();
-            console.log(receipt)
             parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
-       
-            console.log(parsedEvent)
-        } catch (e) {
+               } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
