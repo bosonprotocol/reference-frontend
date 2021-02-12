@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import QRCode from "qrcode.react";
 
 import "./StaticPage.scss"
@@ -91,11 +91,6 @@ function ShowQR(props) {
                 <section className="show-qr-code static-page atomic-scoped flex ai-center">
                     <div className="container l infinite">
                         <div className="wrapper w100 relative flex column center">
-                            <div className="top-nav">
-                                <Link to={ ROUTE.Home }>
-                                    <div className="cancel"><span className="icon"></span></div>
-                                </Link>
-                            </div>
                             <div className="info show-qr flex column ai-center">
                                 <div className="thumbnail">
                                     {/*<img src={productAPI[imageThumbId].image} alt=""/>*/ }
