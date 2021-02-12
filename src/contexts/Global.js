@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { DIC } from "../helpers/Dictionary"
+import { DIC, CONTROL } from "../helpers/Dictionary"
 // import { disableScroll, enableScroll } from "../helpers/ScrollManipulation"
 import { getData as getContextData } from "../helpers/Context"
 
@@ -16,7 +16,12 @@ export const GlobalInitialState = {
     state: DIC.NAV.DEF
   },
   qrReaderActivated: 0,
-  allVoucherSets: []
+  onboardingCompleted: localStorage['onboarding-completed'],
+  allVouchers: [],
+  allVoucherSets: [],
+  accountVouchers: [],
+  fetchVoucherSets: 1,
+  account: null,
 };
 
 export const Action = {
@@ -42,6 +47,30 @@ export const Action = {
   allVoucherSets: (state) => ({
     type: DIC.ALL_VOUCHER_SETS,
     payload: state
+  }),
+
+  updateAllVouchers: (state) => ({
+    type: DIC.ALL_VOUCHERS,
+    payload: state
+  }),
+
+  accountVouchers: (state) => ({
+    type: DIC.ACCOUNT_VOUCHERS,
+    payload: state
+  }),
+
+  fetchVoucherSets: () => ({
+    type: DIC.FETCH_VOUCHER_SETS,
+  }),
+
+  updateAccount: (account) => ({
+    type: DIC.UPDATE_ACCOUNT,
+    payload: account,
+  }),
+
+  completeOnboarding: (val) => ({
+    type: CONTROL.COMPLETE_ONBOARDING,
+    payload: val
   })
 }
 
@@ -85,7 +114,33 @@ export const GlobalReducer = (state, action) => {
       return {
         allVoucherSets: action.payload
       }
-    }
+    },
+    [DIC.ACCOUNT_VOUCHERS]: () => {
+      return {
+        accountVouchers: action.payload
+      }
+    },
+    [DIC.UPDATE_ACCOUNT]: () => {
+      return {
+        account: action.payload
+      }
+    },
+    [DIC.FETCH_VOUCHER_SETS]: () => {
+      return {
+        fetchVoucherSets: state.fetchVoucherSets * -1
+      }
+    },
+    [DIC.ALL_VOUCHERS]: () => {
+      return {
+        allVouchers: action.payload
+      }
+    },
+    [CONTROL.COMPLETE_ONBOARDING]: () => {
+      console.log(action.payload)
+      return {
+        onboardingCompleted: action.payload === undefined ? true : false
+      }
+    },
   };
 
   return {

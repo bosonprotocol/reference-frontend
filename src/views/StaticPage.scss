@@ -1,10 +1,10 @@
 @import "../styles/Settings.scss";
 
 .static-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 181px);
 
   .container {
-    height: 100vh;
+    height: calc(100vh - 181px);
     padding-top: 40px;
     padding-bottom: 70px;
 
@@ -96,7 +96,7 @@
     position: absolute;
     bottom: 10vh;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-21px);
   }
   .cancel {
     width: 42px;

@@ -1,15 +1,15 @@
 import React, { useRef, useContext, forwardRef, useEffect } from 'react'
 
-import { SellerContext, Seller, getData } from "../../contexts/Seller"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
 // https://www.npmjs.com/package/react-datepicker
 
-import { NAME } from "../../helpers/Dictionary"
+import { NAME } from "../../helpers/Dictionary";
 
-function FormDate() {
+function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorMessage, endDateErrorMessage}) {
   const sellerContext = useContext(SellerContext)
   const startDate = useRef()
   const endDate = useRef()
@@ -18,60 +18,29 @@ function FormDate() {
     [NAME.DATE_END]: useRef(),
   }
 
-  const yesterday = new Date().setDate(new Date().getDate() - 1)
-
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const start_date = getOfferingData(NAME.DATE_START)
-  const end_date = getOfferingData(NAME.DATE_END)
-
-  const checkError = {
-    [NAME.DATE_START]: date => (
-      new Date(date).getTime() <= yesterday ? "Start Date can't be set before Today" :
-      new Date(date).getTime() >= new Date(getOfferingData(NAME.DATE_END)).getTime() ? "Start Date can't be set after the Expiry Date" :
-      false
-    ),
-    [NAME.DATE_END]: date => (
-      new Date(date).getTime() <= new Date(getOfferingData(NAME.DATE_START)).getTime() ?
-      "Expiry Date can't be set before Start Date." : false
-    ),
-  }
-
-  const handleDateChange = (date, name) => {
-    dateRef[name].current.removeAttribute('data-error')
-
-    const error = checkError[name](date)
-    error ?
-    dateRef[name].current.setAttribute('data-error', error) :
-
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [name]: date
-    }))
-  }
-
-  const setDefaultValue = (name) => {
-    let def = getOfferingData(name)
-
-    return (
-      def ?
-        new Date(def) :
-        new Date()
-    )
-  }
+  const end_date = getOfferingData(NAME.DATE_END);
 
   useEffect(() => {
-    start_date && dateRef[NAME.DATE_START].current.querySelector('.field[role="button"]').classList.remove('await')
-    end_date && dateRef[NAME.DATE_END].current.querySelector('.field[role="button"]').classList.remove('await')
+      startDateValueReceiver(null)
+  })
+  const getCurrentDateValue = (name) => {
+    let currentValue = getOfferingData(name)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start_date, end_date])
+    return ( currentValue ? new Date(currentValue) : new Date()
+    )
+  }
 
   const Field = forwardRef(
-    ({ value, onClick }, ref) => (
-      <div ref={ref} className="field await" role="button" onClick={onClick}>
-        {value}
-      </div>
-    )
+    ({ value, onClick, dateFieldType} ,ref) => {
+      return (
+        <div ref={ref} className={`field ${!end_date && dateFieldType===NAME.DATE_END ? 'await': ''}`} role="button" onClick={onClick}>
+          {value}
+        </div>
+      )
+    }
+    
   )
   
 
@@ -82,13 +51,13 @@ function FormDate() {
           <div className="step-title">
             <label htmlFor="offer-start-date">Start Date</label>
           </div>
-          <div ref={dateRef[NAME.DATE_START]} className="input relative">
+          <div ref={dateRef[NAME.DATE_START]} className="input relative"  data-error={startDateErrorMessage}>
             <DatePicker
-              id="offer-start-date" name={NAME.DATE_START}
-              
-              selected={setDefaultValue(NAME.DATE_START)}
-              onChange={(date) => handleDateChange(date, NAME.DATE_START)}
-              customInput={<Field ref={startDate} />}
+              id="offer-start-date" 
+             
+              selected={getCurrentDateValue(NAME.DATE_START)}
+              onChange={(date) => startDateValueReceiver(date.setHours(0,0,0,0))}
+              customInput={<Field ref={startDate} dateFieldType={NAME.DATE_START}/>}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
           </div>
@@ -97,13 +66,12 @@ function FormDate() {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-expiry-date">Expiry Date</label>
-          <div ref={dateRef[NAME.DATE_END]} className="input relative">
+          <div ref={dateRef[NAME.DATE_END]}   data-error={endDateErrorMessage} className="input relative">
             <DatePicker
-              id="offer-expiry-date" name={NAME.DATE_END}
-              
-              selected={setDefaultValue(NAME.DATE_END)}
-              onChange={(date) => handleDateChange(date, NAME.DATE_END)}
-              customInput={<Field ref={endDate} />}
+              id="offer-expiry-date"
+              selected={getCurrentDateValue(NAME.DATE_END)}
+              onChange={(date) => endDateValueReceiver(date.setHours(23,59,59,999))}
+              customInput={<Field ref={endDate} dateFieldType={NAME.DATE_END}/>}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
           </div>

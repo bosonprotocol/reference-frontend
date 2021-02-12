@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react'
 
 import { SellerContext, getData } from "../../contexts/Seller"
+import { NAME } from '../../helpers/Dictionary'
 
-import { NAME } from "../../helpers/Dictionary"
 
 import SubmitForm from "./SubmitForm"
 
 function FormBottomNavigation(props) {
-  const { lastScreenBoolean, resetOfferingData, activeScreen, setActiveScreen, screenController } = props
+  const { lastScreenBoolean, activeScreen, setActiveScreen, errorMessages } = props
   const [disabled, setDisabled] = useState(true)
+
 
   const sellerContext = useContext(SellerContext)
   const getOfferingData = getData(sellerContext.state.offeringData)
@@ -18,7 +19,7 @@ function FormBottomNavigation(props) {
       [NAME.CATEGORY],
     ],
     1: [
-      [NAME.SELECTED_FILE],
+      [NAME.IMAGE],
     ],
     2: [
       [NAME.TITLE],
@@ -38,33 +39,37 @@ function FormBottomNavigation(props) {
       [NAME.DATE_END],
     ],
   }
-
   // check if all fields are filled with no errors
   useEffect(() => {
-    setDisabled(false)
-
-    if(screenFields[activeScreen]) {
-      screenFields[activeScreen].forEach((field) => {
-        if(getOfferingData(field[0]) === undefined || !!screenController.current.querySelector("[data-error]")) setDisabled(true)
-      }) 
+    if(activeScreen !== undefined && activeScreen !== null &&  screenFields[activeScreen]) {
+      let disable = false;
+      const activeScreenFieldNames = screenFields[activeScreen].map(x => x[0]);
+      if(screenFields[activeScreen]) {
+        activeScreenFieldNames.forEach((field) => {
+          if(!getOfferingData(field)) {
+            disable = true;
+          }
+        }) 
+      }
+      Object.keys(errorMessages).forEach((key) => {
+        if(errorMessages[key] && activeScreenFieldNames.includes(key)) {
+          disable = true;
+        }
+      })
+      setDisabled(disable);
     }
-
+    
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeScreen, sellerContext.state.offeringData])
+  }, [activeScreen, errorMessages ])
   
   return (
     <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
-      <div className="button static hide-disabled" role="button"
-        onClick={resetOfferingData}
-        disabled={!localStorage.getItem('offeringData') ? true : false} >
-        START OVER
-      </div>
-      <SubmitForm resetOfferingData={resetOfferingData} />
+      {lastScreenBoolean ? <SubmitForm/> :
       <div className="button primary" role="button"
         onClick={() => setActiveScreen(activeScreen + 1)}
         disabled={disabled} >
         NEXT
-      </div>
+      </div>}
     </div>
   )
 }

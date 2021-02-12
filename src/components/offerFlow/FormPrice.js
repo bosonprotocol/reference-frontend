@@ -7,38 +7,27 @@ import Currencies from "./Currencies"
 import { NAME } from "../../helpers/Dictionary"
 
 
-function FormPrice(props) {
-  const sellerContext = useContext(SellerContext)
+function FormPrice({
+  priceSettings, 
+  sellerSettings, 
+  buyerSettings,
+  priceValueReceiver,
+  priceCurrencyReceiver,
+  sellerDepositCurrencyValueReceiver,
+  sellerDepositValueReceiver,
+  buyerDepositValueReceiver,
 
-  const { priceSettings, sellerSettings, buyerSettings } = props
+  sellerDepositErrorMessage,
+  priceErrorMessage,
+  buyerDepositErrorMessage
+}) {
+  const sellerContext = useContext(SellerContext)
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  // const price = getOfferingData(NAME.PRICE)
   const priceCurrency = getOfferingData(NAME.PRICE_C)
-  // const seller = getOfferingData(NAME.SELLER_DEPOSIT)
   const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C)
   const buyer = getOfferingData(NAME.BUYER_DEPOSIT)
-
-  // const focusHandler = (el, toggle) => {
-  //   // focus
-  //   if(toggle) {
-  //     el.parentElement.classList.add("focus")
-
-  //     if(el.value !== getOfferingData(el.name)) el.value = getOfferingData(el.name)
-  //   } 
-  //   // blur
-  //   else {
-  //     el.parentElement.classList.remove("focus")
-
-  //     if(el.parentElement.getAttribute("data-error")) {
-  //       setTimeout(() => {
-  //         el.parentElement.removeAttribute("data-error")
-  //       }, 2000);
-  //     }
-  //     if(el.value > el.max) updateData(el.name, el.max, el)
-  //   }
-  // }
 
   return (
     <div className="price">
@@ -50,13 +39,10 @@ function FormPrice(props) {
             </div>
           </label>
           <div className="bind">
-            <Currencies name={NAME.PRICE_C} />
-            <div className="input relative focus">
-              {/* <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${price} ${priceCurrency}`}</div> */}
+            <Currencies inputValueHandler={priceCurrencyReceiver}/>
+            <div className="input relative focus" data-error={priceErrorMessage}>
               <input
-              // onFocus={(e) => focusHandler(e.target, 1)}
-              // onBlur={(e) => focusHandler(e.target, 0)}
-              id="offer-price" type="number" name={NAME.PRICE} />
+              id="offer-price" type="number" onChange={(e) => priceValueReceiver(e.target ? e.target.value : null)}/>
               <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
             </div>
           </div>
@@ -66,13 +52,10 @@ function FormPrice(props) {
         <div className="field dual">
           <label htmlFor="offer-seller-deposit">Seller’s Deposit</label>
           <div className="bind">
-            <Currencies name={NAME.SELLER_DEPOSIT_C} />
-            <div className="input relative focus">
-              {/* <div name={NAME.SELLER_SUFFIX} className="pseudo">{`${seller} ${sellerCurrency}`}</div> */}
+            <Currencies inputValueHandler={sellerDepositCurrencyValueReceiver} />
+            <div className="input relative focus" data-error={sellerDepositErrorMessage}>
               <input
-              // onFocus={(e) => focusHandler(e.target, 1)}
-              // onBlur={(e) => focusHandler(e.target, 0)}
-              id="offer-seller-deposit" type="number" name={NAME.SELLER_DEPOSIT} />
+              id="offer-seller-deposit" type="number" onChange={(e) => sellerDepositValueReceiver(e.target ? e.target.value : null)} />
               <div className="max">max {sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : null} {sellerCurrency}</div>
             </div>
           </div>
@@ -81,12 +64,10 @@ function FormPrice(props) {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-buyer-deposit">Buyer’s Deposit</label>
-          <div className="input relative focus">
+          <div className="input relative focus" data-error={buyerDepositErrorMessage}>
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
             <input id="offer-buyer-deposit"
-            // onFocus={(e) => focusHandler(e.target, 1)}
-            // onBlur={(e) => focusHandler(e.target, 0)}
-            type="number" name={NAME.BUYER_DEPOSIT} />
+            type="number" name={NAME.BUYER_DEPOSIT} onChange={(e) => buyerDepositValueReceiver(e.target ? e.target.value : null)}/>
             <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div> 
           </div>
         </div>

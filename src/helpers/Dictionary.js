@@ -9,6 +9,7 @@ export const DIC = {
     UPDATE_OFFERING_DATA: 'update_offering_data',
     LOAD_OFFERING_BACKUP: 'load_offering_backup',
     RESET_OFFERING_DATA: 'reset_offering_data',
+    FETCH_VOUCHER_SETS: 'fetch_voucher_sets',
     NAV: {
         CONTROL: 'navigationControl',
         DEF: 'default_view',
@@ -16,13 +17,22 @@ export const DIC = {
         REDEEM: 'redeem',
     },
     SHOW_MODAL: 'show_modal',
-    ALL_VOUCHER_SETS: 'all_voucher_sets'
+    ALL_VOUCHER_SETS: 'all_voucher_sets',
+    ALL_VOUCHERS: 'all_vouchers',
+    ACCOUNT_VOUCHERS: 'account_vouchers',
+    UPDATE_ACCOUNT: 'update_account',
 }
 
 // CONTROL strings are used to execute commands related to Context
 export const CONTROL = {
     UPDATE_LOCATION: 'updateLocation',
     UPDATE_AFFORDANCES: 'updateAffordances',
+    UPDATE_BOTTOM_NAV: 'update_bottom_nav',
+    SET_FORM_NAVIGATION: 'set-form-navigation',
+    SET_BOTTOM_NAV_TYPE: 'set-bottom-navigation-type',
+    SET_REDEMPTION_CONTROL: 'redemption_flow_control',
+    COMPLE_ONBOARDING: 'complete-onboarding',
+    DISPLAY_NAVIGATION: 'display-navigation',
 }
 
 // ROUTE strings are used to navigate to url
@@ -32,9 +42,10 @@ export const ROUTE = {
     ConnectToMetamask: '/connect-to-metamask',
     ShowQR: '/show-qr-code',
     NewOffer: '/new-offer',
-    Activity: '/activity',
-    ActivityVouchers: '/activity-vouchers',
+    Activity: '/voucher-sets',
+    ActivityVouchers: '/voucher-activity',
     VoucherDetails: '/voucher',
+    VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
     Default: '/default',
     PARAMS: {
@@ -43,11 +54,18 @@ export const ROUTE = {
     VoucherQRCode: '/qr'
 }
 
+export const BOTTOM_NAV_TYPE = {
+    DEFAULT: 'bottom_navigation_default',
+    OFFER: 'bottom_navigation_offer',
+    VOUCHER: 'bottom_navigation_voucher',
+}
+
 // affordances list
 export const AFFMAP = {
     BACK_BUTTON: 'back-button',
     QR_CODE_READER: 'qr-code-reader',
     WALLET_CONNECTION: 'wallet-connection',
+    OFFER_FLOW_SET: 'offer_flow_set',
 }
 
 // ROUTE strings are used in NewOffer for input fields
@@ -79,3 +97,45 @@ export const CURRENCY = {
     ETH: 'ETH',
     BSN: 'BSN',
 }
+
+// this is a placeholder object
+export const STATUS = {
+    VIEW_ONLY: 'voucher_status_view_only',
+    OFFERED: 'voucher_status_offered',
+    COMMITED: 'voucher_status_commited',
+    REDEEMED: 'voucher_status_redeemed',
+    COMPLAINED: 'voucher_status_complained',
+    REFUNDED: 'voucher_status_refunded',
+    CANCELLED: 'voucher_status_cancelled',
+    FINALIZED: 'voucher_status_finalized',
+}
+
+export const ROLE = {
+    BUYER: 'BUYER',
+    SELLER: 'SELLER',
+    NON_BUYER_SELLER: 'NON_BUYER_SELLER',
+}
+
+const populateOfferFlowScenario = () => {
+    let object = {}
+
+    Object.entries(ROLE).forEach(role => {
+        object[role[0]] = {}
+    
+        Object.entries(STATUS).forEach(status => {
+            object[role[0]][status[1]] = `${role[1]}:${status[1]}`
+        })
+    })
+
+    return object
+}
+
+export const OFFER_FLOW_SCENARIO = populateOfferFlowScenario()
+
+export const MESSAGE = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+}
+
+
+

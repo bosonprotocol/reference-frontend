@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-
 import { SellerContext, getData } from "../../contexts/Seller"
 
 import { NAME } from "../../helpers/Dictionary"
 
-function FormDescription() {
+
+function FormDescription({descriptionValueReceiver, descriptionErrorMessage}) {
   const sellerContext = useContext(SellerContext)
 
   const getOfferingData = getData(sellerContext.state.offeringData)
@@ -22,9 +22,9 @@ function FormDescription() {
             </div>
           </label>
           <div className="area relative">
-            <div className="input focus">
+            <div className="input focus" data-error={descriptionErrorMessage}>
               <textarea 
-                maxLength={maxSymbols} id="offer-description" name={NAME.DESCRIPTION} form="offer-form">              
+                maxLength={maxSymbols} id="offer-description" onChange={(e) => descriptionValueReceiver(e.target ? e.target.value : null)} form="offer-form">              
               </textarea>
             </div>
             <span className="limit">{description ? description.length : 0} / {maxSymbols}</span>

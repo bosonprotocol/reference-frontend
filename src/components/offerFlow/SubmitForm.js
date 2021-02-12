@@ -4,17 +4,18 @@ import { findEventByName, useCashierContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import MessageScreen from "../shared/MessageScreen"
 
 import Loading from "./Loading"
 
-import { Redirect } from "react-router-dom"
-
 import { SellerContext } from "../../contexts/Seller"
+import { GlobalContext, Action } from "../../contexts/Global"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
-import { MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
+import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
+import { toFixed } from "../../utils/format-utils";
 
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
@@ -23,6 +24,10 @@ export default function SubmitForm(props) {
     const sellerContext = useContext(SellerContext)
     const modalContext = useContext(ModalContext);
     const location = useLocation();
+
+    const globalContext = useContext(GlobalContext);
+
+    const messageTitle = "Voucher set published";
 
     const {
         start_date,
@@ -38,10 +43,7 @@ export default function SubmitForm(props) {
         selected_file, // switch with image to use blob
     } = sellerContext.state.offeringData
 
-    const { resetOfferingData } = props
-
     const { library, account } = useWeb3React();
-
     const cashierContract = useCashierContract();
     let formData = new FormData();
 
@@ -55,17 +57,29 @@ export default function SubmitForm(props) {
             return;
         }
 
+        const authData = getAccountStoredInLocalStorage(account);
+
+        if (!authData.activeToken) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed'
+            }));
+            return;
+        }
+
         setLoading(1)
 
+
         let dataArr = [
-            new Date(start_date) / 1000,
-            new Date(end_date) / 1000,
+            toFixed(new Date(start_date) / 1000, 0),
+            toFixed(new Date(end_date) / 1000, 0),
             ethers.utils.parseEther(price).toString(),
             ethers.utils.parseEther(seller_deposit).toString(),
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-
+console.log(dataArr[0], dataArr[1])
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
         let tx;
@@ -85,28 +99,15 @@ export default function SubmitForm(props) {
             return;
         }
 
-        const authData = getAccountStoredInLocalStorage(account);
-
-        if (!authData.activeToken) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
-            }));
-            return;
-        }
-
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
 
-            const voucherSetResponse = await createVoucherSet(formData, authData.authToken);
+            await createVoucherSet(formData, authData.authToken);
+
+            globalContext.dispatch(Action.fetchVoucherSets())
 
             setLoading(0)
-
-            if (voucherSetResponse.success) {
-                resetOfferingData()
-                setRedirect(1)
-            }
+            setRedirect(1)
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -127,6 +128,7 @@ export default function SubmitForm(props) {
         formData.append('category', category);
         formData.append('startDate', startDate.getTime());
         formData.append('expiryDate', endDate.getTime());
+        console.log('submitting', startDate.getTime(), endDate.getTime())
         formData.append('offeredDate', Date.now());
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
@@ -136,8 +138,8 @@ export default function SubmitForm(props) {
         formData.append('contact', "Contact");
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
-        formData.append('txHash', parsedEvent.txHash);
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
+        console.log('final form data', formData)
     }
 
     // append blob
@@ -166,7 +168,7 @@ export default function SubmitForm(props) {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <Redirect exact to={ ROUTE.Activity }/>
+                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Home} />
             }
         </>
     );

@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { useHistory } from "react-router"
 
 import { Link } from 'react-router-dom'
 
 import { NavigationContext } from '../../../contexts/Navigation'
+import { GlobalContext } from '../../../contexts/Global'
 
 import { AFFMAP, ROUTE } from "../../../helpers/Dictionary"
 
@@ -17,14 +18,21 @@ import { injected, walletconnect } from "../../../connectors";
 import MetaMaskLogo from "../../../images/metamask.png";
 import WalletConnectLogo from "../../../images/walletconnect.svg";
 
+import OfferFlowSet from "./OfferFlowSet"
+
 function TopNavigation() {
   const navigationContext = useContext(NavigationContext);
+  const globalContext = useContext(GlobalContext);
   const history = useHistory()
 
   const { account, connector } = useWeb3React();
 
+  useEffect(() => {
+    console.log(globalContext.state.onboardingCompleted)
+  }, [globalContext.state.onboardingCompleted])
+
   return (
-    <header className="top-navigation">
+    <header className={`top-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
         <nav className="flex split">
 
@@ -39,7 +47,7 @@ function TopNavigation() {
           {/* Back button */}
           { navigationContext.state.top[AFFMAP.BACK_BUTTON] ?
             <div className="button square new" role="button"
-            onClick={ () => history.goBack() } >
+            onClick={ () => history.push(ROUTE.Home) } >
               <Arrow color="#80F0BE"/>
             </div>
           : null}
@@ -49,6 +57,11 @@ function TopNavigation() {
             <Link to={ROUTE.CodeScanner} >
               <div className="qr-icon" role="button"><IconQR color="#8393A6" noBorder/></div>
             </Link>
+          : null}
+
+          {/* NewOffer Set */}
+          { navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ?
+            <OfferFlowSet />
           : null}
 
         </nav>

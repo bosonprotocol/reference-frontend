@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
+import Web3 from "web3";
 import { usePrevious } from "../../hooks";
 import { shortenAddress } from "../../utils";
 // import Modal from "../shared/Modal";
@@ -12,8 +13,6 @@ import Identicon from "./Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
-import { authenticateUser, getAccountStoredInLocalStorage } from "../../hooks/authenticate";
-import { useHistory, useLocation } from 'react-router-dom';
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -74,7 +73,6 @@ export function WalletConnect({
     const {
         chainId,
         connector,
-        library,
         account,
         activate,
         active,
@@ -85,9 +83,6 @@ export function WalletConnect({
     const connectorsByName = walletContext.walletState.connectorsByName;
 
     const previousAccount = usePrevious(account);
-
-    const location = useLocation();
-    const history = useHistory();
 
     // close on connection, when logged out before
     useEffect(() => {
@@ -139,24 +134,9 @@ export function WalletConnect({
         activate(current);
     }
 
-    useEffect(() => {
-        if (library && account) {
-            history.push(location?.state?.sourcePath);
-
-            const localStoredAccountData = getAccountStoredInLocalStorage(account);
-
-            if (localStoredAccountData.activeToken) {
-                return;
-            }
-
-            authenticateUser(library, account, chainId);
-        }
-        // eslint-disable-next-line
-    }, [library, account, chainId]);
-
     return (
-        <>  
-            {account ? <WalletAccount /> : null}
+        <>
+            { account ? <WalletAccount/> : null }
             <div className="wallets">
                 <WalletListItem
                     name={ "MetaMask" }
@@ -214,15 +194,15 @@ function WalletListItem({
                 { name }
             </div>
             <div className="status">
-            { isActive ? (
-                    <div className="active-wallet-indicator">
-                        <img src="images/active-wallet.png"
-                             alt="Active wallet"/> Connected
+                { isActive ? (
+                        <div className="active-wallet-indicator">
+                            <img src="images/active-wallet.png"
+                                 alt="Active wallet"/> Connected
+                        </div>
+                    ) :
+                    <div className="button gray" role="button">
+                        CONNECT
                     </div>
-                ) : 
-                <div className="button gray" role="button">
-                    CONNECT
-                </div>
                 }
             </div>
         </div>
@@ -231,6 +211,8 @@ function WalletListItem({
 
 function WalletAccount() {
     const { account, connector } = useWeb3React();
+    const [connectedNetowrk, setConnectedNetowrk] = useState()
+    const web3 = new Web3(window.ethereum);
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -256,18 +238,27 @@ function WalletAccount() {
         <span style={ { marginLeft: "4px" } }>Copy Address</span>
     </CopyHelper>
 
+
+    web3?.eth?.net?.getNetworkType()?.then(netId => {
+        setConnectedNetowrk(netId)
+    })
+
+
     return (
         <>
             <div className="connected-wallet">
-                <div className="address flex split">
-                    <div className="url flex center">{ getStatusIcon() }{shortenAddress(account)}</div>
-                    <div className="copy">{copyButton}</div>
+                <div className="address relative">
+                    <div className="netowrk-info flex center">
+                        <span className="net-name">{connectedNetowrk}</span>
+                    </div>
+                    <div className="url flex ai-center">{ getStatusIcon() }{ shortenAddress(account) }</div>
+                    <div className="copy">{ copyButton }</div>
                 </div>
                 {/* <div className="control flex split">
                     <div className="button gray w50">REMOVE</div>
                     <div className="button gray action w50" role="button"
                     onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }>CHANGE</div>
-                </div> */}
+                </div> */ }
             </div>
         </>
     );
