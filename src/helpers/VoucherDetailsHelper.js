@@ -86,7 +86,7 @@ export const determineStatus = (sharedProps) => {
   const blockActionConditions = [
     new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
     new Date() <= new Date(voucherResource?.startDate), // has future start date
-    voucherResource?.qty <= 0, // no quantity
+    voucherSetDetails?.qty <= 0, // no quantity
   ]
 
   // status: undefined - user that has not logged in
