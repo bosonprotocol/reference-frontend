@@ -64,7 +64,6 @@ export const NavigationReducer = (state, action) => {
       }
     },
     [CONTROL.SET_BOTTOM_NAV_TYPE]: () => {
-      console.log(action.payload)
       return {
         bottom: { 
           ...state.bottom,

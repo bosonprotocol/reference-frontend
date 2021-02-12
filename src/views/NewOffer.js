@@ -88,7 +88,6 @@ function NewOffer() {
   const createInputValueReceiver = (inputName) => (value) => {
 
     if(value || value === ''){
-console.log(inputName, value)
        
           if(!(inputName === NAME.IMAGE)) {
          sellerContext.dispatch(Seller.updateOfferingData({

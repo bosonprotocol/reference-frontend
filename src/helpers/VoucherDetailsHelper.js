@@ -179,7 +179,7 @@ async function getPayments(voucherDetails, account, modalContext) {
 }
 
 export async function onCommitToBuy(props) {
-    const { history, modalContext, library, account, setLoading, voucherSetDetails, cashierContract } = props
+    const { history, modalContext, library, account, setLoading, voucherSetDetails, bosonRouterContract } = props
 
     if (!library || !account) {
         modalContext.dispatch(ModalResolver.showModal({
@@ -213,9 +213,11 @@ export async function onCommitToBuy(props) {
     let tx;
     let metadata = {};
     let data;
+    console.log("pricecalc", price, voucherSetInfo)
+console.log(txValue)
 
     try {
-        tx = await cashierContract.requestVoucher_ETH_ETH(supplyId, voucherSetInfo.voucherOwner, {
+        tx = await bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
             value: txValue.toString()
         });
 
@@ -247,7 +249,6 @@ export async function onCommitToBuy(props) {
 
     try {
         const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-        console.log(commitToBuyResponse);
 
         history.push(ROUTE.ActivityVouchers)
     } catch (e) {
@@ -263,7 +264,7 @@ export async function onCommitToBuy(props) {
 }
 
 export async function onComplain(props) {
-    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
+    const { modalContext, library, account, setLoading, bosonRouterContract, voucherDetails, voucherId } = props
 
     if (!library || !account) {
         modalContext.dispatch(ModalResolver.showModal({
@@ -280,13 +281,11 @@ export async function onComplain(props) {
     const authData = getAccountStoredInLocalStorage(account);
 
     try {
-        tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
+        tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
 
         const receipt = await tx.wait();
-        console.log(receipt, 'receipt')
 
         let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-        console.log(encodedTopic, 'encodedTopic')
 
     } catch (e) {
         setLoading(0);
@@ -306,7 +305,6 @@ export async function onComplain(props) {
         };
 
         const complainResponse = await updateVoucher(data, authData.authToken);
-        console.log(complainResponse)
     } catch (e) {
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({
@@ -320,7 +318,7 @@ export async function onComplain(props) {
 }
 
 export async function onRefund(props) {
-    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
+    const { modalContext, library, account, setLoading, bosonRouterContract, voucherDetails, voucherId } = props
 
     if (!library || !account) {
         modalContext.dispatch(ModalResolver.showModal({
@@ -337,13 +335,11 @@ export async function onRefund(props) {
     const authData = getAccountStoredInLocalStorage(account);
 
     try {
-        tx = await voucherKernelContract.refund(voucherDetails._tokenIdVoucher);
+        tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
 
         const receipt = await tx.wait();
-        console.log(receipt, 'receipt')
 
         let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-        console.log(encodedTopic, 'encodedTopic')
 
     } catch (e) {
         setLoading(0);
@@ -363,7 +359,6 @@ export async function onRefund(props) {
         };
 
         const refundResponse = await updateVoucher(data, authData.authToken);
-        console.log(refundResponse)
     } catch (e) {
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({
@@ -377,7 +372,7 @@ export async function onRefund(props) {
 }
 
 export async function onCoF(props) {
-    const { modalContext, library, account, setLoading, voucherKernelContract, voucherDetails, voucherId } = props
+    const { modalContext, library, account, setLoading, bosonRouterContract, voucherDetails, voucherId } = props
 
     if (!library || !account) {
         modalContext.dispatch(ModalResolver.showModal({
@@ -394,13 +389,13 @@ export async function onCoF(props) {
     const authData = getAccountStoredInLocalStorage(account);
 
     try {
-        tx = await voucherKernelContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+        console.log(authData)
+        console.log(voucherDetails._tokenIdVoucher)
+        tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
 
         const receipt = await tx.wait();
-        console.log(receipt, 'receipt')
 
         let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-        console.log(encodedTopic, 'encodedTopic')
 
     } catch (e) {
         setLoading(0);
@@ -420,7 +415,6 @@ export async function onCoF(props) {
         };
 
         const cancelResponse = await updateVoucher(data, authData.authToken);
-        console.log(cancelResponse)
     } catch (e) {
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({

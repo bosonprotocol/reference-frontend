@@ -9,7 +9,7 @@ import ContractInteractionButton from "../components/shared/ContractInteractionB
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { getVoucherDetails, updateVoucher } from "../hooks/api";
-import {  useVoucherKernelContract } from "../hooks/useContract";
+import {  useBosonRouterContract } from "../hooks/useContract";
 import { VOUCHER_STATUSES } from "../hooks/configs";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from 'react'
@@ -29,7 +29,7 @@ function ShowQR(props) {
     const errorSubMessage = "The item is no longer available or it the QR code isn't correct"
     const [messageText, setMessageText] = useState(errorSubMessage);
     
-    const voucherKernelContract = useVoucherKernelContract();
+    const bosonRouterContract = useBosonRouterContract();
 
     async function onRedeem() {
         if (!library || !account) {
@@ -49,7 +49,7 @@ function ShowQR(props) {
         const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
 
         try {
-            tx = await voucherKernelContract.redeem(voucherDetails.voucher._tokenIdVoucher);
+            tx = await bosonRouterContract.redeem(voucherDetails.voucher._tokenIdVoucher);
 
             await tx.wait();
 
@@ -72,7 +72,6 @@ function ShowQR(props) {
             };
 
             const redeemResponse = await updateVoucher(data, authData.authToken);
-            console.log(redeemResponse);
             setMessageType(MESSAGE.SUCCESS)
         } catch (e) {
             setLoading(0);

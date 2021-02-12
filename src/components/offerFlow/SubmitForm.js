@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, useCashierContract } from "../../hooks/useContract";
+import { findEventByName, useBosonRouterContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -44,7 +44,7 @@ export default function SubmitForm(props) {
     } = sellerContext.state.offeringData
 
     const { library, account } = useWeb3React();
-    const cashierContract = useCashierContract();
+    const bosonRouterContract = useBosonRouterContract();
     let formData = new FormData();
 
     async function onCreateVoucherSet() {
@@ -79,17 +79,20 @@ export default function SubmitForm(props) {
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-console.log(dataArr[0], dataArr[1])
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
         let tx;
         let receipt;
         let parsedEvent;
 
-        try {
-            tx = await cashierContract.requestCreateOrder_ETH_ETH(dataArr, { value: txValue });
+        try {                          
+            tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            console.log(tx)
             receipt = await tx.wait();
+            console.log(receipt)
             parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
+       
+            console.log(parsedEvent)
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -97,7 +100,7 @@ console.log(dataArr[0], dataArr[1])
                 content: e.message
             }));
             return;
-        }
+        } 
 
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
@@ -128,7 +131,6 @@ console.log(dataArr[0], dataArr[1])
         formData.append('category', category);
         formData.append('startDate', startDate.getTime());
         formData.append('expiryDate', endDate.getTime());
-        console.log('submitting', startDate.getTime(), endDate.getTime())
         formData.append('offeredDate', Date.now());
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
@@ -139,7 +141,6 @@ console.log(dataArr[0], dataArr[1])
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
-        console.log('final form data', formData)
     }
 
     // append blob
