@@ -113,8 +113,8 @@ function VoucherDetails(props) {
     if(!!voucherDetails) {
         if(voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
         if(voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
-        if(voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })
         if(voucherDetails.REFUNDED) statusBlocks.push({ title: 'REFUNDED', date: voucherDetails.REFUNDED })
+        if(voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })
         if(voucherDetails.CANCELLED) statusBlocks.push({ title: 'CANCELLED', date: voucherDetails.CANCELLED })
         if(voucherDetails.FINALIZED) statusBlocks.push({ title: 'FINALIZED', date: voucherDetails.FINALIZED })
 

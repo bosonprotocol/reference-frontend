@@ -107,7 +107,7 @@ function Home() {
                     <section className="product-list">
                         <div className="container">
                             <Slider { ...productListSettings }>
-                                { productBlocks.map((block, id) => <ProductBlock key={ id } { ...block }
+                                { productBlocks.map((block, id) => block.qty > 0 && <ProductBlock key={ id } { ...block }
                                                                                  delay={ `${ (id + animateDel.PL) * 50 }ms` }
                                                                                  animate={ id < animateEl.PL }/>) }
                             </Slider>
