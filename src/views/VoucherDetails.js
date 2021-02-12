@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import { useHistory } from "react-router"
@@ -45,6 +46,8 @@ function VoucherDetails(props) {
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
     const cashierContract = useCashierContract();
+    const [controls, setControls] = useState();
+    const [actionPerformed, setActionPerformed] = useState(1);
 
     const voucherSets = globalContext.state.allVoucherSets
 
@@ -153,18 +156,12 @@ function VoucherDetails(props) {
     }
   
     const getControlState = () => {
-        const voucherStatus = determineStatus()
-    
-        const controls = controlList()
+        const controlResponse = controlList()
     
         return voucherStatus ?
-            controls[voucherStatus] && controls[voucherStatus]()
+            controlResponse[voucherStatus] && controlResponse[voucherStatus]()
             : null
     }
-
-    // const tableLocation = 'Los Angeles'
-
-    const controls = getControlState()
 
     const statusBlocks = voucherDetails ? [ ] : false
 
@@ -254,85 +251,86 @@ function VoucherDetails(props) {
 
     async function onCommitToBuy() {
 
-    if (!library || !account) {
-        modalContext.dispatch(ModalResolver.showModal({
-            show: true,
-            type: MODAL_TYPES.GENERIC_ERROR,
-            content: 'Please connect your wallet account'
-        }));
-        return;
-    }
+        if (!library || !account) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please connect your wallet account'
+            }));
+            return;
+        }
 
-    setLoading(1)
+        setLoading(1)
 
-    const voucherSetInfo = voucherSetDetails;
+        const voucherSetInfo = voucherSetDetails;
 
-    if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
-        setLoading(0);
-        modalContext.dispatch(ModalResolver.showModal({
-            show: true,
-            type: MODAL_TYPES.GENERIC_ERROR,
-            content: 'The connected account is the owner of the voucher set'
-        }));
-        return;
-    }
+        if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'The connected account is the owner of the voucher set'
+            }));
+            return;
+        }
 
 
-    const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
-    const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
-    const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
-    const supplyId = voucherSetInfo._tokenIdSupply;
+        const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
+        const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
+        const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+        const supplyId = voucherSetInfo._tokenIdSupply;
 
-    let tx;
-    let metadata = {};
-    let data;
+        let tx;
+        let metadata = {};
+        let data;
 
-    try {
-        tx = await cashierContract.requestVoucher_ETH_ETH(supplyId, voucherSetInfo.voucherOwner, {
-            value: txValue.toString()
-        });
+        try {
+            tx = await cashierContract.requestVoucher_ETH_ETH(supplyId, voucherSetInfo.voucherOwner, {
+                value: txValue.toString()
+            });
 
-        const receipt = await tx.wait();
+            const receipt = await tx.wait();
 
-        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
+            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
 
-        data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
+            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
 
-    } catch (e) {
-        setLoading(0);
-        modalContext.dispatch(ModalResolver.showModal({
-            show: true,
-            type: MODAL_TYPES.GENERIC_ERROR,
-            content: e.message
-        }));
-        return;
-    }
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+            return;
+        }
 
-    metadata = {
-        txHash: tx.hash,
-        _tokenIdSupply: supplyId,
-        _tokenIdVoucher: data[0].toString(),
-        _issuer: data[1],
-        _holder: data[2]
-    };
+        metadata = {
+            txHash: tx.hash,
+            _tokenIdSupply: supplyId,
+            _tokenIdVoucher: data[0].toString(),
+            _issuer: data[1],
+            _holder: data[2]
+        };
 
-    const authData = getAccountStoredInLocalStorage(account);
+        const authData = getAccountStoredInLocalStorage(account);
 
-    try {
-        const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-        console.log(commitToBuyResponse);
+        try {
+            const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+            console.log(commitToBuyResponse);
 
-        history.push(ROUTE.ActivityVouchers)
-    } catch (e) {
-        setLoading(0);
-        modalContext.dispatch(ModalResolver.showModal({
-            show: true,
-            type: MODAL_TYPES.GENERIC_ERROR,
-            content: e.message
-        }));
-    }
+            history.push(ROUTE.ActivityVouchers)
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+        }
 
-    setLoading(0)
+        setActionPerformed(actionPerformed * -1)
+        setLoading(0)
     }
 
     async function onComplain() {
@@ -388,6 +386,7 @@ function VoucherDetails(props) {
             }));
         }
 
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
@@ -444,6 +443,7 @@ function VoucherDetails(props) {
             }));
         }
 
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
@@ -500,37 +500,35 @@ function VoucherDetails(props) {
             }));
         }
 
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
     useEffect(() => {
         setVoucherStatus(determineStatus())
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [voucherDetails, account])
 
     useEffect(() => {
-        (voucherDetails) && setEscrowData(prepareEscrowData())
+        if(voucherDetails) setEscrowData(prepareEscrowData())
+        setControls(getControlState())
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [voucherStatus, voucherDetails])
 
     useEffect(() => {
         if (document.documentElement)
             document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(expiryProgress.split('%')[0]) > 100 ? '100%' : expiryProgress : null);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [expiryProgress])
 
     useEffect(() => {
+        console.log('update this fucker')
         if(!voucherSetDetails && account) {
             initVoucherDetails(account, modalContext, getVoucherDetails, voucherId).then(result => {
                 setVoucherDetails(result)
             })
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [account])
+    }, [account, actionPerformed])
 
     // useEffect(() => {
     //     navigationContext.dispatch(Action.setRedemptionControl({
