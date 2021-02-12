@@ -248,7 +248,7 @@ console.log(txValue)
     const authData = getAccountStoredInLocalStorage(account);
 
     try {
-        const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+        await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
 
         history.push(ROUTE.ActivityVouchers)
     } catch (e) {
@@ -283,9 +283,9 @@ export async function onComplain(props) {
     try {
         tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
 
-        const receipt = await tx.wait();
+        await tx.wait();
 
-        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+      
 
     } catch (e) {
         setLoading(0);
@@ -304,7 +304,7 @@ export async function onComplain(props) {
             status: VOUCHER_STATUSES.COMPLAINED
         };
 
-        const complainResponse = await updateVoucher(data, authData.authToken);
+        await updateVoucher(data, authData.authToken);
     } catch (e) {
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({
@@ -337,9 +337,8 @@ export async function onRefund(props) {
     try {
         tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
 
-        const receipt = await tx.wait();
+        await tx.wait();
 
-        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
 
     } catch (e) {
         setLoading(0);
@@ -358,7 +357,7 @@ export async function onRefund(props) {
             status: VOUCHER_STATUSES.REFUNDED
         };
 
-        const refundResponse = await updateVoucher(data, authData.authToken);
+        await updateVoucher(data, authData.authToken);
     } catch (e) {
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({
@@ -393,9 +392,9 @@ export async function onCoF(props) {
         console.log(voucherDetails._tokenIdVoucher)
         tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
 
-        const receipt = await tx.wait();
+      await tx.wait();
 
-        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
+       
 
     } catch (e) {
         setLoading(0);
@@ -414,7 +413,7 @@ export async function onCoF(props) {
             status: VOUCHER_STATUSES.CANCELLED
         };
 
-        const cancelResponse = await updateVoucher(data, authData.authToken);
+        await updateVoucher(data, authData.authToken);
     } catch (e) {
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({

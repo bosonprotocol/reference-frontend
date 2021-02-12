@@ -71,7 +71,7 @@ function ShowQR(props) {
                 status: VOUCHER_STATUSES.REDEEMED
             };
 
-            const redeemResponse = await updateVoucher(data, authData.authToken);
+            await updateVoucher(data, authData.authToken);
             setMessageType(MESSAGE.SUCCESS)
         } catch (e) {
             setLoading(0);
