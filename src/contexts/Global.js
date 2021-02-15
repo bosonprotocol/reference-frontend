@@ -8,9 +8,6 @@ export const getData = getContextData
 export const GlobalContext = createContext()
 
 export const GlobalInitialState = {
-  navigation: {
-    state: DIC.NAV.DEF
-  },
   qrReaderActivated: 0,
   onboardingCompleted: localStorage['onboarding-completed'],
   allVouchers: [],
@@ -28,11 +25,6 @@ export const Action = {
 
   closeProduct: () => ({
     type: DIC.CLOSE_PRODUCT,
-  }),
-
-  navigationControl: (nav) => ({
-    type: DIC.NAV.CONTROL,
-    payload: nav
   }),
 
   toggleQRReader: (state) => ({
