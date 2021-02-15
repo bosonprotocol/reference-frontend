@@ -514,7 +514,6 @@ function VoucherDetails(props) {
     useEffect(() => {
         if(voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
-        console.log(getControlState())
 
     }, [voucherStatus, voucherDetails])
 
@@ -533,7 +532,6 @@ function VoucherDetails(props) {
     }, [account, actionPerformed])
 
     useEffect(() => {
-        console.log(controls)
         navigationContext.dispatch(Action.setRedemptionControl({
             controls: controls
         }))
@@ -603,11 +601,6 @@ function VoucherDetails(props) {
                                 { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
                             </div>
                         </div>
-                    </div> 
-                    <div className="control-wrap">
-                        {/* {console.log(navigationContext.state.redemptionFlowControl ? navigationContext.state.redemptionFlowControl : null)} */}
-                        {/* {navigationContext.state.redemptionFlowControl?
-                        navigationContext.state.redemptionFlowControl : null} */}
                     </div>
                 </div>
             </section>
