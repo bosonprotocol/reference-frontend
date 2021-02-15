@@ -25,6 +25,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helpers/Dictionary";
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
+import { NavigationContext, Action } from "../contexts/Navigation";
 import Loading from "../components/offerFlow/Loading";
 
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
@@ -39,6 +40,7 @@ function VoucherDetails(props) {
     const voucherId = props.match.params.id;
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
+    const navigationContext = useContext(NavigationContext);
     const expiryProgressBar = useRef()
     const [loading, setLoading] = useState(0);
     const voucherKernelContract = useVoucherKernelContract();
@@ -512,6 +514,7 @@ function VoucherDetails(props) {
     useEffect(() => {
         if(voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
+        console.log(getControlState())
 
     }, [voucherStatus, voucherDetails])
 
@@ -522,7 +525,6 @@ function VoucherDetails(props) {
     }, [expiryProgress])
 
     useEffect(() => {
-        console.log('update this fucker')
         if(!voucherSetDetails && account) {
             initVoucherDetails(account, modalContext, getVoucherDetails, voucherId).then(result => {
                 setVoucherDetails(result)
@@ -530,12 +532,13 @@ function VoucherDetails(props) {
         }
     }, [account, actionPerformed])
 
-    // useEffect(() => {
-    //     navigationContext.dispatch(Action.setRedemptionControl({
-    //         controls: controls
-    //     }))
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [controls])
+    useEffect(() => {
+        console.log(controls)
+        navigationContext.dispatch(Action.setRedemptionControl({
+            controls: controls
+        }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [controls])
     
     return (
         <>
@@ -602,7 +605,9 @@ function VoucherDetails(props) {
                         </div>
                     </div> 
                     <div className="control-wrap">
-                        {controls}
+                        {/* {console.log(navigationContext.state.redemptionFlowControl ? navigationContext.state.redemptionFlowControl : null)} */}
+                        {/* {navigationContext.state.redemptionFlowControl?
+                        navigationContext.state.redemptionFlowControl : null} */}
                     </div>
                 </div>
             </section>
