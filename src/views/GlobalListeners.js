@@ -35,15 +35,11 @@ function PopulateVouchers() {
       await accountVouchers?.forEach(voucher => addNewVoucher(account, getVoucherDetails, voucher.id, allVouchersArray))
       return allVouchersArray
     }
-    
+
     test(accountVouchers).then(result => {
       if(result) globalContext.dispatch(Action.accountVouchers(result))
     })
   }, [accountVouchers])
-
-  useEffect(() => {
-    console.log(globalContext.state.accountVouchers)
-  }, [globalContext.state.accountVouchers])
 
   return null
 }

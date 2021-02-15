@@ -11,7 +11,7 @@ export const blockTypes = {
   voucherSet: 2,
 }
 
-export const sortBlocks = (blocksArray, blockType, fetchProps) => {
+export const sortBlocks = (blocksArray, blockType, globalContext) => {
 
   const sortedBlocks = {
     active: [],
@@ -19,7 +19,12 @@ export const sortBlocks = (blocksArray, blockType, fetchProps) => {
   }
 
   if(blockType === blockTypes.account) {
-
+    let voucherDetails = globalContext.state.accountVouchers
+    
+    sortedBlocks.inactive = voucherDetails.filter(block => {
+      if(block.FINALIZED) return block
+      sortedBlocks.active.push(block)
+    })
   } else {
     sortedBlocks.inactive = blocksArray.filter(block => {
       if(block.qty <= 0) return block

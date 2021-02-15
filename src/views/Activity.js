@@ -61,8 +61,9 @@ export function ActivityVoucherSets() {
 
 function ActivityView(props) {
     const { voucherBlocks, blockType } = props
+    const globalContext = useContext(GlobalContext);
 
-    const blocksSorted = sortBlocks(voucherBlocks, blockType)
+    const blocksSorted = sortBlocks(voucherBlocks, blockType, globalContext)
 
     const activeVouchers = blocksSorted.active
     const inactiveVouchers = blocksSorted.inactive
