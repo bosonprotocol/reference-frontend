@@ -43,7 +43,7 @@ export const ROUTE = {
     ShowQR: '/show-qr-code',
     NewOffer: '/sell',
     Activity: '/voucher-sets',
-    ActivityVouchers: '/voucher-activity',
+    ActivityVouchers: '/vouchers',
     VoucherDetails: '/voucher',
     VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
