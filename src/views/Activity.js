@@ -62,7 +62,7 @@ export function ActivityVoucherSets() {
 function ActivityView(props) {
     const { voucherBlocks, blockType } = props
 
-    const blocksSorted = sortBlocks(voucherBlocks)
+    const blocksSorted = sortBlocks(voucherBlocks, blockType)
 
     const activeVouchers = blocksSorted.active
     const inactiveVouchers = blocksSorted.inactive

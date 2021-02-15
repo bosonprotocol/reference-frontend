@@ -1,7 +1,9 @@
+/* eslint-disable array-callback-return */
 import { QRCodeScaner } from "../components/shared/Icons"
 import { Link } from 'react-router-dom'
 import { ROUTE } from "../helpers/Dictionary"
 import { SingleVoucherBlock, VoucherSetBlock } from "../views/Activity"
+
 
 
 export const blockTypes = {
@@ -9,11 +11,22 @@ export const blockTypes = {
   voucherSet: 2,
 }
 
-export const sortBlocks = (blocksArray) => {
-  const sortedBlocks = {}
+export const sortBlocks = (blocksArray, blockType, fetchProps) => {
 
-  sortedBlocks.active = blocksArray.filter(block => block.qty > 0)
-  sortedBlocks.inactive = blocksArray.filter(block => block.qty <= 0)
+  const sortedBlocks = {
+    active: [],
+    inactive: [],
+  }
+
+  if(blockType === blockTypes.account) {
+
+  } else {
+    sortedBlocks.inactive = blocksArray.filter(block => {
+      if(block.qty <= 0) return block
+      sortedBlocks.active.push(block)
+    })
+
+  }
 
   return sortedBlocks
 }
