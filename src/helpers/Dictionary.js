@@ -38,12 +38,12 @@ export const CONTROL = {
 // ROUTE strings are used to navigate to url
 export const ROUTE = {
     Home: '/',
-    Connect: '/connect',
+    Connect: '/wallet',
     ConnectToMetamask: '/connect-to-metamask',
     ShowQR: '/show-qr-code',
-    NewOffer: '/new-offer',
-    Activity: '/voucher-sets',
-    ActivityVouchers: '/voucher-activity',
+    NewOffer: '/sell',
+    Activity: '/my-offers',
+    ActivityVouchers: '/my-vouchers',
     VoucherDetails: '/voucher',
     VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
