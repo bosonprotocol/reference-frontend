@@ -108,7 +108,7 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
         if(currentDescriptionValue.length < descriptionSettings.min) {
           descriptionErrorMessage = `Desciption must be at least ${descriptionSettings.min} characters`;
         }
-        // the input into single string
+        // merge the input into single string of letters and numbers only
         let input = currentDescriptionValue.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
 
         // convert special characters to latin
@@ -141,6 +141,10 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
       if(currentQuantityValue > quantitySettings.max) {
         quantityErrorMessage = `Maximum quantity is ${quantitySettings.max}`
       } 
+      console.log(currentQuantityValue, parseInt(currentQuantityValue))
+      if(parseFloat(currentQuantityValue) !== parseInt(currentQuantityValue)) {
+        quantityErrorMessage = `No decimal point allowed`
+      }
 
       newErrorMessages = {...newErrorMessages, [NAME.QUANTITY]: quantityErrorMessage} 
 
