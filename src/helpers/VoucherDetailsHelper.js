@@ -421,3 +421,29 @@ export async function onCoF(props) {
 
     setLoading(0)
 }
+
+// const commitToBuyExecutor = async (bosonRouterContract, supplyId, voucherOwner, txValue, price, buyerDeposit) => {
+//     const currencyCombination = 'ETHETH';
+
+//     switch(currencyCombination) {
+//         case('ETHETH'): {
+//             tx = await bosonRouterContract.requestVoucherETHETH(supplyId, voucherOwner, {
+//                 value: txValue.toString()
+//             });
+//             return tx.wait();
+//         }
+//         case('BSNETH'): {
+
+
+//             tx = await bosonRouterContract.requestVoucherETHETH(SMART_CONTRACTS.BosonTokenPriceContractAddress, dataArr, { value: txValue });
+//             return tx.wait();
+//         }
+//         case('BSNBSN'): {
+
+//         }
+//         default: {
+//             console.error(`Currencies combination not found ${currencyCombination}`);
+//             throw new Error('Something went wrong')
+//         }
+// }
+// }
