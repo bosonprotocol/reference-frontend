@@ -75,7 +75,7 @@ function TopNavigation() {
 const WalletConnection = (props) => {
   const { account, connector } = props
   return (
-    <Link to="/connect">
+    <Link to={ROUTE.Connect}>
     {account ? 
       <div className="button flex ai-center connected-account-button"
       role="button">
