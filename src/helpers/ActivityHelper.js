@@ -6,34 +6,37 @@ import { SingleVoucherBlock, VoucherSetBlock } from "../views/Activity"
 
 
 
-export const blockTypes = {
-  account: 1,
+export const VOUCHER_TYPE = {
+  accountVoucher: 1,
   voucherSet: 2,
 }
 
-export const sortBlocks = (blocksArray, blockType, globalContext) => {
-
-  const sortedBlocks = {
+export const sortBlocks = (blocksArray, voucherType, globalContext) => {
+  const tabGroup = {
     active: [],
     inactive: [],
   }
 
-  if(blockType === blockTypes.account) {
+  if(voucherType === VOUCHER_TYPE.voucherSet) {
+    blocksArray.forEach(voucherSet => {
+      voucherSet.qty <= 0 ?
+      tabGroup.inactive.push(voucherSet) :
+      tabGroup.active.push(voucherSet)
+    })
+  }
+  else if(voucherType === VOUCHER_TYPE.accountVoucher) {
     let voucherDetails = globalContext.state.accountVouchers
     
-    sortedBlocks.inactive = voucherDetails.filter(block => {
-      if(block.FINALIZED) return block
-      sortedBlocks.active.push(block)
+    voucherDetails.forEach(voucher => {
+      voucher.FINALIZED ?
+        tabGroup.inactive.push(voucher) :
+        tabGroup.active.push(voucher)
     })
-  } else {
-    sortedBlocks.inactive = blocksArray.filter(block => {
-      if(block.qty <= 0) return block
-      sortedBlocks.active.push(block)
-    })
-
   }
 
-  return sortedBlocks
+  console.log(tabGroup)
+
+  return tabGroup
 }
 
 export const ChildVoucherBlock = ({title, expiration, id}) => (
@@ -55,17 +58,17 @@ export const ChildVoucherBlock = ({title, expiration, id}) => (
 )
 
 export const ActiveTab = (props) => {
-  const { products, blockType } = props
+  const { products, voucherType } = props
   return (
       <div className="vouchers-container">
           {
-              products.map((block, id) => getDesiredBlockType(blockType, block, id))
+              products.map((block, id) => getDesiredBlockType(voucherType, block, id))
           }
       </div>
   )
 }
 
-export const getDesiredBlockType = (blockType, props, id) => ( blockType === blockTypes.account ?
+export const getDesiredBlockType = (voucherType, props, id) => ( voucherType === VOUCHER_TYPE.accountVoucher ?
   <SingleVoucherBlock { ...props } key={id} />:
   <VoucherSetBlock { ...props } key={id} />
 )

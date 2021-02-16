@@ -18,7 +18,7 @@ import { getVoucherDetails } from "../hooks/api";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
 
 export function ActivityAccountVouchers() {
@@ -38,7 +38,7 @@ export function ActivityAccountVouchers() {
     }, [account]);
 
     return accountVouchers?.length ?
-        <ActivityView voucherBlocks={ accountVouchers } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
+        <ActivityView voucherBlocks={ accountVouchers } voucherType={ VOUCHER_TYPE.accountVoucher }/> : loading ? <Loading/> : null
 }
 
 export function ActivityVoucherSets() {
@@ -56,14 +56,14 @@ export function ActivityVoucherSets() {
     }, [voucherSets])
 
     return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } blockType={ blockTypes.voucherSet }/> : null
+        <ActivityView voucherBlocks={ voucherBlocks } voucherType={ VOUCHER_TYPE.voucherSet }/> : null
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, blockType } = props
+    const { voucherBlocks, voucherType } = props
     const globalContext = useContext(GlobalContext);
 
-    const blocksSorted = sortBlocks(voucherBlocks, blockType, globalContext)
+    const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
 
     const activeVouchers = blocksSorted.active
     const inactiveVouchers = blocksSorted.inactive
@@ -73,7 +73,7 @@ function ActivityView(props) {
         <section className="activity atomic-scoped">
             <div className="container">
                 <div className="page-title">
-                    <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
+                    <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
                 <Tabs>
                     <TabList>
@@ -82,10 +82,10 @@ function ActivityView(props) {
                     </TabList>
 
                     <TabPanel>
-                        { <ActiveTab blockType={blockType} products={ activeVouchers }/> }
+                        { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
                     </TabPanel>
                     <TabPanel>
-                        { <ActiveTab blockType={blockType} products={ inactiveVouchers }/> }
+                        { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
                     </TabPanel>
                 </Tabs>
 

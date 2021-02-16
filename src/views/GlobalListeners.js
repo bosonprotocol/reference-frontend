@@ -30,15 +30,14 @@ function PopulateVouchers() {
   }, [account])
 
   useEffect(() => {
-    const test = async (accountVouchers) => {
+    const fetchVoucherDetails = async (accountVouchers) => {
       let allVouchersArray = []
       await accountVouchers?.forEach(voucher => addNewVoucher(account, getVoucherDetails, voucher.id, allVouchersArray))
       return allVouchersArray
     }
 
     
-    test(accountVouchers).then(result => {
-      console.log(result)
+    fetchVoucherDetails(accountVouchers).then(result => {
       if(result) globalContext.dispatch(Action.accountVouchers(result))
     })
   }, [accountVouchers])
