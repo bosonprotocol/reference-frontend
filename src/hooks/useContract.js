@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { useWeb3React } from "@web3-react/core";
 import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
-import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json'
+import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json';
+import BOSON_TOKEN_DEPOSIT from './ABIs/BosonToken.json';
 import * as ethers from "ethers";
 
 function useContract(address, ABI, withSignerIfPossible = true) {
@@ -22,7 +23,9 @@ function useContract(address, ABI, withSignerIfPossible = true) {
 export function useBosonRouterContract() {
     return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER_ABI.abi)
 }
-
+export function useBosonTokenDepositContract() {
+    return useContract(SMART_CONTRACTS.BosonTokenDepositContractAddress, BOSON_TOKEN_DEPOSIT.abi)
+}
 export async function findEventByName(txReceipt, eventName, ...eventFields) {
     for (const key in txReceipt.events) {
         if (txReceipt.events[key].event === eventName) {
@@ -70,3 +73,77 @@ export async function decodeData(receipt, encodedTopic, paramsArr) {
     return decoder.decode(paramsArr, encodedData)
 
 }
+export async function getApprovalDigest(
+    token,
+    owner,
+    spender,
+    value,
+    nonce,
+    deadline,
+    chainId
+  ) {
+    const name = await token.name();
+    const DOMAIN_SEPARATOR = getDomainSeparator(name, token.address, chainId);
+
+    
+    const PERMIT_TYPEHASH = ethers.utils.keccak256(
+        ethers.utils.toUtf8Bytes(
+          'Permit(' +
+            'address owner,' +
+            'address spender,' +
+            'uint256 value,' +
+            'uint256 nonce,' +
+            'uint256 deadline)'
+        )
+      );
+    return ethers.utils.keccak256(
+        ethers.utils.solidityPack(
+        ['bytes1', 'bytes1', 'bytes32', 'bytes32'],
+        [
+          '0x19',
+          '0x01',
+          DOMAIN_SEPARATOR,
+          ethers.utils.keccak256(
+            ethers.utils.defaultAbiCoder.encode(
+              ['bytes32', 'address', 'address', 'uint256', 'uint256', 'uint256'],
+              [
+                PERMIT_TYPEHASH,
+                owner,
+                spender,
+                value.toString(),
+                nonce.toString(),
+                deadline,
+              ]
+            )
+          ),
+        ]
+      )
+    );
+  }
+
+  export function toWei (value) {
+    return value + '0'.repeat(18);
+};
+
+  function getDomainSeparator(name, tokenAddress, chainId) {
+    return ethers.utils.keccak256(
+        ethers.utils.defaultAbiCoder.encode(
+        ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
+        [
+            ethers.utils.keccak256(
+                ethers.utils.toUtf8Bytes(
+              'EIP712Domain(' +
+                'string name,' +
+                'string version,' +
+                'uint256 chainId,' +
+                'address verifyingContract)'
+            )
+          ),
+          ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name)),
+          ethers.utils.keccak256(ethers.utils.toUtf8Bytes('1')),
+          chainId,
+          tokenAddress,
+        ]
+      )
+    );
+  }

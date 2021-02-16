@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, useBosonRouterContract } from "../../hooks/useContract";
+import { findEventByName, getApprovalDigest, toWei, useBosonRouterContract, useBosonTokenDepositContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -14,9 +14,11 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
-import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
+import { SMART_CONTRACTS_EVENTS, SMART_CONTRACTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
-
+import {ecsign} from "ethereumjs-util";
+import {fromRpcSig} from 'ethereumjs-util'
+import { arrayify } from "ethers/lib/utils";
 export default function SubmitForm(props) {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const [redirect, setRedirect] = useState(0)
@@ -35,6 +37,8 @@ export default function SubmitForm(props) {
         price,
         seller_deposit,
         buyer_deposit,
+        price_currency,
+        seller_deposit_currency,
         quantity,
         title,
         category,
@@ -43,11 +47,14 @@ export default function SubmitForm(props) {
         selected_file, // switch with image to use blob
     } = sellerContext.state.offeringData
 
-    const { library, account } = useWeb3React();
+    const { library, account, chainId } = useWeb3React();
     const bosonRouterContract = useBosonRouterContract();
+    const bosonTokenDepositContract = useBosonTokenDepositContract();
     let formData = new FormData();
-
+    
+   
     async function onCreateVoucherSet() {
+
         if (!library || !account) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -79,17 +86,16 @@ export default function SubmitForm(props) {
             ethers.utils.parseEther(buyer_deposit).toString(),
             parseInt(quantity)
         ];
-        const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
-
-        let tx;
-        let receipt;
+       
         let parsedEvent;
-
-        try {                          
-            tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-            receipt = await tx.wait();
+        try {   
+            
+            const receipt = await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenDepositContract, account, chainId, library, price_currency, seller_deposit_currency);
+            
             parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
                } catch (e) {
+                console.error(e)
+
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -131,6 +137,8 @@ export default function SubmitForm(props) {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
+        // formData.append('sellerDepositCurrency', seller_deposit_currency);
+        // formData.append('priceCurrency', price_currency);
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
@@ -170,3 +178,67 @@ export default function SubmitForm(props) {
         </>
     );
 }
+const createNewVoucherSet =  async (dataArr, bosonRouterContract, depositContract, accountAddress, chainId, library, priceCurrency, sellerDepositCurrency) => {
+    let tx;
+
+    const currencyCombination = priceCurrency + sellerDepositCurrency;
+    const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
+    switch(currencyCombination) {
+        case('ETHETH'): {
+          
+
+            tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            return tx.wait();
+        }
+        case('BSNETH'): {
+
+
+            tx = await bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenPriceContractAddress, dataArr, { value: txValue });
+            return tx.wait();
+        }
+        case('BSNBSN'): {
+
+                const nonce = await depositContract.nonces(accountAddress)
+
+                //string
+                const digest = await getApprovalDigest(
+                    depositContract,
+                    accountAddress,
+                    SMART_CONTRACTS.BosonRouterContractAddress,
+                    txValue.toString(),
+                    nonce.toString(),
+                    toWei(1),
+                    chainId
+                )
+                    
+                const  signature = await bosonRouterContract.signer.signMessage(arrayify(Buffer.from(digest.slice(2), 'hex')))
+                const {v,r,s} = await fromRpcSig(signature);
+
+                console.log(v,r,s)
+            const data = [...dataArr];
+            const res2 = ecsign(
+                Buffer.from(digest.slice(2), 'hex'),
+                Buffer.from("0x45d361a6907d485a9864649a0f3949b3490b38424ac713b158571d832d2485c3".slice(2), 'hex')
+            );
+        
+            console.log(res2)
+            tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
+                SMART_CONTRACTS.BosonTokenPriceContractAddress,
+                depositContract.address,
+                txValue,
+                toWei(1),
+                v, r, s,
+                data
+            );
+            return tx.wait();
+        }
+        default: {
+            console.error(`Currencies combination not found ${currencyCombination}`);
+            throw new Error('Something went wrong')
+        }
+    }
+
+    
+
+}
+

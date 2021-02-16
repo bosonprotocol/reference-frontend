@@ -68,7 +68,6 @@ function NewOffer() {
     [NAME.DATE_START]: new Date(),
   }
 
-
   useEffect(() => {
     const getData = name => sellerContext.state.offeringData[name];
 
@@ -86,7 +85,7 @@ function NewOffer() {
   },[])
 
   const createInputValueReceiver = (inputName) => (value) => {
-
+console.log(inputName, value)
     if(value || value === ''){
        
           if(!(inputName === NAME.IMAGE)) {

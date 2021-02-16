@@ -11,7 +11,10 @@ const fetchProgressFallback = parseInt(localStorage.getItem('offeringProgress'))
 
 export const SellerInitialState = {
   offeringProgress: fetchProgressFallback ? fetchProgressFallback : 0,
-  offeringData: {}
+  offeringData: {
+    price_currency: 'ETH',
+    seller_deposit_currency: 'ETH',
+  }
 };
 
 export const Seller = {
