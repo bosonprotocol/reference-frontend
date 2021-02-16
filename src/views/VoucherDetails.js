@@ -57,11 +57,22 @@ function VoucherDetails(props) {
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
-    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
-    const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
+    let today = new Date()
+    let start = new Date(voucherDetails?.startDate)
+    let end = new Date(voucherDetails?.expiryDate)
+
+    const timePast = voucherDetails && (today?.getTime() / 1000) - (start?.getTime() / 1000)
+    console.log(voucherDetails?.startDate)
+    console.log(voucherDetails?.expiryDate)
+    const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
 
     const differenceInPercent = (x, y) => (x / y) * 100
-    const expiryProgress = voucherDetails && differenceInPercent(daysPast, daysAvailable) + '%';
+    const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
+
+    console.log(expiryProgress)
+
+    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
+    const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
