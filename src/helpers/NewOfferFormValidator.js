@@ -1,4 +1,5 @@
 import { NAME, CURRENCY } from "./Dictionary"
+import { ListOfBadWords, latinise } from "./Profanity"
 
 const priceSettings = {
     [CURRENCY.ETH]: {
@@ -107,6 +108,20 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
         if(currentDescriptionValue.length < descriptionSettings.min) {
           descriptionErrorMessage = `Desciption must be at least ${descriptionSettings.min} characters`;
         }
+        // the input into single string
+        let input = currentDescriptionValue.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
+
+        // convert special characters to latin
+        input = latinise(input)
+
+        // create regex with list of bad words
+        let badWordsRegex = ListOfBadWords.join('|')
+
+        // check for bad words
+        let profanityResult = input.match(badWordsRegex)
+
+        if(profanityResult) descriptionErrorMessage = `You can't say "${profanityResult[0]}", fella...`
+
         newErrorMessages = {...newErrorMessages, [NAME.DESCRIPTION]: descriptionErrorMessage} 
       }
     

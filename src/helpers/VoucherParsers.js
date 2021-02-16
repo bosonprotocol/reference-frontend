@@ -150,7 +150,7 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
   if(parsedVoucher) return parsedVoucher
 }
 
-export async function addNewVoucher(account, getVoucherDetails, voucherId, arrayOfAllVouchers) {
+export async function addNewVoucher(account, getVoucherDetails, voucherId) {
   
   if (!account) {
     return;

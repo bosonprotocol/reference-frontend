@@ -3,7 +3,6 @@ import { SellerContext, getData } from "../../contexts/Seller"
 
 import { NAME } from "../../helpers/Dictionary"
 
-
 function FormDescription({descriptionValueReceiver, descriptionErrorMessage}) {
   const sellerContext = useContext(SellerContext)
 
