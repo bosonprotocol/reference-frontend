@@ -15,6 +15,7 @@ export const GlobalInitialState = {
   accountVouchers: [],
   fetchVoucherSets: 1,
   account: null,
+  checkDataUpdate: 1,
 };
 
 export const Action = {
@@ -59,7 +60,11 @@ export const Action = {
   completeOnboarding: (val) => ({
     type: CONTROL.COMPLETE_ONBOARDING,
     payload: val
-  })
+  }),
+
+  checkDataUpdate: () => ({
+    type: CONTROL.CHECK_DATA_UPDATE,
+  }),
 }
 
 export const GlobalReducer = (state, action) => {
@@ -102,9 +107,13 @@ export const GlobalReducer = (state, action) => {
       }
     },
     [CONTROL.COMPLETE_ONBOARDING]: () => {
-      console.log(action.payload)
       return {
         onboardingCompleted: action.payload === undefined ? true : false
+      }
+    },
+    [CONTROL.CHECK_DATA_UPDATE]: () => {
+      return {
+        checkDataUpdate: state.checkDataUpdate * -1
       }
     },
   };
