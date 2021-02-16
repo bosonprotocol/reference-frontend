@@ -22,8 +22,11 @@ export const ListOfBadWords = [
   'hore',
   'nigger',
   'shit',
+  'shiet',
   'fuck',
   'fuk',
+  'fak',
+  'fack',
 ]
 
 var Latinise={};
