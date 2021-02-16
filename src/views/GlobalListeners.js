@@ -36,7 +36,9 @@ function PopulateVouchers() {
       return allVouchersArray
     }
 
+    
     test(accountVouchers).then(result => {
+      console.log(result)
       if(result) globalContext.dispatch(Action.accountVouchers(result))
     })
   }, [accountVouchers])
