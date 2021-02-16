@@ -150,7 +150,7 @@ function VoucherDetails(props) {
         const blockActionConditions = [
         new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
         new Date() <= new Date(voucherResource?.startDate), // has future start date
-        voucherSetDetails?.qty <= 0, // no quantity
+        voucherResource?.qty <= 0, // no quantity
         ]
     
         // status: undefined - user that has not logged in
