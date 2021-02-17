@@ -5,6 +5,7 @@ import { SellerContext, getData } from "../../contexts/Seller"
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
+import "./FormDate.scss"
 // https://www.npmjs.com/package/react-datepicker
 
 import { NAME } from "../../helpers/Dictionary";
@@ -54,7 +55,10 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
           <div ref={dateRef[NAME.DATE_START]} className="input relative"  data-error={startDateErrorMessage}>
             <DatePicker
               id="offer-start-date" 
-             
+              wrapperClassName="datePicker"
+              withPortal
+              shouldCloseOnSelect={false}
+              calendarClassName="react-datepicker-custom"
               selected={getCurrentDateValue(NAME.DATE_START)}
               onChange={(date) => startDateValueReceiver(date.setHours(0,0,0,0))}
               customInput={<Field ref={startDate} dateFieldType={NAME.DATE_START}/>}
@@ -69,6 +73,9 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
           <div ref={dateRef[NAME.DATE_END]}   data-error={endDateErrorMessage} className="input relative">
             <DatePicker
               id="offer-expiry-date"
+              wrapperClassName="datePicker"
+              withPortal
+              shouldCloseOnSelect={false}
               selected={getCurrentDateValue(NAME.DATE_END)}
               onChange={(date) => endDateValueReceiver(date.setHours(23,59,59,999))}
               customInput={<Field ref={endDate} dateFieldType={NAME.DATE_END}/>}
