@@ -96,7 +96,7 @@ function VoucherDetails(props) {
         // ['Remaining Quantity', selectedProduct?.qty],
     ];
 
-    const validateAction = (action) => {
+    const confirmAction = (action) => {
         const callAction = () => {
             action()
             setPopupMessage(false)
@@ -115,7 +115,7 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-        <div className="button gray" onClick={ () => validateAction(onCoF)} role="button">Cancel or fault</div>
+        <div className="button gray" onClick={ () => confirmAction(onCoF)} role="button">Cancel or fault</div>
         )
     
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
