@@ -28,22 +28,22 @@ export const Action = {
     type: DIC.CLOSE_PRODUCT,
   }),
 
-  toggleQRReader: (state) => ({
+  toggleQRReader: state => ({
     type: DIC.ACTIVATE_QR_READER,
     payload: state
   }),
 
-  allVoucherSets: (state) => ({
+  allVoucherSets: state => ({
     type: DIC.ALL_VOUCHER_SETS,
     payload: state
   }),
 
-  updateAllVouchers: (state) => ({
+  updateAllVouchers: state => ({
     type: DIC.ALL_VOUCHERS,
     payload: state
   }),
 
-  accountVouchers: (state) => ({
+  accountVouchers: state => ({
     type: DIC.ACCOUNT_VOUCHERS,
     payload: state
   }),
@@ -52,12 +52,12 @@ export const Action = {
     type: DIC.FETCH_VOUCHER_SETS,
   }),
 
-  updateAccount: (account) => ({
+  updateAccount: account => ({
     type: DIC.UPDATE_ACCOUNT,
     payload: account,
   }),
 
-  completeOnboarding: (val) => ({
+  completeOnboarding: val => ({
     type: CONTROL.COMPLETE_ONBOARDING,
     payload: val
   }),
