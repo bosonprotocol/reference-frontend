@@ -70,7 +70,10 @@ function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessa
           <span className="limit">{description ? description.length : 0} / {maxSymbols}</span>
         </div>
       </div>
-      <div ref={conditionTarget} className="row flex">
+      <div ref={conditionTarget} className="row">
+        <div className="field">
+          <span className="label">Condition</span>
+        </div>
         <div className="radio-container flex center">
           <div className="field radio-label">
             <label data-condition="new" htmlFor="condition-new">New</label>

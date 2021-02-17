@@ -33,12 +33,16 @@ function FormPrice({
   return (
     <div className="price">
       <div className="row">
+        <div className="field">
+          <label htmlFor="offer-quantity">Quantity</label>
+          <div className="input focus" data-error={quantityErrorMessage}>
+            <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
+          </div>
+        </div>
+      </div>
+      <div className="row">
         <div className="field dual">
-          <label htmlFor="offer-price">
-            <div className="step-title">
-              <h1>Payment Price</h1>
-            </div>
-          </label>
+          <label htmlFor="offer-price">Payment Price</label>
           <div className="bind">
             <Currencies inputValueHandler={priceCurrencyReceiver}/>
             <div className="input relative focus" data-error={priceErrorMessage}>
@@ -51,9 +55,12 @@ function FormPrice({
       </div>
       <div className="row">
         <div className="field">
-          <label htmlFor="offer-quantity">Quantity</label>
-          <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
+          <label htmlFor="offer-buyer-deposit">Buyer’s Deposit</label>
+          <div className="input relative focus" data-error={buyerDepositErrorMessage}>
+            <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
+            <input id="offer-buyer-deposit"
+            type="number" name={NAME.BUYER_DEPOSIT} onChange={(e) => buyerDepositValueReceiver(e.target ? e.target.value : null)}/>
+            <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div> 
           </div>
         </div>
       </div>
@@ -67,17 +74,6 @@ function FormPrice({
               id="offer-seller-deposit" type="number" onChange={(e) => sellerDepositValueReceiver(e.target ? e.target.value : null)} />
               <div className="max">max {sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : null} {sellerCurrency}</div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="field">
-          <label htmlFor="offer-buyer-deposit">Buyer’s Deposit</label>
-          <div className="input relative focus" data-error={buyerDepositErrorMessage}>
-            <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
-            <input id="offer-buyer-deposit"
-            type="number" name={NAME.BUYER_DEPOSIT} onChange={(e) => buyerDepositValueReceiver(e.target ? e.target.value : null)}/>
-            <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div> 
           </div>
         </div>
       </div>
