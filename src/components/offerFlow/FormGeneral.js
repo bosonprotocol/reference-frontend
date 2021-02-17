@@ -71,15 +71,17 @@ function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessa
         </div>
       </div>
       <div ref={conditionTarget} className="row flex">
-        <div className="field radio-label">
-          <label data-condition="new" htmlFor="condition-new">New</label>
-          <input className="hidden" id="condition-new" value="new" type="radio" 
-          onClick={(e) => selectLabel(e.target)} />
-        </div>
-        <div className="field radio-label">
-          <label data-condition="used" htmlFor="condition-used">Used</label>
-          <input className="hidden" id="condition-used" value="used" type="radio"
-          onClick={(e) => selectLabel(e.target)} />
+        <div className="radio-container flex center">
+          <div className="field radio-label">
+            <label data-condition="new" htmlFor="condition-new">New</label>
+            <input className="hidden" id="condition-new" value="new" type="radio" 
+            onClick={(e) => selectLabel(e.target)} />
+          </div>
+          <div className="field radio-label">
+            <label data-condition="used" htmlFor="condition-used">Used</label>
+            <input className="hidden" id="condition-used" value="used" type="radio"
+            onClick={(e) => selectLabel(e.target)} />
+          </div>
         </div>
       </div>
     </div>

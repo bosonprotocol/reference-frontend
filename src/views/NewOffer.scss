@@ -295,46 +295,6 @@
           }
         }
 
-        &.radio-label {
-          label {
-            width: 57px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-family: $font-secondary;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 16px;
-            line-height: $height-regular;
-
-            text-align: center;
-
-            color: #FFFFFF;
-
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 2px;
-            cursor: pointer;
-            transition: 0.2s ease-in-out;
-
-            &:hover {
-              background: rgba(255, 255, 255, 0.02);
-              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);            
-            }
-
-            &.active,
-            &.active:hover {
-              background: rgba(0, 0, 0, 0.1);
-              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
-            }
-          }
-
-          & + .field {
-            margin-left: 6px;
-          }
-        }
-
         &.dual {
           .bind {
             // margin-top: 14px;
@@ -431,6 +391,59 @@
 
           input {
             margin-top: 0;
+          }
+        }
+      }
+
+      .radio-container {
+        background: #1C252D;
+        border-radius: 100px;
+        width: 139px;
+        height: 36px;
+        overflow: hidden;
+
+        .radio-label {
+          width: 50%;
+          height: 100%;
+
+          label {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: 'Barlow', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 143.4%;
+            /* identical to box height, or 23px */
+
+            text-align: center;
+
+            text-align: center;
+
+            color: #FFFFFF;
+
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.02);
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);            
+            }
+
+            &.active,
+            &.active:hover {
+              background: rgba(0, 0, 0, 0.1);
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
+              background: #80F0BE;
+              border-radius: 100px;
+              color: #151E27;
+            }
           }
         }
       }
