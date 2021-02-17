@@ -120,7 +120,7 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
         // check for bad words
         let profanityResult = input.match(badWordsRegex)
 
-        if(profanityResult) descriptionErrorMessage = `You can't say "${profanityResult[0]}", fella...`
+        if(profanityResult) descriptionErrorMessage = `Usage of the word "${profanityResult[0]}" is forbidden`
 
         newErrorMessages = {...newErrorMessages, [NAME.DESCRIPTION]: descriptionErrorMessage} 
       }
@@ -143,7 +143,7 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
       } 
       console.log(currentQuantityValue, parseInt(currentQuantityValue))
       if(parseFloat(currentQuantityValue) !== parseInt(currentQuantityValue)) {
-        quantityErrorMessage = `No decimal point allowed`
+        quantityErrorMessage = `No decimal point allowed for quantity`
       }
 
       newErrorMessages = {...newErrorMessages, [NAME.QUANTITY]: quantityErrorMessage} 
