@@ -31,6 +31,8 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
           description: voucherSet.description,
           expiryDate: voucherSet.expiryDate,
           location: voucherSet.location,
+          priceCurrency: voucherSet.priceCurrency,
+          sellerDepositCurrency: voucherSet.sellerDepositCurrency,
           offeredDate: voucherSet.offeredDate,
           sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
           startDate: voucherSet.startDate,

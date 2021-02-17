@@ -20,7 +20,7 @@ import {ecsign} from "ethereumjs-util";
 import {fromRpcSig} from 'ethereumjs-util'
 import { arrayify } from "ethers/lib/utils";
 export default function SubmitForm(props) {
-    // onFileSelectSuccess={ (file) => setSelectedFile(file) }
+    // onFileSelectSuccess={ (file) => setSelectedFile(file) } 
     const [redirect, setRedirect] = useState(0)
     const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
@@ -75,7 +75,7 @@ export default function SubmitForm(props) {
             return;
         }
 
-        setLoading(1)
+        setLoading(0)
 
 
         let dataArr = [
@@ -137,8 +137,8 @@ export default function SubmitForm(props) {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-        // formData.append('sellerDepositCurrency', seller_deposit_currency);
-        // formData.append('priceCurrency', price_currency);
+        formData.append('sellerDepositCurrency', seller_deposit_currency);
+        formData.append('priceCurrency', price_currency);
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
@@ -211,17 +211,22 @@ const createNewVoucherSet =  async (dataArr, bosonRouterContract, depositContrac
                     chainId
                 )
                     
-                const  signature = await bosonRouterContract.signer.signMessage(arrayify(Buffer.from(digest.slice(2), 'hex')))
-                const {v,r,s} = await fromRpcSig(signature);
+                const  signature = await bosonRouterContract.signer.signMessage(Buffer.from(digest.slice(2), 'hex'))
+                let {v,r,s} = await ethers.utils.splitSignature(signature);
+                console.log('sign', signature)
+                console.log(v,r,s)
+                // const {v,r,s} = await fromRpcSig(signature);
+                r = arrayify(r)
+                s = arrayify(s)
 
                 console.log(v,r,s)
             const data = [...dataArr];
-            const res2 = ecsign(
+            const res2 = ecsign( 
                 Buffer.from(digest.slice(2), 'hex'),
                 Buffer.from("0x45d361a6907d485a9864649a0f3949b3490b38424ac713b158571d832d2485c3".slice(2), 'hex')
             );
-        
-            console.log(res2)
+        console.log(res2)
+            // console.log(res2)
             tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
                 SMART_CONTRACTS.BosonTokenPriceContractAddress,
                 depositContract.address,

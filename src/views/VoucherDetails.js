@@ -86,10 +86,10 @@ function VoucherDetails(props) {
 
     // int on index #2 is the X position of the block
     const tablePrices = [
-        ['Payment Price', getProp('price'), 'ETH', 0],
+        ['Payment Price', getProp('price'), getProp('priceCurrency'), 0],
         false,
-        ['Buyer’s deposit', getProp('deposit'), 'ETH', 1],
-        ['Seller’s deposit', getProp('sellerDeposit'), 'ETH', 1]
+        ['Buyer’s deposit', getProp('deposit'), getProp('priceCurrency'), 1],
+        ['Seller’s deposit', getProp('sellerDeposit'), getProp('sellerDepositCurrency'), 1]
     ];
 
     const tableDate = [
