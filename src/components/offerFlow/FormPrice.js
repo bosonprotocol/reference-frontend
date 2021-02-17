@@ -16,7 +16,8 @@ function FormPrice({
   sellerDepositCurrencyValueReceiver,
   sellerDepositValueReceiver,
   buyerDepositValueReceiver,
-
+  quantityValueReceiver,
+  quantityErrorMessage,
   sellerDepositErrorMessage,
   priceErrorMessage,
   buyerDepositErrorMessage
@@ -45,6 +46,14 @@ function FormPrice({
               id="offer-price" type="number" onChange={(e) => priceValueReceiver(e.target ? e.target.value : null)}/>
               <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="field">
+          <label htmlFor="offer-quantity">Quantity</label>
+          <div className="input focus" data-error={quantityErrorMessage}>
+            <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
           </div>
         </div>
       </div>

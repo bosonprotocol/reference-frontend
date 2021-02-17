@@ -41,12 +41,12 @@
   }
   .screen {
     .step-title {
-      height: 70px;
       display: flex;
       align-items: flex-end;
     }
   }
   .screen-controller {
+    padding-top: 42px;
     .date {
       .field[role="button"].await {
         position: relative;
@@ -135,7 +135,7 @@
         input,
         textarea,
         .field {
-          background: rgba(255, 255, 255, 0.03);
+          background:#151A1F;
           border-radius: 2px;
           height: 50px;
           border: none;
@@ -214,7 +214,7 @@
             width: 22px;
             transform: translateY(-50%);
             height: 22px;
-            background: rgba(0, 167, 255, 0.15);
+            background: #19232A;
             border-radius: 48px;
             cursor: pointer;
             opacity: 0;
@@ -228,7 +228,7 @@
               height: 12px;
               top: 5px;
               left: 10px;
-              background: #4DC0FD;
+              background: #80F0BE;
               transform: rotate(-45deg);
               border-radius: 20px;
             }
@@ -439,7 +439,7 @@
         margin-top: 30px;
       }
     }
-    .description {
+    .general {
       .limit {
         pointer-events: none;
         position: absolute;
@@ -463,4 +463,10 @@
 
 ::-webkit-calendar-picker-indicator {
   opacity: 0;
+}
+
+.top-navigation-offer {
+  .button {
+    background-color: #192028;
+  }
 }

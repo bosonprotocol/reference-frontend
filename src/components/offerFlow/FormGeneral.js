@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useContext } from 'react'
 import { NAME } from "../../helpers/Dictionary"
 import { SellerContext, getData } from "../../contexts/Seller"
 
-function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueReceiver, titleErrorMessage, quantityErrorMessage}) {
+function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessage, descriptionValueReceiver, descriptionErrorMessage}) {
   const conditionTarget = useRef()
   const titleInput = useRef()
   const titleClear = useRef()
@@ -11,6 +11,10 @@ function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueRec
   const sellerContext = useContext(SellerContext)
   const getOfferingData = getData(sellerContext.state.offeringData)
   const selectedCategory = getOfferingData(NAME.CONDITION)
+
+  const description = getOfferingData(NAME.DESCRIPTION)
+  const maxSymbols = 160
+
   const selectLabel = (el) => {
     Array.from(el.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
       label.classList.remove('active')
@@ -43,9 +47,7 @@ function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueRec
       <div className="row">
         <div className="field">
           <label htmlFor="offer-title">
-            <div className="step-title">
-              <h1>Title</h1>
-            </div>
+            Title
           </label>
           <div className="input focus" data-error={titleErrorMessage}>
             <input ref={titleInput} id="offer-title" type="text" onChange={(e) => titleValueReceiver(e.target ? e.target.value : null)}/>
@@ -58,11 +60,14 @@ function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueRec
         </div>
       </div> 
       <div className="row">
-        <div className="field">
-          <label htmlFor="offer-quantity">Quantity</label>
-          <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
+        <div className="area field relative">
+          <label htmlFor={NAME.DESCRIPTION}>Description</label>
+          <div className="input focus" data-error={descriptionErrorMessage}>
+            <textarea 
+              name={NAME.DESCRIPTION} maxLength={maxSymbols} id="offer-description" onChange={(e) => descriptionValueReceiver(e.target ? e.target.value : null)} form="offer-form">              
+            </textarea>
           </div>
+          <span className="limit">{description ? description.length : 0} / {maxSymbols}</span>
         </div>
       </div>
       <div ref={conditionTarget} className="row flex">
