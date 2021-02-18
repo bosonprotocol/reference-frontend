@@ -5,7 +5,7 @@ import { decodeData, getEncodedTopic, useBosonRouterContract, useVoucherKernalCo
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
-import { getVoucherDetails, updateVoucher } from "../hooks/api";
+import { cancelVoucherSet, getVoucherDetails, updateVoucher } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
 import "./VoucherDetails.scss"
@@ -197,8 +197,8 @@ function VoucherDetails(props) {
                     </div>
                     {
                         voucherSetDetails && voucherSetDetails.qty > 0 && account.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
-                        <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet(sharedProps)} role="button">CANCEL VOUCHER SET</div> :
-                        null
+                        <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet(sharedProps)} role="button">CANCEL VOUCHER SET</div>
+                         : null
                     }
                    
                 </div>
@@ -219,17 +219,12 @@ function statusBlockComponent({ item, index }) {
 export default VoucherDetails
 
 const onCancelOrFaultVoucherSet = async ({ voucherSetDetails, bosonRouterContract, modalContext, library, account, setLoading, voucherDetails, voucherId, voucherStatus }) => {
-        console.log(voucherSetDetails)
-   let data;
+
    try{
         const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
-        const receipt = tx.wait();
+        await tx.wait();
 
-        let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherSetCanceled);
-
-        data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
     } catch (e) {
-        console.log(e)
         setLoading(0);
         modalContext.dispatch(ModalResolver.showModal({
             show: true,
@@ -241,21 +236,20 @@ const onCancelOrFaultVoucherSet = async ({ voucherSetDetails, bosonRouterContrac
 
 
 
-    //TODO update voucher set quantity on backend
-    // const authData = getAccountStoredInLocalStorage(account);
 
-    // try {
+    const authData = getAccountStoredInLocalStorage(account);
 
-
+    try {
+        await cancelVoucherSet(voucherSetDetails.id, {}, authData.authToken)
  
-    // } catch (e) {
-    //     setLoading(0);
-    //     modalContext.dispatch(ModalResolver.showModal({
-    //         show: true,
-    //         type: MODAL_TYPES.GENERIC_ERROR,
-    //         content: e.message + ' :252'
-    //     }));
-    // }
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :252'
+        }));
+    }
 
     setLoading(0)
 }
