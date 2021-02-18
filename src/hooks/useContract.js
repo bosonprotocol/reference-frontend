@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { useWeb3React } from "@web3-react/core";
 import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
-import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json'
+import BOSON_ROUTER from './ABIs/BosonRouter.json'
+import VOUCHER_KERNEL from './ABIs/VoucherKernel.json'
 import * as ethers from "ethers";
 
 function useContract(address, ABI, withSignerIfPossible = true) {
@@ -20,9 +21,11 @@ function useContract(address, ABI, withSignerIfPossible = true) {
 }
 
 export function useBosonRouterContract() {
-    return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER_ABI.abi)
+    return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER.abi)
 }
-
+export function useVoucherKernalContract() {
+    return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL.abi)
+}
 export async function findEventByName(txReceipt, eventName, ...eventFields) {
     for (const key in txReceipt.events) {
         if (txReceipt.events[key].event === eventName) {
