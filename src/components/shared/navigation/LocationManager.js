@@ -54,7 +54,7 @@ callLocationAttributes[ROUTE.Default] = () => {
 }
 callLocationAttributes[ROUTE.NewOffer] = () => {
   enableControl([AFFMAP.OFFER_FLOW_SET])
-  updateBackgroundColor(bgColorPrimary)
+  updateBackgroundColor(bgColorBlack)
 
 }
 

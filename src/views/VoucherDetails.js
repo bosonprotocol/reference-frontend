@@ -13,6 +13,7 @@ import { ModalResolver } from "../contexts/Modal";
 import { formatDate } from "../helpers/Format"
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
+import PopupMessage from "../components/shared/PopupMessage";
 
 import "./VoucherDetails.scss"
 
@@ -50,6 +51,7 @@ function VoucherDetails(props) {
     const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
     const [actionPerformed, setActionPerformed] = useState(1);
+    const [popupMessage, setPopupMessage] = useState();
 
     const voucherSets = globalContext.state.allVoucherSets
 
@@ -57,11 +59,22 @@ function VoucherDetails(props) {
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
-    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
-    const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
+    let today = new Date()
+    let start = new Date(voucherDetails?.startDate)
+    let end = new Date(voucherDetails?.expiryDate)
+
+    const timePast = voucherDetails && (today?.getTime() / 1000) - (start?.getTime() / 1000)
+    console.log(voucherDetails?.startDate)
+    console.log(voucherDetails?.expiryDate)
+    const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
 
     const differenceInPercent = (x, y) => (x / y) * 100
-    const expiryProgress = voucherDetails && differenceInPercent(daysPast, daysAvailable) + '%';
+    const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
+
+    console.log(expiryProgress)
+
+    const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
+    const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
@@ -83,6 +96,17 @@ function VoucherDetails(props) {
         // ['Remaining Quantity', selectedProduct?.qty],
     ];
 
+    const confirmAction = (action) => {
+        const callAction = () => {
+            action()
+            setPopupMessage(false)
+        }
+        setPopupMessage({
+            text: 'Are you sure you want to cancel the voucher set?', 
+            controls: <div className="flex split buttons-pair"><div className="button gray" role="button" onClick={ () => setPopupMessage(false)}>BACK</div><div className="button primary" role="button" onClick={ () => callAction()}>CANCEL</div></div>,
+        })
+    }
+
     // assign controlset to statuses
     const controlList = () => {
         const CASE = {}
@@ -91,7 +115,7 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-        <div className="button gray" onClick={ () => onCoF()} role="button">Cancel or fault</div>
+        <div className="button gray" onClick={ () => confirmAction(onCoF)} role="button">Cancel or fault</div>
         )
     
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
@@ -148,9 +172,9 @@ function VoucherDetails(props) {
     
         // don't show actions if:
         const blockActionConditions = [
-        new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
-        new Date() <= new Date(voucherResource?.startDate), // has future start date
-        voucherResource?.qty <= 0, // no quantity
+            new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
+            new Date() <= new Date(voucherResource?.startDate), // has future start date
+            voucherSetDetails?.qty <= 0, // no quantity
         ]
     
         // status: undefined - user that has not logged in
@@ -541,6 +565,7 @@ function VoucherDetails(props) {
     return (
         <>
             { loading ? <Loading/> : null }
+            { <PopupMessage {...popupMessage} /> }
             <section className="voucher-details no-bg">
                 <div className="container erase">
                     <div className="content">

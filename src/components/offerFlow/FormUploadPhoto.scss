@@ -16,16 +16,24 @@
       .image-upload label {
         &::after {
           content: "CHANGE";
-          font-family: $font-primary;
+          font-family: 'Exo', sans-ser;
           font-style: normal;
-          font-weight: 600;
-          font-size: 14px;
-          line-height: $height-small;
-          color: #FFFFFF;
+          font-weight: bold;
+          font-size: 12px;
+          line-height: 143.4%;
+          /* or 17px */
+
+          text-align: center;
+
+          color: #80F0BE;
           top: calc(100% + 20px);
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
+
+          background: #19232A;
+          border-radius: 62px;
+          padding: 8px 15px;
         }
       }
       .thumb-container {
@@ -55,15 +63,14 @@
       cursor: pointer;
 
       span {
-        margin-top: 12px;
+        margin-top: 6px;
 
-        font-family: $font-third;
-        font-size: 12px;
-        line-height: $height-regular;
-        /* or 17px */
-
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 143.4%;
         text-align: center;
-
         color: #FFFFFF;
       }
     }

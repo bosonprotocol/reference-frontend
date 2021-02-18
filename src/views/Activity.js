@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -77,8 +78,8 @@ function ActivityView(props) {
                 </div>
                 <Tabs>
                     <TabList>
-                        <Tab>Active</Tab>
-                        <Tab>Inactive</Tab>
+                        <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
+                        <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Inactive' : 'Closed'}</Tab>
                     </TabList>
 
                     <TabPanel>

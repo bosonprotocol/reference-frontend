@@ -207,36 +207,21 @@ header.top-navigation {
     margin-left: 22px;
 
     .bar {
-      padding: 20px 0;
-      cursor: auto;
-      span {
-        display: block;
-        background: #132C3D;
-        width: 11px;
-        height: 2px;
-        transition: 0.2s ease-in-out;
-      }
+      background: #192028;
+      border-radius: 20px;
+      width: 80px;
+      height: 5px;
+      position: relative;
+      overflow: hidden;
 
-      &.fill {
-        span {
-          background: #80F0BE;
-        }
-      }
-
-      & + .bar {
-        margin-left: 2px;
-      }
-      &:first-child {
-        span {
-          border-top-left-radius: 24px;
-          border-bottom-left-radius: 24px;
-        }
-      }
-      &:last-child {
-        span {
-          border-top-right-radius: 24px;
-          border-bottom-right-radius: 24px;
-        }
+      .fill {
+        width: 0%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: #80F0BE;
+        transition: 0.15s all ease-in-out;
       }
     }
   }

@@ -15,6 +15,7 @@ export const GlobalInitialState = {
   accountVouchers: [],
   fetchVoucherSets: 1,
   account: null,
+  checkDataUpdate: 1,
 };
 
 export const Action = {
@@ -27,22 +28,22 @@ export const Action = {
     type: DIC.CLOSE_PRODUCT,
   }),
 
-  toggleQRReader: (state) => ({
+  toggleQRReader: state => ({
     type: DIC.ACTIVATE_QR_READER,
     payload: state
   }),
 
-  allVoucherSets: (state) => ({
+  allVoucherSets: state => ({
     type: DIC.ALL_VOUCHER_SETS,
     payload: state
   }),
 
-  updateAllVouchers: (state) => ({
+  updateAllVouchers: state => ({
     type: DIC.ALL_VOUCHERS,
     payload: state
   }),
 
-  accountVouchers: (state) => ({
+  accountVouchers: state => ({
     type: DIC.ACCOUNT_VOUCHERS,
     payload: state
   }),
@@ -51,15 +52,19 @@ export const Action = {
     type: DIC.FETCH_VOUCHER_SETS,
   }),
 
-  updateAccount: (account) => ({
+  updateAccount: account => ({
     type: DIC.UPDATE_ACCOUNT,
     payload: account,
   }),
 
-  completeOnboarding: (val) => ({
+  completeOnboarding: val => ({
     type: CONTROL.COMPLETE_ONBOARDING,
     payload: val
-  })
+  }),
+
+  checkDataUpdate: () => ({
+    type: CONTROL.CHECK_DATA_UPDATE,
+  }),
 }
 
 export const GlobalReducer = (state, action) => {
@@ -102,9 +107,13 @@ export const GlobalReducer = (state, action) => {
       }
     },
     [CONTROL.COMPLETE_ONBOARDING]: () => {
-      console.log(action.payload)
       return {
         onboardingCompleted: action.payload === undefined ? true : false
+      }
+    },
+    [CONTROL.CHECK_DATA_UPDATE]: () => {
+      return {
+        checkDataUpdate: state.checkDataUpdate * -1
       }
     },
   };
