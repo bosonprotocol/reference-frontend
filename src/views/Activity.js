@@ -1,40 +1,45 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import "./Activity.scss"
 
-import { GlobalContext, Action } from '../contexts/Global'
+import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity } from "../components/shared/Icons"
 
-import { initVoucherDetails } from "../helpers/VoucherParsers"
+import { getAccountVouchers, initVoucherDetails } from "../helpers/VoucherParsers"
 
 import { ModalContext } from "../contexts/Modal";
+import { useWeb3React } from "@web3-react/core";
 import { getVoucherDetails } from "../hooks/api";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+import Loading from "../components/offerFlow/Loading";
 
 export function ActivityAccountVouchers() {
-    const globalContext = useContext(GlobalContext);
-    const [vouchers, setVouchers] = useState()
-
+    const [accountVouchers, setAccountVouchers] = useState([])
+    const { account } = useWeb3React();
+    const modalContext = useContext(ModalContext);
+    const [loading, setLoading] = useState(0)
+  
     useEffect(() => {
-        globalContext.dispatch(Action.checkDataUpdate())
-    }, [])
+        setLoading(1);
 
-    useEffect(() => {
-        if(globalContext.state.accountVouchers) { setVouchers(globalContext.state.accountVouchers) }
-        else if(globalContext.state.allVouchers) { setVouchers(globalContext.state.accountVouchers) }
-    }, [globalContext.state.accountVouchers, globalContext.state.allVouchers])
-    
-// return null
-    return vouchers ? <ActivityView voucherBlocks={ globalContext.state.accountVouchers } voucherType={ VOUCHER_TYPE.accountVoucher }/> : null
+        getAccountVouchers(account, modalContext).then(result => {
+            setLoading(0);
+            setAccountVouchers(result)
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [account]);
+
+    return accountVouchers?.length ?
+        <ActivityView voucherBlocks={ accountVouchers } voucherType={ VOUCHER_TYPE.accountVoucher }/> : loading ? <Loading/> : null
 }
 
 export function ActivityVoucherSets() {

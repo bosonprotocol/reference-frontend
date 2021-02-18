@@ -150,16 +150,16 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
   if(parsedVoucher) return parsedVoucher
 }
 
-export async function addNewVoucher(account, getVoucherDetails, voucherId) {
+export async function addNewVoucher(account, getVoucherDetails, voucherId, arrayOfAllVouchers) {
   
   if (!account) {
     return;
   }
   
-  const authData = await getAccountStoredInLocalStorage(account);
+  const authData = getAccountStoredInLocalStorage(account);
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
   
-  return parsedVoucher
+  if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher) 
 }

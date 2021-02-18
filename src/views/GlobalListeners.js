@@ -7,7 +7,7 @@ import { fetchVoucherSets, getAccountVouchers, addNewVoucher } from "../helpers/
 import { getVoucherDetails } from "../hooks/api"
 
 function PopulateVouchers() {
-  const [fetchAccountVouchers, setFetchAccountVouchers] = useState(1)
+  const [accountVouchers, setAccountVouchers] = useState()
   const globalContext = useContext(GlobalContext)
   const modalContext = useContext(ModalContext)
 
@@ -23,27 +23,24 @@ function PopulateVouchers() {
 
   useEffect(() => {
     globalContext.dispatch(Action.updateAccount(account))
-    setFetchAccountVouchers(fetchAccountVouchers * -1)
+    getAccountVouchers(account, modalContext).then(result => {
+      setAccountVouchers(result)
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, globalContext.state.checkDataUpdate])
+  }, [account])
 
   useEffect(() => {
     const fetchVoucherDetails = async (accountVouchers) => {
       let allVouchersArray = []
-      for (const voucher of accountVouchers) {
-        let result = await addNewVoucher(account, getVoucherDetails, voucher.id)
-        if(result) allVouchersArray.push(result)
-      }
+      await accountVouchers?.forEach(voucher => addNewVoucher(account, getVoucherDetails, voucher.id, allVouchersArray))
       return allVouchersArray
     }
 
-    getAccountVouchers(account, modalContext).then(accountVouchers => {
-      globalContext.dispatch(Action.updateAllVouchers(accountVouchers))
-      if(accountVouchers) fetchVoucherDetails(accountVouchers).then(vouchDetails => {
-        if(vouchDetails.length > 0) globalContext.dispatch(Action.accountVouchers(vouchDetails))
-      })
+    
+    fetchVoucherDetails(accountVouchers).then(result => {
+      if(result) globalContext.dispatch(Action.accountVouchers(result))
     })
-  }, [fetchAccountVouchers])
+  }, [accountVouchers])
 
   return null
 }
