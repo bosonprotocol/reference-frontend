@@ -2,7 +2,18 @@
     background-color: black;
     border: none;
 }
-
+.calendar-save-button {
+    position: fixed;
+    bottom:0px;
+    margin: auto;
+    background: #80F0BE;
+    border-radius: 8px;
+    left: 0px;
+    right: 0px;
+    width: 80px;
+    height: 100px;
+    z-index: 22;
+}
 
 .react-datepicker__current-month {
 
@@ -58,11 +69,6 @@ color: #EEECF1;
 
 }
 .react-datepicker__navigation--next {
-//     position: absolute;
-// left: 39.29%;
-// right: 39.29%;
-// top: 28.57%;
-// bottom: 28.57%;
 
 border-top: 2.35294px solid #80F0BE;
 border-right:2.35294px solid #80F0BE;
@@ -71,7 +77,15 @@ border-left: none;
 transform: rotate(45deg);
 width:10px; 
 }
-
+.react-datepicker__navigation--previous {
+ 
+    border-bottom: 2.35294px solid #80F0BE;
+    border-left:2.35294px solid #80F0BE;
+    border-top: none;
+    border-right: none;
+    transform: rotate(45deg);
+    width:10px; 
+    }
 .react-datepicker__day--outside-month {
 
 
@@ -82,6 +96,8 @@ color: #3C3844;
 
 .react-datepicker__portal {
     background: black;
+    height: 100vw;
+    top:50px;
 }
 .react-datepicker__day {
     &--selected,
@@ -95,17 +111,3 @@ color: #3C3844;
     background: none;
     border: 2px solid #80F0BE 
 }
-.react-datepicker__navigation--previous {
-    //     position: absolute;
-    // left: 39.29%;
-    // right: 39.29%;
-    // top: 28.57%;
-    // bottom: 28.57%;
-    
-    border-bottom: 2.35294px solid #80F0BE;
-    border-left:2.35294px solid #80F0BE;
-    border-top: none;
-    border-right: none;
-    transform: rotate(45deg);
-    width:10px; 
-    }
