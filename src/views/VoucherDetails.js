@@ -109,7 +109,6 @@ function VoucherDetails(props) {
     const controls = getControlState(sharedProps)
 
     const statusBlocks = voucherDetails ? [ ] : false
-
     if(!!voucherDetails) {
         if(voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
         if(voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
@@ -197,7 +196,7 @@ function VoucherDetails(props) {
                         {controls}
                     </div>
                     {
-                        voucherSetDetails && voucherSetDetails.qty > 0? 
+                        voucherSetDetails && voucherSetDetails.qty > 0 && account.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
                         <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet(sharedProps)} role="button">CANCEL VOUCHER SET</div> :
                         null
                     }
