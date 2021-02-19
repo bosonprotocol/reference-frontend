@@ -9,7 +9,6 @@ import "./NewOffer.scss"
 import Categories from "../components/offerFlow/Categories"
 import FormUploadPhoto from "../components/offerFlow/FormUploadPhoto"
 import FormGeneral from "../components/offerFlow/FormGeneral"
-import FormDescription from "../components/offerFlow/FormDescription"
 import FormPrice from "../components/offerFlow/FormPrice"
 import FormDate from "../components/offerFlow/FormDate"
 import FormSummary from "../components/offerFlow/FormSummary"
@@ -112,12 +111,8 @@ console.log(inputName, value)
     <FormUploadPhoto inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
     uploadImageErrorMessage={errorMessages[NAME.IMAGE]}/>,
     <FormGeneral titleValueReceiver={createInputValueReceiver(NAME.TITLE) }  
-                 titleErrorMessage={errorMessages[NAME.TITLE]}
-                 quantityValueReceiver={createInputValueReceiver(NAME.QUANTITY)}
-                 quantityErrorMessage={errorMessages[NAME.QUANTITY]}
-                 conditionValueReceiver={createInputValueReceiver(NAME.CONDITION)}
-                  />,
-    <FormDescription  
+    titleErrorMessage={errorMessages[NAME.TITLE]}
+    conditionValueReceiver={createInputValueReceiver(NAME.CONDITION)}
     descriptionValueReceiver={createInputValueReceiver(NAME.DESCRIPTION)}
     descriptionErrorMessage={errorMessages[NAME.DESCRIPTION]}
     />,
@@ -131,9 +126,8 @@ console.log(inputName, value)
       sellerDepositValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT)}
       buyerPriceSuffixValueReceiver={createInputValueReceiver(NAME.PRICE_SUFFIX)}
       buyerDepositValueReceiver={createInputValueReceiver(NAME.BUYER_DEPOSIT)}
-      
-    
-
+      quantityValueReceiver={createInputValueReceiver(NAME.QUANTITY)}
+      quantityErrorMessage={errorMessages[NAME.QUANTITY]}
       priceErrorMessage={errorMessages[NAME.PRICE]}
       sellerDepositErrorMessage={errorMessages[NAME.SELLER_DEPOSIT]}
       buyerDepositErrorMessage={errorMessages[NAME.BUYER_DEPOSIT]}

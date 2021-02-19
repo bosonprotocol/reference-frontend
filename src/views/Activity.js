@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -18,7 +19,7 @@ import { getVoucherDetails } from "../hooks/api";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
 
 export function ActivityAccountVouchers() {
@@ -38,7 +39,7 @@ export function ActivityAccountVouchers() {
     }, [account]);
 
     return accountVouchers?.length ?
-        <ActivityView voucherBlocks={ accountVouchers } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
+        <ActivityView voucherBlocks={ accountVouchers } voucherType={ VOUCHER_TYPE.accountVoucher }/> : loading ? <Loading/> : null
 }
 
 export function ActivityVoucherSets() {
@@ -56,13 +57,14 @@ export function ActivityVoucherSets() {
     }, [voucherSets])
 
     return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } blockType={ blockTypes.voucherSet }/> : null
+        <ActivityView voucherBlocks={ voucherBlocks } voucherType={ VOUCHER_TYPE.voucherSet }/> : null
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, blockType } = props
+    const { voucherBlocks, voucherType } = props
+    const globalContext = useContext(GlobalContext);
 
-    const blocksSorted = sortBlocks(voucherBlocks)
+    const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
 
     const activeVouchers = blocksSorted.active
     const inactiveVouchers = blocksSorted.inactive
@@ -72,19 +74,19 @@ function ActivityView(props) {
         <section className="activity atomic-scoped">
             <div className="container">
                 <div className="page-title">
-                    <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
+                    <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
                 <Tabs>
                     <TabList>
-                        <Tab>Active</Tab>
-                        <Tab>Inactive</Tab>
+                        <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
+                        <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Inactive' : 'Closed'}</Tab>
                     </TabList>
 
                     <TabPanel>
-                        { <ActiveTab blockType={blockType} products={ activeVouchers }/> }
+                        { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
                     </TabPanel>
                     <TabPanel>
-                        { <ActiveTab blockType={blockType} products={ inactiveVouchers }/> }
+                        { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
                     </TabPanel>
                 </Tabs>
 
@@ -153,7 +155,7 @@ export const SingleVoucherBlock = (props) => {
 
     return (
         <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
@@ -174,8 +176,8 @@ export const SingleVoucherBlock = (props) => {
                     { voucherData?.COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
                     { voucherData?.REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
                     { voucherData?.REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
-                    { voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
                     { voucherData?.COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
+                    { voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
                     { voucherData ? new Date() > new Date(voucherData.expiryDate) ?
                         <div className="label color_EXPIRED">EXPIRED</div> : null : null }
                     { voucherData?.FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }

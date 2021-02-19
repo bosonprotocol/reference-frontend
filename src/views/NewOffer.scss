@@ -6,6 +6,10 @@
     margin-top: 48px;
   }
 
+  .product-view.summary h1 {
+    margin-top: 0;
+  }
+
   .bottom-navigation {
     height: 97px;
 
@@ -41,17 +45,17 @@
   }
   .screen {
     .step-title {
-      height: 70px;
       display: flex;
       align-items: flex-end;
     }
   }
   .screen-controller {
+    padding-top: 42px;
     .date {
       .field[role="button"].await {
         position: relative;
         &::after {
-          content: 'dd/mm/yyyy';
+          content: 'Select';
           position: absolute;
           top: 0;
           right: 0;
@@ -66,7 +70,7 @@
           font-family: "Barlow", sans-serif;
           font-size: 16px;
           line-height: 1.43;
-          background: #1f2130;
+          background: #151A1F;
           transition: 0.1s ease-in-out;
         }
       }
@@ -123,7 +127,8 @@
         flex-direction: column;
         position: relative;
 
-        label {
+        label,
+        .label {
           font-family: $font-primary;
           font-weight: 600;
           font-size: 14px;
@@ -132,10 +137,14 @@
           color: #FFFFFF;
         }
 
+        .label {
+          margin-bottom: 14px;
+        }
+
         input,
         textarea,
         .field {
-          background: rgba(255, 255, 255, 0.03);
+          background:#151A1F;
           border-radius: 2px;
           height: 50px;
           border: none;
@@ -214,7 +223,7 @@
             width: 22px;
             transform: translateY(-50%);
             height: 22px;
-            background: rgba(0, 167, 255, 0.15);
+            background: #19232A;
             border-radius: 48px;
             cursor: pointer;
             opacity: 0;
@@ -228,7 +237,7 @@
               height: 12px;
               top: 5px;
               left: 10px;
-              background: #4DC0FD;
+              background: #80F0BE;
               transform: rotate(-45deg);
               border-radius: 20px;
             }
@@ -295,46 +304,6 @@
           }
         }
 
-        &.radio-label {
-          label {
-            width: 57px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-family: $font-secondary;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 16px;
-            line-height: $height-regular;
-
-            text-align: center;
-
-            color: #FFFFFF;
-
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 2px;
-            cursor: pointer;
-            transition: 0.2s ease-in-out;
-
-            &:hover {
-              background: rgba(255, 255, 255, 0.02);
-              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);            
-            }
-
-            &.active,
-            &.active:hover {
-              background: rgba(0, 0, 0, 0.1);
-              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
-            }
-          }
-
-          & + .field {
-            margin-left: 6px;
-          }
-        }
-
         &.dual {
           .bind {
             // margin-top: 14px;
@@ -345,6 +314,7 @@
               width: 72px;
               height: 50px;
               position: relative;
+              background-color: #151A1F;
 
               &.select-disabled {
                 width: 55px;
@@ -417,7 +387,7 @@
 
               select {
                 border: none;
-                background-color: rgba(255, 255, 255, 0.03);
+                background-color: transparent;
                 color: transparent;
                 width: 100%;
                 height: 100%;
@@ -435,11 +405,62 @@
         }
       }
 
+      .radio-container {
+        background: #1C252D;
+        border-radius: 100px;
+        width: 139px;
+        height: 36px;
+        overflow: hidden;
+
+        .radio-label {
+          width: 50%;
+          height: 100%;
+
+          label {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: 'Barlow', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 143.4%;
+            /* identical to box height, or 23px */
+
+            text-align: center;
+
+            color: #5D6F84;
+
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.02);
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);            
+            }
+
+            &.active,
+            &.active:hover {
+              background: rgba(0, 0, 0, 0.1);
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
+              background: #80F0BE;
+              border-radius: 100px;
+              color: #151E27;
+            }
+          }
+        }
+      }
+
       & + .row {
         margin-top: 30px;
       }
     }
-    .description {
+    .general {
       .limit {
         pointer-events: none;
         position: absolute;
@@ -463,4 +484,10 @@
 
 ::-webkit-calendar-picker-indicator {
   opacity: 0;
+}
+
+.top-navigation-offer {
+  .button {
+    background-color: #192028;
+  }
 }

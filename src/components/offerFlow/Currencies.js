@@ -16,11 +16,11 @@ function Currencies(props) {
     <span className="currencies-container">
       <span className={"icons " + (chosenCurrencyName ? chosenCurrencyName : '')}>
         <div className={CURRENCY.ETH}></div>
-        <div className={CURRENCY.BSN}></div>
+        {/* <div className={CURRENCY.BSN}></div> */}
       </span>
       <select className="currencies" name={name} id={name} onChange={(e) => handleInputChange(e)}>
         <option value={CURRENCY.ETH}>{CURRENCY.ETH}</option>
-        <option value={CURRENCY.BSN}>{CURRENCY.BSN}</option>
+        {/* <option value={CURRENCY.BSN}>{CURRENCY.BSN}</option> */}
       </select>
     </span>
   )

@@ -17,13 +17,14 @@ import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS, SMART_CONTRACTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 import {ecsign} from "ethereumjs-util";
-import {fromRpcSig} from 'ethereumjs-util'
-import { arrayify } from "ethers/lib/utils";
-export default function SubmitForm(props) {
+
+
+export default function SubmitForm() {
+    // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const [redirect, setRedirect] = useState(0)
     const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
-    const modalContext = useContext(ModalContext);
+    const modalContext = useContext(ModalContext); 
     const location = useLocation();
 
     const globalContext = useContext(GlobalContext);
@@ -186,44 +187,33 @@ const createNewVoucherSet =  async (dataArr, bosonRouterContract, depositContrac
         }
         case('BSNBSN'): {
 
-                const nonce = await depositContract.nonces(accountAddress)
+                // const nonce = await depositContract.nonces(accountAddress)
 
                 //string
-                const digest = await getApprovalDigest(
-                    depositContract,
-                    accountAddress,
-                    SMART_CONTRACTS.BosonRouterContractAddress,
-                    txValue.toString(),
-                    nonce.toString(),
-                    toWei(1),
-                    chainId
-                )
+                // const digest = await getApprovalDigest(
+                //     depositContract,
+                //     accountAddress,
+                //     SMART_CONTRACTS.BosonRouterContractAddress,
+                //     txValue.toString(),
+                //     nonce.toString(),
+                //     toWei(1),
+                //     chainId
+                // )
                     
-                const  signature = await bosonRouterContract.signer.signMessage(Buffer.from(digest.slice(2), 'hex'))
-                let {v,r,s} = await ethers.utils.splitSignature(signature);
-                console.log('sign', signature)
-                console.log(v,r,s)
-                // const {v,r,s} = await fromRpcSig(signature);
-                r = arrayify(r)
-                s = arrayify(s)
 
-                console.log(v,r,s)
             const data = [...dataArr];
-            const res2 = ecsign( 
-                Buffer.from(digest.slice(2), 'hex'),
-                Buffer.from("0x45d361a6907d485a9864649a0f3949b3490b38424ac713b158571d832d2485c3".slice(2), 'hex')
-            );
-        console.log(res2)
+         
+
             // console.log(res2)
-            tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
-                SMART_CONTRACTS.BosonTokenPriceContractAddress,
-                depositContract.address,
-                txValue,
-                toWei(1),
-                v, r, s,
-                data
-            );
-            return tx.wait();
+            // tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
+            //     SMART_CONTRACTS.BosonTokenPriceContractAddress,
+            //     depositContract.address,
+            //     txValue,
+            //     toWei(1),
+            //     v, r, s,
+            //     data
+            // );
+            // return tx.wait();
         }
         default: {
             console.error(`Currencies combination not found ${currencyCombination}`);

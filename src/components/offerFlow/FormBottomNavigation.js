@@ -23,18 +23,16 @@ function FormBottomNavigation(props) {
     ],
     2: [
       [NAME.TITLE],
-      [NAME.QUANTITY],
+      [NAME.DESCRIPTION],
       [NAME.CONDITION],
     ],
     3: [
-      [NAME.DESCRIPTION],
-    ],
-    4: [
       [NAME.PRICE],
+      [NAME.QUANTITY],
       [NAME.SELLER_DEPOSIT],
       [NAME.BUYER_DEPOSIT],
     ],
-    5: [
+    4: [
       [NAME.DATE_START],
       [NAME.DATE_END],
     ],

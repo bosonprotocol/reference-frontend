@@ -92,6 +92,7 @@ export async function getAccountVouchers(account, modalContext) {
       return;
   }
 
+
   const allAccountVouchers = await getVouchers(authData.authToken);
   const vouchersParsed = allAccountVouchers.voucherData && prepareVoucherData(allAccountVouchers.voucherData)
 
@@ -121,6 +122,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
       REDEEMED: rawVoucher.REDEEMED,
       REFUNDED: rawVoucher.REFUNDED,
       commitedDate: rawVoucher.COMMITTED,
+      image: rawVoucher?.imagefiles[0]?.url,
       _tokenIdVoucher: rawVoucher._tokenIdVoucher,
       currency: rawVoucher.currency ? rawVoucher._currency : 'ETH',
   };
@@ -146,7 +148,20 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
   }
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-  const parsedVoucher = prepareVoucherDetails(rawVoucherDetails.voucher);
-  
+  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);  
   if(parsedVoucher) return parsedVoucher
+}
+
+export async function addNewVoucher(account, getVoucherDetails, voucherId, arrayOfAllVouchers) {
+  
+  if (!account) {
+    return;
+  }
+  
+  const authData = getAccountStoredInLocalStorage(account);
+
+  const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
+  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
+  
+  if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher) 
 }
