@@ -131,6 +131,8 @@ export default function SubmitForm() {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
+        formData.append('sellerDepositCurrency', 'ETH')
+        formData.append('priceCurrency', 'ETH')
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
