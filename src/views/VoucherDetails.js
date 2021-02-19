@@ -647,7 +647,7 @@ function VoucherDetails(props) {
                     </div>
                     {
                         voucherSetDetails && voucherSetDetails.qty > 0 && account.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
-                        <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet} role="button">CANCEL VOUCHER SET</div>
+                        <div className="button cancelVoucherSet" onClick={onCancelOrFaultVoucherSet} role="button">CANCEL VOUCHER SET</div>
                          : null
                     }
                    

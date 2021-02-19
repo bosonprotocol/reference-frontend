@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, getApprovalDigest, toWei, useBosonRouterContract, useBosonTokenDepositContract } from "../../hooks/useContract";
+import { findEventByName, useBosonRouterContract, useBosonTokenDepositContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -16,7 +16,6 @@ import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS, SMART_CONTRACTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
-import {ecsign} from "ethereumjs-util";
 
 
 export default function SubmitForm() {
@@ -75,7 +74,7 @@ export default function SubmitForm() {
             return;
         }
 
-        setLoading(0)
+        setLoading(1)
 
 
         let dataArr = [

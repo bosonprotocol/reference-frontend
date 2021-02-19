@@ -24,7 +24,6 @@ import { network } from "./connectors";
 
 import ContextModal from "./components/shared/ContextModal";
 import { authenticateUser, getAccountStoredInLocalStorage } from "./hooks/authenticate";
-import { useBosonTokenDepositContract } from "./hooks/useContract"
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -69,10 +68,7 @@ function App() {
         account,
         library,
         chainId
-    } = context;
-
-    const contract = useBosonTokenDepositContract();
-  
+    } = context;  
     const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
 
     const triedEager = useEagerConnect();
