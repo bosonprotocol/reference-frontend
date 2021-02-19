@@ -2,13 +2,16 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import { useHistory } from "react-router"
+import { useBosonRouterContract } from "../hooks/useContract";
+
+
+
 import { Link } from "react-router-dom";
-import { useCashierContract } from "../hooks/useContract";
 
 
 import * as ethers from "ethers";
 import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy } from "../hooks/api";
-import { useVoucherKernelContract, getEncodedTopic, decodeData } from "../hooks/useContract";
+import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
 import { formatDate } from "../helpers/Format"
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
@@ -44,13 +47,13 @@ function VoucherDetails(props) {
     const navigationContext = useContext(NavigationContext);
     const expiryProgressBar = useRef()
     const [loading, setLoading] = useState(0);
-    const voucherKernelContract = useVoucherKernelContract();
+    const bosonRouterContract = useBosonRouterContract();
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
-    const cashierContract = useCashierContract();
+    // const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
-    const [actionPerformed, setActionPerformed] = useState(1);
+    const [actionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
 
     const voucherSets = globalContext.state.allVoucherSets
@@ -285,11 +288,11 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
+    
         setLoading(1)
-
+    
         const voucherSetInfo = voucherSetDetails;
-
+    
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -299,28 +302,28 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
-
+    
+    
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
         const supplyId = voucherSetInfo._tokenIdSupply;
-
+    
         let tx;
         let metadata = {};
         let data;
-
+    
         try {
-            tx = await cashierContract.requestVoucher_ETH_ETH(supplyId, voucherSetInfo.voucherOwner, {
+            tx = await bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
                 value: txValue.toString()
             });
-
+    
             const receipt = await tx.wait();
-
+    
             let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
-
+    
             data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
-
+    
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -330,7 +333,7 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
+    
         metadata = {
             txHash: tx.hash,
             _tokenIdSupply: supplyId,
@@ -338,13 +341,12 @@ function VoucherDetails(props) {
             _issuer: data[1],
             _holder: data[2]
         };
-
+    
         const authData = getAccountStoredInLocalStorage(account);
-
+    
         try {
-            const commitToBuyResponse = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-            console.log(commitToBuyResponse);
-
+            await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+    
             history.push(ROUTE.ActivityVouchers)
         } catch (e) {
             setLoading(0);
@@ -354,8 +356,7 @@ function VoucherDetails(props) {
                 content: e.message
             }));
         }
-
-        setActionPerformed(actionPerformed * -1)
+    
         setLoading(0)
     }
 
@@ -369,21 +370,19 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
+    
         setLoading(1);
-
+    
         let tx;
         const authData = getAccountStoredInLocalStorage(account);
-
+    
         try {
-            tx = await voucherKernelContract.complain(voucherDetails._tokenIdVoucher);
-
-            const receipt = await tx.wait();
-            console.log(receipt, 'receipt')
-
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            console.log(encodedTopic, 'encodedTopic')
-
+            tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
+    
+            await tx.wait();
+    
+          
+    
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -393,16 +392,15 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
-
+    
+    
         try {
             const data = {
                 _id: voucherId,
                 status: VOUCHER_STATUSES.COMPLAINED
             };
-
-            const complainResponse = await updateVoucher(data, authData.authToken);
-            console.log(complainResponse)
+    
+            await updateVoucher(data, authData.authToken);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -411,8 +409,7 @@ function VoucherDetails(props) {
                 content: e.message + ' :252'
             }));
         }
-
-        setActionPerformed(actionPerformed * -1)
+    
         setLoading(0)
     }
 
@@ -426,21 +423,18 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
+    
         setLoading(1);
-
+    
         let tx;
         const authData = getAccountStoredInLocalStorage(account);
-
+    
         try {
-            tx = await voucherKernelContract.refund(voucherDetails._tokenIdVoucher);
-
-            const receipt = await tx.wait();
-            console.log(receipt, 'receipt')
-
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            console.log(encodedTopic, 'encodedTopic')
-
+            tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
+    
+            await tx.wait();
+    
+    
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -450,16 +444,15 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
-
+    
+    
         try {
             const data = {
                 _id: voucherId,
                 status: VOUCHER_STATUSES.REFUNDED
             };
-
-            const refundResponse = await updateVoucher(data, authData.authToken);
-            console.log(refundResponse)
+    
+            await updateVoucher(data, authData.authToken);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -468,8 +461,7 @@ function VoucherDetails(props) {
                 content: e.message + ' :252'
             }));
         }
-
-        setActionPerformed(actionPerformed * -1)
+    
         setLoading(0)
     }
 
@@ -483,21 +475,19 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
+    
         setLoading(1);
-
+    
         let tx;
         const authData = getAccountStoredInLocalStorage(account);
-
+    
         try {
-            tx = await voucherKernelContract.cancelOrFault(voucherDetails._tokenIdVoucher);
-
-            const receipt = await tx.wait();
-            console.log(receipt, 'receipt')
-
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            console.log(encodedTopic, 'encodedTopic')
-
+            tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+    
+          await tx.wait();
+    
+           
+    
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -507,16 +497,15 @@ function VoucherDetails(props) {
             }));
             return;
         }
-
-
+    
+    
         try {
             const data = {
                 _id: voucherId,
                 status: VOUCHER_STATUSES.CANCELLED
             };
-
-            const cancelResponse = await updateVoucher(data, authData.authToken);
-            console.log(cancelResponse)
+    
+            await updateVoucher(data, authData.authToken);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -525,8 +514,7 @@ function VoucherDetails(props) {
                 content: e.message + ' :252'
             }));
         }
-
-        setActionPerformed(actionPerformed * -1)
+    
         setLoading(0)
     }
 

@@ -38,8 +38,8 @@ export const authenticateUser = async (library, account, chainId) => {
     });
 
     const isSmartWalletAccount = isSmartWallet(library);
-
     const signatureLike = await library.send('eth_signTypedData_v4', [account, data]);
+
     const signature = await splitSignature(signatureLike);
 
     const jwt = await verifySignature(signerAddress, isSmartWalletAccount, domain, { AuthSignature }, signature);
