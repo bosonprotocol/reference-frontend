@@ -21,7 +21,8 @@ export const NavigationInitialState = {
     mainNavigationItem: null,
   },
   offerFlowControl: false,
-  redemptionFlowControl: false
+  redemptionFlowControl: false,
+  displayNavigation: false,
 };
 
 export const Action = {
@@ -47,6 +48,10 @@ export const Action = {
   }),
   setBottomNavType: (type) => ({
     type: CONTROL.SET_BOTTOM_NAV_TYPE,
+    payload: type
+  }),
+  displayNavigation: (type) => ({
+    type: CONTROL.DISPLAY_NAVIGATION,
     payload: type
   }),
 }
@@ -87,6 +92,11 @@ export const NavigationReducer = (state, action) => {
     [CONTROL.SET_REDEMPTION_CONTROL]: () => {
       return {
         redemptionFlowControl: action.payload
+      }
+    },
+    [CONTROL.DISPLAY_NAVIGATION]: () => {
+      return {
+        displayNavigation: action.payload
       }
     },
   }

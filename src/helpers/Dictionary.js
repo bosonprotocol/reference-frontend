@@ -31,18 +31,20 @@ export const CONTROL = {
     SET_FORM_NAVIGATION: 'set-form-navigation',
     SET_BOTTOM_NAV_TYPE: 'set-bottom-navigation-type',
     SET_REDEMPTION_CONTROL: 'redemption_flow_control',
-    COMPLE_ONBOARDING: 'complete-onboarding',
+    COMPLETE_ONBOARDING: 'complete-onboarding',
+    DISPLAY_NAVIGATION: 'display-navigation',
+    CHECK_DATA_UPDATE: 'check-for-data-update',
 }
 
 // ROUTE strings are used to navigate to url
 export const ROUTE = {
     Home: '/',
-    Connect: '/connect',
+    Connect: '/wallet',
     ConnectToMetamask: '/connect-to-metamask',
     ShowQR: '/show-qr-code',
-    NewOffer: '/new-offer',
+    NewOffer: '/sell',
     Activity: '/voucher-sets',
-    ActivityVouchers: '/voucher-activity',
+    ActivityVouchers: '/vouchers',
     VoucherDetails: '/voucher',
     VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
@@ -107,6 +109,7 @@ export const STATUS = {
     REFUNDED: 'voucher_status_refunded',
     CANCELLED: 'voucher_status_cancelled',
     FINALIZED: 'voucher_status_finalized',
+    COMPLANED_CANCELED: 'voucher_status_complained_and_canceled',
 }
 
 export const ROLE = {

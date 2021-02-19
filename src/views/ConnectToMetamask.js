@@ -2,9 +2,8 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import { BuyerContext, Buyer } from "../contexts/Buyer"
-import { GlobalContext, Action } from "../contexts/Global"
 
-import { DIC, ROUTE } from "../helpers/Dictionary"
+import { ROUTE } from "../helpers/Dictionary"
 
 
 import "./StaticPage.scss"
@@ -12,10 +11,8 @@ import "./StaticPage.scss"
 function ConnectToMetamask() {
 
   const buyerContext = useContext(BuyerContext)
-  const globalContext = useContext(GlobalContext)
 
   const updateStatus = () => {
-    globalContext.dispatch(Action.navigationControl(DIC.NAV.REDEEM))
     buyerContext.dispatch(Buyer.connectToMetamask())
   }
 

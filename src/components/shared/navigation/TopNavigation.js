@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
 import { useHistory } from "react-router"
 
@@ -27,10 +27,6 @@ function TopNavigation() {
 
   const { account, connector } = useWeb3React();
 
-  useEffect(() => {
-    console.log(globalContext.state.onboardingCompleted)
-  }, [globalContext.state.onboardingCompleted])
-
   return (
     <header className={`top-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
@@ -47,7 +43,7 @@ function TopNavigation() {
           {/* Back button */}
           { navigationContext.state.top[AFFMAP.BACK_BUTTON] ?
             <div className="button square new" role="button"
-            onClick={ () => history.goBack() } >
+            onClick={ () => history.push(ROUTE.Home) } >
               <Arrow color="#80F0BE"/>
             </div>
           : null}
@@ -75,7 +71,7 @@ function TopNavigation() {
 const WalletConnection = (props) => {
   const { account, connector } = props
   return (
-    <Link to="/connect">
+    <Link to={ROUTE.Connect}>
     {account ? 
       <div className="button flex ai-center connected-account-button"
       role="button">

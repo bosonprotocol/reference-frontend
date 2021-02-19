@@ -21,8 +21,8 @@ function BottomNavigation() {
   const routing = {
     Home: <div className={`set flex column ai-center ${selected[0] ? 'selected' : ''}`}><IconHome color={selected[0] && selectedColor} /> Home</div>,
     ActivityVouchers: <div className={`set flex column ai-center ${selected[1] ? 'selected' : ''}`}><IconBuyer color={selected[1] && selectedColor} /> My Vouchers</div>,
-    NewOffer: <div className={`set flex column ai-center ${selected[2] ? 'selected' : ''}`}><IconNewOffer color={selected[2] && selectedColor} /> Add Offer</div>,
-    Activity: <div className={`set flex column ai-center ${selected[3] ? 'selected' : ''}`}><IconSeller color={selected[3] && selectedColor} /> Activity</div>,
+    NewOffer: <div className={`set flex column ai-center ${selected[2] ? 'selected' : ''}`}><IconNewOffer color={selected[2] && selectedColor} /> Sell</div>,
+    Activity: <div className={`set flex column ai-center ${selected[3] ? 'selected' : ''}`}><IconSeller color={selected[3] && selectedColor} /> My Offers</div>,
     Connect: <div className={`set flex column ai-center ${selected[4] ? 'selected' : ''}`}><IconWallet color={selected[4] && selectedColor} /> Wallet</div>,
   }
   
@@ -34,10 +34,6 @@ function BottomNavigation() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNavitem])
 
-  useEffect(() => {
-    console.log(navType)
-  }, [navType])
-
   return (
     <section className={`bottom-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
@@ -46,7 +42,7 @@ function BottomNavigation() {
             <div className="default-nav w100 flex center">
               <div className="nav-container flex center">
                 {Object.entries(routing).map((route, i) => <div key={i} className="link">
-                  <Link to={ROUTE[route[0]]}>{route[1]}</Link>
+                  <Link className="def" to={ROUTE[route[0]]}>{route[1]}</Link>
                 </div>)}
               </div>
             </div> :
@@ -58,9 +54,9 @@ function BottomNavigation() {
 
             navType === BOTTOM_NAV_TYPE.VOUCHER ?
             <div className="control-wrap">
-              {voucherControls}
+              {voucherControls?.controls ? voucherControls.controls : null}
             </div> :
-
+            
             null
           }
           

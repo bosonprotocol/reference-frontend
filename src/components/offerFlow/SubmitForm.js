@@ -17,7 +17,7 @@ import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 
-export default function SubmitForm(props) {
+export default function SubmitForm() {
     // onFileSelectSuccess={ (file) => setSelectedFile(file) }
     const [redirect, setRedirect] = useState(0)
     const [loading, setLoading] = useState(0)

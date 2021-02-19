@@ -34,3 +34,7 @@ $label-color: #4DC0FD;
 $input-background: rgba($white, 0.03);
 $input-color: $white;
 $dots-2: #C4C4C4;
+
+:export {
+  accent: $accent;
+}
