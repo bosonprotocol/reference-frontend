@@ -53,7 +53,7 @@ function VoucherDetails(props) {
     const [voucherStatus, setVoucherStatus] = useState();
     // const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
-    const [actionPerformed, setActionPerformed] = useState(1);
+    const [actionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
 
     const voucherSets = globalContext.state.allVoucherSets
