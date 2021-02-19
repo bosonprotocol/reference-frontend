@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { useWeb3React } from "@web3-react/core";
 import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
-import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json'
+import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json';
+import FUND_LIMITS from './ABIs/FundLimitsOracle.json';
 import * as ethers from "ethers";
 
 function useContract(address, ABI, withSignerIfPossible = true) {
@@ -21,6 +22,10 @@ function useContract(address, ABI, withSignerIfPossible = true) {
 
 export function useBosonRouterContract() {
     return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER_ABI.abi)
+}
+
+export function useFundLimitsContract() {
+    return useContract(SMART_CONTRACTS.FundLimitsContractAddress, FUND_LIMITS.abi)
 }
 
 export async function findEventByName(txReceipt, eventName, ...eventFields) {

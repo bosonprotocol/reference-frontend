@@ -5,12 +5,11 @@ import { SellerContext, getData } from "../../contexts/Seller"
 import Currencies from "./Currencies"
 
 import { NAME } from "../../helpers/Dictionary"
+import { ethers } from 'ethers'
 
 
 function FormPrice({
-  priceSettings, 
-  sellerSettings, 
-  buyerSettings,
+  depositsPriceLimits, 
   priceValueReceiver,
   priceCurrencyReceiver,
   sellerDepositCurrencyValueReceiver,
@@ -26,10 +25,11 @@ function FormPrice({
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const priceCurrency = getOfferingData(NAME.PRICE_C)
-  const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C)
-  const buyer = getOfferingData(NAME.BUYER_DEPOSIT)
+  const priceCurrency = getOfferingData(NAME.PRICE_C) || 'ETH'
+  const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C) || 'ETH'
+  const buyer = getOfferingData(NAME.BUYER_DEPOSIT) || 'ETH'
 
+  // ethers.utils.formatEther(depositsPriceLimits[sellerCurrency]?.max)
   return (
     <div className="price">
       <div className="row">
@@ -48,7 +48,11 @@ function FormPrice({
             <div className="input relative focus" data-error={priceErrorMessage}>
               <input
               id="offer-price" type="number" onChange={(e) => priceValueReceiver(e.target ? e.target.value : null)}/>
-              <div className="max">max {priceSettings[priceCurrency] ? priceSettings[priceCurrency].max : null} {priceCurrency}</div>
+              {
+                depositsPriceLimits[priceCurrency]?.max ?              
+                <div className="max">max {depositsPriceLimits[priceCurrency] ? ethers.utils.formatEther(depositsPriceLimits[priceCurrency].max) : null} {priceCurrency}</div>
+                : null
+              }
             </div>
           </div>
         </div>
@@ -60,7 +64,11 @@ function FormPrice({
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
             <input id="offer-buyer-deposit"
             type="number" name={NAME.BUYER_DEPOSIT} onChange={(e) => buyerDepositValueReceiver(e.target ? e.target.value : null)}/>
-            <div className="max">max {buyerSettings[priceCurrency] ? buyerSettings[priceCurrency].max : null} {priceCurrency}</div> 
+            {
+              depositsPriceLimits[priceCurrency].max ?
+              <div className="max">max {depositsPriceLimits[priceCurrency] ? ethers.utils.formatEther(depositsPriceLimits[priceCurrency].max) : null} {priceCurrency}</div> 
+              : null
+            }
           </div>
         </div>
       </div>
@@ -72,7 +80,11 @@ function FormPrice({
             <div className="input relative focus" data-error={sellerDepositErrorMessage}>
               <input
               id="offer-seller-deposit" type="number" onChange={(e) => sellerDepositValueReceiver(e.target ? e.target.value : null)} />
-              <div className="max">max {sellerSettings[sellerCurrency] ? sellerSettings[sellerCurrency].max : null} {sellerCurrency}</div>
+              {
+                depositsPriceLimits[sellerCurrency]?.max? 
+                <div className="max">max {depositsPriceLimits[sellerCurrency] ? ethers.utils.formatEther(depositsPriceLimits[sellerCurrency].max) : null} {sellerCurrency}</div>
+                : null
+              }
             </div>
           </div>
         </div>
