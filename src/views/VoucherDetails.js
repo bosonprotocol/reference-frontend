@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import { useHistory } from "react-router"
-import { useBosonRouterContract } from "../hooks/useContract";
+import { decodeData, getEncodedTopic, useBosonRouterContract, useVoucherKernalContract } from "../hooks/useContract";
+import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
+import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
-
-import { getVoucherDetails } from "../hooks/api";
+import { cancelVoucherSet, getVoucherDetails, updateVoucher } from "../hooks/api";
 import { formatDate } from "../helpers/Format"
 
 import "./VoucherDetails.scss"
@@ -15,14 +16,15 @@ import { HorizontalScrollView } from "rc-horizontal-scroll";
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
 import { useWeb3React } from "@web3-react/core";
-import { ROLE } from "../helpers/Dictionary";
-import { ModalContext } from "../contexts/Modal";
+import { MODAL_TYPES, ROLE } from "../helpers/Dictionary";
+import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import Loading from "../components/offerFlow/Loading";
 
 import { initVoucherDetails } from "../helpers/VoucherParsers"
 
 import { prepareEscrowData, determineStatus, getControlState } from "../helpers/VoucherDetailsHelper"
+import { getAccountStoredInLocalStorage } from '../hooks/authenticate';
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
@@ -36,7 +38,7 @@ function VoucherDetails(props) {
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
-
+    const voucherKernalContract = useVoucherKernalContract();
     const voucherSets = globalContext.state.allVoucherSets
 
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
@@ -52,7 +54,7 @@ function VoucherDetails(props) {
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
     // properties that are shared between functions which affect this component
-    const sharedProps = { voucherSetDetails, history, bosonRouterContract, modalContext, library, account, setLoading, voucherDetails, voucherId, voucherStatus }
+    const sharedProps = { voucherSetDetails, history, bosonRouterContract, modalContext, library, account, setLoading, voucherDetails, voucherId, voucherStatus, voucherKernalContract }
 
     useEffect(() => {
         setVoucherStatus(determineStatus(sharedProps))
@@ -107,7 +109,6 @@ function VoucherDetails(props) {
     const controls = getControlState(sharedProps)
 
     const statusBlocks = voucherDetails ? [ ] : false
-
     if(!!voucherDetails) {
         if(voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
         if(voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
@@ -194,6 +195,12 @@ function VoucherDetails(props) {
                     <div className="control-wrap">
                         {controls}
                     </div>
+                    {
+                        voucherSetDetails && voucherSetDetails.qty > 0 && account.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
+                        <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet(sharedProps)} role="button">CANCEL VOUCHER SET</div>
+                         : null
+                    }
+                   
                 </div>
             </section>
         </>
@@ -210,3 +217,39 @@ function statusBlockComponent({ item, index }) {
   }
 
 export default VoucherDetails
+
+const onCancelOrFaultVoucherSet = async ({ voucherSetDetails, bosonRouterContract, modalContext, library, account, setLoading, voucherDetails, voucherId, voucherStatus }) => {
+
+   try{
+        const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
+        await tx.wait();
+
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message
+        }));
+        return;
+    }
+
+
+
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    try {
+        await cancelVoucherSet(voucherSetDetails.id, {}, authData.authToken)
+ 
+    } catch (e) {
+        setLoading(0);
+        modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message + ' :252'
+        }));
+    }
+
+    setLoading(0)
+}

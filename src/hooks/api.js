@@ -54,7 +54,12 @@ export const commitToBuy = async (supplyId, data, token) => {
     });
     return allVouchers.data;
 };
-
+export const cancelVoucherSet = async (supplyId, data, token) => {
+    const allVouchers = await axiosInstance.post(`/users/${ supplyId }/cancel`, data, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
+    return allVouchers.data;
+};
 export const updateVoucher = async (data, token) => {
     const redeemResponse = await axiosInstance.patch(`/vouchers/update`, data, {
         headers: { 'Authorization': `Bearer ${ token }` }

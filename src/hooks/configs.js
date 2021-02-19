@@ -9,7 +9,8 @@ export const SMART_CONTRACTS = {
 export const SMART_CONTRACTS_EVENTS = {
     VoucherSetCreated: "LogOrderCreated",
     VoucherCreated: "LogVoucherDelivered",
-    VoucherRedeemed: "LogVoucherRedeemed"
+    VoucherRedeemed: "LogVoucherRedeemed",
+    VoucherSetCanceled: "LogVoucherSetFaultCancel"
 };
 
 export const VOUCHER_STATUSES = {

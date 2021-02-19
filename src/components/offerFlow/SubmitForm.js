@@ -20,7 +20,6 @@ import {ecsign} from "ethereumjs-util";
 import {fromRpcSig} from 'ethereumjs-util'
 import { arrayify } from "ethers/lib/utils";
 export default function SubmitForm(props) {
-    // onFileSelectSuccess={ (file) => setSelectedFile(file) } 
     const [redirect, setRedirect] = useState(0)
     const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
@@ -147,17 +146,6 @@ export default function SubmitForm(props) {
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
     }
 
-    // append blob
-    // function appendFilesToFormData() {
-    //     fetch(image)
-    //         .then(res => res.blob())
-    //         .then(res => {
-    //                 formData.append("fileToUpload", res, res['name'])
-    //             }
-    //         )
-    // }
-
-    // append file
     function appendFilesToFormData() {
         formData.append("fileToUpload", selected_file, selected_file['name']);
     }

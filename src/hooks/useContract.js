@@ -4,6 +4,8 @@ import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
 import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json';
 import BOSON_TOKEN_DEPOSIT from './ABIs/BosonToken.json';
+import BOSON_ROUTER from './ABIs/BosonRouter.json'
+import VOUCHER_KERNEL from './ABIs/VoucherKernel.json'
 import * as ethers from "ethers";
 
 function useContract(address, ABI, withSignerIfPossible = true) {
@@ -21,7 +23,10 @@ function useContract(address, ABI, withSignerIfPossible = true) {
 }
 
 export function useBosonRouterContract() {
-    return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER_ABI.abi)
+    return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER.abi)
+}
+export function useVoucherKernalContract() {
+    return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL.abi)
 }
 export function useBosonTokenDepositContract() {
     return useContract(SMART_CONTRACTS.BosonTokenDepositContractAddress, BOSON_TOKEN_DEPOSIT.abi)
