@@ -22,7 +22,7 @@ export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0)
     const [loading, setLoading] = useState(0)
     const sellerContext = useContext(SellerContext)
-    const modalContext = useContext(ModalContext);
+    const modalContext = useContext(ModalContext); 
     const location = useLocation();
 
     const globalContext = useContext(GlobalContext);
