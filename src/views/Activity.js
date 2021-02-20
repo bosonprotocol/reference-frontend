@@ -26,6 +26,7 @@ export function ActivityAccountVouchers() {
     const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
+    const globalContext = useContext(GlobalContext);
     const [loading, setLoading] = useState(0)
   
     useEffect(() => {
@@ -36,7 +37,8 @@ export function ActivityAccountVouchers() {
             setAccountVouchers(result)
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [account]);
+    }, [account, globalContext.state.accountVouchers]);
+    
 
     return accountVouchers?.length ?
         <ActivityView voucherBlocks={ accountVouchers } voucherType={ VOUCHER_TYPE.accountVoucher }/> : loading ? <Loading/> : null

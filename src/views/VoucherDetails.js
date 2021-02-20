@@ -53,7 +53,7 @@ function VoucherDetails(props) {
     const [voucherStatus, setVoucherStatus] = useState();
     // const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
-    const [actionPerformed] = useState(1);
+    const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
 
     const voucherSets = globalContext.state.allVoucherSets
@@ -357,6 +357,7 @@ function VoucherDetails(props) {
             }));
         }
     
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
@@ -410,6 +411,7 @@ function VoucherDetails(props) {
             }));
         }
     
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
@@ -462,6 +464,7 @@ function VoucherDetails(props) {
             }));
         }
     
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
@@ -515,6 +518,7 @@ function VoucherDetails(props) {
             }));
         }
     
+        setActionPerformed(actionPerformed * -1)
         setLoading(0)
     }
 
