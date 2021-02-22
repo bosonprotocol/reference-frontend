@@ -10,11 +10,10 @@ import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
-import { getAccountVouchers, initVoucherDetails } from "../helpers/VoucherParsers"
+import { getAccountVouchers } from "../helpers/VoucherParsers"
 
 import { ModalContext } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
-import { getVoucherDetails } from "../hooks/api";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -36,7 +35,6 @@ export function ActivityAccountVouchers() {
 
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
-            console.log(result)
             setAccountVouchers(result)
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,18 +167,8 @@ export const VoucherSetBlock = (props) => {
 }
 
 export const SingleVoucherBlock = (props) => {
-    const { title, image, price, currency, id } = props
-
-    const globalContext = useContext(GlobalContext);
-    const modalContext = useContext(ModalContext);
-    const [voucherData, setVoucherData] = useState()
-
-    useEffect(() => {
-        initVoucherDetails(globalContext.state.account, modalContext, getVoucherDetails, id).then(result => {
-            setVoucherData(result)
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const { title, image, price, currency, id, expiryDate,
+    COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
 
     return (
         <div className="voucher-block flex">
@@ -202,14 +190,14 @@ export const SingleVoucherBlock = (props) => {
                     </div>
                 </div>
                 <div className="statuses">
-                    { voucherData?.COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
-                    { voucherData?.REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
-                    { voucherData?.REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
-                    { voucherData?.COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
-                    { voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
-                    { voucherData ? new Date() > new Date(voucherData.expiryDate) ?
-                        <div className="label color_EXPIRED">EXPIRED</div> : null : null }
-                    { voucherData?.FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
+                    { COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
+                    { REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
+                    { REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
+                    { COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
+                    { CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
+                    { new Date() > new Date(expiryDate) ?
+                        <div className="label color_EXPIRED">EXPIRED</div> : null }
+                    { FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
                 </div>
             </Link>
         </div>
