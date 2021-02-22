@@ -66,10 +66,29 @@ function ActivityView(props) {
     const { voucherBlocks, voucherType, loading, account } = props
     const globalContext = useContext(GlobalContext);
 
+    const getLastAction = (el) => {
+        let latest = 0;
+        const compareDates = (el) => el ? 
+        new Date(el).getTime() > latest ? 
+            new Date(el).getTime() 
+            : latest 
+        : latest
+
+        latest = compareDates(el.CANCELLED)
+        latest = compareDates(el.COMMITTED)
+        latest = compareDates(el.COMPLAINED)
+        latest = compareDates(el.EXPIRED)
+        latest = compareDates(el.FINALIZED)
+        latest = compareDates(el.REDEEMED)
+        latest = compareDates(el.REFUNDED)
+        
+        return latest
+    }
+
     const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
 
-    const activeVouchers = blocksSorted.active
-    const inactiveVouchers = blocksSorted.inactive
+    const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
+    const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
 
     return (
         <>
