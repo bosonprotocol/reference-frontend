@@ -25,9 +25,7 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
     })
   }
   else if(voucherType === VOUCHER_TYPE.accountVoucher) {
-    let voucherDetails = globalContext.state.accountVouchers
-    
-    voucherDetails.forEach(voucher => {
+    blocksArray?.forEach(voucher => {
       voucher.FINALIZED ?
         tabGroup.inactive.push(voucher) :
         tabGroup.active.push(voucher)

@@ -19,7 +19,6 @@ export const DIC = {
     SHOW_MODAL: 'show_modal',
     ALL_VOUCHER_SETS: 'all_voucher_sets',
     ALL_VOUCHERS: 'all_vouchers',
-    ACCOUNT_VOUCHERS: 'account_vouchers',
     UPDATE_ACCOUNT: 'update_account',
 }
 
