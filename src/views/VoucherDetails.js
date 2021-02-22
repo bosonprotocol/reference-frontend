@@ -51,7 +51,6 @@ function VoucherDetails(props) {
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
-    // const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
     const [actionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
@@ -67,8 +66,6 @@ function VoucherDetails(props) {
     let end = new Date(voucherDetails?.expiryDate)
 
     const timePast = voucherDetails && (today?.getTime() / 1000) - (start?.getTime() / 1000)
-    console.log(voucherDetails?.startDate)
-    console.log(voucherDetails?.expiryDate)
     const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
 
     const differenceInPercent = (x, y) => (x / y) * 100

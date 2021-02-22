@@ -48,7 +48,7 @@ function NewOffer() {
   const inputFallback = {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
-    [NAME.DATE_START]: new Date(),
+    [NAME.DATE_START]: new Date(), 
   }
 const fundLimitsContract = useFundLimitsContract();
 useEffect( ()=> {
@@ -58,7 +58,7 @@ useEffect( ()=> {
     const bosonLimit = await fundLimitsContract.getTokenLimit(SMART_CONTRACTS.BosonTokenDepositContractAddress);
     depositsPriceLimits[CURRENCY.ETH] = {max: ethLimit};
     depositsPriceLimits[CURRENCY.BSN] = {max: bosonLimit};
-  }
+  } 
   setLimits()
   }
 
@@ -68,7 +68,7 @@ useEffect( ()=> {
     const getData = name => sellerContext.state.offeringData[name];
 
     if(lastInputChangeName) {
-      const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData, lastInputChangeName);
+      const newErrorMessages = checkForErrorsInNewOfferForm(errorMessages, getData, lastInputChangeName, depositsPriceLimits);
       setErrorMessages(newErrorMessages)
 
     }
@@ -102,6 +102,9 @@ useEffect( ()=> {
         }
         setLastInputChangeName(inputName);
     } 
+    if(value === null && (inputName === NAME.PRICE || inputName === NAME.BUYER_DEPOSIT || inputName === NAME.SELLER_DEPOSIT)) {
+      sellerContext.dispatch(Seller.updateOfferingData({[inputName]: value}));
+    }
   }
   const screens = [
     <Categories inputValueReceiver={createInputValueReceiver(NAME.CATEGORY)} />,

@@ -1,32 +1,8 @@
-import { NAME, CURRENCY } from "./Dictionary"
+import { ethers } from "ethers"
+import { toFixed } from "../utils/format-utils"
+import { NAME } from "./Dictionary"
 import { ListOfBadWords, latinise } from "./Profanity"
 
-const priceSettings = {
-    [CURRENCY.ETH]: {
-      max: 2
-    },
-    [CURRENCY.BSN]: {
-      max: 1.8
-    }
-  }
-  
-  const sellerSettings = {
-    [CURRENCY.ETH]: {
-      max: 0.1
-    },
-    [CURRENCY.BSN]: {
-      max: 0.2
-    }
-  }
-  
-  const buyerSettings = {
-    [CURRENCY.ETH]: {
-      max: 0.3
-    },
-    [CURRENCY.BSN]: {
-      max: 0.4
-    }
-  }
   
   const descriptionSettings = {
     min: 10
@@ -42,42 +18,63 @@ const priceSettings = {
   }
 
   
-const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName) => {
+const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName, priceSettings) => {
     let newErrorMessages = {...errorMessages};
 
-    let priceErrorMessage = null;
+    let quantityErrorMessage = null;
+    const currentQuantityValue = getData(NAME.QUANTITY);
+    
+  if(currentQuantityValue) {
+    if(isNaN(parseInt(currentQuantityValue))) {
+      quantityErrorMessage = 'Must be a valid number'
+    } 
+    if(currentQuantityValue <= 0) {
+      quantityErrorMessage = 'Value cannot less or equal to 0'
+    } 
+    if(currentQuantityValue > quantitySettings.max) {
+      quantityErrorMessage = `Maximum quantity is ${quantitySettings.max}`
+    } 
+
+    if(parseFloat(currentQuantityValue) !== parseInt(currentQuantityValue)) {
+      quantityErrorMessage = `No decimal point allowed for quantity`
+    }
+
+    newErrorMessages = {...newErrorMessages, [NAME.QUANTITY]: quantityErrorMessage} 
+
+  }
+
+    let priceErrorMessage = null; 
     const currentPriceValue = getData(NAME.PRICE);
     if(getData(NAME.PRICE_C) && currentPriceValue) {
         const priceCurrency = getData(NAME.PRICE_C)
-     
-      if(isNaN(parseInt(currentPriceValue))) {
-        priceErrorMessage = 'Must be a valid number';
-      } 
-      if(currentPriceValue <= 0) {
-        priceErrorMessage = 'Value cannot be less or equal to 0';
-      } 
-      if(currentPriceValue > priceSettings[priceCurrency].max) {
-        priceErrorMessage =`The maximum value is ${priceSettings[priceCurrency].max}`
-      } 
+        if(currentPriceValue.lte('0')) {
+          priceErrorMessage = 'Value cannot be less or equal to 0'
+        } 
+      if(currentQuantityValue && priceSettings[priceCurrency].max) {
+        console.log(ethers.utils.formatEther(currentPriceValue.mul(currentQuantityValue)))
+        if(currentPriceValue.mul(currentQuantityValue).gt(priceSettings[priceCurrency].max)) {
+          priceErrorMessage =`The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[priceCurrency].max.div(currentQuantityValue)), 2)}`
+        } 
+      }
+   
       newErrorMessages = {...newErrorMessages, [NAME.PRICE]: priceErrorMessage} 
     }
-
+    
 
     let sellerDepositErrorMessage = null;
     const currentSellerDepositValue = getData(NAME.SELLER_DEPOSIT);
 
     if(getData(NAME.SELLER_DEPOSIT_C) && currentSellerDepositValue) {
         const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+        if(currentSellerDepositValue.lte('0')) {
+          sellerDepositErrorMessage = 'Value cannot be less or equal to 0'
+        } 
+      if(currentQuantityValue && priceSettings[sellerCurrency].max) {
+        if(currentSellerDepositValue.mul(currentQuantityValue).gt(priceSettings[sellerCurrency].max)) {
+          sellerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[sellerCurrency].max.div(currentQuantityValue)), 2)}`
+        } 
+      }
 
-      if(isNaN(parseInt(currentSellerDepositValue))) {
-        sellerDepositErrorMessage = 'Must be a valid number'
-      } 
-      if(currentSellerDepositValue <= 0) {
-        sellerDepositErrorMessage = 'Value cannot be less or equal to 0'
-      } 
-      if(currentSellerDepositValue > sellerSettings[sellerCurrency].max) {
-        sellerDepositErrorMessage = `The maximum value is ${sellerSettings[sellerCurrency].max}`
-      } 
 
       newErrorMessages = {...newErrorMessages, [NAME.SELLER_DEPOSIT]: sellerDepositErrorMessage} 
     }
@@ -86,17 +83,15 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
     const currentBuyerDepositValue = getData(NAME.BUYER_DEPOSIT);
     if(getData(NAME.PRICE_C) && currentBuyerDepositValue) {
         const priceCurrency = getData(NAME.PRICE_C)
-
-
-      if(isNaN(parseInt(currentBuyerDepositValue))) {
-        buyerDepositErrorMessage = 'Must be a valid number'
-      } 
-      if(currentBuyerDepositValue <= 0) {
-        buyerDepositErrorMessage = 'Value cannot be less or equal to 0'
-      } 
-      if(currentBuyerDepositValue > buyerSettings[priceCurrency].max) {
-        buyerDepositErrorMessage = `The maximum value is ${buyerSettings[priceCurrency].max}`
-      } 
+        if(currentBuyerDepositValue.lte('0')) {
+          buyerDepositErrorMessage = 'Value cannot be less or equal to 0'
+        } 
+      if(currentQuantityValue && priceSettings[priceCurrency].max) {
+        if(currentBuyerDepositValue.mul(currentQuantityValue).gt(priceSettings[priceCurrency].max)) {
+          buyerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[priceCurrency].max.div(currentQuantityValue)), 2)}`
+        } 
+      }
+     
 
       newErrorMessages = {...newErrorMessages, [NAME.BUYER_DEPOSIT]: buyerDepositErrorMessage} 
     }
@@ -128,27 +123,7 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
       
 
 
-      let quantityErrorMessage = null;
-      const currentQuantityValue = getData(NAME.QUANTITY);
-      
-    if(currentQuantityValue) {
-      if(isNaN(parseInt(currentQuantityValue))) {
-        quantityErrorMessage = 'Must be a valid number'
-      } 
-      if(currentQuantityValue <= 0) {
-        quantityErrorMessage = 'Value cannot less or equal to 0'
-      } 
-      if(currentQuantityValue > quantitySettings.max) {
-        quantityErrorMessage = `Maximum quantity is ${quantitySettings.max}`
-      } 
-      console.log(currentQuantityValue, parseInt(currentQuantityValue))
-      if(parseFloat(currentQuantityValue) !== parseInt(currentQuantityValue)) {
-        quantityErrorMessage = `No decimal point allowed for quantity`
-      }
-
-      newErrorMessages = {...newErrorMessages, [NAME.QUANTITY]: quantityErrorMessage} 
-
-    }
+     
 
     let titleErrorMessage = null;
     const currentTitleValue = getData(NAME.TITLE);
