@@ -112,7 +112,7 @@ function ActivityView(props) {
                     {
                         !voucherBlocks?.length && !loading && !account ?
                         <div className="no-vouchers flex column center">
-                            <p><strong>No wallet connect.</strong> <br/> Connect to a wallet to view your vouchers.</p>
+                            <p><strong>No wallet connected.</strong> <br/> Connect to a wallet to view your vouchers.</p>
                             <WalletConnect />
                             {/* <IconActivityMessage /> */}
                         </div> : null
