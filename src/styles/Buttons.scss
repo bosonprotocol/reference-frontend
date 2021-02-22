@@ -45,6 +45,24 @@
     }
   }
 
+  &.cancelVoucherSet {
+    background: #192028;
+    border-radius: 8px;
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #A1B2C5;
+    color: #8798AB;
+
+    &:hover {
+      background: rgba(#192028, 0.7);
+    }
+  }
+  
   &.red {
     padding: 12px 11px;
     border-radius: 8px;
