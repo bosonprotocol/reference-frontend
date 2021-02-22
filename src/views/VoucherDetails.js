@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import { useHistory } from "react-router"
-import { useBosonRouterContract } from "../hooks/useContract";
+import { useBosonRouterContract  } from "../hooks/useContract";
 
 
 
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy } from "../hooks/api";
+import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy, cancelVoucherSet } from "../hooks/api";
 import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
 import { formatDate } from "../helpers/Format"
@@ -55,7 +55,6 @@ function VoucherDetails(props) {
     const [controls, setControls] = useState();
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
-
     const voucherSets = globalContext.state.allVoucherSets
 
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
@@ -67,14 +66,11 @@ function VoucherDetails(props) {
     let end = new Date(voucherDetails?.expiryDate)
 
     const timePast = voucherDetails && (today?.getTime() / 1000) - (start?.getTime() / 1000)
-    console.log(voucherDetails?.startDate)
-    console.log(voucherDetails?.expiryDate)
     const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
 
     const differenceInPercent = (x, y) => (x / y) * 100
     const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
 
-    console.log(expiryProgress)
 
     const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
@@ -553,7 +549,40 @@ function VoucherDetails(props) {
         }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [controls])
+
+    const onCancelOrFaultVoucherSet = async () => {
+
+        try{
+             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
+             await tx.wait();
+     
+         } catch (e) {
+             setLoading(1);
+             modalContext.dispatch(ModalResolver.showModal({
+                 show: true,
+                 type: MODAL_TYPES.GENERIC_ERROR,
+                 content: e.message
+             }));
+             return;
+         }
     
+         const authData = getAccountStoredInLocalStorage(account);
+     
+         try {
+
+             await cancelVoucherSet(voucherSetDetails._tokenIdSupply, {}, authData.authToken)
+      
+         } catch (e) {
+             setLoading(0);
+             modalContext.dispatch(ModalResolver.showModal({
+                 show: true,
+                 type: MODAL_TYPES.GENERIC_ERROR,
+                 content: e.message + ' :252'
+             }));
+         }
+     
+         setLoading(0)
+     }
     return (
         <>
             { loading ? <Loading/> : null }
@@ -619,6 +648,12 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                     </div>
+
+                    {
+                        voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
+                        <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet()} role="button">CANCEL VOUCHER SET</div>
+                         : null
+                    }
                 </div>
             </section>
         </>
