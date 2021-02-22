@@ -12,7 +12,6 @@ export const GlobalInitialState = {
   onboardingCompleted: localStorage['onboarding-completed'],
   allVouchers: [],
   allVoucherSets: [],
-  accountVouchers: [],
   fetchVoucherSets: 1,
   account: null,
   checkDataUpdate: 1,
@@ -40,11 +39,6 @@ export const Action = {
 
   updateAllVouchers: state => ({
     type: DIC.ALL_VOUCHERS,
-    payload: state
-  }),
-
-  accountVouchers: state => ({
-    type: DIC.ACCOUNT_VOUCHERS,
     payload: state
   }),
 
@@ -84,11 +78,6 @@ export const GlobalReducer = (state, action) => {
     [DIC.ALL_VOUCHER_SETS]: () => {
       return {
         allVoucherSets: action.payload
-      }
-    },
-    [DIC.ACCOUNT_VOUCHERS]: () => {
-      return {
-        accountVouchers: action.payload
       }
     },
     [DIC.UPDATE_ACCOUNT]: () => {
