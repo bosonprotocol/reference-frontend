@@ -8,7 +8,7 @@ import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
-import { Quantity } from "../components/shared/Icons"
+import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
 import { getAccountVouchers, initVoucherDetails } from "../helpers/VoucherParsers"
 
@@ -21,6 +21,8 @@ import 'react-tabs/style/react-tabs.css';
 
 import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
+
+import { WalletConnect } from "../components/modals/WalletConnect"
 
 export function ActivityAccountVouchers() {
     const [accountVouchers, setAccountVouchers] = useState([])
@@ -40,8 +42,7 @@ export function ActivityAccountVouchers() {
     }, [account, globalContext.state.accountVouchers]);
     
 
-    return accountVouchers?.length ?
-        <ActivityView voucherBlocks={ accountVouchers } voucherType={ VOUCHER_TYPE.accountVoucher }/> : loading ? <Loading/> : null
+    return <ActivityView loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
 }
 
 export function ActivityVoucherSets() {
@@ -63,7 +64,7 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType } = props
+    const { voucherBlocks, voucherType, loading, account } = props
     const globalContext = useContext(GlobalContext);
 
     const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
@@ -83,13 +84,33 @@ function ActivityView(props) {
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Inactive' : 'Closed'}</Tab>
                     </TabList>
-
-                    <TabPanel>
-                        { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
-                    </TabPanel>
-                    <TabPanel>
-                        { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
-                    </TabPanel>
+                    {
+                        !loading ?
+                        <>
+                            <TabPanel>
+                                { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
+                            </TabPanel>
+                            <TabPanel>
+                                { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
+                            </TabPanel>
+                        </> : <Loading />
+                    }
+                    {
+                        
+                        !voucherBlocks?.length && !loading && account ?
+                        <div className="no-vouchers flex column center">
+                            <p>You currently have no active vouchers.</p>
+                            <IconActivityMessage />
+                        </div> : null
+                    }
+                    {
+                        !voucherBlocks?.length && !loading && !account ?
+                        <div className="no-vouchers flex column center">
+                            <p><strong>No wallet connect.</strong> <br/> Connect to a wallet to view your vouchers.</p>
+                            <WalletConnect />
+                            {/* <IconActivityMessage /> */}
+                        </div> : null
+                    }
                 </Tabs>
 
                 </div>
