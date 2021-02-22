@@ -70,6 +70,7 @@ export const getPaymentsDetails = async (tokenVoucherId, token) => {
 
     return paymentsResponse.data;
 };
+
 export const cancelVoucherSet = async (supplyId, data, token) => {
      return axiosInstance.patch(`/voucher-sets/update-supply-oncancel-intermediary`, {
         _tokenIdSupply:supplyId,
@@ -77,5 +78,4 @@ export const cancelVoucherSet = async (supplyId, data, token) => {
     }, {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
- 
 };
