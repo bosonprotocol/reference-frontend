@@ -25,11 +25,12 @@ function FormPrice({
 
   const getOfferingData = getData(sellerContext.state.offeringData)
 
+  const quantity = getOfferingData(NAME.QUANTITY);
+  console.log(quantity)
   const priceCurrency = getOfferingData(NAME.PRICE_C) || 'ETH'
   const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C) || 'ETH'
   const buyer = getOfferingData(NAME.BUYER_DEPOSIT) || 'ETH'
 
-  // ethers.utils.formatEther(depositsPriceLimits[sellerCurrency]?.max)
   return (
     <div className="price">
       <div className="row">
