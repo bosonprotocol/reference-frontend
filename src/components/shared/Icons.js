@@ -198,8 +198,8 @@ export const IconActivityMessage = () => (
   <path d="M19.229 13.7815C18.7534 13.3059 17.9823 13.3059 17.5065 13.7815L16.3593 14.9287L15.2121 13.7815C14.7365 13.3059 13.9653 13.3059 13.4896 13.7815C13.0139 14.2571 13.0139 15.0282 13.4896 15.5039L14.6369 16.6512L13.4896 17.7984C13.0139 18.274 13.0139 19.0451 13.4896 19.5209C13.7275 19.7587 14.0391 19.8776 14.3508 19.8776C14.6624 19.8776 14.9742 19.7586 15.2119 19.5209L16.3591 18.3736L17.5064 19.5209C17.7442 19.7587 18.0559 19.8776 18.3675 19.8776C18.6792 19.8776 18.991 19.7586 19.2287 19.5209C19.7044 19.0453 19.7044 18.2741 19.2287 17.7984L18.0814 16.6512L19.2287 15.5039C19.7046 15.0282 19.7046 14.2571 19.229 13.7815Z" fill="#4DC0FD"/>
   </g>
   <defs>
-  <filter id="filter0_d" x="0.522217" y="30.1348" width="90.7075" height="33.0024" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-  <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+  <filter id="filter0_d" x="0.522217" y="30.1348" width="90.7075" height="33.0024" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+  <feFlood floodOpacity="0" result="BackgroundImageFix"/>
   <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
   <feOffset dx="6" dy="5"/>
   <feGaussianBlur stdDeviation="2"/>

@@ -36,6 +36,7 @@ export function ActivityAccountVouchers() {
 
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
+            console.log(result)
             setAccountVouchers(result)
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +94,12 @@ function ActivityView(props) {
                             <TabPanel>
                                 { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
                             </TabPanel>
-                        </> : <Loading />
+                        </> : 
+                        <>
+                            <TabPanel> </TabPanel>
+                            <TabPanel> </TabPanel>
+                            <Loading />
+                        </>
                     }
                     {
                         

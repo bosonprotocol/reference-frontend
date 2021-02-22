@@ -34,8 +34,6 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
     })
   }
 
-  console.log(tabGroup)
-
   return tabGroup
 }
 
