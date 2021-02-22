@@ -109,7 +109,7 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-        <div className="button gray" onClick={ () => confirmAction(onCoF)} role="button">Cancel or fault</div>
+        <div className="button gray" onClick={ () => onCoF} role="button">Cancel or fault</div>
         )
     
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
@@ -549,10 +549,11 @@ function VoucherDetails(props) {
 
         try{
              const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
+             setLoading(1);
              await tx.wait();
      
          } catch (e) {
-             setLoading(1);
+            
              modalContext.dispatch(ModalResolver.showModal({
                  show: true,
                  type: MODAL_TYPES.GENERIC_ERROR,
@@ -646,7 +647,7 @@ function VoucherDetails(props) {
 
                     {
                         voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
-                        <div className="button cancelVoucherSet" onClick={ () => onCancelOrFaultVoucherSet()} role="button">CANCEL VOUCHER SET</div>
+                        <div className="button cancelVoucherSet" onClick={ () => confirmAction(onCancelOrFaultVoucherSet)} role="button">CANCEL VOUCHER SET</div>
                          : null
                     }
                 </div>
