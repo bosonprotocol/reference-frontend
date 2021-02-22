@@ -18,7 +18,7 @@ export const DescriptionBlock = (props) => {
           <span>Description</span>
           {!voucherSetDetails ?
               <div className="image flex center">
-              <img src={ getProp('image') } alt={ getProp('title')}/>
+              {/* <img src={ getProp('image') } alt={ getProp('title')}/> */}
           </div>
           :null}
       </h2>

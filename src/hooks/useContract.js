@@ -5,6 +5,7 @@ import { SMART_CONTRACTS } from "./configs";
 import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json';
 import FUND_LIMITS from './ABIs/FundLimitsOracle.json';
 import * as ethers from "ethers";
+import VOUCHER_KERNEL from './ABIs/VoucherKernel.json'
 
 function useContract(address, ABI, withSignerIfPossible = true) {
     const { library, account } = useWeb3React()
@@ -28,6 +29,9 @@ export function useFundLimitsContract() {
     return useContract(SMART_CONTRACTS.FundLimitsContractAddress, FUND_LIMITS.abi)
 }
 
+export function useVoucherKernalContract() {
+    return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL.abi)
+}
 export async function findEventByName(txReceipt, eventName, ...eventFields) {
     for (const key in txReceipt.events) {
         if (txReceipt.events[key].event === eventName) {
