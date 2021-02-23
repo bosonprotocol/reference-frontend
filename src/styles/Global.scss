@@ -201,7 +201,7 @@ header.top-navigation {
   height: 100px;
   display: flex;
   align-items: center;
-  z-index: 10;
+  z-index: 12;
 
   .progress-bar {
     margin-left: 22px;
@@ -235,7 +235,7 @@ header.top-navigation {
   right: 0;
   padding-bottom: 15px;
   padding-top: 15px;
-  z-index: 11;
+  z-index: 10;
 
   .default-nav  {
     .nav-container {
@@ -310,4 +310,8 @@ header.top-navigation {
   .button {
     margin-top: 3vh;
   }
+}
+
+.show-qr-code {
+  z-index: 11;
 }
