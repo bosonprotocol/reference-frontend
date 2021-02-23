@@ -46,7 +46,6 @@ function VoucherDetails(props) {
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
-    // const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
@@ -90,14 +89,14 @@ function VoucherDetails(props) {
         // ['Remaining Quantity', selectedProduct?.qty],
     ];
 
-    const confirmAction = (action) => {
+    const confirmAction = (action, text) => {
         const callAction = () => {
             action()
             setPopupMessage(false)
         }
         setPopupMessage({
-            text: 'Are you sure you want to cancel the voucher set?', 
-            controls: <div className="flex split buttons-pair"><div className="button gray" role="button" onClick={ () => setPopupMessage(false)}>BACK</div><div className="button primary" role="button" onClick={ () => callAction()}>CANCEL</div></div>,
+            text, 
+            controls: <div className="flex split buttons-pair"><div className="button gray" role="button" onClick={ () => setPopupMessage(false)}>BACK</div><div className="button primary" role="button" onClick={ () => callAction()}>CONFIRM</div></div>,
         })
     }
 
@@ -109,7 +108,7 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-        <div className="button gray" onClick={ () => onCoF} role="button">Cancel or fault</div>
+        <div className="button gray" onClick={ () => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
         )
     
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
@@ -647,7 +646,7 @@ function VoucherDetails(props) {
 
                     {
                         voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ? 
-                        <div className="button cancelVoucherSet" onClick={ () => confirmAction(onCancelOrFaultVoucherSet)} role="button">CANCEL VOUCHER SET</div>
+                        <div className="button cancelVoucherSet" onClick={ () => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
                          : null
                     }
                 </div>
