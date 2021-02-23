@@ -2,46 +2,61 @@ import { NAME, CURRENCY } from "./Dictionary"
 import { ListOfBadWords, latinise } from "./Profanity"
 
 const priceSettings = {
-    [CURRENCY.ETH]: {
-      max: 2
-    },
-    [CURRENCY.BSN]: {
-      max: 1.8
-    }
+  [CURRENCY.ETH]: {
+    max: 2
+  },
+  [CURRENCY.BSN]: {
+    max: 1.8
   }
+}
   
-  const sellerSettings = {
-    [CURRENCY.ETH]: {
-      max: 0.1
-    },
-    [CURRENCY.BSN]: {
-      max: 0.2
-    }
+const sellerSettings = {
+  [CURRENCY.ETH]: {
+    max: 0.1
+  },
+  [CURRENCY.BSN]: {
+    max: 0.2
   }
+}
   
-  const buyerSettings = {
-    [CURRENCY.ETH]: {
-      max: 0.3
-    },
-    [CURRENCY.BSN]: {
-      max: 0.4
-    }
+const buyerSettings = {
+  [CURRENCY.ETH]: {
+    max: 0.3
+  },
+  [CURRENCY.BSN]: {
+    max: 0.4
   }
+}
   
-  const descriptionSettings = {
-    min: 10
-  }
-  
-  const quantitySettings = {
-    max: 10
-  }
-  
-  const titleSettings = {
-    max: 50,
-    // min: 3
-  }
+const descriptionSettings = {
+  min: 10
+}
 
-  
+const quantitySettings = {
+  max: 10
+}
+
+const titleSettings = {
+  max: 50,
+  // min: 3
+}
+
+const profanityTest = (inputRaw) => {
+  // merge the input into single string of letters and numbers only
+  let input = inputRaw.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
+
+  // convert special characters to latin
+  input = latinise(input)
+
+  // create regex with list of bad words
+  let badWordsRegex = ListOfBadWords.join('|')
+
+  // check for bad words
+  let profanityResult = input.match(badWordsRegex)
+
+  return profanityResult ? 'Profanity is not allowed' : false
+}
+
 const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName) => {
     let newErrorMessages = {...errorMessages};
 
@@ -108,19 +123,10 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
         if(currentDescriptionValue.length < descriptionSettings.min) {
           descriptionErrorMessage = `Desciption must be at least ${descriptionSettings.min} characters`;
         }
-        // merge the input into single string of letters and numbers only
-        let input = currentDescriptionValue.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
 
-        // convert special characters to latin
-        input = latinise(input)
-
-        // create regex with list of bad words
-        let badWordsRegex = ListOfBadWords.join('|')
-
-        // check for bad words
-        let profanityResult = input.match(badWordsRegex)
-
-        if(profanityResult) descriptionErrorMessage = `Usage of the word "${profanityResult[0]}" is forbidden`
+        let profanityResult = profanityTest(currentDescriptionValue)
+        
+        if(profanityResult) descriptionErrorMessage = profanityResult
 
         newErrorMessages = {...newErrorMessages, [NAME.DESCRIPTION]: descriptionErrorMessage} 
       }
@@ -159,7 +165,11 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
       }
       if(currentTitleValue.length > titleSettings.max) {
         titleErrorMessage = `Title can't more than ${titleSettings.max} characters long`
-      } 
+      }
+
+      let profanityResult = profanityTest(currentTitleValue)
+
+      if(profanityResult) titleErrorMessage = profanityResult
 
       newErrorMessages = {...newErrorMessages, [NAME.TITLE]: titleErrorMessage} 
 
