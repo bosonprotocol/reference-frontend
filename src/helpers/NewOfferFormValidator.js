@@ -43,13 +43,13 @@ const titleSettings = {
 
 const profanityTest = (inputRaw) => {
   // merge the input into single string of letters and numbers only
-  let input = inputRaw.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
+  let input = inputRaw.split(/[^a-zA-Z0-9]+/).join('-').toLowerCase()
 
   // convert special characters to latin
   input = latinise(input)
 
   // create regex with list of bad words
-  let badWordsRegex = ListOfBadWords.join('|')
+  let badWordsRegex = ListOfBadWords.join('-|-')
 
   // check for bad words
   let profanityResult = input.match(badWordsRegex)

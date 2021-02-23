@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-escape */
 export const ListOfBadWords = [
+  '-',
   'anal',
   'anus',
   'arse',
@@ -27,6 +28,7 @@ export const ListOfBadWords = [
   'fuk',
   'fak',
   'fack',
+  '-',
 ]
 
 var Latinise={};
