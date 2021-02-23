@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import QRCode from "qrcode.react";
 
 import "./StaticPage.scss"
@@ -9,7 +9,7 @@ import ContractInteractionButton from "../components/shared/ContractInteractionB
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { getVoucherDetails, updateVoucher } from "../hooks/api";
-import {  useVoucherKernelContract } from "../hooks/useContract";
+import {  useBosonRouterContract } from "../hooks/useContract";
 import { VOUCHER_STATUSES } from "../hooks/configs";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from 'react'
@@ -29,7 +29,7 @@ function ShowQR(props) {
     const errorSubMessage = "The item is no longer available or it the QR code isn't correct"
     const [messageText, setMessageText] = useState(errorSubMessage);
     
-    const voucherKernelContract = useVoucherKernelContract();
+    const bosonRouterContract = useBosonRouterContract();
 
     async function onRedeem() {
         if (!library || !account) {
@@ -49,7 +49,7 @@ function ShowQR(props) {
         const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
 
         try {
-            tx = await voucherKernelContract.redeem(voucherDetails.voucher._tokenIdVoucher);
+            tx = await bosonRouterContract.redeem(voucherDetails.voucher._tokenIdVoucher);
 
             await tx.wait();
 
@@ -71,8 +71,7 @@ function ShowQR(props) {
                 status: VOUCHER_STATUSES.REDEEMED
             };
 
-            const redeemResponse = await updateVoucher(data, authData.authToken);
-            console.log(redeemResponse);
+            await updateVoucher(data, authData.authToken);
             setMessageType(MESSAGE.SUCCESS)
         } catch (e) {
             setLoading(0);
@@ -91,11 +90,6 @@ function ShowQR(props) {
                 <section className="show-qr-code static-page atomic-scoped flex ai-center">
                     <div className="container l infinite">
                         <div className="wrapper w100 relative flex column center">
-                            <div className="top-nav">
-                                <Link to={ ROUTE.Home }>
-                                    <div className="cancel"><span className="icon"></span></div>
-                                </Link>
-                            </div>
                             <div className="info show-qr flex column ai-center">
                                 <div className="thumbnail">
                                     {/*<img src={productAPI[imageThumbId].image} alt=""/>*/ }

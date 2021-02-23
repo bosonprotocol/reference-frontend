@@ -1,5 +1,7 @@
 # Boson Protocol
 
+[![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Front-end Doc

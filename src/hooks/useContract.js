@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 import { useWeb3React } from "@web3-react/core";
 import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
-import CASHIER_ABI from "./ABIs/Cashier";
-import VOUCHER_KERNEL_ABI from "./ABIs/VoucherKernel";
+import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json'
 import * as ethers from "ethers";
+import VOUCHER_KERNEL from './ABIs/VoucherKernel.json'
 
 function useContract(address, ABI, withSignerIfPossible = true) {
     const { library, account } = useWeb3React()
@@ -20,14 +20,12 @@ function useContract(address, ABI, withSignerIfPossible = true) {
     }, [address, ABI, library, withSignerIfPossible, account])
 }
 
-export function useCashierContract() {
-    return useContract(SMART_CONTRACTS.CashierContractAddress, CASHIER_ABI.abi)
+export function useBosonRouterContract() {
+    return useContract(SMART_CONTRACTS.BosonRouterContractAddress, BOSON_ROUTER_ABI.abi)
 }
-
-export function useVoucherKernelContract() {
-    return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL_ABI.abi)
+export function useVoucherKernalContract() {
+    return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL.abi)
 }
-
 export async function findEventByName(txReceipt, eventName, ...eventFields) {
     for (const key in txReceipt.events) {
         if (txReceipt.events[key].event === eventName) {

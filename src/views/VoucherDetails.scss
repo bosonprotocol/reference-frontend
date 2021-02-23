@@ -22,8 +22,6 @@
   }
 
   .content {
-    margin-top: 30px;
-
     @include product-info;
     @include table;
 

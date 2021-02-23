@@ -1,5 +1,4 @@
 {
-  "contractName": "Cashier",
   "abi": [
     {
       "inputs": [
@@ -7,41 +6,25 @@
           "internalType": "address",
           "name": "_voucherKernel",
           "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_tokensContractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_fundLimitsOracle",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_cashierAddress",
+          "type": "address"
         }
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_payment",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "enum Cashier.PaymentType",
-          "name": "_type",
-          "type": "uint8"
-        }
-      ],
-      "name": "LogAmountDistribution",
-      "type": "event"
     },
     {
       "anonymous": false,
@@ -69,6 +52,12 @@
           "internalType": "uint8",
           "name": "_paymentType",
           "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_correlationId",
+          "type": "uint256"
         }
       ],
       "name": "LogOrderCreated",
@@ -80,23 +69,17 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "_caller",
+          "name": "_newTokenContract",
           "type": "address"
         },
         {
           "indexed": false,
           "internalType": "address",
-          "name": "_payee",
+          "name": "_triggeredBy",
           "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_payment",
-          "type": "uint256"
         }
       ],
-      "name": "LogWithdrawal",
+      "name": "LogTokenContractSet",
       "type": "event"
     },
     {
@@ -145,6 +128,20 @@
       "type": "event"
     },
     {
+      "inputs": [],
+      "name": "cashierAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -152,12 +149,26 @@
           "type": "address"
         }
       ],
-      "name": "escrow",
+      "name": "correlationIds",
       "outputs": [
         {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "fundLimitsOracle",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -200,6 +211,20 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "tokensContractAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -211,6 +236,20 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "voucherKernel",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -234,7 +273,7 @@
           "type": "uint256[]"
         }
       ],
-      "name": "requestCreateOrder_ETH_ETH",
+      "name": "requestCreateOrderETHETH",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -283,11 +322,10 @@
           "type": "uint256[]"
         }
       ],
-      "name": "requestCreateOrder_TKN_TKN_WithPermit",
+      "name": "requestCreateOrderTKNTKNWithPermit",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -327,11 +365,10 @@
           "type": "uint256[]"
         }
       ],
-      "name": "requestCreateOrder_ETH_TKN_WithPermit",
+      "name": "requestCreateOrderETHTKNWithPermit",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -346,7 +383,7 @@
           "type": "uint256[]"
         }
       ],
-      "name": "requestCreateOrder_TKN_ETH",
+      "name": "requestCreateOrderTKNETH",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -365,7 +402,7 @@
           "type": "address"
         }
       ],
-      "name": "requestVoucher_ETH_ETH",
+      "name": "requestVoucherETHETH",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -424,11 +461,53 @@
           "type": "bytes32"
         }
       ],
-      "name": "requestVoucher_TKN_TKN_WithPermit",
+      "name": "requestVoucherTKNTKNWithPermit",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_issuer",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokensSent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "v",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "r",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "requestVoucherTKNTKNSameWithPermit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -468,7 +547,7 @@
           "type": "bytes32"
         }
       ],
-      "name": "requestVoucher_ETH_TKN_WithPermit",
+      "name": "requestVoucherETHTKNWithPermit",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -512,7 +591,7 @@
           "type": "bytes32"
         }
       ],
-      "name": "requestVoucher_TKN_ETH_WithPermit",
+      "name": "requestVoucherTKNETHWithPermit",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -522,44 +601,63 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "withdraw",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "withdrawWhenPaused",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
           "name": "_tokenIdSupply",
           "type": "uint256"
         }
       ],
-      "name": "withdrawDeposits",
+      "name": "requestCancelOrFaultVoucherSet",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "withdrawPool",
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "redeem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "refund",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "complain",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelOrFault",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -568,21 +666,89 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_account",
+          "name": "_from",
           "type": "address"
-        }
-      ],
-      "name": "getEscrowAmount",
-      "outputs": [
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "_tokenIdVoucher",
           "type": "uint256"
         }
       ],
+      "name": "_onERC721Transfer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenSupplyId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "_beforeERC1155Transfer",
+      "outputs": [],
       "stateMutability": "view",
       "type": "function",
       "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenSupplyId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "_onERC1155Transfer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokensContractAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setTokenContractAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ]
 }

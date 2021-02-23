@@ -8,7 +8,6 @@ import ProductBlock from "../components/home/ProductBlock";
 import CardBlock from "../components/home/CardBlock";
 import CategoryMenu from "../components/home/CategoryMenu"
 // import ProductListing from "../components/home/ProductListing"
-import ProductView from "../components/shared/ProductView"
 import Onboarding from '../views/Onboarding'
 import QRCodeScanner from "../components/shared/QRCodeScanner"
 
@@ -37,16 +36,6 @@ function Home() {
     const voucherSets = globalContext.state.allVoucherSets
 
     const modalCloseTimeout = 900;
-
-    useEffect(() => {
-        let openProductView = localStorage.getItem('productIsOpen') && localStorage.getItem('productIsOpen')
-        let productsReviewed = localStorage.getItem('productsReviewed') ? JSON.parse(localStorage.getItem('productsReviewed')) : false
-
-        if (parseInt(openProductView))
-            globalContext.dispatch(Action.openProduct(productsReviewed[productsReviewed.length - 1]))
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     useEffect(() => {
         if(voucherSets) {
@@ -127,11 +116,6 @@ function Home() {
                     {/*        <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>*/}
                     {/*    </div>*/}
                     {/*</section>*/}
-                    {
-                        globalContext.state.productView.open ?
-                            <ProductView/> :
-                            null
-                    }
                 </div>
             </div>
         </>

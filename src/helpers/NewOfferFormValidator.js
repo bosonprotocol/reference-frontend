@@ -1,4 +1,5 @@
 import { NAME, CURRENCY } from "./Dictionary"
+import { ListOfBadWords, latinise } from "./Profanity"
 
 const priceSettings = {
     [CURRENCY.ETH]: {
@@ -107,6 +108,20 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
         if(currentDescriptionValue.length < descriptionSettings.min) {
           descriptionErrorMessage = `Desciption must be at least ${descriptionSettings.min} characters`;
         }
+        // merge the input into single string of letters and numbers only
+        let input = currentDescriptionValue.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
+
+        // convert special characters to latin
+        input = latinise(input)
+
+        // create regex with list of bad words
+        let badWordsRegex = ListOfBadWords.join('|')
+
+        // check for bad words
+        let profanityResult = input.match(badWordsRegex)
+
+        if(profanityResult) descriptionErrorMessage = `Usage of the word "${profanityResult[0]}" is forbidden`
+
         newErrorMessages = {...newErrorMessages, [NAME.DESCRIPTION]: descriptionErrorMessage} 
       }
     
@@ -126,6 +141,10 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
       if(currentQuantityValue > quantitySettings.max) {
         quantityErrorMessage = `Maximum quantity is ${quantitySettings.max}`
       } 
+      console.log(currentQuantityValue, parseInt(currentQuantityValue))
+      if(parseFloat(currentQuantityValue) !== parseInt(currentQuantityValue)) {
+        quantityErrorMessage = `No decimal point allowed for quantity`
+      }
 
       newErrorMessages = {...newErrorMessages, [NAME.QUANTITY]: quantityErrorMessage} 
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -7,19 +8,20 @@ import { GlobalContext } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
-import { Quantity } from "../components/shared/Icons"
+import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
-import { getAccountVouchers, initVoucherDetails } from "../helpers/VoucherParsers"
+import { getAccountVouchers } from "../helpers/VoucherParsers"
 
 import { ModalContext } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
-import { getVoucherDetails } from "../hooks/api";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { blockTypes, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
+
+import { WalletConnect } from "../components/modals/WalletConnect"
 
 export function ActivityAccountVouchers() {
     const [accountVouchers, setAccountVouchers] = useState([])
@@ -36,9 +38,9 @@ export function ActivityAccountVouchers() {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
+    
 
-    return accountVouchers?.length ?
-        <ActivityView voucherBlocks={ accountVouchers } blockType={ blockTypes.account }/> : loading ? <Loading/> : null
+    return <ActivityView loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
 }
 
 export function ActivityVoucherSets() {
@@ -56,36 +58,81 @@ export function ActivityVoucherSets() {
     }, [voucherSets])
 
     return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } blockType={ blockTypes.voucherSet }/> : null
+        <ActivityView voucherBlocks={ voucherBlocks } voucherType={ VOUCHER_TYPE.voucherSet }/> : null
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, blockType } = props
+    const { voucherBlocks, voucherType, loading, account } = props
+    const globalContext = useContext(GlobalContext);
 
-    const blocksSorted = sortBlocks(voucherBlocks)
+    const getLastAction = (el) => {
+        let latest = 0;
+        const compareDates = (el) => el ? 
+        new Date(el).getTime() > latest ? 
+            new Date(el).getTime() 
+            : latest 
+        : latest
 
-    const activeVouchers = blocksSorted.active
-    const inactiveVouchers = blocksSorted.inactive
+        latest = compareDates(el.CANCELLED)
+        latest = compareDates(el.COMMITTED)
+        latest = compareDates(el.COMPLAINED)
+        latest = compareDates(el.EXPIRED)
+        latest = compareDates(el.FINALIZED)
+        latest = compareDates(el.REDEEMED)
+        latest = compareDates(el.REFUNDED)
+        
+        return latest
+    }
+
+    const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
+
+    const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
+    const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
 
     return (
         <>
         <section className="activity atomic-scoped">
             <div className="container">
                 <div className="page-title">
-                    <h1>{blockType === blockTypes.account ? 'Activity' : 'Voucher Sets'}</h1>
+                    <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
                 <Tabs>
                     <TabList>
-                        <Tab>Active</Tab>
-                        <Tab>Inactive</Tab>
+                        <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
+                        <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Inactive' : 'Closed'}</Tab>
                     </TabList>
-
-                    <TabPanel>
-                        { <ActiveTab blockType={blockType} products={ activeVouchers }/> }
-                    </TabPanel>
-                    <TabPanel>
-                        { <ActiveTab blockType={blockType} products={ inactiveVouchers }/> }
-                    </TabPanel>
+                    {
+                        !loading ?
+                        <>
+                            <TabPanel>
+                                { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
+                            </TabPanel>
+                            <TabPanel>
+                                { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
+                            </TabPanel>
+                        </> : 
+                        <>
+                            <TabPanel> </TabPanel>
+                            <TabPanel> </TabPanel>
+                            <Loading />
+                        </>
+                    }
+                    {
+                        
+                        !voucherBlocks?.length && !loading && account ?
+                        <div className="no-vouchers flex column center">
+                            <p>You currently have no active vouchers.</p>
+                            <IconActivityMessage />
+                        </div> : null
+                    }
+                    {
+                        !voucherBlocks?.length && !loading && !account ?
+                        <div className="no-vouchers flex column center">
+                            <p><strong>No wallet connected.</strong> <br/> Connect to a wallet to view your vouchers.</p>
+                            <WalletConnect />
+                            {/* <IconActivityMessage /> */}
+                        </div> : null
+                    }
                 </Tabs>
 
                 </div>
@@ -138,22 +185,12 @@ export const VoucherSetBlock = (props) => {
 }
 
 export const SingleVoucherBlock = (props) => {
-    const { title, image, price, currency, id } = props
-
-    const globalContext = useContext(GlobalContext);
-    const modalContext = useContext(ModalContext);
-    const [voucherData, setVoucherData] = useState()
-
-    useEffect(() => {
-        initVoucherDetails(globalContext.state.account, modalContext, getVoucherDetails, id).then(result => {
-            setVoucherData(result)
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const { title, image, price, currency, id, expiryDate,
+    COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
 
     return (
         <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
@@ -171,14 +208,14 @@ export const SingleVoucherBlock = (props) => {
                     </div>
                 </div>
                 <div className="statuses">
-                    { voucherData?.COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
-                    { voucherData?.REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
-                    { voucherData?.REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
-                    { voucherData?.CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
-                    { voucherData?.COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
-                    { voucherData ? new Date() > new Date(voucherData.expiryDate) ?
-                        <div className="label color_EXPIRED">EXPIRED</div> : null : null }
-                    { voucherData?.FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
+                    { COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
+                    { REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
+                    { REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
+                    { COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
+                    { CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
+                    { new Date() > new Date(expiryDate) ?
+                        <div className="label color_EXPIRED">EXPIRED</div> : null }
+                    { FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
                 </div>
             </Link>
         </div>

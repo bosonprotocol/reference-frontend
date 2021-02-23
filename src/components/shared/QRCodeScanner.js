@@ -6,11 +6,14 @@ import { useState, useContext } from "react";
 import { GlobalContext, Action } from '../../contexts/Global'
 
 import { useHistory } from "react-router-dom";
+import { MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
+import { ModalContext, ModalResolver } from "../../contexts/Modal";
 
 function QRCodeScanner() {
     const globalContext = useContext(GlobalContext);
     const [delay, setDelay] = useState(300);
     const history = useHistory();
+    const modalContext = useContext(ModalContext);
 
     const stopRecording = () => {
         globalContext.dispatch(Action.toggleQRReader(0))
@@ -29,7 +32,13 @@ function QRCodeScanner() {
 
     const handleError = (error) => {
         if (error) {
-            this.props.onError(error);
+            history.push(ROUTE.Home);
+
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'Please grant permission to use the Camera so that you can check if the voucher is valid'
+            }));
         }
     };
 

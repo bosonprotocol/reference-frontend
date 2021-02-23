@@ -8,20 +8,13 @@ export const getData = getContextData
 export const GlobalContext = createContext()
 
 export const GlobalInitialState = {
-  productView: {
-    open: 0,
-    id: 0
-  },
-  navigation: {
-    state: DIC.NAV.DEF
-  },
   qrReaderActivated: 0,
   onboardingCompleted: localStorage['onboarding-completed'],
   allVouchers: [],
   allVoucherSets: [],
-  accountVouchers: [],
   fetchVoucherSets: 1,
   account: null,
+  checkDataUpdate: 1,
 };
 
 export const Action = {
@@ -34,28 +27,18 @@ export const Action = {
     type: DIC.CLOSE_PRODUCT,
   }),
 
-  navigationControl: (nav) => ({
-    type: DIC.NAV.CONTROL,
-    payload: nav
-  }),
-
-  toggleQRReader: (state) => ({
+  toggleQRReader: state => ({
     type: DIC.ACTIVATE_QR_READER,
     payload: state
   }),
 
-  allVoucherSets: (state) => ({
+  allVoucherSets: state => ({
     type: DIC.ALL_VOUCHER_SETS,
     payload: state
   }),
 
-  updateAllVouchers: (state) => ({
+  updateAllVouchers: state => ({
     type: DIC.ALL_VOUCHERS,
-    payload: state
-  }),
-
-  accountVouchers: (state) => ({
-    type: DIC.ACCOUNT_VOUCHERS,
     payload: state
   }),
 
@@ -63,41 +46,23 @@ export const Action = {
     type: DIC.FETCH_VOUCHER_SETS,
   }),
 
-  updateAccount: (account) => ({
+  updateAccount: account => ({
     type: DIC.UPDATE_ACCOUNT,
     payload: account,
   }),
 
-  completeOnboarding: (val) => ({
+  completeOnboarding: val => ({
     type: CONTROL.COMPLETE_ONBOARDING,
     payload: val
-  })
+  }),
+
+  checkDataUpdate: () => ({
+    type: CONTROL.CHECK_DATA_UPDATE,
+  }),
 }
 
 export const GlobalReducer = (state, action) => {
   const actionList = {
-    [DIC.OPEN_PRODUCT]: () => {
-      UpdateReviewedProducts(action.payload)
-      UpdateProductView(1)
-      // disableScroll(document.body)
-
-      return {
-        productView: {
-          open: 1,
-          id: action.payload
-        }
-      }
-    },
-    [DIC.CLOSE_PRODUCT]: () => {
-      UpdateProductView(0)
-      // enableScroll(document.body)
-
-      return {
-        productView: {
-          open: 0,
-        }
-      }
-    },
     [DIC.NAV.CONTROL]: () => {
       return {
         navigation: {
@@ -113,11 +78,6 @@ export const GlobalReducer = (state, action) => {
     [DIC.ALL_VOUCHER_SETS]: () => {
       return {
         allVoucherSets: action.payload
-      }
-    },
-    [DIC.ACCOUNT_VOUCHERS]: () => {
-      return {
-        accountVouchers: action.payload
       }
     },
     [DIC.UPDATE_ACCOUNT]: () => {
@@ -136,9 +96,13 @@ export const GlobalReducer = (state, action) => {
       }
     },
     [CONTROL.COMPLETE_ONBOARDING]: () => {
-      console.log(action.payload)
       return {
         onboardingCompleted: action.payload === undefined ? true : false
+      }
+    },
+    [CONTROL.CHECK_DATA_UPDATE]: () => {
+      return {
+        checkDataUpdate: state.checkDataUpdate * -1
       }
     },
   };
@@ -147,42 +111,4 @@ export const GlobalReducer = (state, action) => {
     ...state,
     ...actionList[action.type]()
   };
-}
-
-const update = {
-  productsReviewed: [],
-  productIsOpen: 0
-}
-
-const Settings = {
-  maxReviewedProducts: 3
-}
-
-const UpdateProductView = (status) => {
-  localStorage.setItem('productIsOpen', JSON.stringify(status))
-}
-
-const UpdateReviewedProducts = (id) => {
-  // get from local storage
-  update.productsReviewed = localStorage.getItem('productsReviewed')
-
-  // check if it has been assigned
-  if (update.productsReviewed != null) {
-    update.productsReviewed = JSON.parse(update.productsReviewed)
-  } else {
-    // if not, create new array
-    update.productsReviewed = []
-  }
-
-  if (update.productsReviewed[update.productsReviewed.length - 1] !== id) {
-    if (update.productsReviewed.length < Settings.maxReviewedProducts) {
-      update.productsReviewed.push(id)
-    } else {
-      (update.productsReviewed).shift()
-      update.productsReviewed.push(id)
-    }
-
-  }
-
-  localStorage.setItem('productsReviewed', JSON.stringify(update.productsReviewed))
 }
