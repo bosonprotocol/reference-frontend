@@ -46,7 +46,6 @@ function VoucherDetails(props) {
     const { library, account } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
-    // const cashierContract = useCashierContract();
     const [controls, setControls] = useState();
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
