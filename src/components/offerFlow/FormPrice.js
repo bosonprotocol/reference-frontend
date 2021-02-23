@@ -35,8 +35,6 @@ function FormPrice({
   const sellerDeposit = getOfferingData(NAME.SELLER_DEPOSIT);
   const buyerDeposit = getOfferingData(NAME.BUYER_DEPOSIT);
 
-
-  console.log(buyerDepositErrorMessage, buyerDeposit)
   const calculateMaxForCurrency = (currency) => {
     if(currency) {
       const maxFromContract = depositsPriceLimits[currency].max;

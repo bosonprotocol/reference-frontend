@@ -23,7 +23,6 @@ function FormSummary() {
     buyer_deposit,
     image,
   } = sellerContext.state.offeringData
-console.log(quantity)
   const tableContent = [
     category && ['Category', category,],
     quantity && ['Remaining Quantity', quantity],
