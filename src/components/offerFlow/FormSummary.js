@@ -5,6 +5,7 @@ import { TableRow, DateTable, PriceTable } from "../shared/TableContent"
 import { SellerContext } from "../../contexts/Seller"
 
 import { formatDate } from "../../helpers/Format"
+import { ethers } from 'ethers'
 
 function FormSummary() {
   const sellerContext = useContext(SellerContext)
@@ -22,7 +23,6 @@ function FormSummary() {
     buyer_deposit,
     image,
   } = sellerContext.state.offeringData
-
   const tableContent = [
     category && ['Category', category,],
     quantity && ['Remaining Quantity', quantity],
@@ -30,12 +30,12 @@ function FormSummary() {
 
   const tablePrices = [
     (price && price_currency) ? 
-      ['Payment Price', price, price_currency, 0] : false,
+      ['Payment Price', ethers.utils.formatEther(price), price_currency, 0] : false,
     false,
     (buyer_deposit && price_currency) ? 
-      ['Buyer’s deposit', buyer_deposit, price_currency, 1]: false,
+      ['Buyer’s deposit', ethers.utils.formatEther(buyer_deposit), price_currency, 1]: false,
     (seller_deposit && seller_deposit) ? 
-    ['Seller’s deposit', seller_deposit, seller_deposit_currency, 1] : false,
+    ['Seller’s deposit', ethers.utils.formatEther(seller_deposit), seller_deposit_currency, 1] : false,
   ]
 
   const tableDate = [
