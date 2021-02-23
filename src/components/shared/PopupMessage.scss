@@ -34,6 +34,22 @@
     color: #FFFFFF;
     margin-bottom: 18px;
   }
+  p {
+    font-family: 'Barlow', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 143.4%;
+    /* or 23px */
+
+    text-align: center;
+
+    color: #FFFFFF;
+  }
+  a, span.link {
+    color: #80f0be;
+    cursor: pointer;
+  }
   .controls {
     margin-top: 40px;
   }
@@ -43,6 +59,10 @@
       width: calc(50% - 7px);
       height: 44px;
     }
+  }
+  .button.refund {
+    max-width: 140px;
+    margin: 0 auto;
   }
 }
 

@@ -14,13 +14,14 @@ function EscrowDiagram(props) {
     const timePeriodText = <>
         <h3>Return of the deposit</h3>
         <p>Your deposit will be returned to your wallet in 7 days after Redeem.
-        Read our Terms of Service.</p>
+        <br/>
+        Read our <span className="link">Terms of Service</span>.</p>
     </>
 
     const togglePopupMessage = () => {
         setPopupMessage({
             text: timePeriodText, 
-            controls: <div className="button gray" role="button" onClick={ () => setPopupMessage(false)}>CLOSE</div>,
+            controls: <div className="button refund" role="button" onClick={ () => setPopupMessage(false)}>CLOSE</div>,
         })
     }
 
