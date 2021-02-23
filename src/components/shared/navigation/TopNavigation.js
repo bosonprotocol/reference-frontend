@@ -43,11 +43,11 @@ function TopNavigation() {
           {/* Back button */}
           { navigationContext.state.top[AFFMAP.BACK_BUTTON] ?
             <div className="button square new" role="button"
-            onClick={ () => history.push(ROUTE.Home) } >
+            onClick={ () => history.goBack() } >
               <Arrow color="#80F0BE"/>
             </div>
           : null}
-
+ 
           {/* QR Reader button */}
           { navigationContext.state.top[AFFMAP.QR_CODE_READER] ?
             <Link to={ROUTE.CodeScanner} >
