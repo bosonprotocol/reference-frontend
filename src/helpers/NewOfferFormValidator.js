@@ -1,7 +1,7 @@
 import { ethers } from "ethers"
 import { toFixed } from "../utils/format-utils"
 import { NAME } from "./Dictionary"
-import { ListOfBadWords, latinise } from "./Profanity"
+import { profanityTest } from "./Profanity"
 
 
 const descriptionSettings = {
@@ -102,19 +102,10 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
     if (currentDescriptionValue.length < descriptionSettings.min) {
       descriptionErrorMessage = `Desciption must be at least ${descriptionSettings.min} characters`;
     }
-    // merge the input into single string of letters and numbers only
-    let input = currentDescriptionValue.split(/[^a-zA-Z0-9]+/).join('').toLowerCase()
 
-    // convert special characters to latin
-    input = latinise(input)
-
-    // create regex with list of bad words
-    let badWordsRegex = ListOfBadWords.join('|')
-
-    // check for bad words
-    let profanityResult = input.match(badWordsRegex)
-
-    if (profanityResult) descriptionErrorMessage = `Usage of the word "${profanityResult[0]}" is forbidden`
+    let profanityResult = profanityTest(currentDescriptionValue)
+        
+    if(profanityResult) descriptionErrorMessage = profanityResult
 
     newErrorMessages = { ...newErrorMessages, [NAME.DESCRIPTION]: descriptionErrorMessage }
   }
@@ -134,6 +125,10 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
     if (currentTitleValue.length > titleSettings.max) {
       titleErrorMessage = `Title can't more than ${titleSettings.max} characters long`
     }
+
+    let profanityResult = profanityTest(currentTitleValue)
+        
+    if(profanityResult) titleErrorMessage = profanityResult
 
     newErrorMessages = { ...newErrorMessages, [NAME.TITLE]: titleErrorMessage }
 

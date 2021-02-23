@@ -80,7 +80,7 @@
 
       &:not(.no-border) {
         border-bottom: 1px solid rgba(255, 255, 255, 0);
-        transition: 0.2s 500ms ease-in-out;
+        transition: ease-in-out;
 
         &.image-upload {
           &::after {
@@ -106,7 +106,7 @@
           right: 0;
           opacity: 0;
           pointer-events: none;
-          transition: 0.2s 500ms ease-in-out;
+          transition: ease-in-out;
         }
       }
 

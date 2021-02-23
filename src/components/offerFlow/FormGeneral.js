@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from 'react'
+import React, { useRef, useEffect, useContext,useState } from 'react'
 
 import { NAME } from "../../helpers/Dictionary"
 import { SellerContext, getData } from "../../contexts/Seller"
@@ -7,6 +7,9 @@ function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessa
   const conditionTarget = useRef()
   const titleInput = useRef()
   const titleClear = useRef()
+
+  const [titleHasBeenBlurred, setTitleHasBeenBlurred] = useState(false);
+  const [descriptionHasBeenBlurred, setDescriptionHasBeenBlurred] = useState(false);
 
   const sellerContext = useContext(SellerContext)
   const getOfferingData = getData(sellerContext.state.offeringData)
@@ -49,8 +52,8 @@ function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessa
           <label htmlFor="offer-title">
             Title
           </label>
-          <div className="input focus" data-error={titleErrorMessage}>
-            <input ref={titleInput} id="offer-title" type="text" onChange={(e) => titleValueReceiver(e.target ? e.target.value : null)}/>
+          <div className="input focus" data-error={titleHasBeenBlurred ? titleErrorMessage : null}>
+            <input ref={titleInput} id="offer-title" type="text" onBlur={() => setTitleHasBeenBlurred(true)} onChange={(e) => titleValueReceiver(e.target ? e.target.value : null)}/>
             <div 
               ref={titleClear}
               className={`clear-field ${titleInput.current && (titleInput.current.value !== '' ? 'active' : 'hidden')}`}
@@ -62,9 +65,9 @@ function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessa
       <div className="row">
         <div className="area field relative">
           <label htmlFor={NAME.DESCRIPTION}>Description</label>
-          <div className="input focus" data-error={descriptionErrorMessage}>
+          <div className="input focus" data-error={descriptionHasBeenBlurred ? descriptionErrorMessage : null}>
             <textarea 
-              name={NAME.DESCRIPTION} maxLength={maxSymbols} id="offer-description" onChange={(e) => descriptionValueReceiver(e.target ? e.target.value : null)} form="offer-form">              
+              name={NAME.DESCRIPTION} maxLength={maxSymbols} id="offer-description" onBlur={() => setDescriptionHasBeenBlurred(true)} onChange={(e) => descriptionValueReceiver(e.target ? e.target.value : null)} form="offer-form">              
             </textarea>
           </div>
           <span className="limit">{description ? description.length : 0} / {maxSymbols}</span>
