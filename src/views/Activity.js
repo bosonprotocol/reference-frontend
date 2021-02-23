@@ -89,6 +89,19 @@ function ActivityView(props) {
     const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
     const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
 
+    const activityMessage = (tab) => {
+        return account ?
+        <div className="no-vouchers flex column center">
+        <p>You currently have no {`${tab?'active':'inactive'}`} vouchers.</p>
+        <IconActivityMessage />
+        </div>
+        :
+        <div className="no-vouchers flex column center">
+        <p><strong>No wallet connected.</strong> <br/> Connect to a wallet to view your vouchers.</p>
+        <WalletConnect />
+        </div>
+    }
+
     return (
         <>
         <section className="activity atomic-scoped">
@@ -105,33 +118,18 @@ function ActivityView(props) {
                         !loading ?
                         <>
                             <TabPanel>
-                                { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
+                                {activeVouchers?.length?
+                                    <ActiveTab voucherType={voucherType} products={ activeVouchers }/> :
+                                    activityMessage(1)
+                                }
                             </TabPanel>
                             <TabPanel>
-                                { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
+                                {inactiveVouchers?.length?
+                                    <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> :
+                                    activityMessage()
+                                }
                             </TabPanel>
-                        </> : 
-                        <>
-                            <TabPanel> </TabPanel>
-                            <TabPanel> </TabPanel>
-                            <Loading />
-                        </>
-                    }
-                    {
-                        
-                        !voucherBlocks?.length && !loading && account ?
-                        <div className="no-vouchers flex column center">
-                            <p>You currently have no active vouchers.</p>
-                            <IconActivityMessage />
-                        </div> : null
-                    }
-                    {
-                        !voucherBlocks?.length && !loading && !account ?
-                        <div className="no-vouchers flex column center">
-                            <p><strong>No wallet connected.</strong> <br/> Connect to a wallet to view your vouchers.</p>
-                            <WalletConnect />
-                            {/* <IconActivityMessage /> */}
-                        </div> : null
+                        </> : <Loading />
                     }
                 </Tabs>
 
