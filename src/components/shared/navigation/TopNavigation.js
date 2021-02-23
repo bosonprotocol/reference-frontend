@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { Route, useHistory, useLocation } from "react-router"
+import { useHistory, useLocation } from "react-router"
 
 import { Link } from 'react-router-dom'
 
