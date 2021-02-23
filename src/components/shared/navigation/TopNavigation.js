@@ -26,6 +26,7 @@ function TopNavigation() {
   const history = useHistory()
   const location = useLocation();
   const { account, connector } = useWeb3React();
+
   const navigate = () => {
     if(location.pathname === ROUTE.Connect || location.pathname === ROUTE.Activity || location.pathname === ROUTE.ActivityVouchers) {
       history.push(ROUTE.Home)
@@ -33,6 +34,7 @@ function TopNavigation() {
     }
     history.goBack()
   }
+  
   return (
     <header className={`top-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
