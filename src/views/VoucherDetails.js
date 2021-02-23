@@ -544,6 +544,19 @@ function VoucherDetails(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [controls])
 
+    useEffect(() => {
+        if(voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && document.getElementById('horizontal-view-container').children[1]) {
+
+        const updateScrollerToBeOnTheRightMostStatus = () => {
+            document.getElementById('horizontal-view-container').children[1].scrollLeft = 20000;
+        }
+
+        updateScrollerToBeOnTheRightMostStatus();
+    }
+        
+       
+    }, [voucherStatus && statusBlocks])
+
     const onCancelOrFaultVoucherSet = async () => {
 
         try{
@@ -591,7 +604,7 @@ function VoucherDetails(props) {
                         {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks ?
                             <div className="section status">
                             <h2>Status</h2>
-                            <div className="status-container flex">
+                            <div className="status-container flex" id="horizontal-view-container">
                             <HorizontalScrollView
                                 items={statusBlocks}
                                 ItemComponent={statusBlockComponent}
