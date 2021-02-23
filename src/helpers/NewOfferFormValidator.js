@@ -1,5 +1,5 @@
 import { NAME, CURRENCY } from "./Dictionary"
-import { ListOfBadWords, latinise } from "./Profanity"
+import { profanityTest } from "./Profanity"
 
 const priceSettings = {
   [CURRENCY.ETH]: {
@@ -39,22 +39,6 @@ const quantitySettings = {
 const titleSettings = {
   max: 50,
   // min: 3
-}
-
-const profanityTest = (inputRaw) => {
-  // merge the input into single string of letters and numbers only
-  let input = inputRaw.split(/[^a-zA-Z0-9]+/).join('-').toLowerCase()
-
-  // convert special characters to latin
-  input = latinise(input)
-
-  // create regex with list of bad words
-  let badWordsRegex = ListOfBadWords.join('-|-')
-
-  // check for bad words
-  let profanityResult = input.match(badWordsRegex)
-
-  return profanityResult ? 'Profanity is not allowed' : false
 }
 
 const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName) => {

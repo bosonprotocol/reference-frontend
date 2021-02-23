@@ -1,6 +1,5 @@
 /* eslint-disable no-useless-escape */
 export const ListOfBadWords = [
-  '-',
   'anal',
   'anus',
   'arse',
@@ -28,7 +27,6 @@ export const ListOfBadWords = [
   'fuk',
   'fak',
   'fack',
-  '-',
 ]
 
 var Latinise={};
@@ -868,3 +866,21 @@ Latinise.latin_map={
 "ᵥ":"v",
 "ₓ":"x"};
 export const latinise = (str) =>{return str.replace(/[^A-Za-z\[\] ]/g,function(a){return Latinise.latin_map[a]||a})}
+
+export const profanityTest = (inputRaw) => {
+  // merge the input into single string of letters and numbers only
+  let input = '-' + inputRaw.split(/[^a-zA-Z0-9]+/).filter(v=>v).join('-').toLowerCase() + '-'
+  // console.log(inputRaw)
+  console.log(input)
+
+  // convert special characters to latin
+  input = latinise(input)
+
+  // create regex with list of bad words
+  let badWordsRegex = '-' + ListOfBadWords.join('-|-') + '-'
+  
+  // check for bad words
+  let profanityResult = input.match(badWordsRegex)
+
+  return profanityResult ? 'Profanity is not allowed' : false
+}
