@@ -1,4 +1,4 @@
-import React, { useRef, useContext, forwardRef, useEffect,useState } from 'react'
+import React, { useRef, useContext, forwardRef, useState } from 'react'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./FormDate.scss"
 // https://www.npmjs.com/package/react-datepicker
 
+import { Arrow } from "../shared/Icons"
 import { NAME } from "../../helpers/Dictionary";
 
 function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorMessage, endDateErrorMessage}) {
@@ -123,7 +124,14 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
               onCalendarClose={(e) => endDateCalendarClosed(e)}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
-            <button hidden={!startDateCalendarOpen && !endDateCalendarOpen} className="calendar-save-button" onClick={() => { saveButtonClicked = true}}>SAVE</button>
+            <div className="container calendar-controls" hidden={!startDateCalendarOpen && !endDateCalendarOpen}>
+              <div className="anchor">
+                <button className="calendar-save-button" onClick={(e) => { e.preventDefault(); saveButtonClicked = true}}>SAVE</button>
+                <div className="button square new" role="button">
+                    <Arrow color="#80F0BE"/>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div> 
