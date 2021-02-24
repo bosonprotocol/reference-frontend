@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router"
 
@@ -628,7 +628,9 @@ function VoucherDetails(props) {
                                 <div className="expiration-container flex split">
                                     <p>Expiration Time</p>
                                     <div className="time-left flex column center">
-                                        <p>{daysAvailable - daysPast >= 0 ? `${daysAvailable - daysPast + 1} DAY${daysAvailable - daysPast > 1 ? 'S' : ''} LEFT` : 'EXPIRED'}</p>
+                                        <p>{daysAvailable - daysPast >= 0 ? 
+                                            `${daysAvailable - daysPast + 1} DAY${daysAvailable - daysPast + 1 > 1 ? 'S' : ''} LEFT` :
+                                        'EXPIRED'}</p>
                                         <div className="progress"></div>
                                     </div>
                                 </div>
