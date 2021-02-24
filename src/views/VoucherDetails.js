@@ -40,7 +40,6 @@ function VoucherDetails(props) {
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
     const navigationContext = useContext(NavigationContext);
-    const expiryProgressBar = useRef()
     const [loading, setLoading] = useState(0);
     const bosonRouterContract = useBosonRouterContract();
     const { library, account } = useWeb3React();
@@ -628,7 +627,7 @@ function VoucherDetails(props) {
                                     <p>Expiration Time</p>
                                     <div className="time-left flex column center">
                                         <p>{daysAvailable - daysPast > 0 ? `${daysAvailable - daysPast} DAY${daysAvailable - daysPast > 1 ? 'S' : ''} LEFT` : 'EXPIRED'}</p>
-                                        <div ref={expiryProgressBar} className="progress"></div>
+                                        <div className="progress"></div>
                                     </div>
                                 </div>
                             </div>
