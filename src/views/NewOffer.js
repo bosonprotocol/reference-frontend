@@ -48,9 +48,10 @@ function NewOffer() {
   const inputFallback = {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
-    [NAME.DATE_START]: new Date(), 
+    [NAME.DATE_START]: new Date().setHours(0,0,0,0), 
   }
 const fundLimitsContract = useFundLimitsContract();
+
 useEffect( ()=> {
   if(fundLimitsContract) {
   async function setLimits() {
@@ -81,27 +82,28 @@ useEffect( ()=> {
   },[])
 
   const createInputValueReceiver = (inputName) => (value) => {
-
     if(value || value === ''){
        
-          if(!(inputName === NAME.IMAGE)) {
-         sellerContext.dispatch(Seller.updateOfferingData({
-           [inputName]: value
-         }))
+        if(!(inputName === NAME.IMAGE)) {
+          sellerContext.dispatch(Seller.updateOfferingData({
+            [inputName]: value
+          }))
         } else {
           sellerContext.dispatch(Seller.updateOfferingData({
             [NAME.SELECTED_FILE]: value
           }))
           const fileReader = new FileReader();
+          
           fileReader.addEventListener('load', (e) => {
                sellerContext.dispatch(Seller.updateOfferingData({[inputName]: e.currentTarget.result}));
 
-          }); 
-     
+          });
+
           fileReader.readAsDataURL(value)
         }
         setLastInputChangeName(inputName);
     } 
+
     if(value === null && (inputName === NAME.PRICE || inputName === NAME.BUYER_DEPOSIT || inputName === NAME.SELLER_DEPOSIT)) {
       sellerContext.dispatch(Seller.updateOfferingData({[inputName]: value}));
     }
