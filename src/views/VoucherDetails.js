@@ -580,7 +580,8 @@ function VoucherDetails(props) {
 
         try {
 
-            await cancelVoucherSet(voucherSetDetails._tokenIdSupply, {}, authData.authToken)
+            await cancelVoucherSet(voucherSetDetails._tokenIdSupply, account, {}, authData.authToken);
+            history.push(ROUTE.Activity)
 
         } catch (e) {
             setLoading(0);

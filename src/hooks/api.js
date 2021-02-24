@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_BACKEND_BASE_URL
+    baseURL: 'http://localhost:3005'
 });
 
 export const generateNonce = async (address) => {
@@ -49,7 +49,7 @@ export const createVoucherSet = async (data, token) => {
 };
 
 export const commitToBuy = async (supplyId, data, token) => {
-    const allVouchers = await axiosInstance.post(`/users/${ supplyId }/buy`, data, {
+    const allVouchers = await axiosInstance.post(`/vouchers/commit-to-buy/${ supplyId }`, data, {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
     return allVouchers.data;
@@ -71,9 +71,10 @@ export const getPaymentsDetails = async (tokenVoucherId, token) => {
     return paymentsResponse.data;
 };
 
-export const cancelVoucherSet = async (supplyId, data, token) => {
+export const cancelVoucherSet = async (supplyId, account, data, token) => {
      return axiosInstance.patch(`/voucher-sets/update-supply-oncancel-intermediary`, {
         _tokenIdSupply:supplyId,
+        voucherOwner: account,
         qty: 0
     }, {
         headers: { 'Authorization': `Bearer ${ token }` }
