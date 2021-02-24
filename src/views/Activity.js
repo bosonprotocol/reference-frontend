@@ -109,13 +109,13 @@ function ActivityView(props) {
                 <div className="page-title">
                     <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
+                {
+                    !loading ?
                 <Tabs>
                     <TabList>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Inactive' : 'Closed'}</Tab>
                     </TabList>
-                    {
-                        !loading ?
                         <>
                             <TabPanel>
                                 {activeVouchers?.length?
@@ -129,9 +129,10 @@ function ActivityView(props) {
                                     activityMessage()
                                 }
                             </TabPanel>
-                        </> : <Loading />
-                    }
+                        </>
                 </Tabs>
+                    : <Loading />
+                }
 
                 </div>
             </section>

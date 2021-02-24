@@ -626,7 +626,7 @@ function VoucherDetails(props) {
                                 <div className="expiration-container flex split">
                                     <p>Expiration Time</p>
                                     <div className="time-left flex column center">
-                                        <p>{daysAvailable - daysPast > 0 ? `${daysAvailable - daysPast} DAY${daysAvailable - daysPast > 1 ? 'S' : ''} LEFT` : 'EXPIRED'}</p>
+                                        <p>{daysAvailable - daysPast >= 0 ? `${daysAvailable - daysPast + 1} DAY${daysAvailable - daysPast > 1 ? 'S' : ''} LEFT` : 'EXPIRED'}</p>
                                         <div className="progress"></div>
                                     </div>
                                 </div>
