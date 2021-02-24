@@ -56,6 +56,13 @@ export const prepareVoucherData = (rawVouchers) => {
 
   for (const voucher of rawVouchers) {
       let parsedVoucher = {
+          CANCELLED: voucher.CANCELLED,
+          COMMITTED: voucher.COMMITTED,
+          COMPLAINED: voucher.COMPLAINED,
+          EXPIRED: voucher.EXPIRED,
+          FINALIZED: voucher.FINALIZED,
+          REDEEMED: voucher.REDEEMED,
+          REFUNDED: voucher.REFUNDED,
           id: voucher._id,
           visible: voucher.visible,
           title: voucher.title,

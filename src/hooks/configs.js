@@ -1,12 +1,16 @@
 export const SMART_CONTRACTS = {
-    CashierContractAddress: "0xEFd19C52387c5bdA06f7e7DdC1897670F1B7192d",
-    VoucherKernelContractAddress: "0xb8aaB370cF5202501b73A3dC1E0c28E9a6876A27",
+    CashierContractAddress: "0x23744592d099fA701C7885a37F5EC0a0288f608d",
+    VoucherKernelContractAddress: "0xCd6818d44D439F3FAcE06cEE87e67D82d929391B",
+    BosonRouterContractAddress: "0x4F412F601Ae23f99Dc310418CC98996F798a3FcC",
+    FundLimitsContractAddress: "0x42F535F883A90E16Df422B238A318cf0d3903267",
+    BosonTokenDepositContractAddress: "0x10DE49a60C74A8C0c988EF83A2DFABF218ca48E3"
 };
 
 export const SMART_CONTRACTS_EVENTS = {
     VoucherSetCreated: "LogOrderCreated",
     VoucherCreated: "LogVoucherDelivered",
-    VoucherRedeemed: "LogVoucherRedeemed"
+    VoucherRedeemed: "LogVoucherRedeemed",
+    VoucherSetCanceled: "LogVoucherSetFaultCancel"
 };
 
 export const VOUCHER_STATUSES = {

@@ -35,7 +35,6 @@ export const Seller = {
 }
 
 export const SellerReducer = (state, action) => {
-  console.log(action, state)
   const actionList = {
 
     [DIC.SET_OFFERING_PROGRESS]: () => {

@@ -1,16 +1,23 @@
-import React, { useRef, useEffect, useContext } from 'react'
+import React, { useRef, useEffect, useContext,useState } from 'react'
 
 import { NAME } from "../../helpers/Dictionary"
 import { SellerContext, getData } from "../../contexts/Seller"
 
-function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueReceiver, titleErrorMessage, quantityErrorMessage}) {
+function FormGeneral({titleValueReceiver,conditionValueReceiver, titleErrorMessage, descriptionValueReceiver, descriptionErrorMessage}) {
   const conditionTarget = useRef()
   const titleInput = useRef()
   const titleClear = useRef()
 
+  const [titleHasBeenBlurred, setTitleHasBeenBlurred] = useState(false);
+  const [descriptionHasBeenBlurred, setDescriptionHasBeenBlurred] = useState(false);
+
   const sellerContext = useContext(SellerContext)
   const getOfferingData = getData(sellerContext.state.offeringData)
   const selectedCategory = getOfferingData(NAME.CONDITION)
+
+  const description = getOfferingData(NAME.DESCRIPTION)
+  const maxSymbols = 160
+
   const selectLabel = (el) => {
     Array.from(el.parentElement.parentElement.querySelectorAll('label')).forEach(label => {
       label.classList.remove('active')
@@ -43,12 +50,10 @@ function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueRec
       <div className="row">
         <div className="field">
           <label htmlFor="offer-title">
-            <div className="step-title">
-              <h1>Title</h1>
-            </div>
+            Title
           </label>
-          <div className="input focus" data-error={titleErrorMessage}>
-            <input ref={titleInput} id="offer-title" type="text" onChange={(e) => titleValueReceiver(e.target ? e.target.value : null)}/>
+          <div className="input focus" data-error={titleHasBeenBlurred ? titleErrorMessage : null}>
+            <input ref={titleInput} id="offer-title" type="text" onBlur={() => setTitleHasBeenBlurred(true)} onChange={(e) => titleValueReceiver(e.target ? e.target.value : null)}/>
             <div 
               ref={titleClear}
               className={`clear-field ${titleInput.current && (titleInput.current.value !== '' ? 'active' : 'hidden')}`}
@@ -58,23 +63,31 @@ function FormGeneral({titleValueReceiver,quantityValueReceiver,conditionValueRec
         </div>
       </div> 
       <div className="row">
-        <div className="field">
-          <label htmlFor="offer-quantity">Quantity</label>
-          <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number"  onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)}/>
+        <div className="area field relative">
+          <label htmlFor={NAME.DESCRIPTION}>Description</label>
+          <div className="input focus" data-error={descriptionHasBeenBlurred ? descriptionErrorMessage : null}>
+            <textarea 
+              name={NAME.DESCRIPTION} maxLength={maxSymbols} id="offer-description" onBlur={() => setDescriptionHasBeenBlurred(true)} onChange={(e) => descriptionValueReceiver(e.target ? e.target.value : null)} form="offer-form">              
+            </textarea>
           </div>
+          <span className="limit">{description ? description.length : 0} / {maxSymbols}</span>
         </div>
       </div>
-      <div ref={conditionTarget} className="row flex">
-        <div className="field radio-label">
-          <label data-condition="new" htmlFor="condition-new">New</label>
-          <input className="hidden" id="condition-new" value="new" type="radio" 
-          onClick={(e) => selectLabel(e.target)} />
+      <div ref={conditionTarget} className="row">
+        <div className="field">
+          <span className="label">Condition</span>
         </div>
-        <div className="field radio-label">
-          <label data-condition="used" htmlFor="condition-used">Used</label>
-          <input className="hidden" id="condition-used" value="used" type="radio"
-          onClick={(e) => selectLabel(e.target)} />
+        <div className="radio-container flex center">
+          <div className="field radio-label">
+            <label data-condition="new" htmlFor="condition-new">New</label>
+            <input className="hidden" id="condition-new" value="new" type="radio" 
+            onClick={(e) => selectLabel(e.target)} />
+          </div>
+          <div className="field radio-label">
+            <label data-condition="used" htmlFor="condition-used">Used</label>
+            <input className="hidden" id="condition-used" value="used" type="radio"
+            onClick={(e) => selectLabel(e.target)} />
+          </div>
         </div>
       </div>
     </div>

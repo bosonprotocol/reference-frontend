@@ -1,0 +1,77 @@
+.popup-container{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 13;
+  transform: translate(-50%, -50%);
+  background: #1D242C;
+  border-radius: 14px;
+  padding: 28px 23px;
+  max-width: 350px;
+
+  .text {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 111.4%;
+    /* or 27px */
+
+    text-align: center;
+
+    color: #FFFFFF;
+  }
+  h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 111.4%;
+    /* identical to box height, or 27px */
+
+    text-align: center;
+
+    color: #FFFFFF;
+    margin-bottom: 18px;
+  }
+  p {
+    font-family: 'Barlow', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 143.4%;
+    /* or 23px */
+
+    text-align: center;
+
+    color: #FFFFFF;
+  }
+  a, span.link {
+    color: #80f0be;
+    cursor: pointer;
+  }
+  .controls {
+    margin-top: 40px;
+  }
+
+  .buttons-pair {
+    .button {
+      width: calc(50% - 7px);
+      height: 44px;
+    }
+  }
+  .button.refund {
+    max-width: 140px;
+    margin: 0 auto;
+  }
+}
+
+.popup-message {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 12;
+}

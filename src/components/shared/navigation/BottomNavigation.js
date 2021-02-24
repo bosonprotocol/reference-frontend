@@ -53,7 +53,7 @@ function BottomNavigation() {
             </div> :
 
             navType === BOTTOM_NAV_TYPE.VOUCHER ?
-            <div className="control-wrap">
+            <div className="control-wrap w100">
               {voucherControls?.controls ? voucherControls.controls : null}
             </div> :
             

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
-import { useHistory } from "react-router"
+import { useHistory, useLocation } from "react-router"
 
 import { Link } from 'react-router-dom'
 
@@ -24,13 +24,17 @@ function TopNavigation() {
   const navigationContext = useContext(NavigationContext);
   const globalContext = useContext(GlobalContext);
   const history = useHistory()
-
+  const location = useLocation();
   const { account, connector } = useWeb3React();
 
-  useEffect(() => {
-    console.log(globalContext.state.onboardingCompleted)
-  }, [globalContext.state.onboardingCompleted])
-
+  const navigate = () => {
+    if(location.pathname === ROUTE.Connect || location.pathname === ROUTE.Activity || location.pathname === ROUTE.ActivityVouchers) {
+      history.push(ROUTE.Home)
+      return;
+    }
+    history.goBack()
+  }
+  
   return (
     <header className={`top-navigation ${!globalContext.state.onboardingCompleted ? 'd-none' : ''}`}>
       <div className="container">
@@ -47,11 +51,11 @@ function TopNavigation() {
           {/* Back button */}
           { navigationContext.state.top[AFFMAP.BACK_BUTTON] ?
             <div className="button square new" role="button"
-            onClick={ () => history.push(ROUTE.Home) } >
+            onClick={ () => navigate() } >
               <Arrow color="#80F0BE"/>
             </div>
           : null}
-
+ 
           {/* QR Reader button */}
           { navigationContext.state.top[AFFMAP.QR_CODE_READER] ?
             <Link to={ROUTE.CodeScanner} >
