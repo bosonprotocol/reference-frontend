@@ -870,7 +870,6 @@ export const latinise = (str) =>{return str.replace(/[^A-Za-z\[\] ]/g,function(a
 export const profanityTest = (inputRaw) => {
   // merge the input into single string of letters and numbers only
   let input = '-' + inputRaw.split(/[^a-zA-Z0-9]+/).filter(v=>v).join('-').toLowerCase() + '-'
-  // console.log(inputRaw)
 
   // convert special characters to latin
   input = latinise(input)
