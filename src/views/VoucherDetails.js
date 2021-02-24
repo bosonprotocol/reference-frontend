@@ -192,11 +192,12 @@ function VoucherDetails(props) {
         if (voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })
         if (voucherDetails.CANCELLED) statusBlocks.push({ title: 'CANCELLED', date: voucherDetails.CANCELLED })
         if (voucherDetails.FINALIZED) statusBlocks.push({ title: 'FINALIZED', date: voucherDetails.FINALIZED })
-
         statusBlocks[statusBlocks.length - 1].color = 2
         if (statusBlocks.length === 1) statusBlocks[0].color = 1
     }
 
+    if(statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+  
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
 
