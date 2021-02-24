@@ -572,7 +572,7 @@ function VoucherDetails(props) {
             await tx.wait();
 
         } catch (e) {
-
+            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
