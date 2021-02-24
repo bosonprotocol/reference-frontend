@@ -106,11 +106,11 @@ function VoucherDetails(props) {
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-                <div className="button gray" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
-            )
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+            <div className="button gray" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
+        )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
@@ -123,19 +123,25 @@ function VoucherDetails(props) {
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-                <div className="button red" role="button" onClick={() => onComplain()}>COMPLAIN</div>
-            )
+        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+            <div className="button red" role="button" onClick={() => onComplain()}>COMPLAIN</div>
+        )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
-                <ContractInteractionButton
-                    className="button primary"
-                    handleClick={() => onCommitToBuy()}
-                    label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
-                />
-            )
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
+            <ContractInteractionButton
+                className="button primary"
+                handleClick={() => onCommitToBuy()}
+                label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+            />
+        )
+
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.OFFERED]] = () => (
+            voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
+            <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
+            : null
+        )
 
         return CASE
     }
@@ -657,12 +663,6 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                     </div>
-
-                    {
-                        voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
-                            <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
-                            : null
-                    }
                 </div>
             </section>
         </>
