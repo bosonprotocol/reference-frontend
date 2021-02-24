@@ -110,7 +110,7 @@ function ActivityView(props) {
                     <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
                 {
-                    !loading ?
+                !loading ?
                 <Tabs>
                     <TabList>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
@@ -129,9 +129,9 @@ function ActivityView(props) {
                                     activityMessage()
                                 }
                             </TabPanel>
-                        </>
+                        </> 
                 </Tabs>
-                    : <Loading />
+                : <Loading />
                 }
 
                 </div>
@@ -187,6 +187,20 @@ export const SingleVoucherBlock = (props) => {
     const { title, image, price, currency, id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
 
+    const statusOrder = {
+        'COMMITTED': new Date(COMMITTED).getTime(),
+        'REDEEMED': new Date(REDEEMED).getTime(),
+        'REFUNDED': new Date(REFUNDED).getTime(),
+        'COMPLAINED': new Date(COMPLAINED).getTime(),
+        'CANCELLED': new Date(CANCELLED).getTime(),
+    }
+
+    const statuses = statusOrder ? Object.entries(statusOrder)
+    .sort(([,a],[,b]) => a-b)
+    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
+
+
+
     return (
         <div className="voucher-block flex">
             <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
@@ -207,11 +221,7 @@ export const SingleVoucherBlock = (props) => {
                     </div>
                 </div>
                 <div className="statuses">
-                    { COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
-                    { REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
-                    { REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
-                    { COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
-                    { CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
+                    {statuses ? Object.keys(statuses).map((status, i) => statusOrder[status] ? <div key={i} className={`label color_${status}`}>{status}</div> : null) : null}
                     { new Date() > new Date(expiryDate) ?
                         <div className="label color_EXPIRED">EXPIRED</div> : null }
                     { FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }
