@@ -50,7 +50,6 @@ function VoucherDetails(props) {
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
     const voucherSets = globalContext.state.allVoucherSets
-
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
@@ -301,7 +300,7 @@ function VoucherDetails(props) {
         setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
-
+       
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -540,7 +539,7 @@ function VoucherDetails(props) {
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
-    }, [voucherStatus, voucherDetails])
+    }, [voucherStatus, voucherDetails, account, library])
 
     useEffect(() => {
         if (document.documentElement)
@@ -561,7 +560,7 @@ function VoucherDetails(props) {
             controls: controls
         }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [controls])
+    }, [controls, account, library])
 
     useEffect(() => {
         if(voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && document.getElementById('horizontal-view-container').children[1]) {
