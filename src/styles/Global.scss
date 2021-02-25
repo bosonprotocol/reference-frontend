@@ -122,12 +122,6 @@ h2:not(.def) {
       display: none;
     }
   }
-
-  @media (max-width: 375px) {
-    border-radius: 0;
-    height: 100vh;
-    max-height: 100vh;
-  }
 }
 
 .screens {
