@@ -253,9 +253,11 @@
     }
   }
 
-  .slick-slide:nth-child(3) {
-    .slide-image {
-      margin-top: -50px !important;
+  @media (max-width: 768px) {
+    .slick-slide:nth-child(3) {
+      .slide-image {
+        margin-top: -50px !important;
+      }
     }
   }
 
@@ -371,6 +373,7 @@
           bottom: -18px;
           left: 50%;
           transform: translate(-50%, 100%);
+          z-index: 20;
         }
       }
     }

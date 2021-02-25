@@ -60,7 +60,7 @@ export function formatDate(date, type) {
         day = '0' + day;
 
     if(type === 'string') {
-        newFormat = [monthNames[parseInt(month - 1)], dayFormat(day), year].join(' ')
+        newFormat = [day, monthNames[parseInt(month - 1)], year].join('-')
     } else {
         newFormat = [year, month, day].join('-')
     }
