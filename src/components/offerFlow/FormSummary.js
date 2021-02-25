@@ -25,7 +25,6 @@ function FormSummary() {
   } = sellerContext.state.offeringData
   const tableContent = [
     category && ['Category', category],
-    quantity && ['Remaining Quantity', quantity],
   ]
 
   const tablePrices = [
@@ -51,8 +50,8 @@ function FormSummary() {
           <p>{description}</p>
         </div>
         {tableContent.some(item => item) ? <TableRow data={tableContent} /> : null}
-        {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
         {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
+        {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
       </div>
     </div>
   )
