@@ -26,25 +26,6 @@ const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-// function: (number/string day)
-// return: string of day formated for calendar view
-// const dayFormat = (day) => {
-//     let t = day
-//     if(day >= 4) {
-//         t += 'th'
-//     } else if(day === 1) {
-//         t += 'st'
-//     }
-//     else if(day === 2) {
-//         t += 'nd'
-//     }
-//     else if(day === 3) {
-//         t += 'rd'
-//     }
-
-//     return t;
-// }
-
 export function formatDate(date, type) {
     let newFormat;
     if (!date) {
