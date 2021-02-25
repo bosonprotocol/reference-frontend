@@ -1,4 +1,4 @@
-import React, { useRef, useContext, forwardRef, useState } from 'react'
+import React, { useRef, useContext, forwardRef, useState, useEffect } from 'react'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
@@ -80,6 +80,10 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
     }
      
   )
+
+  useEffect(() => {
+    console.log(currentlySelectedStartDateWhileCalendarOpen)
+  }, [])
   
 
   return (
