@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { TableRow, DateTable, PriceTable } from "../shared/TableContent"
+import { TableRow, DateTable } from "../shared/TableContent"
 
 import { SellerContext } from "../../contexts/Seller"
 
@@ -51,6 +51,7 @@ function FormSummary() {
         </div>
         {tableContent.some(item => item) ? <TableRow data={tableContent} /> : null}
         {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
+        {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
         {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
       </div>
     </div>
