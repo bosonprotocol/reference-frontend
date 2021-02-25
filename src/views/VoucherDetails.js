@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router"
 
@@ -40,7 +40,6 @@ function VoucherDetails(props) {
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
     const navigationContext = useContext(NavigationContext);
-    const expiryProgressBar = useRef()
     const [loading, setLoading] = useState(0);
     const bosonRouterContract = useBosonRouterContract();
     const { library, account } = useWeb3React();
@@ -50,7 +49,6 @@ function VoucherDetails(props) {
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
     const voucherSets = globalContext.state.allVoucherSets
-
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
@@ -106,11 +104,11 @@ function VoucherDetails(props) {
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-                <div className="button gray" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
-            )
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+            <div className="button gray" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
+        )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
@@ -123,19 +121,25 @@ function VoucherDetails(props) {
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-                <div className="button red" role="button" onClick={() => onComplain()}>COMPLAIN</div>
-            )
+        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+            <div className="button red" role="button" onClick={() => onComplain()}>COMPLAIN</div>
+        )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
-            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
-                <ContractInteractionButton
-                    className="button primary"
-                    handleClick={() => onCommitToBuy()}
-                    label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
-                />
-            )
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
+            <ContractInteractionButton
+                className="button primary"
+                handleClick={() => onCommitToBuy()}
+                label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+            />
+        )
+
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.OFFERED]] = () => (
+            voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
+            <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
+            : null
+        )
 
         return CASE
     }
@@ -284,7 +288,7 @@ function VoucherDetails(props) {
         setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
-
+       
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -523,7 +527,7 @@ function VoucherDetails(props) {
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
-    }, [voucherStatus, voucherDetails])
+    }, [voucherStatus, voucherDetails, account, library])
 
     useEffect(() => {
         if (document.documentElement)
@@ -544,7 +548,7 @@ function VoucherDetails(props) {
             controls: controls
         }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [controls])
+    }, [controls, account, library])
 
     useEffect(() => {
         if(voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && document.getElementById('horizontal-view-container').children[1]) {
@@ -567,7 +571,7 @@ function VoucherDetails(props) {
             await tx.wait();
 
         } catch (e) {
-
+            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -623,8 +627,10 @@ function VoucherDetails(props) {
                                 <div className="expiration-container flex split">
                                     <p>Expiration Time</p>
                                     <div className="time-left flex column center">
-                                        <p>{daysAvailable - daysPast > 0 ? `${daysAvailable - daysPast} DAY${daysAvailable - daysPast > 1 ? 'S' : ''} LEFT` : 'EXPIRED'}</p>
-                                        <div ref={expiryProgressBar} className="progress"></div>
+                                        <p>{daysAvailable - daysPast >= 0 ? 
+                                            `${daysAvailable - daysPast + 1} DAY${daysAvailable - daysPast + 1 > 1 ? 'S' : ''} LEFT` :
+                                        'EXPIRED'}</p>
+                                        <div className="progress"></div>
                                     </div>
                                 </div>
                             </div>
@@ -659,12 +665,6 @@ function VoucherDetails(props) {
                             </div>
                         </div>
                     </div>
-
-                    {
-                        voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
-                            <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
-                            : null
-                    }
                 </div>
             </section>
         </>
