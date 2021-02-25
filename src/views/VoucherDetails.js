@@ -36,6 +36,7 @@ import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
+    const [imageView, setImageView] = useState(0)
     const voucherId = props.match.params.id;
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
@@ -99,6 +100,17 @@ function VoucherDetails(props) {
             controls: <div className="flex split buttons-pair"><div className="button gray" role="button" onClick={() => setPopupMessage(false)}>BACK</div><div className="button primary" role="button" onClick={() => callAction()}>CONFIRM</div></div>,
         })
     }
+
+    const ViewImageFullScreen = () => (
+        <div className="image-view-overlay flex center" onClick={() => setImageView(0)}>
+            <div className="button-container">
+                <div className="container">
+                    <div className="cancel new" onClick={() => setImageView(0)}><span className="icon"></span></div>
+                </div>
+            </div>
+            <img src={getProp('image')} alt=""/>
+        </div>
+    )
 
     // assign controlset to statuses
     const controlList = () => {
@@ -604,6 +616,7 @@ function VoucherDetails(props) {
             { loading ? <Loading /> : null}
             { <PopupMessage {...popupMessage} />}
             <section className="voucher-details no-bg">
+            { imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
                         <div className="section title">
@@ -645,10 +658,7 @@ function VoucherDetails(props) {
                             : null}
                         <div className="section info">
                             <div className="section description">
-                                <div className="thumbnail flex center">
-                                    <img className="mw100" src={getProp('image')} alt={getProp('image')} />
-                                </div>
-                                {<DescriptionBlock voucherSetDetails={voucherSetDetails} getProp={getProp} />}
+                                {<DescriptionBlock toggleImageView={setImageView} voucherSetDetails={voucherSetDetails} getProp={getProp} />}
                             </div>
                             <div className="section category">
                             </div>
