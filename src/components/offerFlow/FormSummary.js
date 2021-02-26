@@ -52,7 +52,6 @@ function FormSummary() {
         {tableContent.some(item => item) ? <TableRow data={tableContent} /> : null}
         {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
         {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
-        {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
       </div>
     </div>
   )
