@@ -4,7 +4,7 @@
 
 This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
 
-**Table of Contents **:
+**Table of Contents**:
 
 - [Install and setup](#install-and-setup)
 - [Front-end Doc](#front-end-doc)
