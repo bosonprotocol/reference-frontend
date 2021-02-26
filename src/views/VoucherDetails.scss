@@ -21,6 +21,106 @@
     color: #FFFFFF;
   }
 
+  .image-view-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 21;
+    background: #000;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .button-close {
+      position: absolute;
+      top: 47px;
+      left: 22px;
+    }
+  }
+
+  .button-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100px;
+  }
+
+  .cancel {
+    margin-top: 47px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(#5D6F84, 1);
+    border-radius: 10px;
+    transition: 0.15s ease-in-out;
+    cursor: pointer;
+
+    &.new {
+      background: #192028;
+      border-radius: 11.4286px;
+      border: none;
+      box-shadow: 0px 1px 18px rgba(0, 0, 0, 0.4);
+
+      .icon {
+        &::before,
+        &::after {
+          background-color: #80F0BE;
+        }
+      }
+
+      &:hover {
+        border: none;
+        opacity: 0.9;
+        transform: scale(1.1);
+      }
+
+    }
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      transform: rotate(45deg);
+      transition: 0.15s ease-in-out;
+
+      &::before,
+      &::after {
+        content: '';
+        width: 2px;
+        height: 20px;
+        border-radius: 2px;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+  
+        background-color: rgba(#5D6F84, 1);
+      }
+      &::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+    }
+
+    &:hover {
+      border: 1px solid rgba(#5D6F84, 0.8);
+
+      .icon {
+        opacity: 0.6;
+      }
+    }
+  }
+
   .content {
     @include product-info;
     @include table;
@@ -178,23 +278,21 @@
             }
           }
           .image {
-            width: 35px;
-            height: 45px;
+            max-width: 151px;
+            max-height: 180px;
+            margin-top: 20px;
   
             img {
               max-width: 100%;
               max-height: 100%;
               width: auto;
               height: auto;
+              border-radius: 4.25464px;
             }
           }
         }
         .general {
           margin-top: 42px;
-  
-          .table:not(.location) {
-            margin-left: 24px;
-          }
         }
         .date {
           margin-top: 42px;

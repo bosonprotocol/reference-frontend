@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { TableRow, DateTable, PriceTable } from "../shared/TableContent"
+import { TableRow, DateTable } from "../shared/TableContent"
 
 import { SellerContext } from "../../contexts/Seller"
 
@@ -24,18 +24,13 @@ function FormSummary() {
     image,
   } = sellerContext.state.offeringData
   const tableContent = [
-    category && ['Category', category,],
-    quantity && ['Remaining Quantity', quantity],
+    category && ['Category', category],
   ]
 
   const tablePrices = [
-    (price && price_currency) ? 
-      ['Payment Price', ethers.utils.formatEther(price), price_currency, 0] : false,
-    false,
-    (buyer_deposit && price_currency) ? 
-      ['Buyer’s deposit', ethers.utils.formatEther(buyer_deposit), price_currency, 1]: false,
-    (seller_deposit && seller_deposit) ? 
-    ['Seller’s deposit', ethers.utils.formatEther(seller_deposit), seller_deposit_currency, 1] : false,
+    (price && price_currency) && ['Payment Price', ethers.utils.formatEther(price) + price_currency],
+    (buyer_deposit && price_currency) && ['Buyer’s Deposit', ethers.utils.formatEther(buyer_deposit) + price_currency],
+    (seller_deposit && seller_deposit_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, (ethers.utils.formatEther(seller_deposit) * quantity) + seller_deposit_currency],
   ]
 
   const tableDate = [
@@ -55,8 +50,9 @@ function FormSummary() {
           <p>{description}</p>
         </div>
         {tableContent.some(item => item) ? <TableRow data={tableContent} /> : null}
-        {tablePrices.some(item => item) ? <PriceTable data={tablePrices} /> : null}
         {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
+        {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
+        {tablePrices.some(item => item) ? <TableRow data={tablePrices} /> : null}
       </div>
     </div>
   )
