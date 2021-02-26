@@ -36,7 +36,7 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
 }
 
 export const ChildVoucherBlock = ({title, expiration, id}) => (
-  <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+  <Link to={ `${ ROUTE.Activity }/${ id }` }>
       <div className="voucher-block solo sub flex ai-center">
           <div className="img no-shrink">
               <QRCodeScaner />

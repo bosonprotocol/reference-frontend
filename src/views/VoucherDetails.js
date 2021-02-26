@@ -51,7 +51,6 @@ function VoucherDetails(props) {
     const [popupMessage, setPopupMessage] = useState();
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
-
     const convertToDays = (date) => parseInt((date.getTime()) / (60 * 60 * 24 * 1000))
 
     let today = new Date()
@@ -126,7 +125,7 @@ function VoucherDetails(props) {
             <div className="flex dual split">
                 <div className="button refund" role="button" onClick={() => onRefund()}>REFUND</div>
                 <Link
-                    to={`${ROUTE.VoucherDetails}/${voucherDetails?.id}${ROUTE.VoucherQRCode}`}>
+                    to={`${ROUTE.ActivityVouchers}/${voucherDetails?.id}${ROUTE.VoucherQRCode}`}>
                     <div className="button primary" role="button">REDEEM</div>
                 </Link>
             </div>
