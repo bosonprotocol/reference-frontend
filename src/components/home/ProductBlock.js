@@ -14,7 +14,7 @@ function ProductBlock(props) {
     const productType = col ? "col" : ""
 
     return (
-        <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+        <Link to={ `${ ROUTE.Activity }/${ id }` }>
         <div
             // onClick={ openProduct }
             className={ `product-block ${ productType }  ${ animate ? 'animate' : '' }` }

@@ -203,7 +203,7 @@ export const SingleVoucherBlock = (props) => {
 
     return (
         <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
+            <Link to={ `${ ROUTE.ActivityVouchers }/${ id }` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
