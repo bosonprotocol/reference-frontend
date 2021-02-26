@@ -1,6 +1,31 @@
 {
   "name": "boson-protocol",
+  "description": "An example front-end application for Boson Protocol",
+  "keywords": [
+    "boson",
+    "boson protocol",
+    "reference",
+    "frontend",
+    "front-end"
+  ],
+  "bugs": "https://github.com/bosonprotocol/reference-frontend/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bosonprotocol/reference-frontend.git"
+  },
+  "contributors": [
+    "entrpyc",
+    "Vladislav Ivanov",
+    "wideyedwonderer",
+    "Asen Angelov",
+    "Richard Littauer <richard@burntfen.com> (https://burntfen.com)",
+    "Wideyedwonderer",
+    "Toby Clemson",
+    "HristiyanG",
+    "thecryptofruit"
+  ],
   "version": "0.1.0",
+  "license": "LGPL-3.0-only",
   "private": true,
   "dependencies": {
     "@ethersproject/abi": "^5.0.9",

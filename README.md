@@ -1,10 +1,12 @@
-# Reference Frontend
+[![banner](docs/assets/banner.png)](https://bosonprotocol.io)
+
+<h1 align="center">Boson Protocol Reference Frontend</h1>
 
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
 This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
 
-**Table of Contents **:
+**Table of Contents**:
 
 - [Install and setup](#install-and-setup)
 - [Front-end Doc](#front-end-doc)

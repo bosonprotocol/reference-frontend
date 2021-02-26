@@ -40,8 +40,8 @@ callLocationAttributes[ROUTE.ActivityVouchers] = () => {
   updateBackgroundColor(bgColorBlack)
   bottomNavCurrent = 1
 }
-callLocationAttributes[ROUTE.VoucherDetails] =
-callLocationAttributes[ROUTE.VoucherSetDetails] = () => {
+callLocationAttributes[ROUTE.ActivityVouchers] =
+callLocationAttributes[ROUTE.Activity] = () => {
   enableControl(controlset_1)
   updateBackgroundColor(bgColorSecondary)
   bottomNavCurrent = -1
@@ -70,7 +70,7 @@ function LocationManager() {
     if(pageRoute === ROUTE.NewOffer) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) 
     } 
-    else if(pageRoute === ROUTE.VoucherDetails || pageRoute === ROUTE.VoucherSetDetails) {
+    else if(pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER))
     }
     else {
