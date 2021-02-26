@@ -78,7 +78,7 @@
   }
 
   .content {
-    padding: 0 25px;
+    padding: 0 22px;
     padding-top: 40px;
 
     .escrow-container {
@@ -154,6 +154,17 @@
 
       img {
         border-radius: 14.074px;
+      }
+      
+      @media (max-width: 768px) {
+        padding: 0;
+        margin-left: -25px;
+        margin-right: -25px;
+
+        img {
+          width: 100%;
+          border-radius: 0;
+        }
       }
     }
   }

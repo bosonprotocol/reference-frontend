@@ -40,6 +40,10 @@
 
 .onboarding {
   max-width: 100%;
+
+  .container {
+    max-width: clamp(700px, 80vw, 1200px);
+  }
   max-height: 100vh;
 
   .awssld__content {
@@ -53,10 +57,7 @@
     // height: 100%;
 
     .button {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 70px;
+      margin-top: 20px;
     }
     .top {
       min-height: 125px;
@@ -79,6 +80,17 @@
     }
     .text {
       min-height: 175px;
+      margin-top: -20px;
+    }
+
+    @media (max-width: 768px) {
+      .qr-display {
+        .phone-bg,
+        .show img,
+        .background {
+          transform: scale(0.84);
+        }
+      }
     }
   }
 
@@ -87,9 +99,6 @@
   }
 
   .text {
-    .button {
-      position: absolute;
-    }
     .number {
       font-size: 183px;
       font-weight: 300;
@@ -244,6 +253,14 @@
     }
   }
 
+  @media (max-width: 768px) {
+    .slick-slide:nth-child(3) {
+      .slide-image {
+        margin-top: -50px !important;
+      }
+    }
+  }
+
   button.slick-arrow {
     &.slick-next,
     &.slick-prev {
@@ -306,8 +323,64 @@
     min-height: 100%;
   }
 
+  .slick-slide {
+    height: 100vh;
+
+    .center-flex {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      height: calc(100vh - 100px);
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+
+      .screen {
+        padding-bottom: 0;
+        height: clamp(700px, 64vh, 100vh);
+
+        .top {
+          margin-top: #{'min(4vh, 86px)'};
+          min-height: auto;
+          margin-bottom: 15px;
+
+          .logo {
+            height: clamp(55px, 21vw, 80px);
+          }
+
+          h2 {
+            margin-top: clamp(10px, 2vh, 30px);
+          }
+        }
+
+        .slide-image {
+          margin-top: 0;
+          margin-bottom: -15px;
+          height: calc(100vh - 425px);
+          min-height: auto;
+        }
+
+        .text {
+          min-height: auto;
+        }
+
+        .button {
+          position: absolute;
+          bottom: -18px;
+          left: 50%;
+          transform: translate(-50%, 100%);
+          z-index: 20;
+        }
+      }
+    }
+  }
+
   .slick-dots {
-    bottom: 50px;
+    bottom: 10px;
 
     li {
       button {

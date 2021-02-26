@@ -122,12 +122,6 @@ h2:not(.def) {
       display: none;
     }
   }
-
-  @media (max-width: 375px) {
-    border-radius: 0;
-    height: 100vh;
-    max-height: 100vh;
-  }
 }
 
 .screens {
@@ -201,7 +195,7 @@ header.top-navigation {
   height: 100px;
   display: flex;
   align-items: center;
-  z-index: 12;
+  z-index: 10;
 
   .progress-bar {
     margin-left: 22px;

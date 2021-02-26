@@ -26,23 +26,6 @@ const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-const dayFormat = (day) => {
-    let t = day
-    if(day >= 4) {
-        t += 'th'
-    } else if(day === 1) {
-        t += 'st'
-    }
-    else if(day === 2) {
-        t += 'nd'
-    }
-    else if(day === 3) {
-        t += 'rd'
-    }
-
-    return t;
-}
-
 export function formatDate(date, type) {
     let newFormat;
     if (!date) {
@@ -60,7 +43,7 @@ export function formatDate(date, type) {
         day = '0' + day;
 
     if(type === 'string') {
-        newFormat = [monthNames[parseInt(month - 1)], dayFormat(day), year].join(' ')
+        newFormat = [day, monthNames[parseInt(month - 1)], year].join('-')
     } else {
         newFormat = [year, month, day].join('-')
     }

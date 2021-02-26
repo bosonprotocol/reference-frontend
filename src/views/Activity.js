@@ -89,6 +89,19 @@ function ActivityView(props) {
     const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
     const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
 
+    const activityMessage = (tab) => {
+        return account ?
+        <div className="no-vouchers flex column center">
+        <p>You currently have no {`${tab?'active':'inactive'}`} vouchers.</p>
+        <IconActivityMessage />
+        </div>
+        :
+        <div className="no-vouchers flex column center">
+        <p><strong>No wallet connected.</strong> <br/> Connect to a wallet to view your vouchers.</p>
+        <WalletConnect />
+        </div>
+    }
+
     return (
         <>
         <section className="activity atomic-scoped">
@@ -96,44 +109,30 @@ function ActivityView(props) {
                 <div className="page-title">
                     <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
                 </div>
+                {
+                !loading ?
                 <Tabs>
                     <TabList>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Inactive' : 'Closed'}</Tab>
                     </TabList>
-                    {
-                        !loading ?
                         <>
                             <TabPanel>
-                                { <ActiveTab voucherType={voucherType} products={ activeVouchers }/> }
+                                {activeVouchers?.length?
+                                    <ActiveTab voucherType={voucherType} products={ activeVouchers }/> :
+                                    activityMessage(1)
+                                }
                             </TabPanel>
                             <TabPanel>
-                                { <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> }
+                                {inactiveVouchers?.length?
+                                    <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> :
+                                    activityMessage()
+                                }
                             </TabPanel>
-                        </> : 
-                        <>
-                            <TabPanel> </TabPanel>
-                            <TabPanel> </TabPanel>
-                            <Loading />
-                        </>
-                    }
-                    {
-                        
-                        !voucherBlocks?.length && !loading && account ?
-                        <div className="no-vouchers flex column center">
-                            <p>You currently have no active vouchers.</p>
-                            <IconActivityMessage />
-                        </div> : null
-                    }
-                    {
-                        !voucherBlocks?.length && !loading && !account ?
-                        <div className="no-vouchers flex column center">
-                            <p><strong>No wallet connected.</strong> <br/> Connect to a wallet to view your vouchers.</p>
-                            <WalletConnect />
-                            {/* <IconActivityMessage /> */}
-                        </div> : null
-                    }
+                        </> 
                 </Tabs>
+                : <Loading />
+                }
 
                 </div>
             </section>
@@ -188,6 +187,20 @@ export const SingleVoucherBlock = (props) => {
     const { title, image, price, currency, id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
 
+    const statusOrder = {
+        'COMMITTED': new Date(COMMITTED).getTime(),
+        'REDEEMED': new Date(REDEEMED).getTime(),
+        'REFUNDED': new Date(REFUNDED).getTime(),
+        'COMPLAINED': new Date(COMPLAINED).getTime(),
+        'CANCELLED': new Date(CANCELLED).getTime(),
+    }
+
+    const statuses = statusOrder ? Object.entries(statusOrder)
+    .sort(([,a],[,b]) => a-b)
+    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
+
+
+
     return (
         <div className="voucher-block flex">
             <Link to={ `${ ROUTE.VoucherDetails }/${ id }` }>
@@ -208,11 +221,7 @@ export const SingleVoucherBlock = (props) => {
                     </div>
                 </div>
                 <div className="statuses">
-                    { COMMITTED ? <div className="label color_COMMITTED">COMMITTED</div> : null }
-                    { REDEEMED ? <div className="label color_REDEEMED">REDEEMED</div> : null }
-                    { REFUNDED ? <div className="label color_REFUNDED">REFUNDED</div> : null }
-                    { COMPLAINED ? <div className="label color_COMPLAINED">COMPLAINED</div> : null }
-                    { CANCELLED ? <div className="label color_CANCELLED">CANCELLED</div> : null }
+                    {statuses ? Object.keys(statuses).map((status, i) => statusOrder[status] ? <div key={i} className={`label color_${status}`}>{status}</div> : null) : null}
                     { new Date() > new Date(expiryDate) ?
                         <div className="label color_EXPIRED">EXPIRED</div> : null }
                     { FINALIZED ? <div className="label color_FINALIZED">FINALIZED</div> : null }

@@ -18,10 +18,9 @@ import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 
 export default function SubmitForm() {
-    // onFileSelectSuccess={ (file) => setSelectedFile(file) }
-    const [redirect, setRedirect] = useState(0)
-    const [loading, setLoading] = useState(0)
-    const sellerContext = useContext(SellerContext)
+    const [redirect, setRedirect] = useState(0);
+    const [loading, setLoading] = useState(0);
+    const sellerContext = useContext(SellerContext);
     const modalContext = useContext(ModalContext); 
     const location = useLocation();
 
@@ -74,9 +73,9 @@ export default function SubmitForm() {
         let dataArr = [
             toFixed(new Date(start_date) / 1000, 0),
             toFixed(new Date(end_date) / 1000, 0),
-            ethers.utils.parseEther(price).toString(),
-            ethers.utils.parseEther(seller_deposit).toString(),
-            ethers.utils.parseEther(buyer_deposit).toString(),
+            price.toString(),
+            seller_deposit.toString(),
+            buyer_deposit.toString(),
             parseInt(quantity)
         ];
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
@@ -88,8 +87,9 @@ export default function SubmitForm() {
         try {                          
             tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
             receipt = await tx.wait();
-            parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
-               } catch (e) {
+            parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');             
+        } catch (e) {     
+            setLoading(0)
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -103,10 +103,10 @@ export default function SubmitForm() {
 
             await createVoucherSet(formData, authData.authToken);
 
-            globalContext.dispatch(Action.fetchVoucherSets())
+            globalContext.dispatch(Action.fetchVoucherSets());
 
-            setLoading(0)
-            setRedirect(1)
+            setLoading(0);
+            setRedirect(1);
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -131,8 +131,8 @@ export default function SubmitForm() {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-        formData.append('sellerDepositCurrency', 'ETH')
-        formData.append('priceCurrency', 'ETH')
+        formData.append('sellerDepositCurrency', 'ETH');
+        formData.append('priceCurrency', 'ETH');
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
@@ -141,17 +141,6 @@ export default function SubmitForm() {
         formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
     }
 
-    // append blob
-    // function appendFilesToFormData() {
-    //     fetch(image)
-    //         .then(res => res.blob())
-    //         .then(res => {
-    //                 formData.append("fileToUpload", res, res['name'])
-    //             }
-    //         )
-    // }
-
-    // append file
     function appendFilesToFormData() {
         formData.append("fileToUpload", selected_file, selected_file['name']);
     }

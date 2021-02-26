@@ -31,7 +31,7 @@ function slide2() {
         <div className="logo flex jc-center"><img src="images/boson-logo.png" alt="Boson Protocol Logo" className="pe-none" /></div>
         <h2 className="ta-center">Welcome to Boson Protocol</h2>
       </div>
-      <div className="slide-image">
+      <div className="slide-image center-flex">
         <EscrowDiagram />
       </div>
       <div className="text flex column ai-center">

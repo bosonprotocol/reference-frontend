@@ -12,7 +12,6 @@ function OfferFlowSet() {
   useEffect(() => {
     let calc = parseInt((100 / screens.length) * (activeScreen + 1))
     setProgressBarWidth(calc + '%')
-    console.log( calc + '%')
   }, [activeScreen])
 
   return (
