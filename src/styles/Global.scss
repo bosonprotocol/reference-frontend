@@ -104,7 +104,8 @@ h2:not(.def) {
 }
 
 .emulate-mobile {
-  &:not(.disabled) {
+  &:not(.disabled),
+  &:not(.no-bottom) {
     padding-top: 100px;
     padding-bottom: 81px;
   }
@@ -118,6 +119,12 @@ h2:not(.def) {
 
   &.disabled {
     .top-navigation,
+    .bottom-navigation {
+      display: none;
+    }
+  }
+
+  &.no-bottom {
     .bottom-navigation {
       display: none;
     }

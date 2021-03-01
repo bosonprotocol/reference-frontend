@@ -30,21 +30,29 @@ callLocationAttributes[ROUTE.Connect] = () => {
   updateBackgroundColor(bgColorBlack)
   bottomNavCurrent = 4
 }
-callLocationAttributes[ROUTE.Activity] = () => {
-  enableControl(controlset_2)
-  updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 3
+callLocationAttributes[ROUTE.Activity] = (nested, param) => {
+  if(nested) {
+    enableControl(controlset_1)
+    updateBackgroundColor(bgColorSecondary)
+    bottomNavCurrent = -1
+  } else if (param) {
+
+  } else {
+    enableControl(controlset_2)
+    updateBackgroundColor(bgColorBlack)
+    bottomNavCurrent = 3
+  }
 }
-callLocationAttributes[ROUTE.ActivityVouchers] = () => {
-  enableControl(controlset_2)
-  updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 1
-}
-callLocationAttributes[ROUTE.ActivityVouchers] =
-callLocationAttributes[ROUTE.Activity] = () => {
-  enableControl(controlset_1)
-  updateBackgroundColor(bgColorSecondary)
-  bottomNavCurrent = -1
+callLocationAttributes[ROUTE.ActivityVouchers] = (nested, param) => {
+  if(nested) {
+    enableControl(controlset_1)
+    updateBackgroundColor(bgColorSecondary)
+    bottomNavCurrent = -1
+  } else {
+    enableControl(controlset_2)
+    updateBackgroundColor(bgColorBlack)
+    bottomNavCurrent = 1
+  }
 }
 
 // page not matching any
@@ -64,13 +72,16 @@ function LocationManager() {
 
   const location = useLocation()
 
-  const pageRoute = '/' + location.pathname.split('/')[1]
+  
+  const switchLocationMap = () => {
+    const pageRoute = '/' + location.pathname.split('/')[1]
+    const urlNested = location.pathname.split('/')[2]
+    const param = location.pathname.split('/')[3]
 
-  const switchLocationMap = (pageRoute) => {
     if(pageRoute === ROUTE.NewOffer) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) 
     } 
-    else if(pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) {
+    else if((pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) && !!urlNested && !param) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER))
     }
     else {
@@ -83,9 +94,15 @@ function LocationManager() {
       navigationContext.dispatch(Action.displayNavigation(true))
     }
 
+    if(param) {
+      navigationContext.dispatch(Action.displayBottomNavigation(false))
+    } else {
+      navigationContext.dispatch(Action.displayBottomNavigation(true))
+    }
+
     // trigger a function that will enable relative affordances to the current page
     return callLocationAttributes[pageRoute] ? 
-    callLocationAttributes[pageRoute]() : 
+    callLocationAttributes[pageRoute](urlNested, param) : 
     callLocationAttributes[ROUTE.Default]()
   }
 
@@ -93,7 +110,7 @@ function LocationManager() {
     window.scrollTo(0, 0);
 
     affordances = {}
-    switchLocationMap(pageRoute)
+    switchLocationMap()
 
     navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
 
