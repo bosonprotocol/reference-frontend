@@ -22,9 +22,10 @@ import { NavigationContext } from "./contexts/Navigation"
 function Routes() {
   const navigationContext = useContext(NavigationContext)
   const displayNav = navigationContext.state.displayNavigation
+  const displayBottomNav = navigationContext.state.displayBottomNavigation
   return (
     // class - dark|light; (default: dark)
-    <div className={`emulate-mobile theme ${!displayNav ? 'disabled' : ''}`}>
+    <div className={`emulate-mobile theme ${!displayBottomNav ? 'no-bottom' : ''} ${!displayNav ? 'disabled' : ''}`}>
       <Router>
           <LocationManager />
           <TopNavigation />
