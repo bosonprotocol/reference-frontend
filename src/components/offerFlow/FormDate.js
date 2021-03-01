@@ -1,80 +1,85 @@
-import React, { useRef, useContext, forwardRef, useEffect } from 'react'
+import React, { useRef, useContext, forwardRef, useState } from 'react'
 
-import { SellerContext, Seller, getData } from "../../contexts/Seller"
+import { SellerContext, getData } from "../../contexts/Seller"
 
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
+import "./FormDate.scss"
 // https://www.npmjs.com/package/react-datepicker
 
-import { NAME } from "../../helpers/Dictionary"
+import { Arrow } from "../shared/Icons"
+import { NAME } from "../../helpers/Dictionary";
 
-function FormDate() {
+function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorMessage, endDateErrorMessage}) {
   const sellerContext = useContext(SellerContext)
-  const startDate = useRef()
-  const endDate = useRef()
+  const startDate = useRef();
+  const endDate = useRef();
+  const [startDateCalendarOpen, setStartDateCalendarOpen] = useState(false);
+  const [endDateCalendarOpen, setEndDateCalendarOpen] = useState(false);
+
+ 
   const dateRef = {
     [NAME.DATE_START]: useRef(),
     [NAME.DATE_END]: useRef(),
   }
+  const calendarStartRef = useRef();
+  const calendarEndRef = useRef();
 
-  const yesterday = new Date().setDate(new Date().getDate() - 1)
-
+  let saveButtonClicked = false;
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const start_date = getOfferingData(NAME.DATE_START)
-  const end_date = getOfferingData(NAME.DATE_END)
+  const [currentlySelectedStartDateWhileCalendarOpen, setCurrentlySelectedStartDateWhileCalendarOpen ]= useState(getOfferingData(NAME.DATE_START));
+  const [currentlySelectedEndDateWhileCalendarOpen, setCurrentlySelectedEndDateWhileCalendarOpen ]= useState(getOfferingData(NAME.DATE_END));
 
-  const checkError = {
-    [NAME.DATE_START]: date => (
-      new Date(date).getTime() <= yesterday ? "Start Date can't be set before Today" :
-      new Date(date).getTime() >= new Date(getOfferingData(NAME.DATE_END)).getTime() ? "Start Date can't be set after the Expiry Date" :
-      false
-    ),
-    [NAME.DATE_END]: date => (
-      new Date(date).getTime() <= new Date(getOfferingData(NAME.DATE_START)).getTime() ?
-      "Expiry Date can't be set before Start Date." : false
-    ),
+  const end_date = getOfferingData(NAME.DATE_END);
+
+
+  const startDateCalendarOpened = () => {
+    setStartDateCalendarOpen(true)
+  }
+  const endDateCalendarOpened = () => {
+    setEndDateCalendarOpen(true)
   }
 
-  const handleDateChange = (date, name) => {
-    dateRef[name].current.removeAttribute('data-error')
+  const startDateCalendarClosed = () => {
+    setTimeout(() => {
+      if(saveButtonClicked) {
+        startDateValueReceiver(currentlySelectedStartDateWhileCalendarOpen);
+        saveButtonClicked = false;
+  
+      } else {
+        setCurrentlySelectedStartDateWhileCalendarOpen(getOfferingData(NAME.DATE_START))
+      }
 
-    const error = checkError[name](date)
-    error ?
-    dateRef[name].current.setAttribute('data-error', error) :
+      setStartDateCalendarOpen(false)
+    }, 125)
+ 
+  } 
+  const endDateCalendarClosed = (e) => {
+    setTimeout(()=> {
 
-    sellerContext.dispatch(Seller.updateOfferingData({
-      [name]: date
-    }))
+      if(saveButtonClicked) {
+        endDateValueReceiver(currentlySelectedEndDateWhileCalendarOpen);
+        saveButtonClicked = false;
+      } else {
+        setCurrentlySelectedEndDateWhileCalendarOpen(getOfferingData(NAME.DATE_END))
+      }
+      setEndDateCalendarOpen(false)
+    }, 125)
+   
   }
-
-  const setDefaultValue = (name) => {
-    let def = getOfferingData(name)
-
-    return (
-      def ?
-        new Date(def) :
-        new Date()
-    )
-  }
-
-  useEffect(() => {
-    if(!!start_date) dateRef[NAME.DATE_START].current.querySelector('.field[role="button"]').classList.remove('await')
-    if(!!end_date) dateRef[NAME.DATE_END].current.querySelector('.field[role="button"]').classList.remove('await')
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start_date, end_date])
 
   const Field = forwardRef(
-    ({ value, onClick, waiting }, ref) => {
-      console.log(waiting)
-      return <div ref={ref} className={`field ${waiting ? 'await' : ''}`} role="button" onClick={onClick}>
-      {value}
-    </div>
+    ({ value, onClick, dateFieldType} ,ref) => {
+      return (
+        <div ref={ref} className={`field ${!end_date && dateFieldType===NAME.DATE_END ? 'await': ''}`} role="button" onClick={onClick}>
+          {value}
+        </div>
+      )
     }
+     
   )
-  
 
   return (
     <div className="date"> 
@@ -83,13 +88,19 @@ function FormDate() {
           <div className="step-title">
             <label htmlFor="offer-start-date">Start Date</label>
           </div>
-          <div ref={dateRef[NAME.DATE_START]} className="input relative">
+          <div ref={dateRef[NAME.DATE_START]} className="input relative"  data-error={startDateErrorMessage}>
             <DatePicker
-              id="offer-start-date" name={NAME.DATE_START}
-              
-              selected={setDefaultValue(NAME.DATE_START)}
-              onChange={(date) => handleDateChange(date, NAME.DATE_START)}
-              customInput={<Field ref={startDate} />}
+              ref={calendarStartRef}
+              id="offer-start-date" 
+              wrapperClassName="datePicker"
+              withPortal
+              shouldCloseOnSelect={false}
+              calendarClassName="react-datepicker-custom"
+              selected={currentlySelectedStartDateWhileCalendarOpen}
+              onChange={(date) => setCurrentlySelectedStartDateWhileCalendarOpen(date.setHours(0,0,0,0))}
+              customInput={<Field ref={startDate} dateFieldType={NAME.DATE_START}/>}
+              onCalendarOpen={(e) => startDateCalendarOpened(e)}
+              onCalendarClose={(e) => startDateCalendarClosed(e)}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
           </div>
@@ -98,18 +109,31 @@ function FormDate() {
       <div className="row">
         <div className="field">
           <label htmlFor="offer-expiry-date">Expiry Date</label>
-          <div ref={dateRef[NAME.DATE_END]} className="input relative">
+          <div ref={dateRef[NAME.DATE_END]}   data-error={endDateErrorMessage} className="input relative">
             <DatePicker
-              id="offer-expiry-date" name={NAME.DATE_END}
-              
-              selected={setDefaultValue(NAME.DATE_END)}
-              onChange={(date) => handleDateChange(date, NAME.DATE_END)}
-              customInput={<Field ref={endDate} waiting={true}/>}
+             ref={calendarEndRef}
+              id="offer-expiry-date"
+              wrapperClassName="datePicker"
+              withPortal
+              shouldCloseOnSelect={false}
+              selected={currentlySelectedEndDateWhileCalendarOpen}
+              onChange={(date) => setCurrentlySelectedEndDateWhileCalendarOpen(date.setHours(23,59,59,999))}
+              customInput={<Field ref={endDate} dateFieldType={NAME.DATE_END}/>}
+              onCalendarOpen={(e) => endDateCalendarOpened(e)}
+              onCalendarClose={(e) => endDateCalendarClosed(e)}
             />
             <div className="icon"><img src="images/calendar-icon.png" alt=""/></div>
+            <div className="container calendar-controls" hidden={!startDateCalendarOpen && !endDateCalendarOpen}>
+              <div className="anchor">
+                <button className="calendar-save-button" onClick={(e) => { e.preventDefault(); saveButtonClicked = true}}>SAVE</button>
+                <div className="button square new" role="button">
+                    <Arrow color="#80F0BE"/>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   )
 }
