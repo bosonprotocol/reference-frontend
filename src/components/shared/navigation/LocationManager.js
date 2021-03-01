@@ -7,7 +7,15 @@ import { updateBackgroundColor, bgColorPrimary, bgColorSecondary, bgColorBlack }
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
 let affordances = { }
-let bottomNavCurrent = -1
+let bottomLinksMap = {
+  'customControls': -1,
+  [ROUTE.Home]: 0,
+  [ROUTE.ActivityVouchers]: 1,
+  [ROUTE.NewOffer]: 2,
+  [ROUTE.Activity]: 3,
+  [ROUTE.Connect]: 4,
+}
+let bottomNavActiveLink = -1
 
 // recieve an array with affordances that should be dispplayed
 const enableControl = (affordancesArray) => {
@@ -23,35 +31,33 @@ const callLocationAttributes = { }
 callLocationAttributes[ROUTE.Home] = () => {
   enableControl(controlset_3)
   updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 0
+  bottomNavActiveLink = bottomLinksMap[ROUTE.Home]
 }
 callLocationAttributes[ROUTE.Connect] = () => {
   enableControl(controlset_1)
   updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 4
+  bottomNavActiveLink = bottomLinksMap[ROUTE.Connect]
 }
-callLocationAttributes[ROUTE.Activity] = (nested, param) => {
+callLocationAttributes[ROUTE.Activity] = (nested) => {
   if(nested) {
     enableControl(controlset_1)
     updateBackgroundColor(bgColorSecondary)
-    bottomNavCurrent = -1
-  } else if (param) {
-
+    bottomNavActiveLink = bottomLinksMap.customControls
   } else {
     enableControl(controlset_2)
     updateBackgroundColor(bgColorBlack)
-    bottomNavCurrent = 3
+    bottomNavActiveLink = bottomLinksMap[ROUTE.Activity]
   }
 }
-callLocationAttributes[ROUTE.ActivityVouchers] = (nested, param) => {
+callLocationAttributes[ROUTE.ActivityVouchers] = (nested) => {
   if(nested) {
     enableControl(controlset_1)
     updateBackgroundColor(bgColorSecondary)
-    bottomNavCurrent = -1
+    bottomNavActiveLink = bottomLinksMap.customControls
   } else {
     enableControl(controlset_2)
     updateBackgroundColor(bgColorBlack)
-    bottomNavCurrent = 1
+    bottomNavActiveLink = bottomLinksMap[ROUTE.ActivityVouchers]
   }
 }
 
@@ -112,7 +118,7 @@ function LocationManager() {
     affordances = {}
     switchLocationMap()
 
-    navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
+    navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavActiveLink))
 
     navigationContext.dispatch(Action.updateLocation())
     navigationContext.dispatch(Action.updateAffordances(
