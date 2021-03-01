@@ -95,6 +95,7 @@ line-height: 26px;
 letter-spacing: 0.258824px;
 
 color: #EEECF1;
+border: 1px solid transparent;
 
 }
 .react-datepicker__month-container {
@@ -133,10 +134,18 @@ color: #3C3844;
     text-align: center;
     &--selected,
     &:hover {
-        background: rgba(128, 240, 190, 0.12);
+        background: transparent;
         border-radius: 50%;
         color: #fff;
+        border: 1px solid #80f0be;
     }
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; 
 }
 .react-datepicker__day-names {
     margin-top: 20px;
@@ -148,8 +157,8 @@ color: #3C3844;
     text-align: center;
 }
 .react-datepicker__day--selected {
-        color: #000;
-        background: rgba(#80F0BE, 1);
+        color: #000 !important;
+        background: rgba(#80F0BE, 1) !important;
 }
 .react-datepicker__day--keyboard-selected {
     background: none;
