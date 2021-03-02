@@ -210,3 +210,16 @@ export const IconActivityMessage = () => (
   </defs>
   </svg>
 )
+
+export const IconQRScanner = ({ color }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <rect x="4.40527" y="4.2063" width="6.76889" height="6.76889" rx="1.94082" fill={color ? color : '#1C2835'}/>
+  <rect x="4.40527" y="12.7563" width="6.76889" height="6.76889" rx="1.94082" fill={color ? color : '#1C2835'}/>
+  <rect x="12.9565" y="12.7563" width="6.76889" height="6.76889" rx="1.94082" fill={color ? color : '#1C2835'}/>
+  <rect x="12.9565" y="4.19458" width="6.76889" height="6.76889" rx="1.94082" fill={color ? color : '#1C2835'}/>
+  <path d="M7.9686 1.00024H5.7283C3.22723 1.00024 1.19971 3.02776 1.19971 5.52883V7.76913" stroke={color ? color : '#1C2835'} strokeWidth="1.16069"/>
+  <path d="M16.1618 22.7317L18.4021 22.7317C20.9031 22.7317 22.9307 20.7042 22.9307 18.2031L22.9307 15.9628" stroke={color ? color : '#1C2835'} strokeWidth="1.16069"/>
+  <path d="M1.19922 15.9628L1.19922 18.2031C1.19922 20.7042 3.22674 22.7317 5.72781 22.7317L7.96811 22.7317" stroke={color ? color : '#1C2835'} strokeWidth="1.16069"/>
+  <path d="M22.9307 7.76889L22.9307 5.52859C22.9307 3.02752 20.9031 1 18.4021 1L16.1618 1" stroke={color ? color : '#1C2835'} strokeWidth="1.16069"/>
+  </svg>
+)
