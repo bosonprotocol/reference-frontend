@@ -80,6 +80,7 @@
     "start:playground": "env-cmd -f .env.playground react-scripts start",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
+    "build:playground": "env-cmd -f .env.playground react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
