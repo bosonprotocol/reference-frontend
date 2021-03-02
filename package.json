@@ -77,6 +77,7 @@
     "start": "env-cmd -f .env.dev react-scripts start",
     "start:local": "env-cmd -f .env.local react-scripts start",
     "start:demo": "env-cmd -f .env.demo react-scripts start",
+    "start:playground": "env-cmd -f .env.playground react-scripts start",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
     "test": "react-scripts test",
