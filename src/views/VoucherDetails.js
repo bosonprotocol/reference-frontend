@@ -219,6 +219,7 @@ function VoucherDetails(props) {
             )
        
         }
+
     }
 
    
@@ -699,7 +700,7 @@ function singleStatusComponent({title, date, color}) {
 
 }
 
-function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiryDate) {
+function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiredDate) {
     const jsx = (<div className={`status-block`}>
     <div className="final-status-container">
 
@@ -717,8 +718,8 @@ function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelO
         }
       
      </div>
-     <p className="status-details">{formatDate(expiryDate, 'string')}</p>
+     <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
  </div>)
-    return {jsx, date: expiryDate}
+    return {jsx, date: expiredDate}
 }
 export default VoucherDetails
