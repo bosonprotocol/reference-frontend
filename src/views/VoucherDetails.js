@@ -32,6 +32,8 @@ import { initVoucherDetails } from "../helpers/VoucherParsers"
 
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
+import { IconQRScanner } from "../components/shared/Icons"
+
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
@@ -117,15 +119,15 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-            <div className="button gray" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
+            <div className="action button cof" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
-                <div className="button refund" role="button" onClick={() => onRefund()}>REFUND</div>
+                <div className="action button refund" role="button" onClick={() => onRefund()}>REFUND</div>
                 <Link
                     to={`${ROUTE.ActivityVouchers}/${voucherDetails?.id}${ROUTE.VoucherQRCode}`}>
-                    <div className="button primary" role="button">REDEEM</div>
+                    <div className="action button redeem" role="button"> <IconQRScanner /> REDEEM</div>
                 </Link>
             </div>
         )
@@ -133,13 +135,13 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-            <div className="button red" role="button" onClick={() => onComplain()}>COMPLAIN</div>
+            <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
             <ContractInteractionButton
-                className="button primary"
+                className="action button commit"
                 handleClick={() => onCommitToBuy()}
                 label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
             />

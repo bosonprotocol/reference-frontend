@@ -85,6 +85,28 @@
     }
   }
 
+  &.complain {
+    padding: 15 px 11px;
+    border-radius: 8px;
+    background: #FA5B66;
+
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 19px;
+    /* identical to box height */
+
+    text-align: center;
+    text-transform: uppercase;
+
+    color: #fff;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
   &.text {
     background: transparent;
     border: none;
@@ -155,7 +177,7 @@
   }
 
   &.refund {
-    background: #3D5167;
+    background: #E49043;
     color: #ffffff;
 
     // &:hover {
@@ -215,5 +237,49 @@
   &[disabled] {
     pointer-events: none;
     opacity: 0.5;
+  }
+}
+
+.action.button {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+
+  font-family: 'Exo', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  /* identical to box height */
+
+  text-align: center;
+  text-transform: uppercase;
+
+  &.refund {
+    background: #E49043;
+    color: #ffffff;
+  }
+
+  &.redeem,
+  &.commit {
+    background: #80F0BE;
+    color: #1C2835;
+    
+    svg {
+      margin-right: 10px;
+    }
+  }
+
+  &.complain {
+    background: #FA5B66;
+    color: #fff; 
+  }
+
+  &.cof {
+    background: #A1B2C5;
+    color: #fff; 
   }
 }
