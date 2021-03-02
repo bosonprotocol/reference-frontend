@@ -68,7 +68,6 @@ function VoucherDetails(props) {
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
-
     
     // int on index #2 is the X position of the block
     const tablePrices = [
@@ -201,17 +200,28 @@ function VoucherDetails(props) {
     const statusBlocks = voucherDetails ? [] : false
 
     if (!!voucherDetails) {
-        if (voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
-        if (voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
-        if (voucherDetails.REFUNDED) statusBlocks.push({ title: 'REFUNDED', date: voucherDetails.REFUNDED })
-        if (voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })
-        if (voucherDetails.CANCELLED) statusBlocks.push({ title: 'CANCELLED', date: voucherDetails.CANCELLED })
-        if (voucherDetails.FINALIZED) statusBlocks.push({ title: 'FINALIZED', date: voucherDetails.FINALIZED })
-        statusBlocks[statusBlocks.length - 1].color = 2
-        if (statusBlocks.length === 1) statusBlocks[0].color = 1
+        if (voucherDetails.COMMITTED) statusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1}))
+        if (voucherDetails.REDEEMED) statusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2  }))
+        if (voucherDetails.REFUNDED) statusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED }))
+        if (voucherDetails.COMPLAINED) statusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
+        if (voucherDetails.CANCELLED) statusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
+        
+        if(statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+        
+        if(voucherDetails.FINALIZED) {
+            statusBlocks.push(
+                finalStatusComponent(
+                    !!voucherDetails.REDEEMED,
+                    !!voucherDetails.COMPLAINED,
+                    !!voucherDetails.CANCELLED,
+                    voucherDetails.FINALIZED
+                )
+            )
+       
+        }
     }
 
-    if(statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+   
   
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
@@ -626,7 +636,7 @@ function VoucherDetails(props) {
                                 <div className="status-container flex" id='horizontal-view-container'>
                                     <HorizontalScrollView
                                         items={statusBlocks}
-                                        ItemComponent={statusBlockComponent}
+                                        ItemComponent={({item}) => item.jsx}
                                         defaultSpace='0'
                                         spaceBetweenItems='8px'
                                         moveSpeed={1}
@@ -680,13 +690,35 @@ function VoucherDetails(props) {
     )
 }
 
-function statusBlockComponent({ item, index }) {
-    return (
-        <div key={index} className={`status-block color_${item.color}`}>
-            <h3 className="status-name">{item.title}</h3>
-            <p className="status-details">{formatDate(item.date, 'string')}</p>
-        </div>
-    );
+function singleStatusComponent({title, date, color}) {
+    const jsx =  (<div key={title} className={`status-block color_${color}`}>
+    <h3 className="status-name">{title}</h3>
+     <p className="status-details">{formatDate(date, 'string')}</p>
+ </div>);
+    return {jsx, date}
+
 }
 
+function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiryDate) {
+    const jsx = (<div className={`status-block`}>
+    <div className="final-status-container">
+
+        { hasBeenRedeemed ? 
+        <h3 className="status-name color_1">REDEMPTION</h3> :
+        <h3 className="status-name color_2">NO REDEMPTION</h3>
+        }
+        { hasBeenComplained ?
+        <h3 className="status-name color_3">COMPLAINT</h3> :
+        <h3 className="status-name color_4">NO COMPLAINT</h3>
+        }
+        { hasBeenCancelOrFault ?
+        <h3 className="status-name color_5">CANCEL/FAULT</h3> :
+        <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
+        }
+      
+     </div>
+     <p className="status-details">{formatDate(expiryDate, 'string')}</p>
+ </div>)
+    return {jsx, date: expiryDate}
+}
 export default VoucherDetails
