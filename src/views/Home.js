@@ -97,7 +97,7 @@ function Home() {
                     </div>
                     <section className="product-list">
                         <div className="container">
-                            <Swiper
+                            {productBlocks?.length ? <Swiper
                             spaceBetween={7}
                             slidesPerView={3}
                             loop={productBlocks.length > 3 ? true : false}
@@ -114,7 +114,7 @@ function Home() {
                                     delay={ `${ (id + animateDel.PL) * 50 }ms` }
                                     animate={ id < animateEl.PL }/>
                                 </SwiperSlide>) }
-                            </Swiper>
+                            </Swiper> : null}
                         </div>
                     </section>
                     <section className="card-list">
