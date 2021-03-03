@@ -100,7 +100,7 @@ function Home() {
                             <Swiper
                             spaceBetween={7}
                             slidesPerView={3}
-                            loop={true}
+                            loop={productBlocks.length > 3 ? true : false}
                             shortSwipes={false}
                             threshold={5}
                             freeMode={true}
