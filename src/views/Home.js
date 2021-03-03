@@ -25,6 +25,7 @@ import { authenticateUser, getAccountStoredInLocalStorage } from "../hooks/authe
 
 function Home() {
     const [productBlocks, setProductBlocks] = useState([]);
+    const [productBlocksFiltered, setProductBlocksFiltered] = useState([]);
     const homepage = useRef()
     const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
     const screensRef = useRef()
@@ -81,6 +82,10 @@ function Home() {
         authenticateUser(library, account, chainId);
     }
 
+    useEffect(() => {
+        setProductBlocksFiltered(productBlocks.filter((block) => block.qty > 0 ))
+    }, [productBlocks])
+
     return (
         <>
 
@@ -97,10 +102,10 @@ function Home() {
                     </div>
                     <section className="product-list">
                         <div className="container">
-                            {productBlocks?.length ? <Swiper
+                            {productBlocksFiltered?.length ? <Swiper
                             spaceBetween={7}
                             slidesPerView={3}
-                            loop={productBlocks.length > 3 ? true : false}
+                            loop={productBlocksFiltered.length > 3 ? true : false}
                             shortSwipes={false}
                             threshold={5}
                             freeMode={true}
@@ -108,7 +113,7 @@ function Home() {
                             observer={true}
                             observeParents={true}
                             freeModeMomentumVelocityRatio={0.01} >
-                            { productBlocks.map((block, id) => block.qty > 0 && 
+                            { productBlocksFiltered.map((block, id) =>
                                 <SwiperSlide key={id}>
                                     <ProductBlock { ...block }
                                     delay={ `${ (id + animateDel.PL) * 50 }ms` }
