@@ -32,6 +32,8 @@ import { initVoucherDetails } from "../helpers/VoucherParsers"
 
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
+import { IconQRScanner } from "../components/shared/Icons"
+
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
@@ -68,7 +70,6 @@ function VoucherDetails(props) {
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
-
     
     // int on index #2 is the X position of the block
     const tablePrices = [
@@ -118,15 +119,15 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-            <div className="button gray" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
+            <div className="action button cof" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
-                <div className="button refund" role="button" onClick={() => onRefund()}>REFUND</div>
+                <div className="action button refund" role="button" onClick={() => onRefund()}>REFUND</div>
                 <Link
                     to={`${ROUTE.ActivityVouchers}/${voucherDetails?.id}${ROUTE.VoucherQRCode}`}>
-                    <div className="button primary" role="button">REDEEM</div>
+                    <div className="action button redeem" role="button"> <IconQRScanner /> REDEEM</div>
                 </Link>
             </div>
         )
@@ -134,13 +135,13 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-            <div className="button red" role="button" onClick={() => onComplain()}>COMPLAIN</div>
+            <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
             <ContractInteractionButton
-                className="button primary"
+                className="action button commit"
                 handleClick={() => onCommitToBuy()}
                 label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
             />
@@ -201,17 +202,29 @@ function VoucherDetails(props) {
     const statusBlocks = voucherDetails ? [] : false
 
     if (!!voucherDetails) {
-        if (voucherDetails.COMMITTED) statusBlocks.push({ title: 'COMMITTED', date: voucherDetails.COMMITTED })
-        if (voucherDetails.REDEEMED) statusBlocks.push({ title: 'REDEEMED', date: voucherDetails.REDEEMED })
-        if (voucherDetails.REFUNDED) statusBlocks.push({ title: 'REFUNDED', date: voucherDetails.REFUNDED })
-        if (voucherDetails.COMPLAINED) statusBlocks.push({ title: 'COMPLAINED', date: voucherDetails.COMPLAINED })
-        if (voucherDetails.CANCELLED) statusBlocks.push({ title: 'CANCELLED', date: voucherDetails.CANCELLED })
-        if (voucherDetails.FINALIZED) statusBlocks.push({ title: 'FINALIZED', date: voucherDetails.FINALIZED })
-        statusBlocks[statusBlocks.length - 1].color = 2
-        if (statusBlocks.length === 1) statusBlocks[0].color = 1
+        if (voucherDetails.COMMITTED) statusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1}))
+        if (voucherDetails.REDEEMED) statusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2  }))
+        if (voucherDetails.REFUNDED) statusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED }))
+        if (voucherDetails.COMPLAINED) statusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
+        if (voucherDetails.CANCELLED) statusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
+        
+        if(statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+        
+        if(voucherDetails.FINALIZED) {
+            statusBlocks.push(
+                finalStatusComponent(
+                    !!voucherDetails.REDEEMED,
+                    !!voucherDetails.COMPLAINED,
+                    !!voucherDetails.CANCELLED,
+                    voucherDetails.FINALIZED
+                )
+            )
+       
+        }
+
     }
 
-    if(statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+   
   
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
@@ -626,7 +639,7 @@ function VoucherDetails(props) {
                                 <div className="status-container flex" id='horizontal-view-container'>
                                     <HorizontalScrollView
                                         items={statusBlocks}
-                                        ItemComponent={statusBlockComponent}
+                                        ItemComponent={({item}) => item.jsx}
                                         defaultSpace='0'
                                         spaceBetweenItems='8px'
                                         moveSpeed={1}
@@ -680,13 +693,35 @@ function VoucherDetails(props) {
     )
 }
 
-function statusBlockComponent({ item, index }) {
-    return (
-        <div key={index} className={`status-block color_${item.color}`}>
-            <h3 className="status-name">{item.title}</h3>
-            <p className="status-details">{formatDate(item.date, 'string')}</p>
-        </div>
-    );
+function singleStatusComponent({title, date, color}) {
+    const jsx =  (<div key={title} className={`status-block color_${color}`}>
+    <h3 className="status-name">{title}</h3>
+     <p className="status-details">{formatDate(date, 'string')}</p>
+ </div>);
+    return {jsx, date}
+
 }
 
+function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiredDate) {
+    const jsx = (<div className={`status-block`}>
+    <div className="final-status-container">
+
+        { hasBeenRedeemed ? 
+        <h3 className="status-name color_1">REDEMPTION</h3> :
+        <h3 className="status-name color_2">NO REDEMPTION</h3>
+        }
+        { hasBeenComplained ?
+        <h3 className="status-name color_3">COMPLAINT</h3> :
+        <h3 className="status-name color_4">NO COMPLAINT</h3>
+        }
+        { hasBeenCancelOrFault ?
+        <h3 className="status-name color_5">CANCEL/FAULT</h3> :
+        <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
+        }
+      
+     </div>
+     <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
+ </div>)
+    return {jsx, date: expiredDate}
+}
 export default VoucherDetails
