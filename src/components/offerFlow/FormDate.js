@@ -10,7 +10,6 @@ import "./FormDate.scss"
 
 import { Arrow } from "../shared/Icons"
 import { NAME } from "../../helpers/Dictionary";
-import { useEffect } from 'react/cjs/react.development';
 
 function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorMessage, endDateErrorMessage}) {
   const sellerContext = useContext(SellerContext)
@@ -30,7 +29,7 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
   let saveButtonClicked = false;
   const getOfferingData = getData(sellerContext.state.offeringData)
 
-  const [currentlySelectedStartDateWhileCalendarOpen, setCurrentlySelectedStartDateWhileCalendarOpen ]= useState(getOfferingData(NAME.DATE_START));
+  const [currentlySelectedStartDateWhileCalendarOpen, setCurrentlySelectedStartDateWhileCalendarOpen ]= useState(getOfferingData(NAME.DATE_START) || new Date().setHours(0,0,0,0));
   const [currentlySelectedEndDateWhileCalendarOpen, setCurrentlySelectedEndDateWhileCalendarOpen ]= useState(getOfferingData(NAME.DATE_END));
 
   const end_date = getOfferingData(NAME.DATE_END);
@@ -43,10 +42,6 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
     setEndDateCalendarOpen(true)
   }
 
-  useEffect(()=> {
-    setCurrentlySelectedEndDateWhileCalendarOpen(getOfferingData(NAME.DATE_START));
-    // eslint-disable-next-line
-  },[])
   const startDateCalendarClosed = () => {
     setTimeout(() => {
       if(saveButtonClicked) {
