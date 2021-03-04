@@ -10,7 +10,6 @@ import "./FormDate.scss"
 
 import { Arrow } from "../shared/Icons"
 import { NAME } from "../../helpers/Dictionary";
-import { useEffect } from 'react/cjs/react.development';
 
 function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorMessage, endDateErrorMessage}) {
   const sellerContext = useContext(SellerContext)
