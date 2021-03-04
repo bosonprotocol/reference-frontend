@@ -117,7 +117,17 @@ function Home() {
                             freeModeSticky={true}
                             observer={true}
                             observeParents={true}
-                            freeModeMomentumVelocityRatio={0.01} >
+                            freeModeMomentumVelocityRatio={0.01}
+                            breakpoints={{
+                                320: {
+                                    slidesPerView: 2,
+                                    loop: productBlocksFiltered.length > 2 ? true : false
+                                },
+                                769: {
+                                  slidesPerView: 3,
+                                  loop: productBlocksFiltered.length > 3 ? true : false
+                                },
+                            }} >
                             { productBlocksFiltered.map((block, id) =>
                                 <SwiperSlide key={id}>
                                     <ProductBlock { ...block }
@@ -140,7 +150,15 @@ function Home() {
                         freeModeSticky={true}
                         observer={true}
                         observeParents={true}
-                        freeModeMomentumVelocityRatio={0.05} >
+                        freeModeMomentumVelocityRatio={0.05} 
+                        breakpoints={{
+                            320: {
+                                slidesPerView: 'auto',
+                            },
+                            769: {
+                              slidesPerView: 2,
+                            },
+                        }} >
                         { cardBlocks.map((block, id) => 
                             <SwiperSlide key={id}>
                                 <CardBlock { ...block }
