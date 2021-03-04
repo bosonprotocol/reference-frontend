@@ -78,7 +78,6 @@ function Onboarding(props) {
   const initialSlide = localStorage.getItem('onboarding-slide')
 
   const playSlide = (currentSlide) => {
-    console.log(currentSlide)
     // reactize later
     document.querySelectorAll(`.onboarding [data-slide]`).forEach(slide => {
       slide.classList.add('pause')
