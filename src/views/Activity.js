@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -6,13 +5,13 @@ import "./Activity.scss"
 
 import { GlobalContext } from '../contexts/Global'
 
-import { MODAL_TYPES, ROUTE } from "../helpers/Dictionary"
+import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
 import { getAccountVouchers } from "../helpers/VoucherParsers"
 
-import { ModalContext, ModalResolver } from "../contexts/Modal";
+import { ModalContext } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -46,21 +45,8 @@ export function ActivityAccountVouchers() {
 export function ActivityVoucherSets() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
     const globalContext = useContext(GlobalContext);
-    const { account } = useWeb3React();
-    const modalContext = useContext(ModalContext);
 
     const voucherSets = globalContext.state.allVoucherSets
-
-    useEffect(()=> {
-        if (!account) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: 'Connect to a wallet to view your vouchers.'
-            }));
-            return;
-        }
-    }, [account, modalContext]);
 
     useEffect(() => {
         voucherSets ?
