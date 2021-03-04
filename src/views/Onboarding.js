@@ -102,8 +102,10 @@ function Onboarding(props) {
           navigation
           pagination
           slidesPerView={1}
+          threshold={6}
           loop={false}
           shortSwipes={true}
+          resistance={true}
           observer={true}
           observeParents={true}
           onSlideChange={(slider) => playSlide(slider.snapIndex)}
