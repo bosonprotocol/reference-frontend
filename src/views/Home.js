@@ -133,6 +133,7 @@ function Home() {
                         spaceBetween={8}
                         slidesPerView={'auto'}
                         loop={true}
+                        navigation
                         shortSwipes={false}
                         threshold={5}
                         freeMode={true}
