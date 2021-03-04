@@ -11,6 +11,8 @@ import Onboarding from '../views/Onboarding'
 import QRCodeScanner from "../components/shared/QRCodeScanner"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation } from 'swiper';
+
 import "swiper/swiper.min.css"
 
 import { animateEl, animateDel } from "../helpers/AnimationMap"
@@ -22,6 +24,8 @@ import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
 import { useWeb3React } from "@web3-react/core";
 import { authenticateUser, getAccountStoredInLocalStorage } from "../hooks/authenticate";
+
+SwiperCore.use([Navigation]);
 
 function Home() {
     const [productBlocks, setProductBlocks] = useState([]);
@@ -104,6 +108,7 @@ function Home() {
                         <div className="container">
                             {productBlocksFiltered?.length ? <Swiper
                             spaceBetween={7}
+                            navigation
                             slidesPerView={3}
                             loop={productBlocksFiltered.length > 3 ? true : false}
                             shortSwipes={false}
