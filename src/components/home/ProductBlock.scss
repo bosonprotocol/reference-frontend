@@ -22,7 +22,10 @@
     }
   }
   .product-image {
-    background: #1C2835;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #1C2835;
     // box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.36);
     border-radius: 12px;
 

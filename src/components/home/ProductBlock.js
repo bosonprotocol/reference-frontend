@@ -19,9 +19,7 @@ function ProductBlock(props) {
             // onClick={ openProduct }
             className={ `product-block ${ productType }  ${ animate ? 'animate' : '' }` }
         >
-            <div className={ `product-image flex center ${ productType }` }>
-                <img style={ { transitionDelay: delay } } src={ image } alt={ title }/>
-            </div>
+            <div className={ `product-image flex center ${ productType }` } style={{backgroundImage: `url('${image}')`}}></div>
             <h3>{ title }</h3>
             <div className="price flex ai-center">
                 <span><IconEth/>{ price } ETH</span>
