@@ -118,7 +118,6 @@ function ActivityView(props) {
                     </TabList>
                         <>
                             <TabPanel>
-                                {console.log('test', activeVouchers, account)}
                                 {activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherType={voucherType} products={ activeVouchers }/> :
                                     activityMessage(1)
