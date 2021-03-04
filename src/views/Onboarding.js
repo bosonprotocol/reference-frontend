@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import './Onboarding.scss'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
