@@ -247,76 +247,52 @@
     }
   }
 
-  .slick-slider {
-    @media (min-width: 961px) {
-      box-shadow: $container-shadow;
-      border-radius: $container-radius;
-    }
-  }
-
   @media (max-width: 768px) {
-    .slick-slide:nth-child(3) {
-      .slide-image {
-        margin-top: -50px !important;
-      }
+    .slide-image {
+      margin-top: -50px !important;
     }
   }
 
-  button.slick-arrow {
-    &.slick-next,
-    &.slick-prev {
-      transition: 0.2s ease-in-out;
-      
-      &:hover {
-        opacity: 0.7;
-      }
+  .swiper-button-next,
+  .swiper-button-prev {
+    transition: 0.2s ease-in-out;
 
-      &.slick-disabled {
-        opacity: 0.2;
-        cursor: auto;
-      }
+    width: 40px;
+    height: 40px;
+    border-top: 3px solid #80F0BE;
+    border-left: 3px solid #80F0BE;
+    top: 50%;
+
+    @media (max-width: 768px) {
+      width: 20px;
+      height: 20px;
+
+      border-top: 2px solid #80F0BE;
+      border-left: 2px solid #80F0BE;
     }
-    &.slick-next {
-      width: 60px;
-      height: 60px;
-      right: 20px;
-      &::before,
-      &::after {
-        content: '';
-        width: 35px;
-        height: 3px;
-        transform: rotate(45deg) translateX(-15px);
-        background: #80F0BE;
-        display: block;
-        opacity: 1;
-      }
-
-      &::after {
-        transform: rotate(-45deg) translateX(-15px);
-      }
+    
+    &:hover {
+      opacity: 0.7;
     }
-    &.slick-prev {
-      width: 60px;
-      height: 60px;
-      left: 20px;
-      z-index: 2;
-      &::before,
-      &::after {
-        content: '';
-        width: 35px;
-        height: 3px;
-        transform: rotate(-225deg) translateX(-15px);
-        background: #80F0BE;
-        display: block;
-        opacity: 1;
-      }
 
-      &::after {
-        transform: rotate(225deg) translateX(-15px);
-      }
+    &.swiper-button-disabled {
+      opacity: 0.2;
+      cursor: auto;
+    }
+
+    &::before,
+    &::after {
+      display: none;
     }
   }
-
+  .swiper-button-next {
+    right: 8px;
+    transform: translateY(-50%) rotate(135deg);
+  }
+  .swiper-button-prev {
+    left: 8px;
+    transform: translateY(-50%) rotate(-45deg);
+  }
   .slick-slider,
   .slick-list,
   .slick-track,
@@ -324,7 +300,7 @@
     min-height: 100%;
   }
 
-  .slick-slide {
+  .swiper-slide {
     height: 100vh;
 
     .center-flex {
