@@ -10,6 +10,7 @@ import "./FormDate.scss"
 
 import { Arrow } from "../shared/Icons"
 import { NAME } from "../../helpers/Dictionary";
+import { useEffect } from 'react/cjs/react.development';
 
 function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorMessage, endDateErrorMessage}) {
   const sellerContext = useContext(SellerContext)
@@ -42,6 +43,10 @@ function FormDate({startDateValueReceiver, endDateValueReceiver, startDateErrorM
     setEndDateCalendarOpen(true)
   }
 
+  useEffect(()=> {
+    setCurrentlySelectedEndDateWhileCalendarOpen(getOfferingData(NAME.DATE_START));
+    // eslint-disable-next-line
+  },[])
   const startDateCalendarClosed = () => {
     setTimeout(() => {
       if(saveButtonClicked) {
