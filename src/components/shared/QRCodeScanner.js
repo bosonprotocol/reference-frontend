@@ -8,24 +8,51 @@ import { GlobalContext, Action } from '../../contexts/Global'
 import { useHistory } from "react-router-dom";
 import { MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
+import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { useWeb3React } from "@web3-react/core";
+import { getVoucherDetails } from "../../hooks/api";
 
 function QRCodeScanner() {
     const globalContext = useContext(GlobalContext);
     const [delay, setDelay] = useState(300);
     const history = useHistory();
     const modalContext = useContext(ModalContext);
+    const {account} = useWeb3React();
 
     const stopRecording = () => {
         globalContext.dispatch(Action.toggleQRReader(0))
         setDelay(false)
     };
 
-    const handleScan = (data) => {
+    const handleScan = async (data) => {
         if (data) {
-            //ToDo: Should validate the result
-            // const { result, error } = validate(data);
+            const authData = getAccountStoredInLocalStorage(account);
 
-            history.push(`/voucher/${ data }`);
+            if (!authData.activeToken) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed '
+                }));
+                return;
+            }
+          
+            try {
+                await getVoucherDetails(data, authData.authToken);
+            } catch(e) {
+                document.errorr = e;
+                if(e.response.status === 404){
+                    modalContext.dispatch(ModalResolver.showModal({
+                        show: true,
+                        type: MODAL_TYPES.GENERIC_ERROR,
+                        content: 'QR code seems to be invalid. Please try again.'
+                    }));
+                    return;
+                }
+               
+            }
+
+            history.push(`/vouchers/${ data }`);
             stopRecording();
         }
     };
