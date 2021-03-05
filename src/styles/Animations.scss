@@ -4,11 +4,8 @@
   // before
   .product-list {
     .product-block.animate {
-      img {
-        transform: scale(1.1);
-        opacity: 0;
-        transition: 0.45s ease-in-out;
-      }
+      opacity: 0;
+      transition: 0.45s ease-in-out;
     }
   }
   // turned off
@@ -23,11 +20,8 @@
   // }
   .home-products {
     .product-block.animate {
-      img {
-        transform: scale(1.1);
-        opacity: 0;
-        transition: 0.45s ease-in-out;
-      }
+      opacity: 0;
+      transition: 0.45s ease-in-out;
     }
   }
 
@@ -35,10 +29,7 @@
   &.init {
     .product-list {
       .product-block {
-        img {
-          transform: scale(1);
-          opacity: 1;
-        }
+        opacity: 1;
       }
     }
     // turned off
@@ -52,10 +43,7 @@
     // }
     .home-products {
       .product-block.animate {
-        img {
-          transform: scale(1);
-          opacity: 1;
-        }
+        opacity: 1;
       }
     }
   }
