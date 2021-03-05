@@ -6,18 +6,21 @@ export const getData = getContextData
 
 export const LoadingContext = createContext()
 
-export const LoadingInitalState = {
-  wallet: {
-    address: 0,
-    network: 0,
-  }
+export const wallet = {
+  address: 'wallet-address',
+  network: 'wallet-network',
+}
+
+export const LoadingInitialState = {
+  [wallet.address]: 0,
+  [wallet.network]: 0,
 };
 
 // payload resolver
-export const Loading = {
-  toggleLoading: (element, toggle) => ({
+export const Toggle = {
+  Loading: (element, toggle) => ({
     type: CONTROL.TOGGLE_LOADING,
-    payload: { target: element, state: toggle },
+    payload: { target: element.split('.'), state: toggle },
   }),
 }
 
@@ -31,3 +34,5 @@ export const LoadingReducer = (state, action) => {
 
   return {...state, ...actionList[action.type]()};
 }
+
+// loadingContext.dispatch(Toggle.Loading(el.wallet.network, 1))

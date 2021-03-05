@@ -13,6 +13,7 @@ import Identicon from "./Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
+import { LoadingContext, Toggle, wallet } from "../../contexts/Loading";
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -212,6 +213,7 @@ function WalletListItem({
 function WalletAccount() {
     const { account, connector } = useWeb3React();
     const [connectedNetowrk, setConnectedNetowrk] = useState()
+    const loadingContext = useContext(LoadingContext);
     const web3 = new Web3(window.ethereum);
 
     function getStatusIcon() {
@@ -226,30 +228,29 @@ function WalletAccount() {
         }
     }
 
-    // function getName() {
-    //     if (connector === injected) {
-    //         return "MetaMask";
-    //     } else if (connector === walletconnect) {
-    //         return "WalletConnect";
-    //     }
-    // }
-
     const copyButton = <CopyHelper toCopy={ account }>
         <span style={ { marginLeft: "4px" } }>Copy Address</span>
     </CopyHelper>
 
 
-    web3?.eth?.net?.getNetworkType()?.then(netId => {
-        setConnectedNetowrk(netId)
-    })
+    useEffect(() => {
+        web3?.eth?.net?.getNetworkType()?.then(netId => {
+            setConnectedNetowrk(netId)
+        })
+    }, [])
+
+    useEffect(() => {
+        if(account) loadingContext.dispatch(Toggle.Loading(wallet?.network, 0))
+        if(!account) loadingContext.dispatch(Toggle.Loading(wallet?.network, 1))
+    }, [account])
 
 
     return (
         <>
             <div className="connected-wallet">
-                <div className="address relative">
+                <div className={`address relative ${loadingContext.state[wallet?.network] ? 'is-loading' : ''}`}>
                     <div className="netowrk-info flex center">
-                        <span className="net-name">{connectedNetowrk}</span>
+                        <span className={`net-name`}>{connectedNetowrk}</span>
                     </div>
                     <div className="url flex ai-center">{ getStatusIcon() }{ shortenAddress(account) }</div>
                     <div className="copy">{ copyButton }</div>
