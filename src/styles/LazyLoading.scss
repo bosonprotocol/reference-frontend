@@ -1,0 +1,41 @@
+.is-loading {
+  position: relative;
+  overflow: hidden;
+  transition: 0.8s ease-in-out;
+
+  &::before {
+    content: '';
+    background-color: #5d5d5d;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 90;
+    background: linear-gradient(0.17turn, #2c2c2c 0%, #4e5c56 30%, #657b72 32%, #2c2c2c 100%);
+    background-size: 1500% 1500%;
+    transition: 0.8s ease-in-out;
+    animation: loadingPlaceholder 2.9s ease-in infinite reverse;
+  }
+  
+  &.error {
+    filter: blur(5px);
+    transform: scale(0.98);
+    opacity: 0.6;
+    position: relative;
+    pointer-events: none;
+
+    &::before {
+      animation-play-state: paused;
+      filter: grayscale(1) contrast(1.5);
+    }
+  }
+}
+
+@keyframes loadingPlaceholder { 
+  0%{background-position:0% 91%;}
+  50%{background-position:100% 9%;}
+  50%{background-position:100% 9%;}
+  100%{background-position:0% 91%;}
+}
