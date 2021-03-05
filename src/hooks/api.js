@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_BACKEND_BASE_URL
+    baseURL: 'http://localhost:3000'
 });
 
 export const generateNonce = async (address) => {
@@ -27,6 +27,20 @@ export const getVouchers = async (token) => {
     });
     return allVouchers.data;
 };
+
+export const getVoucherSetsByOwnerAddress = async (address, token) => {
+  const ownerVoucherSets = await axiosInstance.get(`/users/${address}/voucher-sets`, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    });
+    return ownerVoucherSets.data;
+}
+
+export const getVouchersInVoucherSupplyByOwnerAddressAndVoucherSupplyId = async (voucherSupplyId, address, token) => {
+    const ownerVouchersInSupply = await axiosInstance.get(`/users/${address}/voucher-sets/${voucherSupplyId}/vouchers`, {
+          headers: { 'Authorization': `Bearer ${ token }` }
+      });
+      return ownerVouchersInSupply.data;
+  }
 
 export const getVoucherDetails = async (voucherId, token) => {
     const voucherDetails = await axiosInstance.get(`/vouchers/${ voucherId }/voucher-details`, {
