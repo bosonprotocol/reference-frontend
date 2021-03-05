@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -46,6 +45,7 @@ export function ActivityAccountVouchers() {
 export function ActivityVoucherSets() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
     const globalContext = useContext(GlobalContext);
+    const { account } = useWeb3React();
 
     const voucherSets = globalContext.state.allVoucherSets
 
@@ -58,7 +58,7 @@ export function ActivityVoucherSets() {
     }, [voucherSets])
 
     return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } voucherType={ VOUCHER_TYPE.voucherSet }/> : null
+        <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/> : null
 }
 
 function ActivityView(props) {
@@ -118,13 +118,13 @@ function ActivityView(props) {
                     </TabList>
                         <>
                             <TabPanel>
-                                {activeVouchers?.length?
+                                {activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherType={voucherType} products={ activeVouchers }/> :
                                     activityMessage(1)
                                 }
                             </TabPanel>
                             <TabPanel>
-                                {inactiveVouchers?.length?
+                                {inactiveVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> :
                                     activityMessage()
                                 }
