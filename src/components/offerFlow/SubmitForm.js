@@ -19,10 +19,9 @@ import { toFixed } from "../../utils/format-utils";
 
 
 export default function SubmitForm() {
-    // onFileSelectSuccess={ (file) => setSelectedFile(file) }
-    const [redirect, setRedirect] = useState(0)
-    const [loading, setLoading] = useState(0)
-    const sellerContext = useContext(SellerContext)
+    const [redirect, setRedirect] = useState(0);
+    const [loading, setLoading] = useState(0);
+    const sellerContext = useContext(SellerContext);
     const modalContext = useContext(ModalContext); 
     const location = useLocation();
 
@@ -80,9 +79,9 @@ export default function SubmitForm() {
         let dataArr = [
             toFixed(new Date(start_date) / 1000, 0),
             toFixed(new Date(end_date) / 1000, 0),
-            ethers.utils.parseEther(price).toString(),
-            ethers.utils.parseEther(seller_deposit).toString(),
-            ethers.utils.parseEther(buyer_deposit).toString(),
+            price.toString(),
+            seller_deposit.toString(),
+            buyer_deposit.toString(),
             parseInt(quantity)
         ];
        
@@ -108,10 +107,10 @@ export default function SubmitForm() {
 
             await createVoucherSet(formData, authData.authToken);
 
-            globalContext.dispatch(Action.fetchVoucherSets())
+            globalContext.dispatch(Action.fetchVoucherSets());
 
-            setLoading(0)
-            setRedirect(1)
+            setLoading(0);
+            setRedirect(1);
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -136,8 +135,9 @@ export default function SubmitForm() {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-        formData.append('sellerDepositCurrency', seller_deposit_currency);
-        formData.append('priceCurrency', price_currency);
+
+        //TODO uncomment Below paymentType
+        // formData.append('paymentType', price_currency + seller_deposit_currency);
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
@@ -185,7 +185,7 @@ const createNewVoucherSet =  async (dataArr, bosonRouterContract, depositContrac
             return tx.wait();
         }
         case('BSNBSN'): {
-
+            //TODO implement
                 // const nonce = await depositContract.nonces(accountAddress)
 
                 //string
@@ -198,22 +198,13 @@ const createNewVoucherSet =  async (dataArr, bosonRouterContract, depositContrac
                 //     toWei(1),
                 //     chainId
                 // )
-                    
-
-            const data = [...dataArr];
          
 
-            // console.log(res2)
-            // tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
-            //     SMART_CONTRACTS.BosonTokenPriceContractAddress,
-            //     depositContract.address,
-            //     txValue,
-            //     toWei(1),
-            //     v, r, s,
-            //     data
-            // );
-            // return tx.wait();
         }
+        case('ETHBSN'): {
+              //TODO implement
+        }
+
         default: {
             console.error(`Currencies combination not found ${currencyCombination}`);
             throw new Error('Something went wrong')

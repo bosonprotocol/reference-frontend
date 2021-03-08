@@ -6,7 +6,8 @@
   transform: translate(-50%, -50%);
   background: #1D242C;
   border-radius: 14px;
-  padding: 28px 23px;
+  padding: 28px 22px;
+  max-width: 350px;
 
   .text {
     font-family: 'Montserrat', sans-serif;
@@ -20,6 +21,35 @@
 
     color: #FFFFFF;
   }
+  h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 111.4%;
+    /* identical to box height, or 27px */
+
+    text-align: center;
+
+    color: #FFFFFF;
+    margin-bottom: 18px;
+  }
+  p {
+    font-family: 'Barlow', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 143.4%;
+    /* or 23px */
+
+    text-align: center;
+
+    color: #FFFFFF;
+  }
+  a, span.link {
+    color: #80f0be;
+    cursor: pointer;
+  }
   .controls {
     margin-top: 40px;
   }
@@ -29,6 +59,10 @@
       width: calc(50% - 7px);
       height: 44px;
     }
+  }
+  .button.refund {
+    max-width: 140px;
+    margin: 0 auto;
   }
 }
 

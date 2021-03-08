@@ -23,6 +23,7 @@ export const NavigationInitialState = {
   offerFlowControl: false,
   redemptionFlowControl: false,
   displayNavigation: false,
+  displayBottomNavigation: false,
 };
 
 export const Action = {
@@ -52,6 +53,10 @@ export const Action = {
   }),
   displayNavigation: (type) => ({
     type: CONTROL.DISPLAY_NAVIGATION,
+    payload: type
+  }),
+  displayBottomNavigation: (type) => ({
+    type: CONTROL.DISPLAY_BOTTOM_NAVIGATION,
     payload: type
   }),
 }
@@ -97,6 +102,11 @@ export const NavigationReducer = (state, action) => {
     [CONTROL.DISPLAY_NAVIGATION]: () => {
       return {
         displayNavigation: action.payload
+      }
+    },
+    [CONTROL.DISPLAY_BOTTOM_NAVIGATION]: () => {
+      return {
+        displayBottomNavigation: action.payload
       }
     },
   }

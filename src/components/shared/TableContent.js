@@ -11,15 +11,15 @@ function setRows(list, howMany) {
 }
 
 export const DescriptionBlock = (props) => {
-  const { voucherSetDetails, getProp } = props
+  const { voucherSetDetails, getProp, toggleImageView } = props
   return (
     <>
-      <h2 className="flex split">
-          <span>Description</span>
+      <h2>
+          <div>Description</div>
           {!voucherSetDetails ?
-              <div className="image flex center">
+            <div className="image flex center" onClick={()=>toggleImageView(1)}>
               <img src={ getProp('image') } alt={ getProp('title')}/>
-          </div>
+            </div>
           :null}
       </h2>
       <div className="description">

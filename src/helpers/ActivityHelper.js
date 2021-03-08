@@ -25,22 +25,18 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
     })
   }
   else if(voucherType === VOUCHER_TYPE.accountVoucher) {
-    let voucherDetails = globalContext.state.accountVouchers
-    
-    voucherDetails.forEach(voucher => {
+    blocksArray?.forEach(voucher => {
       voucher.FINALIZED ?
         tabGroup.inactive.push(voucher) :
         tabGroup.active.push(voucher)
     })
   }
 
-  console.log(tabGroup)
-
   return tabGroup
 }
 
 export const ChildVoucherBlock = ({title, expiration, id}) => (
-  <Link to={ `${ ROUTE.VoucherSetDetails }/${ id }` }>
+  <Link to={ `${ ROUTE.Activity }/${ id }` }>
       <div className="voucher-block solo sub flex ai-center">
           <div className="img no-shrink">
               <QRCodeScaner />

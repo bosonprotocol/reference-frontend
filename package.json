@@ -1,6 +1,31 @@
 {
   "name": "boson-protocol",
+  "description": "An example front-end application for Boson Protocol",
+  "keywords": [
+    "boson",
+    "boson protocol",
+    "reference",
+    "frontend",
+    "front-end"
+  ],
+  "bugs": "https://github.com/bosonprotocol/reference-frontend/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bosonprotocol/reference-frontend.git"
+  },
+  "contributors": [
+    "entrpyc",
+    "Vladislav Ivanov",
+    "wideyedwonderer",
+    "Asen Angelov",
+    "Richard Littauer <richard@burntfen.com> (https://burntfen.com)",
+    "Wideyedwonderer",
+    "Toby Clemson",
+    "HristiyanG",
+    "thecryptofruit"
+  ],
   "version": "0.1.0",
+  "license": "LGPL-3.0-only",
   "private": true,
   "dependencies": {
     "@ethersproject/abi": "^5.0.9",
@@ -30,7 +55,6 @@
     "jazzicon": "^1.5.0",
     "node-gyp": "^3.8.0",
     "node-sass": "^4.14.1",
-    "profanity-light": "^1.3.2",
     "qrcode.react": "^1.0.1",
     "rc-horizontal-scroll": "^1.1.1",
     "react": "^17.0.1",
@@ -43,10 +67,9 @@
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "react-slick": "^0.27.13",
     "react-tabs": "^3.1.2",
     "redux-localstorage-simple": "^2.3.1",
-    "slick-carousel": "^1.8.1",
+    "swiper": "^6.4.15",
     "web-vitals": "^0.2.4",
     "web3": "^1.3.0"
   },

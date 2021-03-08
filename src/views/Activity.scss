@@ -1,8 +1,6 @@
 @import "../styles/Settings.scss";
 
-section.activity {
-  min-height: 100vh;
-  
+section.activity {  
   .page-title {
     margin-top: 21px;
     margin-bottom: 28px;
@@ -68,7 +66,7 @@ section.activity {
       &.solo {
         width: 100%;
         display: flex;
-        max-height: 150px;
+        max-height: 180px;
         border-radius: 8px;
         padding: 5px 11px 5px 5px;
         background: #141C24;
@@ -88,9 +86,7 @@ section.activity {
       &.sub,
       a {
         min-height: 92px;
-        padding-right: 100px;
         position: relative
-        
       }
 
       & + .voucher-block  {
@@ -111,11 +107,10 @@ section.activity {
       }
 
       .statuses {
-        position: absolute;
-        top: 50%;
-        right: 13px;
-        transform: translateY(-50%);
-
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         .label {
           background: #358EF5;
           border-radius: 4px;
@@ -176,7 +171,7 @@ section.activity {
         border-radius: 4.6623px;
         box-shadow: 5.12853px 6.99345px 20.5141px rgba(0, 0, 0, 0.2);
 
-        margin-right: 30px;
+        margin-right: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -193,7 +188,6 @@ section.activity {
         position: relative;
         padding: 10px 0;
 
-        width: calc(80% - 80px);
         flex: 8 0 auto;
 
         & > div + div {
@@ -265,6 +259,28 @@ section.activity {
           }
         }
       }
+    }
+  }
+  .no-vouchers {
+    p {
+      font-family: 'Exo', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 21px;
+      text-align: center;
+
+      color: #A1BBD9;
+      margin-top: 90px;
+    }
+    svg {
+      margin-top: 80px;
+    }
+    .wallets {
+      border-top: 0;
+    }
+    .wallet-list-item .wallet-list-item-image-holder {
+      padding: 0;
     }
   }
 }

@@ -19,7 +19,6 @@ export const DIC = {
     SHOW_MODAL: 'show_modal',
     ALL_VOUCHER_SETS: 'all_voucher_sets',
     ALL_VOUCHERS: 'all_vouchers',
-    ACCOUNT_VOUCHERS: 'account_vouchers',
     UPDATE_ACCOUNT: 'update_account',
 }
 
@@ -33,6 +32,7 @@ export const CONTROL = {
     SET_REDEMPTION_CONTROL: 'redemption_flow_control',
     COMPLETE_ONBOARDING: 'complete-onboarding',
     DISPLAY_NAVIGATION: 'display-navigation',
+    DISPLAY_BOTTOM_NAVIGATION: 'display-bottom-navigation',
     CHECK_DATA_UPDATE: 'check-for-data-update',
 }
 
@@ -45,8 +45,6 @@ export const ROUTE = {
     NewOffer: '/sell',
     Activity: '/voucher-sets',
     ActivityVouchers: '/vouchers',
-    VoucherDetails: '/voucher',
-    VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
     Default: '/default',
     PARAMS: {

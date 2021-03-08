@@ -22,9 +22,10 @@ import { NavigationContext } from "./contexts/Navigation"
 function Routes() {
   const navigationContext = useContext(NavigationContext)
   const displayNav = navigationContext.state.displayNavigation
+  const displayBottomNav = navigationContext.state.displayBottomNavigation
   return (
     // class - dark|light; (default: dark)
-    <div className={`emulate-mobile theme ${!displayNav ? 'disabled' : ''}`}>
+    <div className={`emulate-mobile theme ${!displayBottomNav ? 'no-bottom' : ''} ${!displayNav ? 'disabled' : ''}`}>
       <Router>
           <LocationManager />
           <TopNavigation />
@@ -35,11 +36,12 @@ function Routes() {
               <Route path="/onboarding" component={ OnboardingReset }/> {/* delete on prod */ }
               <Route path={ ROUTE.ConnectToMetamask } component={ ConnectToMetamask }/>
               <Route path={ ROUTE.NewOffer } component={ NewOffer }/>
+              <Route path={ ROUTE.ActivityVouchers + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } component={ ShowQR }/>
+              <Route path={ ROUTE.ActivityVouchers + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
+              <Route path={ ROUTE.Activity + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
               <Route path={ ROUTE.Activity } component={ ActivityVoucherSets }/>
               <Route path={ ROUTE.ActivityVouchers } component={ ActivityAccountVouchers }/>
-              <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } component={ ShowQR }/>
-              <Route path={ ROUTE.VoucherDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
-              <Route path={ ROUTE.VoucherSetDetails + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
+
               <Route component={ NotFound } />
           </Switch>
           <BottomNavigation />
