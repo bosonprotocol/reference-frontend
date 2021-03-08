@@ -9,7 +9,7 @@ import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
-import { getAccountVouchers } from "../helpers/VoucherParsers"
+import { getAccountVouchers, getParsedAccountVoucherSets } from "../helpers/VoucherParsers"
 
 import { ModalContext } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
@@ -60,19 +60,16 @@ export function ActivityVoucherSetView() {
 
 export function ActivityVoucherSets() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
     const { account } = useWeb3React();
 
-    const voucherSets = globalContext.state.allVoucherSets
-
     useEffect(() => {
-        voucherSets ?
-            setVoucherBlocks(voucherSets)
-            : setVoucherBlocks([])
+        getParsedAccountVoucherSets(account).then(voucherSets => {
+            if(voucherSets) setVoucherBlocks(voucherSets)
+        })
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [voucherSets])
+    }, [account])
 
+    
     return voucherBlocks.length ?
         <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/> : null
 }
@@ -158,7 +155,9 @@ function ActivityView(props) {
 
 export const VoucherSetBlock = (props) => {
     const [expand,] = useState(1)
-    const { title, image, price, qty, currency, _id, openDetails } = props //id
+    const { title, image, price, qty, currency, _id, openDetails } = props
+
+    console.log(props)
 
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
