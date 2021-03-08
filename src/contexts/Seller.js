@@ -13,7 +13,7 @@ export const SellerInitialState = {
   offeringProgress: fetchProgressFallback ? fetchProgressFallback : 0,
   offeringData: {
     price_currency: 'ETH',
-    seller_deposit_currency: 'ETH',
+    deposits_currency: 'ETH',
   }
 };
 
@@ -47,7 +47,7 @@ export const SellerReducer = (state, action) => {
         offeringProgress: action.payload
       }
     },
-    
+
     [DIC.UPDATE_OFFERING_DATA]: () => {
       let update = {
         ...state.offeringData,

@@ -42,7 +42,6 @@ function FormPrice({
   const calculateMaxForCurrency = (currency) => {
     if (currency) {
       const maxFromContract = depositsPriceLimits[currency].max;
-      console.log(depositsPriceLimits)
       if (quantity && quantity > 0) {
         const maxWithQuantityTakenIntoAccount = maxFromContract.div(quantity);
         return toFixed(+ethers.utils.formatEther(maxWithQuantityTakenIntoAccount), 2)

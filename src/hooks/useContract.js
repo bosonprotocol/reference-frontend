@@ -28,8 +28,8 @@ export function useBosonRouterContract() {
 export function useVoucherKernalContract() {
     return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL.abi)
 }
-export function useBosonTokenDepositContract() {
-    return useContract(SMART_CONTRACTS.BosonTokenDepositContractAddress, BOSON_TOKEN_DEPOSIT.abi)
+export function useBosonTokenContract() {
+    return useContract(SMART_CONTRACTS.BosonTokenContractAddress, BOSON_TOKEN_DEPOSIT.abi)
 }
 
 export function useFundLimitsContract() {
@@ -95,7 +95,7 @@ export async function getApprovalDigest(
     const name = await token.name();
     const DOMAIN_SEPARATOR = getDomainSeparator(name, token.address, chainId);
 
-    
+
     const PERMIT_TYPEHASH = ethers.utils.keccak256(
         ethers.utils.toUtf8Bytes(
           'Permit(' +

@@ -2,9 +2,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { useHistory } from "react-router"
-import { decodeData, getEncodedTopic, useBosonRouterContract } from "../hooks/useContract";
+import { decodeData, getEncodedTopic, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
-import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
+import {
+    PAYMENT_METHODS,
+    SMART_CONTRACTS_EVENTS,
+    VOUCHER_STATUSES
+} from "../hooks/configs";
 
 
 import { Link } from "react-router-dom";
@@ -36,6 +40,7 @@ import { initVoucherDetails } from "../helpers/VoucherParsers"
 
 
 import { IconQRScanner } from "../components/shared/Icons"
+import { onAttemptToApprove } from "../hooks/approveWithPermit";
 
 
 function VoucherDetails(props) {
@@ -48,7 +53,8 @@ function VoucherDetails(props) {
     const navigationContext = useContext(NavigationContext);
     const [loading, setLoading] = useState(0);
     const bosonRouterContract = useBosonRouterContract();
-    const { library, account } = useWeb3React();
+    const bosonTokenContract = useBosonTokenContract();
+    const { library, account, chainId } = useWeb3React();
     const history = useHistory()
     const [voucherStatus, setVoucherStatus] = useState();
     const [controls, setControls] = useState();
@@ -73,13 +79,28 @@ function VoucherDetails(props) {
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
-    
+
+    const paymentType = getProp('paymentType');
+    const currencyResolver = (paymentType) => {
+        if (paymentType === PAYMENT_METHODS.ETHETH) {
+            return ['ETH', 'ETH']
+        } else if (paymentType === PAYMENT_METHODS.ETHBSN) {
+            return ['ETH', 'BSN']
+        } else if (paymentType === PAYMENT_METHODS.BSNETH) {
+            return ['BSN', 'ETH']
+        } else {
+            return ['BSN', 'BSN']
+        }
+    };
+
+    const currencies = currencyResolver(paymentType);
+
     // int on index #2 is the X position of the block
     const tablePrices = [
-        ['Payment Price', getProp('price'), getProp('priceCurrency'), 0],
+        ['Payment Price', getProp('price'), currencies[0], 0],
         false,
-        ['Buyer’s deposit', getProp('deposit'), getProp('priceCurrency'), 1],
-        ['Seller’s deposit', getProp('sellerDeposit'), getProp('sellerDepositCurrency'), 1]
+        ['Buyer’s deposit', getProp('deposit'), currencies[1], 1],
+        ['Seller’s deposit', getProp('sellerDeposit'), currencies[1], 1]
     ];
 
     const tableDate = [
@@ -99,18 +120,21 @@ function VoucherDetails(props) {
         }
         setPopupMessage({
             text,
-            controls: <div className="flex split buttons-pair"><div className="button gray" role="button" onClick={() => setPopupMessage(false)}>BACK</div><div className="button primary" role="button" onClick={() => callAction()}>CONFIRM</div></div>,
+            controls: <div className="flex split buttons-pair">
+                <div className="button gray" role="button" onClick={ () => setPopupMessage(false) }>BACK</div>
+                <div className="button primary" role="button" onClick={ () => callAction() }>CONFIRM</div>
+            </div>,
         })
     }
 
     const ViewImageFullScreen = () => (
-        <div className="image-view-overlay flex center" onClick={() => setImageView(0)}>
+        <div className="image-view-overlay flex center" onClick={ () => setImageView(0) }>
             <div className="button-container">
                 <div className="container">
-                    <div className="cancel new" onClick={() => setImageView(0)}><span className="icon"></span></div>
+                    <div className="cancel new" onClick={ () => setImageView(0) }><span className="icon"></span></div>
                 </div>
             </div>
-            <img src={getProp('image')} alt=""/>
+            <img src={ getProp('image') } alt=""/>
         </div>
     )
 
@@ -119,41 +143,45 @@ function VoucherDetails(props) {
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-            <div className="action button cof" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+                CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+                    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+                        <div className="action button cof"
+                             onClick={ () => confirmAction(onCoF, "Are you sure you want to cancel this voucher?") }
+                             role="button">Cancel or fault</div>
+                    )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
-                <div className="action button refund" role="button" onClick={() => onRefund()}>REFUND</div>
+                <div className="action button refund" role="button" onClick={ () => onRefund() }>REFUND</div>
                 <Link
-                    to={`${ROUTE.ActivityVouchers}/${voucherDetails?.id}${ROUTE.VoucherQRCode}`}>
-                    <div className="action button redeem" role="button"> <IconQRScanner /> REDEEM</div>
+                    to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
+                    <div className="action button redeem" role="button"><IconQRScanner/> REDEEM</div>
                 </Link>
             </div>
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-            <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
+                CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+                    <div className="action button complain" role="button" onClick={ () => onComplain() }>COMPLAIN</div>
+                )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
-            <ContractInteractionButton
-                className="action button commit"
-                handleClick={() => onCommitToBuy()}
-                label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
-            />
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
+                <ContractInteractionButton
+                    className="action button commit"
+                    handleClick={ () => onCommitToBuy() }
+                    label={ `COMMIT TO BUY ${ voucherSetDetails?.price }` }
+                />
+            )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.OFFERED]] = () => (
             voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
-            <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
-            : null
+                <div className="button cancelVoucherSet"
+                     onClick={ () => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?") }
+                     role="button">CANCEL VOUCHER SET</div>
+                : null
         )
 
         return CASE
@@ -205,15 +233,34 @@ function VoucherDetails(props) {
     const statusBlocks = voucherDetails ? [] : false
 
     if (!!voucherDetails) {
-        if (voucherDetails.COMMITTED) statusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1}))
-        if (voucherDetails.REDEEMED) statusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2  }))
-        if (voucherDetails.REFUNDED) statusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED }))
-        if (voucherDetails.COMPLAINED) statusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
-        if (voucherDetails.CANCELLED) statusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
-        
-        if(statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
-        
-        if(voucherDetails.FINALIZED) {
+        if (voucherDetails.COMMITTED) statusBlocks.push(singleStatusComponent({
+            title: 'COMMITED',
+            date: voucherDetails.COMMITTED,
+            color: 1
+        }))
+        if (voucherDetails.REDEEMED) statusBlocks.push(singleStatusComponent({
+            title: 'REDEMPTION SIGNED',
+            date: voucherDetails.REDEEMED,
+            color: 2
+        }))
+        if (voucherDetails.REFUNDED) statusBlocks.push(singleStatusComponent({
+            title: 'REFUND TRIGGERED',
+            date: voucherDetails.REFUNDED
+        }))
+        if (voucherDetails.COMPLAINED) statusBlocks.push(singleStatusComponent({
+            title: 'COMPLAINT MADE',
+            date: voucherDetails.COMPLAINED,
+            color: 3
+        }))
+        if (voucherDetails.CANCELLED) statusBlocks.push(singleStatusComponent({
+            title: 'CANCEL OR FAULT ADMITTED',
+            date: voucherDetails.CANCELLED,
+            color: 4
+        }))
+
+        if (statusBlocks?.length) statusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+
+        if (voucherDetails.FINALIZED) {
             statusBlocks.push(
                 finalStatusComponent(
                     !!voucherDetails.REDEEMED,
@@ -222,13 +269,12 @@ function VoucherDetails(props) {
                     voucherDetails.FINALIZED
                 )
             )
-       
+
         }
 
     }
 
-   
-  
+
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
 
@@ -315,7 +361,7 @@ function VoucherDetails(props) {
         setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
-       
+
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -329,7 +375,6 @@ function VoucherDetails(props) {
 
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
-        const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
         const supplyId = voucherSetInfo._tokenIdSupply;
 
         let tx;
@@ -337,11 +382,9 @@ function VoucherDetails(props) {
         let data;
 
         try {
-            
-    
-            tx = await commitToBuyTransactionCreator(bosonRouterContract, supplyId, voucherSetInfo.voucherOwner, txValue)
-    
-            const receipt = await tx.wait(); 
+            tx = await commitToBuyTransactionCreator(bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, bosonTokenContract, library, account, chainId)
+
+            const receipt = await tx.wait();
             let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
 
             data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
@@ -403,7 +446,6 @@ function VoucherDetails(props) {
             tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
 
             await tx.wait();
-
 
 
         } catch (e) {
@@ -512,7 +554,6 @@ function VoucherDetails(props) {
             await tx.wait();
 
 
-
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -578,16 +619,16 @@ function VoucherDetails(props) {
     }, [controls, account, library])
 
     useEffect(() => {
-        if(voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && document.getElementById('horizontal-view-container').children[1]) {
+        if (voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && document.getElementById('horizontal-view-container').children[1]) {
 
-        const updateScrollerToBeOnTheRightMostStatus = () => {
-            document.getElementById('horizontal-view-container').children[1].scrollLeft = 20000;
+            const updateScrollerToBeOnTheRightMostStatus = () => {
+                document.getElementById('horizontal-view-container').children[1].scrollLeft = 20000;
+            }
+
+            updateScrollerToBeOnTheRightMostStatus();
         }
 
-        updateScrollerToBeOnTheRightMostStatus();
-    }
-        
-       
+
     }, [voucherStatus && statusBlocks])
 
     const onCancelOrFaultVoucherSet = async () => {
@@ -627,134 +668,171 @@ function VoucherDetails(props) {
     }
     return (
         <>
-            { loading ? <Loading /> : null}
-            { <PopupMessage {...popupMessage} />}
+            { loading ? <Loading/> : null }
+            { <PopupMessage { ...popupMessage } /> }
             <section className="voucher-details no-bg">
-            { imageView ? <ViewImageFullScreen /> : null}
+                { imageView ? <ViewImageFullScreen/> : null }
                 <div className="container erase">
                     <div className="content">
                         <div className="section title">
-                            <h1>{getProp('title')}</h1>
+                            <h1>{ getProp('title') }</h1>
                         </div>
-                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks ?
+                        { !voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks ?
                             <div className="section status">
                                 <h2>Status</h2>
                                 <div className="status-container flex" id='horizontal-view-container'>
                                     <HorizontalScrollView
-                                        items={statusBlocks}
-                                        ItemComponent={({item}) => item.jsx}
+                                        items={ statusBlocks }
+                                        ItemComponent={ ({ item }) => item.jsx }
                                         defaultSpace='0'
                                         spaceBetweenItems='8px'
-                                        moveSpeed={1}
+                                        moveSpeed={ 1 }
                                     />
                                 </div>
                             </div>
-                            : null}
-                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
+                            : null }
+                        { !voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                             <div className="section expiration">
                                 <div className="expiration-container flex split">
                                     <p>Expiration Time</p>
                                     <div className="time-left flex column center">
-                                        <p>{daysAvailable - daysPast >= 0 ? 
-                                            `${daysAvailable - daysPast + 1} DAY${daysAvailable - daysPast + 1 > 1 ? 'S' : ''} LEFT` :
-                                        'EXPIRED'}</p>
+                                        <p>{ daysAvailable - daysPast >= 0 ?
+                                            `${ daysAvailable - daysPast + 1 } DAY${ daysAvailable - daysPast + 1 > 1 ? 'S' : '' } LEFT` :
+                                            'EXPIRED' }</p>
                                         <div className="progress"></div>
                                     </div>
                                 </div>
                             </div>
-                            : null}
-                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
+                            : null }
+                        { !voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                             <div className="section escrow">
-                                {escrowData ?
-                                    <EscrowDiagram escrowData={escrowData} />
-                                    : null}
+                                { escrowData ?
+                                    <EscrowDiagram escrowData={ escrowData }/>
+                                    : null }
                             </div>
-                            : null}
+                            : null }
                         <div className="section info">
                             <div className="section description">
-                                {<DescriptionBlock toggleImageView={setImageView} voucherSetDetails={voucherSetDetails} getProp={getProp} />}
+                                { <DescriptionBlock toggleImageView={ setImageView }
+                                                    voucherSetDetails={ voucherSetDetails } getProp={ getProp }/> }
                             </div>
                             <div className="section category">
                             </div>
                             <div className="section general">
-                                {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */}
-                                {getProp('category') ? <TableRow data={tableCategory} /> : null}
+                                {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */ }
+                                { getProp('category') ? <TableRow data={ tableCategory }/> : null }
                             </div>
-                            {voucherSetDetails ?
+                            { voucherSetDetails ?
                                 <div className="section price">
-                                    {tablePrices.some(item => item) ? <PriceTable data={tablePrices} /> : null}
+                                    { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
                                 </div>
-                                : null}
+                                : null }
                             <div className="section date">
-                                {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
+                                { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
                             </div>
                         </div>
                     </div>
-                  
+
                 </div>
             </section>
         </>
     )
 }
 
-function singleStatusComponent({title, date, color}) {
-    const jsx =  (<div key={title} className={`status-block color_${color}`}>
-    <h3 className="status-name">{title}</h3>
-     <p className="status-details">{formatDate(date, 'string')}</p>
- </div>);
-    return {jsx, date}
+function singleStatusComponent({ title, date, color }) {
+    const jsx = (<div key={ title } className={ `status-block color_${ color }` }>
+        <h3 className="status-name">{ title }</h3>
+        <p className="status-details">{ formatDate(date, 'string') }</p>
+    </div>);
+    return { jsx, date }
 
 }
 
 function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiredDate) {
-    const jsx = (<div className={`status-block`}>
-    <div className="final-status-container">
+    const jsx = (<div className={ `status-block` }>
+        <div className="final-status-container">
 
-        { hasBeenRedeemed ? 
-        <h3 className="status-name color_1">REDEMPTION</h3> :
-        <h3 className="status-name color_2">NO REDEMPTION</h3>
-        }
-        { hasBeenComplained ?
-        <h3 className="status-name color_3">COMPLAINT</h3> :
-        <h3 className="status-name color_4">NO COMPLAINT</h3>
-        }
-        { hasBeenCancelOrFault ?
-        <h3 className="status-name color_5">CANCEL/FAULT</h3> :
-        <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
-        }
-      
-     </div>
-     <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
- </div>)
-    return {jsx, date: expiredDate}
+            { hasBeenRedeemed ?
+                <h3 className="status-name color_1">REDEMPTION</h3> :
+                <h3 className="status-name color_2">NO REDEMPTION</h3>
+            }
+            { hasBeenComplained ?
+                <h3 className="status-name color_3">COMPLAINT</h3> :
+                <h3 className="status-name color_4">NO COMPLAINT</h3>
+            }
+            { hasBeenCancelOrFault ?
+                <h3 className="status-name color_5">CANCEL/FAULT</h3> :
+                <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
+            }
+
+        </div>
+        <p className="status-details">{ `Finalised on ${ formatDate(expiredDate, 'string') }` }</p>
+    </div>)
+    return { jsx, date: expiredDate }
 }
+
 export default VoucherDetails
 
-const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, voucherOwner, txValue) => {
-    //TODO - currency combination to come from voucherDetails' paymentType property(once impl on the backend)
-    const currencyCombination = 'ETHETH';
+const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, tokenContract, library, account, chainId) => {
+    const paymentType = voucherSetInfo.paymentType;
 
-    
-    switch(currencyCombination) {
-        case('ETHETH'): {
-            return bosonRouterContract.requestVoucherETHETH(supplyId, voucherOwner, {
-                value: txValue.toString()
-            });
-        }
-        case('BSNETH'): {
+    if (paymentType === PAYMENT_METHODS.ETHETH) {
+        const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
 
+        return bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
+            value: txValue.toString()
+        });
+    } else if (paymentType === PAYMENT_METHODS.ETHBSN) {
+        const txValue = ethers.BigNumber.from(price);
+        const tokensDeposit = ethers.BigNumber.from(buyerDeposit);
 
-            //TODO
-        }
-        case('BSNBSN'): {
-            //TODO
-        }
-        case('ETHBSN'): {
-            //TODO
-        }
-        default: {
-            console.error(`Currencies combination not found ${currencyCombination}`);
-            throw new Error('Something went wrong')
-        }
-}
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensDeposit);
+
+        return bosonRouterContract.requestVoucherETHTKNWithPermit(
+            supplyId,
+            voucherSetInfo.voucherOwner,
+            tokensDeposit.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            { value: txValue.toString() }
+        );
+    } else if (paymentType === PAYMENT_METHODS.BSNBSN) {
+        const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
+
+        return bosonRouterContract.requestVoucherTKNTKNSameWithPermit(
+            supplyId,
+            voucherSetInfo.voucherOwner,
+            txValue.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s
+        );
+    } else if (paymentType === PAYMENT_METHODS.BSNETH) {
+        const txValue = ethers.BigNumber.from(buyerDeposit);
+        const tokensDeposit = ethers.BigNumber.from(price);
+
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensDeposit);
+
+        return bosonRouterContract.requestVoucherTKNETHWithPermit(
+            supplyId,
+            voucherSetInfo.voucherOwner,
+            tokensDeposit.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            { value: txValue.toString() }
+        );
+    } else {
+        console.error(`Payment type not found ${ paymentType }`);
+        throw new Error('Something went wrong')
+    }
 }

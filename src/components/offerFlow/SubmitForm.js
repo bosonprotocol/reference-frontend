@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, useBosonRouterContract, useBosonTokenDepositContract } from "../../hooks/useContract";
+import { findEventByName, useBosonRouterContract, useBosonTokenContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -14,15 +14,16 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
-import { SMART_CONTRACTS_EVENTS, SMART_CONTRACTS } from "../../hooks/configs";
+import { SMART_CONTRACTS_EVENTS, SMART_CONTRACTS, PAYMENT_METHODS, PAYMENT_METHODS_LABELS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
+import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
     const [loading, setLoading] = useState(0);
     const sellerContext = useContext(SellerContext);
-    const modalContext = useContext(ModalContext); 
+    const modalContext = useContext(ModalContext);
     const location = useLocation();
 
     const globalContext = useContext(GlobalContext);
@@ -36,7 +37,7 @@ export default function SubmitForm() {
         seller_deposit,
         buyer_deposit,
         price_currency,
-        seller_deposit_currency,
+        deposits_currency,
         quantity,
         title,
         category,
@@ -47,10 +48,10 @@ export default function SubmitForm() {
 
     const { library, account, chainId } = useWeb3React();
     const bosonRouterContract = useBosonRouterContract();
-    const bosonTokenDepositContract = useBosonTokenDepositContract();
+    const bosonTokenContract = useBosonTokenContract();
     let formData = new FormData();
-    
-   
+
+
     async function onCreateVoucherSet() {
 
         if (!library || !account) {
@@ -84,15 +85,17 @@ export default function SubmitForm() {
             buyer_deposit.toString(),
             parseInt(quantity)
         ];
-       
+
         let parsedEvent;
-        try {   
-            
-            const receipt = await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenDepositContract, account, chainId, library, price_currency, seller_deposit_currency);
-            
+        try {
+
+            const receipt = await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
+
             parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
-               } catch (e) {
-                console.error(e)
+        } catch (e) {
+            setLoading(0)
+
+            console.error(e)
 
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -100,7 +103,7 @@ export default function SubmitForm() {
                 content: e.message
             }));
             return;
-        } 
+        }
 
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
@@ -112,6 +115,9 @@ export default function SubmitForm() {
             setLoading(0);
             setRedirect(1);
         } catch (e) {
+            setLoading(0)
+            console.error(e)
+
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -135,9 +141,7 @@ export default function SubmitForm() {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-
-        //TODO uncomment Below paymentType
-        // formData.append('paymentType', price_currency + deposits_currency);
+        formData.append('paymentType', PAYMENT_METHODS[`${ price_currency }${ deposits_currency }`]);
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
@@ -161,57 +165,56 @@ export default function SubmitForm() {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Home} />
+                    : <MessageScreen messageType={ MESSAGE.SUCCESS } title={ messageTitle } link={ ROUTE.Home }/>
             }
         </>
     );
 }
-const createNewVoucherSet =  async (dataArr, bosonRouterContract, depositContract, accountAddress, chainId, library, priceCurrency, sellerDepositCurrency) => {
+const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, account, chainId, library, priceCurrency, depositsCurrency) => {
     let tx;
 
-    const currencyCombination = priceCurrency + sellerDepositCurrency;
+    const currencyCombination = `${ priceCurrency }${ depositsCurrency }`;
+    console.log(currencyCombination);
     const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
-    switch(currencyCombination) {
-        case('ETHETH'): {
-          
 
-            tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-            return tx.wait();
-        }
-        case('BSNETH'): {
+    if (currencyCombination === PAYMENT_METHODS_LABELS.ETHETH) {
+        tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+        return tx.wait();
+    } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNETH) {
+        tx = await bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue });
+        return tx.wait();
+    } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNBSN) {
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
 
+        tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
+            SMART_CONTRACTS.BosonTokenContractAddress,
+            SMART_CONTRACTS.BosonTokenContractAddress,
+            txValue.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            dataArr
+        );
+        return tx.wait();
+    } else if (currencyCombination === PAYMENT_METHODS_LABELS.ETHBSN) {
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
 
-            tx = await bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenPriceContractAddress, dataArr, { value: txValue });
-            return tx.wait();
-        }
-        case('BSNBSN'): {
-            //TODO implement
-                // const nonce = await depositContract.nonces(accountAddress)
-
-                //string
-                // const digest = await getApprovalDigest(
-                //     depositContract,
-                //     accountAddress,
-                //     SMART_CONTRACTS.BosonRouterContractAddress,
-                //     txValue.toString(),
-                //     nonce.toString(),
-                //     toWei(1),
-                //     chainId
-                // )
-         
-
-        }
-        case('ETHBSN'): {
-              //TODO implement
-        }
-
-        default: {
-            console.error(`Currencies combination not found ${currencyCombination}`);
-            throw new Error('Something went wrong')
-        }
+        tx = await bosonRouterContract.requestCreateOrderETHTKNWithPermit(
+            SMART_CONTRACTS.BosonTokenContractAddress,
+            txValue.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            dataArr
+        );
+        return tx.wait();
+    } else {
+        console.error(`Currencies combination not found ${ currencyCombination }`);
+        throw new Error('Something went wrong')
     }
-
-    
-
-}
+};
 
