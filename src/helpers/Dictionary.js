@@ -51,7 +51,7 @@ export const ROUTE = {
         ID: '/:id',
     },
     VoucherQRCode: '/qr',
-    VoucherSetView: '/voucherset/view',
+    VoucherSetView: '/voucher-sets-view',
 }
 
 export const BOTTOM_NAV_TYPE = {

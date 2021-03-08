@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import "./Activity.scss"
 
@@ -17,12 +17,12 @@ import { useWeb3React } from "@web3-react/core";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+import { VOUCHER_TYPE, sortBlocks, ActiveTab } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
 
 import { WalletConnect } from "../components/modals/WalletConnect"
 
-export function ActivityAccountVouchers() {
+export function ActivityAccountVouchers({title}) {
     const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
@@ -37,9 +37,24 @@ export function ActivityAccountVouchers() {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
-    
+     
 
-    return <ActivityView loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
+    return <ActivityView title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
+}
+
+export function ActivityVoucherSetView() {
+    const history = useHistory()
+    const globalContext = useContext(GlobalContext);
+    const locationPath = history.location.pathname.split('/')
+
+    const voucherSetId = locationPath[locationPath.length -1]
+
+    return <section className="activity atomic-scoped">
+        <div className="vouchers-container container">
+            <VoucherSetBlock { ...globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId) } key={voucherSetId} />
+            <ActivityAccountVouchers title="Vouchers" />
+        </div>
+    </section>
 }
 
 export function ActivityVoucherSets() {
@@ -62,7 +77,7 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType, loading, account } = props
+    const { voucherBlocks, voucherType, loading, account, title } = props
     const globalContext = useContext(GlobalContext);
 
     const getLastAction = (el) => {
@@ -107,7 +122,7 @@ function ActivityView(props) {
         <section className="activity atomic-scoped">
             <div className="container">
                 <div className="page-title">
-                    <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
+                    <h1>{title ? title : voucherType === VOUCHER_TYPE.accountVoucher ? 'My Vouchers' : 'Voucher Sets'}</h1>
                 </div>
                 {
                 !loading ?
@@ -141,18 +156,11 @@ function ActivityView(props) {
 }
 
 export const VoucherSetBlock = (props) => {
-    const [expand,] = useState(-1)
-    const [matchingVouchers, setMatchingVouchers] = useState([])
+    const [expand,] = useState(1)
     const { title, image, price, qty, currency, _id } = props //id
-    const globalContext = useContext(GlobalContext);
-
-    useEffect(() => {
-        if (globalContext.state.allVoucherSets) setMatchingVouchers(globalContext.state.allVoucherSets.filter(voucher => voucher.id === _id))
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     return (
+        <Link to={ROUTE.VoucherSetView + `/${_id}`}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
             <div className="voucher-block solo flex relative">
                 <div className="thumb no-shrink">
@@ -166,20 +174,13 @@ export const VoucherSetBlock = (props) => {
                         <div className="title elipsis">{ title }</div>
                     </div>
                     <div className="price flex split">
-                        <div className="value flex center"><img src="images/icon-eth.png"
-                                                                alt="eth"/> { price } { currency }
-                        </div>
+                        <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/>{ price } { currency }</div>
                         <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>
                 </div>
             </div>
-            <div className="child-vouchers">
-                { matchingVouchers ? matchingVouchers.map(voucher => <ChildVoucherBlock key={ voucher.id }
-                                                                                        id={ voucher.id }
-                                                                                        title={ voucher.title }
-                                                                                        expiration={ 2 }/>) : null }
-            </div>
         </div>
+        </Link>
     )
 }
 
