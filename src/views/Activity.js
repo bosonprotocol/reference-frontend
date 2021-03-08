@@ -141,7 +141,7 @@ function ActivityView(props) {
 }
 
 export const VoucherSetBlock = (props) => {
-    const [expand, setExpand] = useState(-1)
+    const [expand,] = useState(-1)
     const [matchingVouchers, setMatchingVouchers] = useState([])
     const { title, image, price, qty, currency, _id } = props //id
     const globalContext = useContext(GlobalContext);
@@ -154,7 +154,7 @@ export const VoucherSetBlock = (props) => {
 
     return (
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
-            <div className="voucher-block solo flex relative" onClick={ () => setExpand(expand * -1) }>
+            <div className="voucher-block solo flex relative">
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
