@@ -47,7 +47,7 @@ function NewOffer() {
   const [lastInputChangeName, setLastInputChangeName] = useState(null);
   const inputFallback = {
     [NAME.PRICE_C]: CURRENCY.ETH,
-    [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
+    [NAME.DEPOSITS_C]: CURRENCY.ETH,
     [NAME.DATE_START]: new Date().setHours(0,0,0,0), 
   }
 const fundLimitsContract = useFundLimitsContract();
@@ -122,7 +122,7 @@ useEffect( ()=> {
     depositsPriceLimits={depositsPriceLimits}
       priceValueReceiver={createInputValueReceiver(NAME.PRICE)}
       priceCurrencyReceiver={createInputValueReceiver(NAME.PRICE_C)}
-      sellerDepositCurrencyValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT_C)}
+      sellerDepositCurrencyValueReceiver={createInputValueReceiver(NAME.DEPOSITS_C)}
       sellerDepositValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT)}
       buyerPriceSuffixValueReceiver={createInputValueReceiver(NAME.PRICE_SUFFIX)}
       buyerDepositValueReceiver={createInputValueReceiver(NAME.BUYER_DEPOSIT)}

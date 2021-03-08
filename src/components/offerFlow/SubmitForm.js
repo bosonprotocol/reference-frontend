@@ -137,7 +137,7 @@ export default function SubmitForm() {
         formData.append('sellerDeposit', dataArr[3]);
 
         //TODO uncomment Below paymentType
-        // formData.append('paymentType', price_currency + seller_deposit_currency);
+        // formData.append('paymentType', price_currency + deposits_currency);
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");

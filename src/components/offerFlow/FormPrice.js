@@ -29,7 +29,7 @@ function FormPrice({
   const quantity = getOfferingData(NAME.QUANTITY);
 
   const priceCurrency = getOfferingData(NAME.PRICE_C) || 'ETH'
-  const sellerCurrency = getOfferingData(NAME.SELLER_DEPOSIT_C) || 'ETH'
+  const depositsCurrency = getOfferingData(NAME.DEPOSITS_C) || 'ETH'
   const buyer = getOfferingData(NAME.BUYER_DEPOSIT) || 'ETH'
   const price = getOfferingData(NAME.PRICE);
   const sellerDeposit = getOfferingData(NAME.SELLER_DEPOSIT);
@@ -42,6 +42,7 @@ function FormPrice({
   const calculateMaxForCurrency = (currency) => {
     if (currency) {
       const maxFromContract = depositsPriceLimits[currency].max;
+      console.log(depositsPriceLimits)
       if (quantity && quantity > 0) {
         const maxWithQuantityTakenIntoAccount = maxFromContract.div(quantity);
         return toFixed(+ethers.utils.formatEther(maxWithQuantityTakenIntoAccount), 2)
@@ -109,8 +110,8 @@ function FormPrice({
               <input ref={sellersDepositInoutRef} style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
                 id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} type="number" min="0" onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
               {
-                depositsPriceLimits[sellerCurrency]?.max ?
-                  <div className="max">max {depositsPriceLimits[sellerCurrency] ? calculateMaxForCurrency(sellerCurrency) : null} {sellerCurrency}</div>
+                depositsPriceLimits[depositsCurrency]?.max ?
+                  <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
                   : null
               }
             </div>
@@ -119,19 +120,19 @@ function FormPrice({
       </div>
       {
         quantity > 1 && sellerDeposit ?
-          getLimitCalculationsBar(sellerDeposit, quantity, sellerCurrency, sellerDepositErrorMessage)
+          getLimitCalculationsBar(sellerDeposit, quantity, depositsCurrency, sellerDepositErrorMessage)
           : null
       }
       <div className="row">
         <div className="field">
           <label htmlFor="offer-buyer-deposit">Buyer’s Deposit Per Voucher</label>
           <div className="input relative focus" data-error={buyerDepositErrorMessage ? "" : null}>
-            <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
+            <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${depositsCurrency}`}</div>
             <input id="offer-buyer-deposit" ref={buyersDepositInputRef} style={buyerDepositErrorMessage ? { color: '#FA5B66' } : {}}
               type="number" min="0" onWheel={() => buyersDepositInputRef.current.blur()} name={NAME.BUYER_DEPOSIT} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
             {
-              depositsPriceLimits[priceCurrency].max ?
-                <div className="max">max {depositsPriceLimits[priceCurrency] ? calculateMaxForCurrency(priceCurrency) : null} {priceCurrency}</div>
+              depositsPriceLimits[depositsCurrency].max ?
+                <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
                 : null
             }
           </div>
@@ -139,7 +140,7 @@ function FormPrice({
       </div>
       {
         quantity > 1 && buyerDeposit ?
-          getLimitCalculationsBar(buyerDeposit, quantity, sellerCurrency, buyerDepositErrorMessage)
+          getLimitCalculationsBar(buyerDeposit, quantity, depositsCurrency, buyerDepositErrorMessage)
           : null
       }
     </div>

@@ -63,8 +63,8 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
   let sellerDepositErrorMessage = null;
   const currentSellerDepositValue = getData(NAME.SELLER_DEPOSIT);
 
-  if (getData(NAME.SELLER_DEPOSIT_C) && currentSellerDepositValue) {
-    const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C)
+  if (getData(NAME.DEPOSITS_C) && currentSellerDepositValue) {
+    const sellerCurrency = getData(NAME.DEPOSITS_C)
     if (currentSellerDepositValue.lte('0')) {
       sellerDepositErrorMessage = 'Value cannot be less or equal to 0'
     }
