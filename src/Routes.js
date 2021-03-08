@@ -36,10 +36,10 @@ function Routes() {
               <Route path="/onboarding" component={ OnboardingReset }/> {/* delete on prod */ }
               <Route path={ ROUTE.ConnectToMetamask } component={ ConnectToMetamask }/>
               <Route path={ ROUTE.NewOffer } component={ NewOffer }/>
-              <Route path={ ROUTE.ActivityVouchers + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } component={ ShowQR }/>
-              <Route path={ ROUTE.ActivityVouchers + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
-              <Route path={ ROUTE.Activity + ROUTE.PARAMS.ID } component={ VoucherDetails }/>
-              <Route path={ ROUTE.VoucherSetView + ROUTE.PARAMS.ID } component={ ActivityVoucherSetView }/>
+              <Route path={ ROUTE.ActivityVouchers + ROUTE.PARAMS.ID + ROUTE.VoucherQRCode } exact component={ ShowQR }/>
+              <Route path={ ROUTE.ActivityVouchers + ROUTE.PARAMS.ID + ROUTE.Details } exact component={ VoucherDetails }/>
+              <Route path={ ROUTE.Activity + ROUTE.PARAMS.ID + ROUTE.Details } exact component={ VoucherDetails }/>
+              <Route path={ ROUTE.Activity + ROUTE.PARAMS.ID + ROUTE.VoucherSetView } exact component={ ActivityVoucherSetView }/>
               <Route path={ ROUTE.Activity } component={ ActivityVoucherSets }/>
               <Route path={ ROUTE.ActivityVouchers } component={ ActivityAccountVouchers }/>
               <Route component={ NotFound } />

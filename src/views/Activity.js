@@ -47,11 +47,12 @@ export function ActivityVoucherSetView() {
     const globalContext = useContext(GlobalContext);
     const locationPath = history.location.pathname.split('/')
 
-    const voucherSetId = locationPath[locationPath.length -1]
+    const voucherSetId = locationPath[locationPath.length -2]
+    const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
 
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
-            <VoucherSetBlock { ...globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId) } key={voucherSetId} />
+            <VoucherSetBlock { ...block } key={voucherSetId} openDetails />
             <ActivityAccountVouchers title="Vouchers" />
         </div>
     </section>
@@ -157,10 +158,10 @@ function ActivityView(props) {
 
 export const VoucherSetBlock = (props) => {
     const [expand,] = useState(1)
-    const { title, image, price, qty, currency, _id } = props //id
+    const { title, image, price, qty, currency, _id, openDetails } = props //id
 
     return (
-        <Link to={ROUTE.VoucherSetView + `/${_id}`}>
+        <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
             <div className="voucher-block solo flex relative">
                 <div className="thumb no-shrink">
@@ -204,7 +205,7 @@ export const SingleVoucherBlock = (props) => {
 
     return (
         <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.ActivityVouchers }/${ id }` }>
+            <Link to={ `${ ROUTE.ActivityVouchers }/${ id }${ROUTE.Details}` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
