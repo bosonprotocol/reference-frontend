@@ -35,24 +35,6 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
   return tabGroup
 }
 
-export const ChildVoucherBlock = ({title, expiration, id}) => (
-  <Link to={ `${ ROUTE.Activity }/${ id }${ROUTE.Details}` }>
-      <div className="voucher-block solo sub flex ai-center">
-          <div className="img no-shrink">
-              <QRCodeScaner />
-          </div>
-          <div className="description">
-              <h2 className="title elipsis">{title}</h2>
-              {/* <div className="expiration">{expiration}</div> */}
-          </div>
-          {/* <div className="statuses">
-              <div className="label">COMMITED</div>
-              <div className="label">REDEEMED</div>
-          </div> */}
-      </div>
-  </Link>
-)
-
 export const ActiveTab = (props) => {
   const { products, voucherType } = props
   return (

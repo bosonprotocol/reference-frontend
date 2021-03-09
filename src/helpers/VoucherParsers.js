@@ -145,13 +145,13 @@ export async function getParsedAccountVoucherSets(account) {
   return parsedData ? parsedData : undefined
 }
 
-export async function getParsedVouchersFromSupply(account) {
+export async function getParsedVouchersFromSupply(voucherSetId, account) {
   if (!account) {
       return;
   }
 
   const authData = getAccountStoredInLocalStorage(account);
-  const voucherFromSupply = await getVouchersFromSupply(authData.authToken);
+  const voucherFromSupply = await getVouchersFromSupply(voucherSetId, authData.authToken);
 
   return voucherFromSupply ? voucherFromSupply : undefined
 }

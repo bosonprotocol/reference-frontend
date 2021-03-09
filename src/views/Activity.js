@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -9,7 +10,7 @@ import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
-import { getAccountVouchers, getParsedAccountVoucherSets } from "../helpers/VoucherParsers"
+import { getAccountVouchers, getParsedAccountVoucherSets, getParsedVouchersFromSupply } from "../helpers/VoucherParsers"
 
 import { ModalContext } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
