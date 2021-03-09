@@ -79,7 +79,7 @@ function ActivityView(props) {
     const { voucherBlocks, voucherType, loading, account, title, voucherSetId } = props
     const globalContext = useContext(GlobalContext);
 
-    const [resultVouchers, setResultVouchers] = useState(voucherSetId ? [] : voucherBlocks)
+    const [resultVouchers,] = useState(voucherSetId ? [] : voucherBlocks)
 
     const getLastAction = (el) => {
         let latest = 0;
