@@ -198,15 +198,10 @@ function VoucherDetails(props) {
 
             const complainPeriod = await voucherKernalContract.complainPeriod();
             const cancelFaultPeriod = await voucherKernalContract.cancelFaultPeriod();
-           
-            
-            
-        
-            console.log(voucherStatus, currentStatus)
+
            const complainPeriodStart = voucherStatus.complainPeriodStart;
            const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
-         
-         
+
            let waitPeriodStart;
            let waitPeriod;
            if(currentStatus.status === STATUS.EXPIRED) {
@@ -216,35 +211,26 @@ function VoucherDetails(props) {
                 waitPeriodStart = complainPeriodStart;
                 waitPeriod = complainPeriod;
            } else if(currentStatus.status === STATUS.COMPLAINED) {
-               console.log('sadsadsadasd', cancelFaultPeriodStart, cancelFaultPeriod)
                 waitPeriodStart = cancelFaultPeriodStart;
                 waitPeriod = cancelFaultPeriod;
-           } else if(currentStatus.status === STATUS.COMMITED) {
-               waitPeriodStart = ethers.BigNumber.from(new Date(currentStatus.date).getTime());
-               console.log(new Date(voucherDetails.expiryDate).getTime() - new Date(voucherDetails.startDate).getTime())
-               waitPeriod = ethers.BigNumber.from((new Date(voucherDetails.expiryDate).getTime() - new Date(voucherDetails.startDate).getTime())/1000)
-               console.log('here', waitPeriodStart, waitPeriod)
-
            }
 
-           if(waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) {
+           
+           
+           if((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
             const currentBlockTimestamp = (await library.getBlock()).timestamp;
-            let start = new Date(+ethers.utils.formatUnits(waitPeriodStart, 'wei') * 1000);
-            let end = new Date(+ethers.utils.formatUnits(waitPeriodStart.add(waitPeriod), 'wei') * 1000);
+            let start = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.startDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart, 'wei') * 1000);
+            let end = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.expiryDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart.add(waitPeriod), 'wei') * 1000);
             let now = new Date(currentBlockTimestamp * 1000);
             const timePast = (now?.getTime() / 1000) - (start?.getTime() / 1000)
             const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
         
             const differenceInPercent = (x, y) => (x / y) * 100
             const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
-        
-            console.log('start', start)
-            console.log('end', end)
-
             document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(expiryProgress.split('%')[0]) > 100 ? '100%' : expiryProgress : null);
 
             const title = currentStatus.status === STATUS.COMMITED ? 'Expires On' : 'Wait Period Expires On'
-            return [...newStatusBlocks, singleStatusComponent({ title, date: end, color: 4, progress: expiryProgress })]
+            return [...newStatusBlocks, singleStatusComponent({ title, date: end, color: 4, progress: expiryProgress, status: currentStatus.status })]
            }
            
            
@@ -254,13 +240,12 @@ function VoucherDetails(props) {
     }
    useEffect(() => {
     if(voucherDetails) {
-console.log(voucherDetails)
         const resolveStatusBlocks = async () => {
             let newStatusBlocks = [];
             if (!!voucherDetails) {
                 if (voucherDetails.COMMITTED) newStatusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1}))
                 if (voucherDetails.REDEEMED) newStatusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2  }))
-                if (voucherDetails.REFUNDED) newStatusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED, color: 4  }))
+                if (voucherDetails.REFUNDED) newStatusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED, color: 5  }))
                 if (voucherDetails.COMPLAINED) newStatusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
                 if (voucherDetails.CANCELLED) newStatusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
                 
@@ -707,19 +692,6 @@ console.log(voucherDetails)
                                 </div>
                             </div>
                             : null}
-                        {/* {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
-                            <div className="section expiration">
-                                <div className="expiration-container flex split">
-                                    <p>Expiration Time</p>
-                                    <div className="time-left flex column center">
-                                        <p>{daysAvailable - daysPast >= 0 ? 
-                                            `${daysAvailable - daysPast + 1} DAY${daysAvailable - daysPast + 1 > 1 ? 'S' : ''} LEFT` :
-                                        'EXPIRED'}</p>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            : null} */}
                         {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                             <div className="section escrow">
                                 {escrowData ?
@@ -753,13 +725,16 @@ console.log(voucherDetails)
     )
 }
 
-function singleStatusComponent({title, date, color, progress}) {
+function singleStatusComponent({title, date, color, progress, status}) {
+    console.log(status, progress)
     const jsx =  (<div key={title} className={`status-block color_${color}`}>
-    <h3 className="status-name">{title}</h3>
+    <h3 className="status-name">
+    {title}
     {
         progress ? <div className="progress"></div> : null
     }
-     <p className="status-details">{!progress ? formatDate(date, 'string') : `${diffInMinutes(new Date(date), new Date())} minutes`}</p>
+    </h3>
+     <p className="status-details">{!progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${diffInMinutes(new Date(date), new Date())} minutes`}</p>
  </div>);
     return {jsx, date}
 

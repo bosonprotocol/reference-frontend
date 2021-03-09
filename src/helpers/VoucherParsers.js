@@ -173,11 +173,12 @@ export async function addNewVoucher(account, getVoucherDetails, voucherId, array
 
 export const determineCurrentStatusOfVoucher = (voucherDetails) => {
   const allStatuses = [];
+  console.log(voucherDetails)
   if (voucherDetails.COMMITTED) allStatuses.push({ status: STATUS.COMMITED, date: voucherDetails.COMMITTED})
   if (voucherDetails.REDEEMED) allStatuses.push({ status: STATUS.REDEEMED, date: voucherDetails.REDEEMED})
   if (voucherDetails.REFUNDED) allStatuses.push({ status: STATUS.REFUNDED, date: voucherDetails.REFUNDED })
   if (voucherDetails.COMPLAINED) allStatuses.push({ status: STATUS.COMPLAINED, date: voucherDetails.COMPLAINED})
   if (voucherDetails.CANCELLED) allStatuses.push({ status: STATUS.CANCELLED, date: voucherDetails.CANCELLED})
-
+console.log(allStatuses)
   return allStatuses.sort((a, b) => a.date > b.date ? 1 : -1)[allStatuses.length - 1]
 }
