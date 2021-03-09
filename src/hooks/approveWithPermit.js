@@ -5,8 +5,6 @@ export const onAttemptToApprove = async (tokenContract, library, account, chainI
     const nonce = await tokenContract.nonces(account);
     const verifierContractName = await tokenContract.name();
     const verifierContractAddress = tokenContract.address;
-    console.log(verifierContractAddress);
-    console.log(verifierContractName);
     const deadline = +new Date() + 60 * 60;
 
     const EIP712Domain = [
