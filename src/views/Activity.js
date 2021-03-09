@@ -23,7 +23,7 @@ import Loading from "../components/offerFlow/Loading";
 
 import { WalletConnect } from "../components/modals/WalletConnect"
 
-export function ActivityAccountVouchers({title}) {
+export function ActivityAccountVouchers({title, voucherSetId}) {
     const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
@@ -40,7 +40,7 @@ export function ActivityAccountVouchers({title}) {
     }, [account]);
      
 
-    return <ActivityView title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
+    return <ActivityView voucherSetId={voucherSetId} title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
 }
 
 export function ActivityVoucherSetView() {
@@ -54,7 +54,7 @@ export function ActivityVoucherSetView() {
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
             <VoucherSetBlock { ...block } key={voucherSetId} openDetails />
-            <ActivityAccountVouchers title="Vouchers" />
+            <ActivityAccountVouchers voucherSetId={voucherSetId} title="Vouchers" />
         </div>
     </section>
 }
@@ -76,8 +76,10 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType, loading, account, title } = props
+    const { voucherBlocks, voucherType, loading, account, title, voucherSetId } = props
     const globalContext = useContext(GlobalContext);
+
+    const [resultVouchers, setResultVouchers] = useState(voucherSetId ? [] : voucherBlocks)
 
     const getLastAction = (el) => {
         let latest = 0;
@@ -98,7 +100,13 @@ function ActivityView(props) {
         return latest
     }
 
-    const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
+    if(voucherSetId) {
+        getParsedVouchersFromSupply(voucherSetId, account).then(result => {
+            // console.log(result)
+        })
+    }
+
+    const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
 
     const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
     const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
@@ -157,8 +165,6 @@ function ActivityView(props) {
 export const VoucherSetBlock = (props) => {
     const [expand,] = useState(1)
     const { title, image, price, qty, currency, _id, openDetails } = props
-
-    console.log(props)
 
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>

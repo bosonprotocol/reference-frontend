@@ -83,7 +83,6 @@ export const cancelVoucherSet = async (supplyId, account, data, token) => {
 
 export const getAccountVoucherSets = async (account) => {
     const accountVoucherSets = await axiosInstance.get(`/voucher-sets/sell/${account}`)
-    console.log(accountVoucherSets)
     return accountVoucherSets.data;
 };
 
@@ -91,5 +90,6 @@ export const getVouchersFromSupply = async (address, token) => {
     const vouchersFromSupply = await axiosInstance.get(`/vouchers/buyers/${address}`, {
         headers: { 'Authorization': `Bearer ${ token }` }
     })
+    console.log(vouchersFromSupply)
     return vouchersFromSupply.data;
 };
