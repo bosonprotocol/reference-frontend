@@ -15,12 +15,12 @@ export const DescriptionBlock = (props) => {
   return (
     <>
       <h2>
-          <div>Description</div>
-          {!voucherSetDetails ?
-            <div className="image flex center" onClick={()=>toggleImageView(1)}>
+          
+
+            <div className={`${voucherSetDetails ? 'voucher-set-image' : 'image'} flex center`} onClick={()=>toggleImageView(1)}>
               <img src={ getProp('image') } alt={ getProp('title')}/>
             </div>
-          :null}
+            <div>Description</div>
       </h2>
       <div className="description">
           { getProp('description') }
