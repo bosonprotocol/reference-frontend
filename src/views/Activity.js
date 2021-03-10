@@ -233,10 +233,10 @@ export const SingleVoucherBlock = (props) => {
     return (
         <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>
             <Link to={ `${ ROUTE.ActivityVouchers }/${ voucherSetId ? _id : id }${ROUTE.Details}` }>
-                <div className="thumb no-shrink">
+                {!voucherSetId ? <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
-                </div>
-                <div className="info grow flex jc-sb column">
+                </div> : null}
+                <div className={`info grow flex ${!voucherSetId ? 'jc-sb' : ''} column`}>
                     <div className="title-container">
                         {!voucherSetId ? <div className="status">
                             <p>VOUCHER</p>
