@@ -10,18 +10,16 @@ import { ROUTE } from "../../helpers/Dictionary"
 
 
 function ProductBlock(props) {
-    const { id, title, image, price, deposit, col, delay, animate } = props
+    const { id, title, image, price, deposit, col, delay } = props
     const productType = col ? "col" : ""
 
     return (
-        <Link to={ `${ ROUTE.Activity }/${ id }` }>
+        <Link to={ `${ ROUTE.Activity }/${ id }${ROUTE.Details}` }>
         <div
             // onClick={ openProduct }
-            className={ `product-block ${ productType }  ${ animate ? 'animate' : '' }` }
+            className={ `product-block ${ productType } ` } //${ animate ? 'animate' : '' }
         >
-            <div className={ `product-image flex center ${ productType }` }>
-                <img style={ { transitionDelay: delay } } src={ image } alt={ title }/>
-            </div>
+            <div className={ `product-image flex center ${ productType }` } style={{backgroundImage: `url('${image}')`, transitionDelay: delay}}></div>
             <h3>{ title }</h3>
             <div className="price flex ai-center">
                 <span><IconEth/>{ price } ETH</span>

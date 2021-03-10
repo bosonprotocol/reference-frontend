@@ -1,11 +1,13 @@
-import React, { useRef, useEffect, useState } from 'react'
 import './Onboarding.scss'
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+
+import "swiper/swiper.min.css"
 
 import EscrowDiagram from '../components/shared/EscrowDiagram';
+
+SwiperCore.use([Navigation, Pagination]);
 
 function slide1() {
   return(
@@ -73,22 +75,7 @@ function slide3(completeOnboarding) {
 }
 
 function Onboarding(props) {
-  const slider = useRef()
-  const [currentSlide, setCurrentSlide] = useState(localStorage.getItem('onboarding-slide'))
-
-  const settings = {
-    dots: true,
-    infinite: false,
-    arrows: window.innerWidth <= 960 ? false : true,
-    accessibility: true,
-    initialSlide: currentSlide ? parseInt(currentSlide) : 0,
-    afterChange: (currentSlide) => slideChanged(currentSlide),
-  };
-
-  const slideChanged = (currentSlide) => {
-    localStorage.setItem('onboarding-slide', (currentSlide).toString())
-    setCurrentSlide(currentSlide)
-  }
+  const initialSlide = localStorage.getItem('onboarding-slide')
 
   const playSlide = (currentSlide) => {
     // reactize later
@@ -96,11 +83,9 @@ function Onboarding(props) {
       slide.classList.add('pause')
     });
     document.querySelector(`.onboarding [data-slide="${currentSlide}"]`).classList.remove('pause');
-  }
 
-  useEffect(() => {
-    playSlide(currentSlide ? parseInt(currentSlide) : 0)
-  }, [currentSlide])
+    localStorage.setItem('onboarding-slide', (currentSlide).toString())
+  }
 
   const sequence = [
     slide1,
@@ -111,15 +96,30 @@ function Onboarding(props) {
   return (
     <section className="onboarding relative">
       <div className="container">
-        <Slider ref={slider} {...settings}>
+        <Swiper
+          spaceBetween={20}
+          navigation
+          pagination
+          slidesPerView={1}
+          threshold={6}
+          loop={false}
+          shortSwipes={true}
+          resistance={true}
+          observer={true}
+          observeParents={true}
+          onSlideChange={(slider) => playSlide(slider.snapIndex)}
+          initialSlide={initialSlide ? initialSlide : 0}
+          >
           {sequence.map((slide, id) => 
-            <div key={id} data-slide={id} className="container atomic-scoped animate pause">
-              <div className="screen relative flex column jc-sb">
-                {slide(props.completeOnboarding)}
+            <SwiperSlide key={id}>
+              <div data-slide={id} className="container atomic-scoped animate pause">
+                <div className="screen relative flex column jc-sb">
+                  {slide(props.completeOnboarding)}
+                </div>
               </div>
-            </div>
+            </SwiperSlide>
           )}
-        </Slider>
+        </Swiper>
       </div>
     </section>
   )

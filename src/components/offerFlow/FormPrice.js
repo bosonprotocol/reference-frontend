@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
@@ -7,7 +7,6 @@ import Currencies from "./Currencies"
 import { NAME } from "../../helpers/Dictionary"
 import { ethers } from 'ethers'
 import { toFixed } from '../../utils/format-utils'
-import { useRef } from 'react/cjs/react.development'
 
 
 function FormPrice({
