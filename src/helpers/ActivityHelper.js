@@ -54,17 +54,17 @@ export const ChildVoucherBlock = ({title, expiration, id}) => (
 )
 
 export const ActiveTab = (props) => {
-  const { products, voucherType } = props
+  const { products, voucherType, voucherSetId } = props
   return (
       <div className="vouchers-container">
           {
-              products.map((block, id) => getDesiredBlockType(voucherType, block, id))
+              products.map((block, id) => getDesiredBlockType(voucherType, block, id, voucherSetId))
           }
       </div>
   )
 }
 
-export const getDesiredBlockType = (voucherType, props, id) => ( voucherType === VOUCHER_TYPE.accountVoucher ?
-  <SingleVoucherBlock { ...props } key={id} />:
+export const getDesiredBlockType = (voucherType, props, id, voucherSetId) => ( voucherType === VOUCHER_TYPE.accountVoucher ?
+  <SingleVoucherBlock voucherSetId={voucherSetId} { ...props } key={id} />:
   <VoucherSetBlock { ...props } key={id} />
 )

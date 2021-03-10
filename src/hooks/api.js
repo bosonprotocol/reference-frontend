@@ -90,6 +90,5 @@ export const getVouchersFromSupply = async (address, token) => {
     const vouchersFromSupply = await axiosInstance.get(`/vouchers/buyers/${address}`, {
         headers: { 'Authorization': `Bearer ${ token }` }
     })
-    console.log(vouchersFromSupply)
     return vouchersFromSupply.data;
 };

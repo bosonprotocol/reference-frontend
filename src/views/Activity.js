@@ -22,8 +22,9 @@ import { VOUCHER_TYPE, sortBlocks, ActiveTab } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
 
 import { WalletConnect } from "../components/modals/WalletConnect"
+import { formatDate } from "../helpers/Format"
 
-export function ActivityAccountVouchers({title, voucherSetId}) {
+export function ActivityAccountVouchers({title, voucherSetId, block}) {
     const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
@@ -40,7 +41,7 @@ export function ActivityAccountVouchers({title, voucherSetId}) {
     }, [account]);
      
 
-    return <ActivityView voucherSetId={voucherSetId} title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
+    return <ActivityView block={block} voucherSetId={voucherSetId} title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
 }
 
 export function ActivityVoucherSetView() {
@@ -54,7 +55,7 @@ export function ActivityVoucherSetView() {
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
             <VoucherSetBlock { ...block } key={voucherSetId} openDetails />
-            <ActivityAccountVouchers voucherSetId={voucherSetId} title="Vouchers" />
+            <ActivityAccountVouchers block={block} voucherSetId={voucherSetId} title="Vouchers" />
         </div>
     </section>
 }
@@ -76,10 +77,12 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType, loading, account, title, voucherSetId } = props
+    const { voucherBlocks, voucherType, loading, account, title, voucherSetId, block } = props
     const globalContext = useContext(GlobalContext);
 
-    const [resultVouchers,] = useState(voucherSetId ? [] : voucherBlocks)
+    const [resultVouchers, setResultVouchers] = useState([])
+    const [activeVouchers, setActiveVouchers] = useState([])
+    const [inactiveVouchers, setInactiveVouchers] = useState([])
 
     const getLastAction = (el) => {
         let latest = 0;
@@ -100,16 +103,34 @@ function ActivityView(props) {
         return latest
     }
 
-    if(voucherSetId) {
-        getParsedVouchersFromSupply(voucherSetId, account).then(result => {
-            // console.log(result)
-        })
-    }
 
-    const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+    useEffect(() => {
+        if(voucherSetId) {
+            getParsedVouchersFromSupply(voucherSetId, account).then(result => {
+                if(result) {
+                    result.vouchers.map(voucher => {
+                        voucher['image'] = '/images/voucher_scan.png'
+                        voucher['expiryDate'] = block?.expiryDate
+                        return voucher
+                    })
+                    setResultVouchers(result.vouchers)
+                }
+            })
+        }
+    }, [account])
 
-    const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
-    const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
+    useEffect(() => {
+        if(voucherBlocks?.length && !voucherSetId) {
+            setResultVouchers(voucherBlocks)
+        }
+    }, [voucherBlocks])
+
+    useEffect(() => {
+        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+
+        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+    }, [resultVouchers])
 
     const activityMessage = (tab) => {
         return account ?
@@ -141,13 +162,13 @@ function ActivityView(props) {
                         <>
                             <TabPanel>
                                 {activeVouchers?.length > 0 && !!account?
-                                    <ActiveTab voucherType={voucherType} products={ activeVouchers }/> :
+                                    <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
                                     activityMessage(1)
                                 }
                             </TabPanel>
                             <TabPanel>
                                 {inactiveVouchers?.length > 0 && !!account?
-                                    <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> :
+                                    <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
                                     activityMessage()
                                 }
                             </TabPanel>
@@ -181,7 +202,7 @@ export const VoucherSetBlock = (props) => {
                         <div className="title elipsis">{ title }</div>
                     </div>
                     <div className="price flex split">
-                        <div className="value flex center"><img src="images/icon-eth.png" alt="eth"/>{ price } { currency }</div>
+                        <div className="value flex center"><img src="/images/icon-eth.png" alt="eth"/>{ price } { currency }</div>
                         <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>
                 </div>
@@ -192,7 +213,7 @@ export const VoucherSetBlock = (props) => {
 }
 
 export const SingleVoucherBlock = (props) => {
-    const { title, image, price, currency, id, expiryDate,
+    const { voucherSetId, title, image, price, currency, id, _id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
 
     const statusOrder = {
@@ -207,26 +228,30 @@ export const SingleVoucherBlock = (props) => {
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
 
-
+    console.log(!!voucherSetId)
 
     return (
-        <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.ActivityVouchers }/${ id }${ROUTE.Details}` }>
+        <div className={`voucher-block flex ${!!voucherSetId ? 'supply' : ''}`}>
+            <Link to={ `${ ROUTE.ActivityVouchers }/${ !!voucherSetId ? _id : id }${ROUTE.Details}` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
                 <div className="info grow flex jc-sb column">
                     <div className="title-container">
-                        <div className="status">
+                        {!voucherSetId ? <div className="status">
                             <p>VOUCHER</p>
-                        </div>
-                        <div className="title elipsis">{ title }</div>
+                        </div> : null}
+                        <div className="title elipsis">{ !!title ? title : _id }</div>
                     </div>
-                    <div className="price flex split">
-                        <div className="value flex center"><img src="images/icon-eth.png"
+                    {!voucherSetId ? <div className="price flex split">
+                        <div className="value flex center"><img src="/images/icon-eth.png"
                                                                 alt="eth"/> { price } { currency }
                         </div>
+                    </div> : 
+                    <div className="expires">
+                        <p>Expires on {expiryDate ? formatDate(expiryDate, 'string') : '...'}</p>
                     </div>
+                    }
                 </div>
                 <div className="statuses">
                     {statuses ? Object.keys(statuses).map((status, i) => statusOrder[status] ? <div key={i} className={`label color_${status}`}>{status}</div> : null) : null}
