@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router"
 
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy, cancelVoucherSet } from "../hooks/api";
+import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy, cancelVoucherSet, } from "../hooks/api";
 import { useBosonRouterContract } from "../hooks/useContract";
 import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
@@ -204,7 +204,7 @@ function VoucherDetails(props) {
     if (!!voucherDetails) {
         if (voucherDetails.COMMITTED) statusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1}))
         if (voucherDetails.REDEEMED) statusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2  }))
-        if (voucherDetails.REFUNDED) statusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED }))
+        if (voucherDetails.REFUNDED) statusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED, color: 5 }))
         if (voucherDetails.COMPLAINED) statusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
         if (voucherDetails.CANCELLED) statusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
         

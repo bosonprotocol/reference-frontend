@@ -93,8 +93,8 @@
   }
   .button-container {
     z-index: 2;
-    position: absolute;
-    bottom: 10vh;
+    position: fixed;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-21px);
   }
@@ -104,15 +104,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
     left: 0;
     right: 0;
-    border: 1px solid rgba(#5D6F84, 1);
-    border-radius: 10px;
     transition: 0.15s ease-in-out;
     cursor: pointer;
 
-    position: absolute;
+    position: fixed;
+    bottom: 0;
 
     &.new {
       background: #192028;

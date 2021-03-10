@@ -80,3 +80,15 @@ export const cancelVoucherSet = async (supplyId, account, data, token) => {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
 };
+
+export const getAccountVoucherSets = async (account) => {
+    const accountVoucherSets = await axiosInstance.get(`/voucher-sets/sell/${account}`)
+    return accountVoucherSets.data;
+};
+
+export const getVouchersFromSupply = async (address, token) => {
+    const vouchersFromSupply = await axiosInstance.get(`/vouchers/buyers/${address}`, {
+        headers: { 'Authorization': `Bearer ${ token }` }
+    })
+    return vouchersFromSupply.data;
+};

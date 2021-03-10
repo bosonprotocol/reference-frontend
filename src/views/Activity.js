@@ -1,6 +1,6 @@
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import "./Activity.scss"
 
@@ -10,7 +10,7 @@ import { ROUTE } from "../helpers/Dictionary"
 
 import { Quantity, IconActivityMessage } from "../components/shared/Icons"
 
-import { getAccountVouchers } from "../helpers/VoucherParsers"
+import { getAccountVouchers, getParsedAccountVoucherSets, getParsedVouchersFromSupply } from "../helpers/VoucherParsers"
 
 import { ModalContext } from "../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
@@ -18,12 +18,13 @@ import { useWeb3React } from "@web3-react/core";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { VOUCHER_TYPE, sortBlocks, ActiveTab, ChildVoucherBlock } from "../helpers/ActivityHelper"
+import { VOUCHER_TYPE, sortBlocks, ActiveTab } from "../helpers/ActivityHelper"
 import Loading from "../components/offerFlow/Loading";
 
 import { WalletConnect } from "../components/modals/WalletConnect"
+import { formatDate } from "../helpers/Format"
 
-export function ActivityAccountVouchers() {
+export function ActivityAccountVouchers({title, voucherSetId, block}) {
     const [accountVouchers, setAccountVouchers] = useState([])
     const { account } = useWeb3React();
     const modalContext = useContext(ModalContext);
@@ -38,32 +39,49 @@ export function ActivityAccountVouchers() {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
-    
+     
 
-    return <ActivityView loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
+    return <ActivityView block={block} voucherSetId={voucherSetId} title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
+}
+
+export function ActivityVoucherSetView() {
+    const history = useHistory()
+    const globalContext = useContext(GlobalContext);
+    const locationPath = history.location.pathname.split('/')
+
+    const voucherSetId = locationPath[locationPath.length -2]
+    const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+
+    return <section className="activity atomic-scoped">
+        <div className="vouchers-container container">
+            <VoucherSetBlock { ...block } key={voucherSetId} openDetails />
+            <ActivityAccountVouchers block={block} voucherSetId={voucherSetId} title="Vouchers" />
+        </div>
+    </section>
 }
 
 export function ActivityVoucherSets() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
-
-    const voucherSets = globalContext.state.allVoucherSets
+    const { account } = useWeb3React();
 
     useEffect(() => {
-        voucherSets ?
-            setVoucherBlocks(voucherSets)
-            : setVoucherBlocks([])
+        getParsedAccountVoucherSets(account).then(voucherSets => {
+            if(voucherSets) setVoucherBlocks(voucherSets)
+        })
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [voucherSets])
+    }, [account])
 
-    return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } voucherType={ VOUCHER_TYPE.voucherSet }/> : null
+    
+    return <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/>
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType, loading, account } = props
+    const { voucherBlocks, voucherType, loading, account, title, voucherSetId, block } = props
     const globalContext = useContext(GlobalContext);
+
+    const [resultVouchers, setResultVouchers] = useState([])
+    const [activeVouchers, setActiveVouchers] = useState([])
+    const [inactiveVouchers, setInactiveVouchers] = useState([])
 
     const getLastAction = (el) => {
         let latest = 0;
@@ -84,10 +102,36 @@ function ActivityView(props) {
         return latest
     }
 
-    const blocksSorted = sortBlocks(voucherBlocks, voucherType, globalContext)
 
-    const activeVouchers = blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
-    const inactiveVouchers = blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1)
+    useEffect(() => {
+        if(voucherSetId) {
+            getParsedVouchersFromSupply(voucherSetId, account).then(result => {
+                if(result) {
+                    let extendedResults = result.vouchers
+                    extendedResults.map(voucher => {
+                        voucher['image'] = '/images/voucher_scan.png'
+                        voucher['expiryDate'] = block?.expiryDate
+                        return voucher
+                    })
+
+                    setResultVouchers(extendedResults)
+                }
+            })
+        }
+    }, [account, block])
+
+    useEffect(() => {
+        if(voucherBlocks?.length && !voucherSetId) {
+            setResultVouchers(voucherBlocks)
+        }
+    }, [voucherBlocks])
+
+    useEffect(() => {
+        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+
+        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+    }, [resultVouchers])
 
     const activityMessage = (tab) => {
         return account ?
@@ -107,7 +151,7 @@ function ActivityView(props) {
         <section className="activity atomic-scoped">
             <div className="container">
                 <div className="page-title">
-                    <h1>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Activity' : 'Voucher Sets'}</h1>
+                    <h1>{title ? title : voucherType === VOUCHER_TYPE.accountVoucher ? 'My Vouchers' : 'Voucher Sets'}</h1>
                 </div>
                 {
                 !loading ?
@@ -118,14 +162,14 @@ function ActivityView(props) {
                     </TabList>
                         <>
                             <TabPanel>
-                                {activeVouchers?.length?
-                                    <ActiveTab voucherType={voucherType} products={ activeVouchers }/> :
+                                {activeVouchers?.length > 0 && !!account?
+                                    <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
                                     activityMessage(1)
                                 }
                             </TabPanel>
                             <TabPanel>
-                                {inactiveVouchers?.length?
-                                    <ActiveTab voucherType={voucherType} products={ inactiveVouchers }/> :
+                                {inactiveVouchers?.length > 0 && !!account?
+                                    <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
                                     activityMessage()
                                 }
                             </TabPanel>
@@ -141,20 +185,13 @@ function ActivityView(props) {
 }
 
 export const VoucherSetBlock = (props) => {
-    const [expand, setExpand] = useState(-1)
-    const [matchingVouchers, setMatchingVouchers] = useState([])
-    const { title, image, price, qty, currency, _id } = props //id
-    const globalContext = useContext(GlobalContext);
-
-    useEffect(() => {
-        if (globalContext.state.allVoucherSets) setMatchingVouchers(globalContext.state.allVoucherSets.filter(voucher => voucher.id === _id))
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const [expand,] = useState(1)
+    const { title, image, price, qty, currency, _id, openDetails } = props
 
     return (
+        <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
-            <div className="voucher-block solo flex relative" onClick={ () => setExpand(expand * -1) }>
+            <div className="voucher-block solo flex relative">
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
@@ -166,25 +203,18 @@ export const VoucherSetBlock = (props) => {
                         <div className="title elipsis">{ title }</div>
                     </div>
                     <div className="price flex split">
-                        <div className="value flex center"><img src="images/icon-eth.png"
-                                                                alt="eth"/> { price } { currency }
-                        </div>
+                        <div className="value flex center"><img src="/images/icon-eth.png" alt="eth"/>{ price } { currency }</div>
                         <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>
                 </div>
             </div>
-            <div className="child-vouchers">
-                { matchingVouchers ? matchingVouchers.map(voucher => <ChildVoucherBlock key={ voucher.id }
-                                                                                        id={ voucher.id }
-                                                                                        title={ voucher.title }
-                                                                                        expiration={ 2 }/>) : null }
-            </div>
         </div>
+        </Link>
     )
 }
 
 export const SingleVoucherBlock = (props) => {
-    const { title, image, price, currency, id, expiryDate,
+    const { voucherSetId, title, image, price, currency, id, _id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
 
     const statusOrder = {
@@ -200,25 +230,28 @@ export const SingleVoucherBlock = (props) => {
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
 
 
-
     return (
-        <div className="voucher-block flex">
-            <Link to={ `${ ROUTE.ActivityVouchers }/${ id }` }>
-                <div className="thumb no-shrink">
+        <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>
+            <Link to={ `${ ROUTE.ActivityVouchers }/${ voucherSetId ? _id : id }${ROUTE.Details}` }>
+                {!voucherSetId ? <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
-                </div>
-                <div className="info grow flex jc-sb column">
+                </div> : null}
+                <div className={`info grow flex ${!voucherSetId ? 'jc-sb' : ''} column`}>
                     <div className="title-container">
-                        <div className="status">
+                        {!voucherSetId ? <div className="status">
                             <p>VOUCHER</p>
-                        </div>
-                        <div className="title elipsis">{ title }</div>
+                        </div> : null}
+                        <div className="title elipsis">{ !!title ? title : _id }</div>
                     </div>
-                    <div className="price flex split">
-                        <div className="value flex center"><img src="images/icon-eth.png"
+                    {!voucherSetId ? <div className="price flex split">
+                        <div className="value flex center"><img src="/images/icon-eth.png"
                                                                 alt="eth"/> { price } { currency }
                         </div>
+                    </div> : 
+                    <div className="expires">
+                        <p>Expires on {expiryDate ? formatDate(expiryDate, 'string') : '...'}</p>
                     </div>
+                    }
                 </div>
                 <div className="statuses">
                     {statuses ? Object.keys(statuses).map((status, i) => statusOrder[status] ? <div key={i} className={`label color_${status}`}>{status}</div> : null) : null}
