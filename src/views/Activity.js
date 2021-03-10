@@ -39,7 +39,6 @@ export function ActivityAccountVouchers({title, voucherSetId, block}) {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
-     
 
     return <ActivityView block={block} voucherSetId={voucherSetId} title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
 }
@@ -72,8 +71,7 @@ export function ActivityVoucherSets() {
     }, [account])
 
     
-    return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/> : null
+    return <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/>
 }
 
 function ActivityView(props) {
@@ -115,7 +113,6 @@ function ActivityView(props) {
                         return voucher
                     })
 
-                    console.log(extendedResults)
                     setResultVouchers(extendedResults)
                 }
             })
