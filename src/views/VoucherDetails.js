@@ -8,7 +8,7 @@ import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy, canc
 import { useBosonRouterContract, useVoucherKernalContract } from "../hooks/useContract";
 import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
-import { diffInMinutes, formatDate } from "../helpers/Format"
+import { formatDate } from "../helpers/Format"
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import PopupMessage from "../components/shared/PopupMessage";
@@ -230,7 +230,6 @@ function VoucherDetails(props) {
             const differenceInPercent = (x, y) => (x / y) * 100
            
             const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
-            console.log(expiryProgress)
             document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(expiryProgress.split('%')[0]) > 100 ? '100%' : expiryProgress : null);
 
             const title = currentStatus.status === STATUS.COMMITED ? 'Expiration date' : 'Wait period'
