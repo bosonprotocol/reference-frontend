@@ -175,27 +175,29 @@
               height: 22px;
               // display: flex;
               
-              &_1 {              
+              &_1 {            
                 .status-name {
-                  background: #358ef5;                   
+                  background: #358ef5;                         
                 }
               }
-
-              &_2 {          
+              &_2 {               
                 .status-name {
                   background:  #15BB9D;
                 }
               }
-
-              &_3 {            
+              &_3 {                
                 .status-name {
                   background:  #FA5B66;
                 }
               }
-
-              &_4 {              
+              &_4 {               
                 .status-name {
                   background:  #334253;
+                }
+              }
+              &_5 {
+                .status-name {
+                  background:  #E49043;
                 }
               }
             }
