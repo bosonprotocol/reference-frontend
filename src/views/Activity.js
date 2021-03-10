@@ -228,8 +228,6 @@ export const SingleVoucherBlock = (props) => {
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
 
-    console.log(!!voucherSetId)
-
     return (
         <div className={`voucher-block flex ${!!voucherSetId ? 'supply' : ''}`}>
             <Link to={ `${ ROUTE.ActivityVouchers }/${ !!voucherSetId ? _id : id }${ROUTE.Details}` }>
