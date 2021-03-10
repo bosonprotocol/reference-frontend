@@ -141,7 +141,7 @@
       }
       &.status {
         margin-top: 44px;
-
+        margin-bottom: 15px;
         .status-container {
           margin-top: 19px;
           .rc__item-container{
@@ -250,22 +250,14 @@
                   background:  #334253;
                 }
 
-                background: #334253;
-                border: #6D839B 1px solid;
-                color: #6D839B;
+                &_6 {
+                   background: #334253;
+                   border: #6D839B 1px solid;
+                   color: #6D839B;
+                } 
+
             }
-            &_7 {
 
-              background:#E49043;
-              border: #6D839B 1px solid;
-              color: #6D839B;
-          }
-          &_8 {
-
-            background: #E49043;
-            border: #6D839B 1px solid;
-            color: #6D839B;
-        }
             
             }
             }
