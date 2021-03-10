@@ -72,8 +72,7 @@ export function ActivityVoucherSets() {
     }, [account])
 
     
-    return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/> : null
+    return <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/>
 }
 
 function ActivityView(props) {
@@ -115,7 +114,6 @@ function ActivityView(props) {
                         return voucher
                     })
 
-                    console.log(extendedResults)
                     setResultVouchers(extendedResults)
                 }
             })
