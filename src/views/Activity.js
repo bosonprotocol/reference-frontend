@@ -108,16 +108,19 @@ function ActivityView(props) {
         if(voucherSetId) {
             getParsedVouchersFromSupply(voucherSetId, account).then(result => {
                 if(result) {
-                    result.vouchers.map(voucher => {
+                    let extendedResults = result.vouchers
+                    extendedResults.map(voucher => {
                         voucher['image'] = '/images/voucher_scan.png'
                         voucher['expiryDate'] = block?.expiryDate
                         return voucher
                     })
-                    setResultVouchers(result.vouchers)
+
+                    console.log(extendedResults)
+                    setResultVouchers(extendedResults)
                 }
             })
         }
-    }, [account])
+    }, [account, block])
 
     useEffect(() => {
         if(voucherBlocks?.length && !voucherSetId) {
@@ -228,9 +231,10 @@ export const SingleVoucherBlock = (props) => {
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
 
+
     return (
-        <div className={`voucher-block flex ${!!voucherSetId ? 'supply' : ''}`}>
-            <Link to={ `${ ROUTE.ActivityVouchers }/${ !!voucherSetId ? _id : id }${ROUTE.Details}` }>
+        <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>
+            <Link to={ `${ ROUTE.ActivityVouchers }/${ voucherSetId ? _id : id }${ROUTE.Details}` }>
                 <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
                 </div>
