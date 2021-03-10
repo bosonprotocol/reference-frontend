@@ -12,7 +12,7 @@ import { diffInMinutes, formatDate } from "../helpers/Format"
 import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import PopupMessage from "../components/shared/PopupMessage";
-
+import * as humanizeDuration from 'humanize-duration';
 import "./VoucherDetails.scss"
 
 import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent"
@@ -189,6 +189,8 @@ function VoucherDetails(props) {
 
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
+        console.log(voucherDetails)
+
         if(voucherDetails && !voucherDetails.FINALIZED) {
             if(voucherDetails.COMPLAINED && voucherDetails.CANCELLED){
                 return newStatusBlocks;
@@ -226,10 +228,12 @@ function VoucherDetails(props) {
             const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
         
             const differenceInPercent = (x, y) => (x / y) * 100
+           
             const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
+            console.log(expiryProgress)
             document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(expiryProgress.split('%')[0]) > 100 ? '100%' : expiryProgress : null);
 
-            const title = currentStatus.status === STATUS.COMMITED ? 'Expires On' : 'Wait Period Expires On'
+            const title = currentStatus.status === STATUS.COMMITED ? 'Expiration date' : 'Wait period'
             return [...newStatusBlocks, singleStatusComponent({ title, date: end, color: 4, progress: expiryProgress, status: currentStatus.status })]
            }
            
@@ -666,7 +670,7 @@ function VoucherDetails(props) {
 
         setLoading(0)
     }
-    console.log('hadasdas',statusBlocks)
+
     return (
         <>
             { loading ? <Loading /> : null}
@@ -726,7 +730,7 @@ function VoucherDetails(props) {
 }
 
 function singleStatusComponent({title, date, color, progress, status}) {
-    console.log(status, progress)
+
     const jsx =  (<div key={title} className={`status-block color_${color}`}>
     <h3 className="status-name">
     {title}
@@ -734,7 +738,7 @@ function singleStatusComponent({title, date, color, progress, status}) {
         progress ? <div className="progress"></div> : null
     }
     </h3>
-     <p className="status-details">{!progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${diffInMinutes(new Date(date), new Date())} minutes`}</p>
+     <p className="status-details">{!progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${new Date(date).getTime() - new Date().getTime() > 0 ? humanizeDuration(new Date(date).getTime() - new Date().getTime(), {round: true, largest: 1}) : 'Finished'}`}</p>
  </div>);
     return {jsx, date}
 
