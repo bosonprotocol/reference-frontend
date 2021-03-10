@@ -15,8 +15,6 @@ export const DescriptionBlock = (props) => {
   return (
     <>
       <h2>
-          
-
             <div className={`${voucherSetDetails ? 'voucher-set-image' : 'image'} flex center`} onClick={()=>toggleImageView(1)}>
               <img src={ getProp('image') } alt={ getProp('title')}/>
             </div>

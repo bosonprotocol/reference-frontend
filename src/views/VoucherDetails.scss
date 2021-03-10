@@ -175,30 +175,25 @@
               height: 22px;
               // display: flex;
               
-              &_1 {
-              
-                
+              &_1 {              
                 .status-name {
-                  background: #358ef5;
-                 
-                 
-                
+                  background: #358ef5;                   
                 }
               }
-              &_2 {
-                
+
+              &_2 {          
                 .status-name {
                   background:  #15BB9D;
                 }
               }
-              &_3 {
-                
+
+              &_3 {            
                 .status-name {
                   background:  #FA5B66;
                 }
               }
-              &_4 {
-                
+
+              &_4 {              
                 .status-name {
                   background:  #334253;
                 }
@@ -208,8 +203,8 @@
             .final-status-container {
                 display: flex;
             }
-            .status-name {
-              
+
+            .status-name {  
               border-radius: 4px;
               height: 22px;
               display: flex;
@@ -231,45 +226,36 @@
 
               &.color {
                 &_1 {
-                
-                  
                   background:  #15BB9D;
-               
                  }
+
                 &_2 {
-                
                   border: #15BB9D 1px solid;
                   color: #15BB9D;
-               
                  }
-              &_3 {
-                
+
+                &_3 { 
                   background:  #FA5B66;
-           
-              }
+                }
 
-              &_4 {
-                border:  #FA5B66 1px solid;
-                color:  #FA5B66;
-              }
-              &_5 {
-              
-                color: #FFFFFF;
-                background:  #334253;
-         
-            }
+                &_4 {
+                  border:  #FA5B66 1px solid;
+                  color:  #FA5B66;
+                }
 
-            &_6 {
+                &_5 {    
+                  color: #FFFFFF;
+                  background:  #334253;
+                }
 
-                background: #334253;
-                border: #6D839B 1px solid;
-                color: #6D839B;
-            }
-             
+                &_6 {
+                   background: #334253;
+                   border: #6D839B 1px solid;
+                   color: #6D839B;
+                }         
             }
             }
             
-
             .status-details {
               margin-top: 6px;
               font-family: 'Barlow', sans-serif;
@@ -278,7 +264,6 @@
               font-size: 12px;
               line-height: 14px;
               text-align: center;
-
               color: #FFFFFF;
             }
           }
@@ -299,7 +284,6 @@
             font-weight: 500;
             font-size: 18px;
             line-height: 22px;
-
             color: #FFFFFF;
           }
           .time-left {
@@ -309,10 +293,8 @@
               font-weight: 500;
               font-size: 12px;
               line-height: 112.4%;
-
               text-align: center;
               text-transform: uppercase;
-
               color: #FFFFFF;
               margin-bottom: 9px;
             }
@@ -343,7 +325,6 @@
       &.info {
         margin-top: 39px;
         padding-top: 30px;
-
         border-top: 1px solid rgba(255, 255, 255, 0.06);
 
         .section + .section {
@@ -354,6 +335,7 @@
           
           .thumbnail {
             margin-bottom: 30px;
+
             img {
               max-height: 40vh;
             }
@@ -363,6 +345,7 @@
             max-height: 180px;
             margin-top: 20px;
             margin-bottom: 15px;
+
             img {
               max-width: 100%;
               max-height: 100%;
@@ -370,14 +353,11 @@
               height: auto;
               border-radius: 4.25464px;
             }
-
-
           }
-
-          .voucher-set-image {
-           
+          .voucher-set-image {  
             margin-top: 20px;
             margin-bottom: 15px;
+
             img {
               max-width: 500px;
               max-height: 100%;
@@ -385,9 +365,7 @@
               width: 100vw;
               height: auto;
               border-radius: 4.25464px;
-            }
-
-            
+            }   
           }
         }
         .general {
