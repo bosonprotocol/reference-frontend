@@ -493,3 +493,29 @@
     background-color: #192028;
   }
 }
+
+.bottom-navigation {
+  button {
+    border: none;
+    position: relative;
+
+    &::before {
+      content: 'All fields are required';
+      position: absolute;
+      color: red;
+      right: 100%;
+      width: 172px;
+      font-weight: 300;
+      text-transform: none;
+      opacity: 0;
+      transition: 0.3s ease-in-out;
+      transform: translateX(7px);
+    }
+    &.message {
+      &::before {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  }
+}
