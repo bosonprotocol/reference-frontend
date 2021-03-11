@@ -79,7 +79,8 @@
     "start:demo": "env-cmd -f .env.demo react-scripts start",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "test-with-coverage": "react-scripts test --watchAll=false --coverage=true",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
