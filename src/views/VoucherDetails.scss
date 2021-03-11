@@ -333,7 +333,6 @@
           margin-top: 30px;
         }
         .description {
-          margin-top: 25px;
           
           .thumbnail {
             margin-bottom: 30px;
@@ -344,10 +343,10 @@
           }
           .image {
             max-width: 151px;
-            max-height: 180px;
-            margin-top: 20px;
+            height: 180px;
             margin-bottom: 15px;
-
+            position: relative;
+            
             img {
               max-width: 100%;
               max-height: 100%;
@@ -357,8 +356,7 @@
             }
           }
           .voucher-set-image {  
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin: 0px auto 15px auto;
             max-width: 500px;
             
             img {
