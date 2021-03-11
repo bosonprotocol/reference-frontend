@@ -359,12 +359,12 @@
           .voucher-set-image {  
             margin-top: 20px;
             margin-bottom: 15px;
-
+            max-width: 500px;
+            
             img {
-              max-width: 500px;
-              max-height: 100%;
               position: relative;
               width: 100vw;
+              max-width: 500px;
               height: auto;
               border-radius: 4.25464px;
             }   
