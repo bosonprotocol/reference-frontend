@@ -33,6 +33,7 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
 import { IconQRScanner } from "../components/shared/Icons"
+import { calculateDifferenceInPercentage } from '../utils/math';
 
 
 function VoucherDetails(props) {
@@ -189,8 +190,6 @@ function VoucherDetails(props) {
 
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
-        console.log(voucherDetails)
-
         if(voucherDetails && !voucherDetails.FINALIZED) {
             if(voucherDetails.COMPLAINED && voucherDetails.CANCELLED){
                 return newStatusBlocks;
@@ -201,43 +200,39 @@ function VoucherDetails(props) {
             const complainPeriod = await voucherKernalContract.complainPeriod();
             const cancelFaultPeriod = await voucherKernalContract.cancelFaultPeriod();
 
-           const complainPeriodStart = voucherStatus.complainPeriodStart;
-           const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
+            const complainPeriodStart = voucherStatus.complainPeriodStart;
+            const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
 
-           let waitPeriodStart;
-           let waitPeriod;
-           if(currentStatus.status === STATUS.EXPIRED) {
-               waitPeriodStart = voucherDetails.EXPIRED;
-               waitPeriod = complainPeriod;
-           } else if(currentStatus.status === STATUS.CANCELLED || currentStatus.status === STATUS.REDEEMED || currentStatus.status === STATUS.REFUNDED) {
-                waitPeriodStart = complainPeriodStart;
+            let waitPeriodStart;
+            let waitPeriod;
+            if(currentStatus.status === STATUS.EXPIRED) {
+                waitPeriodStart = voucherDetails.EXPIRED;
                 waitPeriod = complainPeriod;
-           } else if(currentStatus.status === STATUS.COMPLAINED) {
-                waitPeriodStart = cancelFaultPeriodStart;
-                waitPeriod = cancelFaultPeriod;
-           }
+            } else if(currentStatus.status === STATUS.CANCELLED || currentStatus.status === STATUS.REDEEMED || currentStatus.status === STATUS.REFUNDED) {
+                    waitPeriodStart = complainPeriodStart;
+                    waitPeriod = complainPeriod;
+            } else if(currentStatus.status === STATUS.COMPLAINED) {
+                    waitPeriodStart = cancelFaultPeriodStart;
+                    waitPeriod = cancelFaultPeriod;
+            }
 
-           
-           
-           if((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
-            const currentBlockTimestamp = (await library.getBlock()).timestamp;
-            let start = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.startDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart, 'wei') * 1000);
-            let end = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.expiryDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart.add(waitPeriod), 'wei') * 1000);
-            let now = new Date(currentBlockTimestamp * 1000);
-            const timePast = (now?.getTime() / 1000) - (start?.getTime() / 1000)
-            const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000)
-        
-            const differenceInPercent = (x, y) => (x / y) * 100
-           
-            const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
-            document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(expiryProgress.split('%')[0]) > 100 ? '100%' : expiryProgress : null);
+            if((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
+                const currentBlockTimestamp = (await library.getBlock()).timestamp;
+                
+                const start = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.startDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart, 'wei') * 1000);
+                const end = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.expiryDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart.add(waitPeriod), 'wei') * 1000);
+                const now = new Date(currentBlockTimestamp * 1000);
+                
+                const timePast = (now?.getTime() / 1000) - (start?.getTime() / 1000);
+                const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000);
+            
+                const diffInPercentage = calculateDifferenceInPercentage(timePast, timeAvailable);
+                const expiryProgress = voucherDetails &&  diffInPercentage + '%';
+                document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(diffInPercentage) > 100 ? '100%' : expiryProgress : null);
 
-            const title = currentStatus.status === STATUS.COMMITED ? 'Expiration date' : 'Wait period'
-            return [...newStatusBlocks, singleStatusComponent({ title, date: end, color: 4, progress: expiryProgress, status: currentStatus.status })]
+                const statusTitle = currentStatus.status === STATUS.COMMITED ? 'Expiration date' : 'Wait period'
+                return [...newStatusBlocks, singleStatusComponent({ title: statusTitle, date: end, color: 4, progress: expiryProgress, status: currentStatus.status })]
            }
-           
-           
-       
         }
         return newStatusBlocks;
     }
@@ -263,17 +258,13 @@ function VoucherDetails(props) {
                             voucherDetails.FINALIZED
                         )
                     )
-               
                 }
-        
             }
             const withWaitPeriodBox = await resolveWaitPeriodStatusBox(newStatusBlocks);
-        
-            console.log(withWaitPeriodBox)
-            setStatusBlocks(withWaitPeriodBox)
+            setStatusBlocks(withWaitPeriodBox);
         }
-        resolveStatusBlocks()
-   
+
+        resolveStatusBlocks();
     }
    },[voucherDetails])
   
@@ -744,9 +735,9 @@ function singleStatusComponent({title, date, color, progress, status}) {
 }
 
 function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiredDate) {
+
     const jsx = (<div className={`status-block`}>
     <div className="final-status-container">
-
         { hasBeenRedeemed ? 
         <h3 className="status-name color_1">REDEMPTION</h3> :
         <h3 className="status-name color_2">NO REDEMPTION</h3>
@@ -759,7 +750,6 @@ function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelO
         <h3 className="status-name color_5">CANCEL/FAULT</h3> :
         <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
         }
-      
      </div>
      <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
  </div>)
