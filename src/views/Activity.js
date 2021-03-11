@@ -72,8 +72,7 @@ export function ActivityVoucherSets() {
     }, [account])
 
     
-    return voucherBlocks.length ?
-        <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/> : null
+    return <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/>
 }
 
 function ActivityView(props) {
@@ -115,7 +114,6 @@ function ActivityView(props) {
                         return voucher
                     })
 
-                    console.log(extendedResults)
                     setResultVouchers(extendedResults)
                 }
             })
@@ -235,10 +233,10 @@ export const SingleVoucherBlock = (props) => {
     return (
         <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>
             <Link to={ `${ ROUTE.ActivityVouchers }/${ voucherSetId ? _id : id }${ROUTE.Details}` }>
-                <div className="thumb no-shrink">
+                {!voucherSetId ? <div className="thumb no-shrink">
                     <img src={ image } alt={ title }/>
-                </div>
-                <div className="info grow flex jc-sb column">
+                </div> : null}
+                <div className={`info grow flex ${!voucherSetId ? 'jc-sb' : ''} column`}>
                     <div className="title-container">
                         {!voucherSetId ? <div className="status">
                             <p>VOUCHER</p>
