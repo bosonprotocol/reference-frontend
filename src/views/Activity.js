@@ -87,11 +87,12 @@ export function ActivityVoucherSets() {
 
 function ActivityView(props) {
     const { voucherBlocks, voucherType, loading, account, title, voucherSetId, block } = props
-    const globalContext = useContext(GlobalContext);
 
     const [resultVouchers, setResultVouchers] = useState([])
     const [activeVouchers, setActiveVouchers] = useState([])
     const [inactiveVouchers, setInactiveVouchers] = useState([])
+    const [fetchedNewVoucherSets, setFetchedNewVoucherSets] = useState([])
+    const [fetchingData, setFetchingData] = useState(0)
 
     const getLastAction = (el) => {
         let latest = 0;
@@ -132,15 +133,48 @@ function ActivityView(props) {
 
     useEffect(() => {
         if(voucherBlocks?.length && !voucherSetId) {
-            setResultVouchers(voucherBlocks)
+            setFetchedNewVoucherSets(voucherBlocks)
         }
     }, [voucherBlocks])
 
-    useEffect(() => {
-        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+    const checkForActiveVouchers = async (getVouchers) => {
+        const returnArray = async (voucherSetArray) => {
+            let result = []
+            
+            for(let voucherSet in voucherSetArray) {
+                let setCopy = voucherSetArray[voucherSet]
+                let activeVouchers = 0
+                let supplyResult = await getParsedVouchersFromSupply(voucherSetArray[voucherSet]._id, account)
 
-        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+                supplyResult.vouchers.forEach(voucher => !voucher.FINALIZED ? activeVouchers += 1 : null)
+                setCopy.hasActiveVouchers = activeVouchers
+    
+                result.push(setCopy)
+            }
+
+            return result
+        }
+
+        let result = await returnArray(getVouchers)
+  
+        setResultVouchers(result)
+        setFetchingData(0)
+    }
+
+    useEffect(() => {
+        if(fetchedNewVoucherSets?.length) {
+            setFetchingData(1)
+            checkForActiveVouchers(fetchedNewVoucherSets)
+        }
+    }, [fetchedNewVoucherSets])
+
+    useEffect(() => {
+        if(resultVouchers?.length) {
+            const blocksSorted = sortBlocks(resultVouchers, voucherType)
+    
+            setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+            setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+        }
     }, [resultVouchers])
 
     const activityMessage = (messageType) => {
@@ -164,7 +198,7 @@ function ActivityView(props) {
                     <h1>{title ? title : voucherType === VOUCHER_TYPE.accountVoucher ? 'My Vouchers' : 'Voucher Sets'}</h1>
                 </div>
                 {
-                !loading ?
+                !loading && !fetchingData ?
                 <Tabs>
                     <TabList>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
