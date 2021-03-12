@@ -141,7 +141,7 @@
       }
       &.status {
         margin-top: 44px;
-
+        margin-bottom: 15px;
         .status-container {
           margin-top: 19px;
           .rc__item-container{
@@ -254,7 +254,8 @@
                    background: #334253;
                    border: #6D839B 1px solid;
                    color: #6D839B;
-                }         
+                } 
+  
             }
             }
             
@@ -271,56 +272,6 @@
           }
         }
       }
-      &.expiration {
-        margin-top: 36px;
-
-        .expiration-container {
-          background: #1F2833;
-          border-radius: 4px;
-          padding: 18px;
-          padding-bottom: 21px;
-
-          & > p {
-            font-family: 'Barlow', sans-serif;
-            font-style: normal;
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 22px;
-            color: #FFFFFF;
-          }
-          .time-left {
-            p {
-              font-family: 'Barlow', sans-serif;
-              font-style: normal;
-              font-weight: 500;
-              font-size: 12px;
-              line-height: 112.4%;
-              text-align: center;
-              text-transform: uppercase;
-              color: #FFFFFF;
-              margin-bottom: 9px;
-            }
-            .progress {
-              background: #2A3542;
-              border-radius: 20px;
-              width: 67px;
-              height: 5px;
-              position: relative;
-              overflow: hidden;
-
-              &::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                width: #{'var(--progress-percentage)'};
-                bottom: 0;
-                left: 0;
-                background: #80F0BE;
-              }
-            }
-          }
-        }
-      }
       &.escrow {
         margin-top: 50px;
       }
@@ -333,7 +284,6 @@
           margin-top: 30px;
         }
         .description {
-          margin-top: 25px;
           
           .thumbnail {
             margin-bottom: 30px;
@@ -344,10 +294,10 @@
           }
           .image {
             max-width: 151px;
-            max-height: 180px;
-            margin-top: 20px;
+            height: 180px;
             margin-bottom: 15px;
-
+            position: relative;
+            
             img {
               max-width: 100%;
               max-height: 100%;
@@ -357,8 +307,7 @@
             }
           }
           .voucher-set-image {  
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin: 0px auto 15px auto;
             max-width: 500px;
             
             img {
@@ -393,6 +342,31 @@
 /* Hide scrollbar for Chrome, Safari and Opera */
 .rc__horizontal-scroll::-webkit-scrollbar {
   display: none;
+}
+
+.status-name {
+  position: relative;
+}
+
+.progress {
+  position: absolute;
+  width: 61px;
+  height: 2px;
+  overflow: hidden;
+  bottom: 0;
+  left: 3px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: #{'var(--progress-percentage)'};
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: #15BB9D;
+    border-radius: 4px;
+  }
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
