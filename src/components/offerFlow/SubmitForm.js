@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, useBosonRouterContract, useBosonTokenContract } from "../../hooks/useContract";
+import { useBosonRouterContract, useBosonTokenContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -22,6 +22,8 @@ import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
     const [loading, setLoading] = useState(0);
+    const [redirectLink, setRedirectLink] = useState(ROUTE.Home);
+
     const sellerContext = useContext(SellerContext);
     const modalContext = useContext(ModalContext);
     const location = useLocation();
@@ -76,27 +78,33 @@ export default function SubmitForm() {
 
         setLoading(1)
 
-
         let dataArr = [
-            toFixed(new Date(start_date) / 1000, 0),
-            toFixed(new Date(end_date) / 1000, 0),
-            price.toString(),
-            seller_deposit.toString(),
-            buyer_deposit.toString(),
-            parseInt(quantity)
+          toFixed(new Date(start_date) / 1000, 0),
+          toFixed(new Date(end_date) / 1000, 0),
+          price.toString(),
+          seller_deposit.toString(),
+          buyer_deposit.toString(),
+          parseInt(quantity)
         ];
 
-        let parsedEvent;
+        let correlationId;
+
         try {
+            correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            prepareVoucherFormData(correlationId, dataArr);
 
             const receipt = await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
 
-            parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');
+            const id = await createVoucherSet(formData, authData.authToken);
+
+            await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            globalContext.dispatch(Action.fetchVoucherSets());
+
+            setLoading(0);
+            setRedirectLink(ROUTE.ActivityVouchers + '/' + id + '/details')
+            setRedirect(1);
         } catch (e) {
             setLoading(0)
-
-            console.error(e)
-
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -104,29 +112,9 @@ export default function SubmitForm() {
             }));
             return;
         }
-
-        try {
-            prepareVoucherFormData(parsedEvent, dataArr);
-
-            await createVoucherSet(formData, authData.authToken);
-
-            globalContext.dispatch(Action.fetchVoucherSets());
-
-            setLoading(0);
-            setRedirect(1);
-        } catch (e) {
-            setLoading(0)
-            console.error(e)
-
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message
-            }));
-        }
     }
 
-    function prepareVoucherFormData(parsedEvent, dataArr) {
+    function prepareVoucherFormData(correlationId, dataArr) {
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 
@@ -141,13 +129,12 @@ export default function SubmitForm() {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-        formData.append('paymentType', PAYMENT_METHODS[`${ price_currency }${ deposits_currency }`]);
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
-        formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
+        formData.append('_correlationId', correlationId);
     }
 
     function appendFilesToFormData() {
@@ -165,7 +152,7 @@ export default function SubmitForm() {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <MessageScreen messageType={ MESSAGE.SUCCESS } title={ messageTitle } link={ ROUTE.Home }/>
+                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={redirectLink} />
             }
         </>
     );

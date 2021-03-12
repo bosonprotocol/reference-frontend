@@ -36,14 +36,14 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
 }
 
 export const ChildVoucherBlock = ({title, expiration, id}) => (
-  <Link to={ `${ ROUTE.Activity }/${ id }` }>
+  <Link to={ `${ ROUTE.Activity }/${ id }${ROUTE.Details}` }>
       <div className="voucher-block solo sub flex ai-center">
           <div className="img no-shrink">
               <QRCodeScaner />
           </div>
           <div className="description">
               <h2 className="title elipsis">{title}</h2>
-              {/* <div className="expiration">{expiration}</div> */}
+              <div className="expiration">{expiration}</div>
           </div>
           {/* <div className="statuses">
               <div className="label">COMMITED</div>
@@ -54,17 +54,17 @@ export const ChildVoucherBlock = ({title, expiration, id}) => (
 )
 
 export const ActiveTab = (props) => {
-  const { products, voucherType } = props
+  const { products, voucherType, voucherSetId } = props
   return (
       <div className="vouchers-container">
           {
-              products.map((block, id) => getDesiredBlockType(voucherType, block, id))
+              products.map((block, id) => getDesiredBlockType(voucherType, block, id, voucherSetId))
           }
       </div>
   )
 }
 
-export const getDesiredBlockType = (voucherType, props, id) => ( voucherType === VOUCHER_TYPE.accountVoucher ?
-  <SingleVoucherBlock { ...props } key={id} />:
+export const getDesiredBlockType = (voucherType, props, id, voucherSetId) => ( voucherType === VOUCHER_TYPE.accountVoucher ?
+  <SingleVoucherBlock voucherSetId={voucherSetId} { ...props } key={id} />:
   <VoucherSetBlock { ...props } key={id} />
 )

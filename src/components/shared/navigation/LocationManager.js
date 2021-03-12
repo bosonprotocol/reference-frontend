@@ -38,8 +38,11 @@ callLocationAttributes[ROUTE.Connect] = () => {
   updateBackgroundColor(bgColorBlack)
   bottomNavActiveLink = bottomLinksMap[ROUTE.Connect]
 }
-callLocationAttributes[ROUTE.Activity] = (nested) => {
-  if(nested) {
+callLocationAttributes[ROUTE.Activity] = (nested, param) => {
+  if(param === 'supply') {
+    enableControl(controlset_1)
+    updateBackgroundColor(bgColorBlack)
+  } else if(nested) {
     enableControl(controlset_1)
     updateBackgroundColor(bgColorSecondary)
     bottomNavActiveLink = bottomLinksMap.customControls
@@ -84,10 +87,11 @@ function LocationManager() {
     const urlNested = location.pathname.split('/')[2]
     const param = location.pathname.split('/')[3]
 
+
     if(pageRoute === ROUTE.NewOffer) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) 
     } 
-    else if((pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) && !!urlNested && !param) {
+    else if((pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) && !!urlNested) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER))
     }
     else {
@@ -100,7 +104,10 @@ function LocationManager() {
       navigationContext.dispatch(Action.displayNavigation(true))
     }
 
-    if(param) {
+    if(
+      param === "qr" ||
+      param === "supply"
+    ) {
       navigationContext.dispatch(Action.displayBottomNavigation(false))
     } else {
       navigationContext.dispatch(Action.displayBottomNavigation(true))

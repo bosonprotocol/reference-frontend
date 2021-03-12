@@ -52,7 +52,7 @@ function QRCodeScanner() {
                
             }
 
-            history.push(`/vouchers/${ data }`);
+            history.push(`/vouchers/${ data }/details`);
             stopRecording();
         }
     };
