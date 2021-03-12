@@ -22,6 +22,8 @@ function ShowQR(props) {
     const modalContext = useContext(ModalContext);
     const [loading, setLoading] = useState(0);
     const [messageType, setMessageType] = useState(false);
+    const [link, setLink] = useState(ROUTE.Home);
+
     const location = useLocation();
     
     const successMessage = "Redemption was successful"
@@ -60,7 +62,6 @@ function ShowQR(props) {
             setLoading(0);
             setMessageType(MESSAGE.ERROR)
             setMessageText(e.message)
-
             return;
         }
 
@@ -72,7 +73,10 @@ function ShowQR(props) {
             };
 
             await updateVoucher(data, authData.authToken);
+            console.log(voucherId)
+            setLink(ROUTE.ActivityVouchers + '/' + voucherId + '/details')
             setMessageType(MESSAGE.SUCCESS)
+            
         } catch (e) {
             setLoading(0);
             setMessageType(MESSAGE.ERROR)
@@ -113,7 +117,7 @@ function ShowQR(props) {
                     messageType={messageType} 
                     title={messageType === 'success' ? successMessage : errorMessage} 
                     text={messageType === 'success' ? false : messageText} 
-                    link={ROUTE.Home}
+                    link={link}
                     setMessageType={messageType === 'success' ? false : setMessageType}
                 />
             }
