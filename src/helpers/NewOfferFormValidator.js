@@ -2,7 +2,7 @@ import { ethers } from "ethers"
 import { toFixed } from "../utils/format-utils"
 import { NAME } from "./Dictionary"
 import { profanityTest } from "./Profanity"
-
+import * as ImageValidationConfig from "./ImageValidationConfig";
 
 const descriptionSettings = {
   min: 10
@@ -16,7 +16,6 @@ const titleSettings = {
   max: 50,
   // min: 3
 }
-
 
 const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName, priceSettings) => {
   let newErrorMessages = { ...errorMessages };
@@ -137,18 +136,22 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
   const currentImageValue = getData(NAME.SELECTED_FILE);
 
   if (currentImageValue) {
-    const maxSize = (3) * (1000 * 1000) // in mb
-    const acceptedImageFormats = ['image/jpeg', 'image/png']
-    const rules = {
-      size: currentImageValue.size > maxSize,
-      type: !acceptedImageFormats.includes(currentImageValue.type) && currentImageValue.type !== undefined,
-      existing: !currentImageValue.name
+    // If file is too small
+    if (currentImageValue.size < ImageValidationConfig.minimumFileSizeInKB) {
+      imageErrorMessage = ImageValidationConfig.minSizeExceededError
     }
-    imageErrorMessage = rules.type ? `This file type is not allowed.` :
-      rules.size ? `Image is too large! Maximum file size is ${maxSize / (1000 * 1000)}mb` :
-        null;
-    newErrorMessages = { ...newErrorMessages, [NAME.IMAGE]: imageErrorMessage }
 
+    // If file is too large
+    if (currentImageValue.size > ImageValidationConfig.maximumFileSizeInMB) {
+      imageErrorMessage = ImageValidationConfig.maxSizeExceededError
+    }
+
+    // If file is invalid type
+    if (!ImageValidationConfig.allowedMimeTypes.includes(currentImageValue.type)) {
+      imageErrorMessage = ImageValidationConfig.notAllowedMimeTypeError
+    }
+
+    newErrorMessages = { ...newErrorMessages, [NAME.IMAGE]: imageErrorMessage }
   }
 
   let dateStartErrorMessage = null;
