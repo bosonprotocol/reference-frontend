@@ -57,7 +57,7 @@ function VoucherDetails(props) {
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
-    
+
     // int on index #2 is the X position of the block
     const tablePrices = [
         ['Payment Price', getProp('price'), 'ETH', 0],
@@ -94,7 +94,7 @@ function VoucherDetails(props) {
                     <div className="cancel new" onClick={() => setImageView(0)}><span className="icon"></span></div>
                 </div>
             </div>
-            <img src={getProp('image')} alt=""/>
+            <img src={getProp('image')} alt="" />
         </div>
     )
 
@@ -103,11 +103,11 @@ function VoucherDetails(props) {
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-            <div className="action button cof" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+                <div className="action button cof" onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")} role="button">Cancel or fault</div>
+            )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
@@ -120,24 +120,24 @@ function VoucherDetails(props) {
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-            <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+                <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
+            )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
-            <ContractInteractionButton
-                className="action button commit"
-                handleClick={() => onCommitToBuy()}
-                label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
-            />
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
+                <ContractInteractionButton
+                    className="action button commit"
+                    handleClick={() => onCommitToBuy()}
+                    label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+                />
+            )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.OFFERED]] = () => (
             voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
-            <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
-            : null
+                <div className="button cancelVoucherSet" onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")} role="button">CANCEL VOUCHER SET</div>
+                : null
         )
 
         return CASE
@@ -190,8 +190,8 @@ function VoucherDetails(props) {
 
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
-        if(voucherDetails && !voucherDetails.FINALIZED) {
-            if(voucherDetails.COMPLAINED && voucherDetails.CANCELLED){
+        if (voucherDetails && !voucherDetails.FINALIZED) {
+            if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
                 return newStatusBlocks;
             }
             const voucherStatus = await voucherKernalContract.vouchersStatus(ethers.BigNumber.from(voucherDetails._tokenIdVoucher));
@@ -205,70 +205,70 @@ function VoucherDetails(props) {
 
             let waitPeriodStart;
             let waitPeriod;
-            if(currentStatus.status === STATUS.EXPIRED) {
+            if (currentStatus.status === STATUS.EXPIRED) {
                 waitPeriodStart = voucherDetails.EXPIRED;
                 waitPeriod = complainPeriod;
-            } else if(currentStatus.status === STATUS.CANCELLED || currentStatus.status === STATUS.REDEEMED || currentStatus.status === STATUS.REFUNDED) {
-                    waitPeriodStart = complainPeriodStart;
-                    waitPeriod = complainPeriod;
-            } else if(currentStatus.status === STATUS.COMPLAINED) {
-                    waitPeriodStart = cancelFaultPeriodStart;
-                    waitPeriod = cancelFaultPeriod;
+            } else if (currentStatus.status === STATUS.CANCELLED || currentStatus.status === STATUS.REDEEMED || currentStatus.status === STATUS.REFUNDED) {
+                waitPeriodStart = complainPeriodStart;
+                waitPeriod = complainPeriod;
+            } else if (currentStatus.status === STATUS.COMPLAINED) {
+                waitPeriodStart = cancelFaultPeriodStart;
+                waitPeriod = cancelFaultPeriod;
             }
 
-            if((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
+            if ((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
                 const currentBlockTimestamp = (await library.getBlock()).timestamp;
-                
+
                 const start = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.startDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart, 'wei') * 1000);
                 const end = currentStatus.status === STATUS.COMMITED ? new Date(voucherDetails.expiryDate) : new Date(+ethers.utils.formatUnits(waitPeriodStart.add(waitPeriod), 'wei') * 1000);
                 const now = new Date(currentBlockTimestamp * 1000);
-                
+
                 const timePast = (now?.getTime() / 1000) - (start?.getTime() / 1000);
                 const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000);
-            
+
                 const diffInPercentage = calculateDifferenceInPercentage(timePast, timeAvailable);
-                const expiryProgress = voucherDetails &&  diffInPercentage + '%';
+                const expiryProgress = voucherDetails && diffInPercentage + '%';
                 document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(diffInPercentage) > 100 ? '100%' : expiryProgress : null);
 
                 const statusTitle = currentStatus.status === STATUS.COMMITED ? 'Expiration date' : 'Wait period'
                 return [...newStatusBlocks, singleStatusComponent({ title: statusTitle, date: end, color: 4, progress: expiryProgress, status: currentStatus.status })]
-           }
+            }
         }
         return newStatusBlocks;
     }
 
-   useEffect(() => {
-    if(voucherDetails) {
-        const resolveStatusBlocks = async () => {
-            let newStatusBlocks = [];
-            if (!!voucherDetails) {
-                if (voucherDetails.COMMITTED) newStatusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1}))
-                if (voucherDetails.REDEEMED) newStatusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2  }))
-                if (voucherDetails.REFUNDED) newStatusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED, color: 5  }))
-                if (voucherDetails.COMPLAINED) newStatusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
-                if (voucherDetails.CANCELLED) newStatusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
-                
-                if(newStatusBlocks?.length) newStatusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
-                
-                if(voucherDetails.FINALIZED) {
-                    newStatusBlocks.push(
-                        finalStatusComponent(
-                            !!voucherDetails.REDEEMED,
-                            !!voucherDetails.COMPLAINED,
-                            !!voucherDetails.CANCELLED,
-                            voucherDetails.FINALIZED
-                        )
-                    )
-                }
-            }
-            const withWaitPeriodBox = await resolveWaitPeriodStatusBox(newStatusBlocks);
-            setStatusBlocks(withWaitPeriodBox);
-        }
+    useEffect(() => {
+        if (voucherDetails) {
+            const resolveStatusBlocks = async () => {
+                let newStatusBlocks = [];
+                if (!!voucherDetails) {
+                    if (voucherDetails.COMMITTED) newStatusBlocks.push(singleStatusComponent({ title: 'COMMITED', date: voucherDetails.COMMITTED, color: 1 }))
+                    if (voucherDetails.REDEEMED) newStatusBlocks.push(singleStatusComponent({ title: 'REDEMPTION SIGNED', date: voucherDetails.REDEEMED, color: 2 }))
+                    if (voucherDetails.REFUNDED) newStatusBlocks.push(singleStatusComponent({ title: 'REFUND TRIGGERED', date: voucherDetails.REFUNDED, color: 5 }))
+                    if (voucherDetails.COMPLAINED) newStatusBlocks.push(singleStatusComponent({ title: 'COMPLAINT MADE', date: voucherDetails.COMPLAINED, color: 3 }))
+                    if (voucherDetails.CANCELLED) newStatusBlocks.push(singleStatusComponent({ title: 'CANCEL OR FAULT ADMITTED', date: voucherDetails.CANCELLED, color: 4 }))
 
-        resolveStatusBlocks();
-    }
-   },[voucherDetails])
-  
+                    if (newStatusBlocks?.length) newStatusBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+
+                    if (voucherDetails.FINALIZED) {
+                        newStatusBlocks.push(
+                            finalStatusComponent(
+                                !!voucherDetails.REDEEMED,
+                                !!voucherDetails.COMPLAINED,
+                                !!voucherDetails.CANCELLED,
+                                voucherDetails.FINALIZED
+                            )
+                        )
+                    }
+                }
+                const withWaitPeriodBox = await resolveWaitPeriodStatusBox(newStatusBlocks);
+                setStatusBlocks(withWaitPeriodBox);
+            }
+
+            resolveStatusBlocks();
+        }
+    }, [voucherDetails])
+
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
 
@@ -286,13 +286,12 @@ function VoucherDetails(props) {
 
             return positionArray
         }
-        // voucherDetails?.sellerDeposit
+
         const tablePositions = {}
 
         tablePositions.price = tableMatrixSet('payment')
         tablePositions.buyerDeposit = tableMatrixSet('buyerDeposit')
         tablePositions.sellerDeposit = tableMatrixSet('sellerDeposit')
-
 
         // this is to check if the block should be positioned in the escrow column
         Object.entries(tablePositions)?.forEach(entry => tablePositions[entry[0]][1] = entry[1].length ? (entry[1]?.reduce((acc, val) => acc + val) ? tablePositions[entry[0]][1] : voucherDetails[entry[0]]) : 0) // only god can judge me
@@ -355,7 +354,7 @@ function VoucherDetails(props) {
         setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
-       
+
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -438,10 +437,8 @@ function VoucherDetails(props) {
         const authData = getAccountStoredInLocalStorage(account);
 
         try {
-
             tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
             await tx.wait();
-
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -454,7 +451,6 @@ function VoucherDetails(props) {
 
 
         try {
-
             const data = {
                 _id: voucherId,
                 status: VOUCHER_STATUSES.COMPLAINED
@@ -494,7 +490,7 @@ function VoucherDetails(props) {
 
         try {
             tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
-            await tx.wait();  
+            await tx.wait();
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -545,9 +541,7 @@ function VoucherDetails(props) {
 
         try {
             tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
-
             await tx.wait();
-
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -566,7 +560,6 @@ function VoucherDetails(props) {
 
             await updateVoucher(data, authData.authToken);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -586,6 +579,7 @@ function VoucherDetails(props) {
     }, [voucherDetails, account])
 
     useEffect(() => {
+
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
@@ -607,15 +601,14 @@ function VoucherDetails(props) {
     }, [controls, account, library])
 
     useEffect(() => {
-        if(voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && statusBlocks.length && document.getElementById('horizontal-view-container').children[1]) {
+        if (voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks && statusBlocks.length && document.getElementById('horizontal-view-container').children[1]) {
+            const updateScrollerToBeOnTheRightMostStatus = () => {
+                document.getElementById('horizontal-view-container').children[1].scrollLeft = 20000;
+            }
 
-        const updateScrollerToBeOnTheRightMostStatus = () => {
-            document.getElementById('horizontal-view-container').children[1].scrollLeft = 20000;
+            updateScrollerToBeOnTheRightMostStatus();
         }
 
-        updateScrollerToBeOnTheRightMostStatus();
-    }
-           
     }, [voucherStatus && statusBlocks])
 
     const onCancelOrFaultVoucherSet = async () => {
@@ -634,8 +627,8 @@ function VoucherDetails(props) {
             return;
         }
 
-            history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
-            setLoading(0)
+        history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
+        setLoading(0)
     }
 
     return (
@@ -643,7 +636,7 @@ function VoucherDetails(props) {
             { loading ? <Loading /> : null}
             { <PopupMessage {...popupMessage} />}
             <section className="voucher-details no-bg">
-            { imageView ? <ViewImageFullScreen /> : null}
+                {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
                         <div className="section title">
@@ -655,7 +648,7 @@ function VoucherDetails(props) {
                                 <div className="status-container flex" id='horizontal-view-container'>
                                     <HorizontalScrollView
                                         items={statusBlocks}
-                                        ItemComponent={({item}) => item.jsx}
+                                        ItemComponent={({ item }) => item.jsx}
                                         defaultSpace='0'
                                         spaceBetweenItems='8px'
                                         moveSpeed={1}
@@ -696,40 +689,40 @@ function VoucherDetails(props) {
     )
 }
 
-function singleStatusComponent({title, date, color, progress, status}) {
+function singleStatusComponent({ title, date, color, progress, status }) {
 
-    const jsx =  (<div key={title} className={`status-block color_${color}`}>
-    <h3 className="status-name">
-    {title}
-    {
-        progress ? <div className="progress"></div> : null
-    }
-    </h3>
-     <p className="status-details">{!progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${new Date(date).getTime() - new Date().getTime() > 0 ? humanizeDuration(new Date(date).getTime() - new Date().getTime(), {round: true, largest: 1}) : 'Finished'}`}</p>
- </div>);
-    return {jsx, date}
+    const jsx = (<div key={title} className={`status-block color_${color}`}>
+        <h3 className="status-name">
+            {title}
+            {
+                progress ? <div className="progress"></div> : null
+            }
+        </h3>
+        <p className="status-details">{!progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${new Date(date).getTime() - new Date().getTime() > 0 ? humanizeDuration(new Date(date).getTime() - new Date().getTime(), { round: true, largest: 1 }) : 'Finished'}`}</p>
+    </div>);
+    return { jsx, date }
 
 }
 
 function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiredDate) {
 
     const jsx = (<div className={`status-block`}>
-    <div className="final-status-container">
-        { hasBeenRedeemed ? 
-        <h3 className="status-name color_1">REDEMPTION</h3> :
-        <h3 className="status-name color_2">NO REDEMPTION</h3>
-        }
-        { hasBeenComplained ?
-        <h3 className="status-name color_3">COMPLAINT</h3> :
-        <h3 className="status-name color_4">NO COMPLAINT</h3>
-        }
-        { hasBeenCancelOrFault ?
-        <h3 className="status-name color_5">CANCEL/FAULT</h3> :
-        <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
-        }
-     </div>
-     <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
- </div>)
-    return {jsx, date: expiredDate}
+        <div className="final-status-container">
+            {hasBeenRedeemed ?
+                <h3 className="status-name color_1">REDEMPTION</h3> :
+                <h3 className="status-name color_2">NO REDEMPTION</h3>
+            }
+            {hasBeenComplained ?
+                <h3 className="status-name color_3">COMPLAINT</h3> :
+                <h3 className="status-name color_4">NO COMPLAINT</h3>
+            }
+            {hasBeenCancelOrFault ?
+                <h3 className="status-name color_5">CANCEL/FAULT</h3> :
+                <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
+            }
+        </div>
+        <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
+    </div>)
+    return { jsx, date: expiredDate }
 }
 export default VoucherDetails
