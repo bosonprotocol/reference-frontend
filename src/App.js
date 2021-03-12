@@ -24,6 +24,7 @@ import { network } from "./connectors";
 
 import ContextModal from "./components/shared/ContextModal";
 import { authenticateUser, getAccountStoredInLocalStorage } from "./hooks/authenticate";
+import { isTokenValid } from "./utils/auth"
 
 function App() {
     const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -89,6 +90,8 @@ function App() {
 
         const localStoredAccountData = getAccountStoredInLocalStorage(account);
         const onboardingCompleted = localStorage.getItem('onboarding-completed');
+
+        localStoredAccountData.activeToken = isTokenValid(localStoredAccountData.authToken)
 
         if (!onboardingCompleted || localStoredAccountData.activeToken) {
             return;
