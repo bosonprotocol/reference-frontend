@@ -339,9 +339,7 @@ function VoucherDetails(props) {
             });
 
             const receipt = await tx.wait();
-
             let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
-
             data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
 
         } catch (e) {
@@ -453,8 +451,7 @@ function VoucherDetails(props) {
 
         try {
             tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
-            await tx.wait();
-            
+            await tx.wait();  
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -474,7 +471,6 @@ function VoucherDetails(props) {
 
             await updateVoucher(data, authData.authToken);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -591,7 +587,6 @@ function VoucherDetails(props) {
         setLoading(1);
         try {
             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
-          
             await tx.wait();
         } catch (e) {
             setLoading(0);
