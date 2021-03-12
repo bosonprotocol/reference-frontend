@@ -45,43 +45,18 @@ function ShowQR(props) {
 
         setLoading(1);
 
-        let tx;
-        // let data;
         const authData = getAccountStoredInLocalStorage(account);
         const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
 
         try {
-            tx = await bosonRouterContract.redeem(voucherDetails.voucher._tokenIdVoucher);
-
-            await tx.wait();
-
-            // let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            // data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
-
+            await bosonRouterContract.redeem(voucherDetails.voucher._tokenIdVoucher);
+            setLink(ROUTE.ActivityVouchers + '/' + voucherId + '/details')
+            setMessageType(MESSAGE.SUCCESS)
         } catch (e) {
             setLoading(0);
             setMessageType(MESSAGE.ERROR)
             setMessageText(e.message)
             return;
-        }
-
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.REDEEMED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            console.log(voucherId)
-            setLink(ROUTE.ActivityVouchers + '/' + voucherId + '/details')
-            setMessageType(MESSAGE.SUCCESS)
-            
-        } catch (e) {
-            setLoading(0);
-            setMessageType(MESSAGE.ERROR)
-            setMessageText(e.message)
-
         }
 
         setLoading(0)

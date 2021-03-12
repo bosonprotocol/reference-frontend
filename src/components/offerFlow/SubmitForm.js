@@ -87,7 +87,7 @@ export default function SubmitForm() {
         try {                   
             correlationId = (await bosonRouterContract.correlationIds(account)).toString()
             prepareVoucherFormData(correlationId, dataArr);
-            await createVoucherSet(formData, authData.authToken);
+            const id = await createVoucherSet(formData, authData.authToken);
 
             await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
             globalContext.dispatch(Action.fetchVoucherSets());
@@ -95,7 +95,6 @@ export default function SubmitForm() {
             setLoading(0);
             setRedirectLink(ROUTE.ActivityVouchers + '/' + id + '/details')
             setRedirect(1);
-
         } catch (e) {     
             setLoading(0)
             modalContext.dispatch(ModalResolver.showModal({

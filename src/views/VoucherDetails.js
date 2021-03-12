@@ -383,14 +383,9 @@ function VoucherDetails(props) {
 
         setLoading(1);
 
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-
-            tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
-            await tx.wait();
-
+            await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -399,26 +394,6 @@ function VoucherDetails(props) {
                 content: e.message + ' :233'
             }));
             return;
-        }
-
-
-        try {
-
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.COMPLAINED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
         }
 
         setActionPerformed(actionPerformed * -1)
@@ -438,12 +413,9 @@ function VoucherDetails(props) {
 
         setLoading(1);
 
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
-            await tx.wait();  
+            await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -452,24 +424,6 @@ function VoucherDetails(props) {
                 content: e.message + ' :233'
             }));
             return;
-        }
-
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.REFUNDED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
         }
 
         setActionPerformed(actionPerformed * -1)
@@ -489,14 +443,9 @@ function VoucherDetails(props) {
 
         setLoading(1);
 
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
-
-            await tx.wait();
-
+            await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -505,24 +454,6 @@ function VoucherDetails(props) {
                 content: e.message + ' :233'
             }));
             return;
-        }
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.CANCELLED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
         }
 
         setActionPerformed(actionPerformed * -1)
