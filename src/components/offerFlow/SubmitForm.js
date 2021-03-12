@@ -11,7 +11,7 @@ import Loading from "./Loading"
 import { SellerContext } from "../../contexts/Seller"
 import { GlobalContext, Action } from "../../contexts/Global"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
-import { useLocation } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
@@ -20,6 +20,8 @@ import { toFixed } from "../../utils/format-utils";
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
     const [loading, setLoading] = useState(0);
+    const [redirectLink, setRedirectLink] = useState(ROUTE.Home);
+    
     const sellerContext = useContext(SellerContext);
     const modalContext = useContext(ModalContext); 
     const location = useLocation();
@@ -43,6 +45,7 @@ export default function SubmitForm() {
     } = sellerContext.state.offeringData
 
     const { library, account } = useWeb3React();
+
     const bosonRouterContract = useBosonRouterContract();
     let formData = new FormData();
 
@@ -101,11 +104,12 @@ export default function SubmitForm() {
         try {
             prepareVoucherFormData(parsedEvent, dataArr);
 
-            await createVoucherSet(formData, authData.authToken);
+            const id = await createVoucherSet(formData, authData.authToken);
 
             globalContext.dispatch(Action.fetchVoucherSets());
 
             setLoading(0);
+            setRedirectLink(ROUTE.ActivityVouchers + '/' + id + '/details')
             setRedirect(1);
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -156,7 +160,7 @@ export default function SubmitForm() {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Home} />
+                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={redirectLink} />
             }
         </>
     );
