@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router"
 
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy } from "../hooks/api";
+import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
 import { useBosonRouterContract, useVoucherKernalContract } from "../hooks/useContract";
-import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
 import { formatDate } from "../helpers/Format"
-import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import PopupMessage from "../components/shared/PopupMessage";
 import * as humanizeDuration from 'humanize-duration';
@@ -29,8 +27,6 @@ import Loading from "../components/offerFlow/Loading";
 
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
-
-import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
@@ -365,24 +361,24 @@ function VoucherDetails(props) {
             return;
         }
 
-
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
         const supplyId = voucherSetInfo._tokenIdSupply;
+        const owner = voucherSetInfo.voucherOwner.toLowerCase();
 
-        let tx;
-        let metadata = {};
-        let data;
+        const authData = getAccountStoredInLocalStorage(account);
 
         try {
-            tx = await bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
-                value: txValue.toString()
-            });
+            const correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            const metadata = {
+                _holder: account,
+                _issuer: owner,
+                _tokenIdSupply: supplyId,
+                _correlationId: correlationId,
+            };
 
-            const receipt = await tx.wait();
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
-            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
+            await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
 
         } catch (e) {
             setLoading(0);
@@ -394,19 +390,10 @@ function VoucherDetails(props) {
             return;
         }
 
-        metadata = {
-            txHash: tx.hash,
-            _tokenIdSupply: supplyId,
-            _tokenIdVoucher: data[0].toString(),
-            _issuer: data[1],
-            _holder: data[2]
-        };
-
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            const voucherId = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
+            await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
+                value: txValue.toString()
+            });
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -418,6 +405,7 @@ function VoucherDetails(props) {
 
         setActionPerformed(actionPerformed * -1)
         setLoading(0)
+        history.push(ROUTE.ActivityVouchers)
     }
 
     async function onComplain() {
@@ -433,12 +421,9 @@ function VoucherDetails(props) {
 
         setLoading(1);
 
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
-            await tx.wait();
+            await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -447,25 +432,6 @@ function VoucherDetails(props) {
                 content: e.message + ' :233'
             }));
             return;
-        }
-
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.COMPLAINED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
         }
 
         setActionPerformed(actionPerformed * -1)
@@ -485,12 +451,9 @@ function VoucherDetails(props) {
 
         setLoading(1);
 
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
-            await tx.wait();
+            await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -499,24 +462,6 @@ function VoucherDetails(props) {
                 content: e.message + ' :233'
             }));
             return;
-        }
-
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.REFUNDED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
         }
 
         setActionPerformed(actionPerformed * -1)
@@ -536,12 +481,9 @@ function VoucherDetails(props) {
 
         setLoading(1);
 
-        let tx;
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
-            await tx.wait();
+            await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -550,23 +492,6 @@ function VoucherDetails(props) {
                 content: e.message + ' :233'
             }));
             return;
-        }
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.CANCELLED
-            };
-
-            await updateVoucher(data, authData.authToken);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
         }
 
         setActionPerformed(actionPerformed * -1)
@@ -615,8 +540,8 @@ function VoucherDetails(props) {
 
         setLoading(1);
         try {
-            const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
-            await tx.wait();
+            setLoading(1);
+            await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
