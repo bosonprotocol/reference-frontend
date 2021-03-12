@@ -55,30 +55,12 @@ export const commitToBuy = async (supplyId, data, token) => {
     return voucherIdRawResult.data.voucherID;
 };
 
-export const updateVoucher = async (data, token) => {
-    const redeemResponse = await axiosInstance.patch(`/vouchers/update`, data, {
-        headers: { 'Authorization': `Bearer ${ token }` }
-    });
-
-    return redeemResponse.data;
-};
-
 export const getPaymentsDetails = async (tokenVoucherId, token) => {
     const paymentsResponse = await axiosInstance.get(`/payments/${ tokenVoucherId }`, {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
 
     return paymentsResponse.data;
-};
-
-export const cancelVoucherSet = async (supplyId, account, data, token) => {
-     return axiosInstance.patch(`/voucher-sets/update-supply-oncancel-intermediary`, {
-        _tokenIdSupply:supplyId,
-        voucherOwner: account,
-        qty: 0
-    }, {
-        headers: { 'Authorization': `Bearer ${ token }` }
-    });
 };
 
 export const getAccountVoucherSets = async (account) => {

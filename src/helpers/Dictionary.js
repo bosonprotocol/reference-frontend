@@ -106,6 +106,7 @@ export const STATUS = {
     COMMITED: 'voucher_status_commited',
     REDEEMED: 'voucher_status_redeemed',
     COMPLAINED: 'voucher_status_complained',
+    EXPIRED: 'voucher_status_expired',
     REFUNDED: 'voucher_status_refunded',
     CANCELLED: 'voucher_status_cancelled',
     FINALIZED: 'voucher_status_finalized',
