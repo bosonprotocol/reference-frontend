@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router"
 
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy } from "../hooks/api";
+import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
 import { useBosonRouterContract, useVoucherKernalContract } from "../hooks/useContract";
 import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";

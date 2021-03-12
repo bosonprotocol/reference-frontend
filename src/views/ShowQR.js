@@ -8,9 +8,8 @@ import { MODAL_TYPES, ROUTE, MESSAGE } from '../helpers/Dictionary'
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { getVoucherDetails, updateVoucher } from "../hooks/api";
+import { getVoucherDetails } from "../hooks/api";
 import {  useBosonRouterContract } from "../hooks/useContract";
-import { VOUCHER_STATUSES } from "../hooks/configs";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from 'react'
 import Loading from "../components/offerFlow/Loading";
