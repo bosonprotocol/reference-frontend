@@ -71,16 +71,6 @@ export const getPaymentsDetails = async (tokenVoucherId, token) => {
     return paymentsResponse.data;
 };
 
-export const cancelVoucherSet = async (supplyId, account, data, token) => {
-     return axiosInstance.patch(`/voucher-sets/update-supply-oncancel-intermediary`, {
-        _tokenIdSupply:supplyId,
-        voucherOwner: account,
-        qty: 0
-    }, {
-        headers: { 'Authorization': `Bearer ${ token }` }
-    });
-};
-
 export const getAccountVoucherSets = async (account) => {
     const accountVoucherSets = await axiosInstance.get(`/voucher-sets/sell/${account}`)
     return accountVoucherSets.data;

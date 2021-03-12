@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router"
 
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy, cancelVoucherSet, } from "../hooks/api";
+import { getVoucherDetails, getPaymentsDetails, updateVoucher, commitToBuy } from "../hooks/api";
 import { useBosonRouterContract } from "../hooks/useContract";
 import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
@@ -312,7 +312,7 @@ function VoucherDetails(props) {
         setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
-       
+
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -323,26 +323,24 @@ function VoucherDetails(props) {
             return;
         }
 
-
         const price = ethers.utils.parseEther(voucherSetInfo.price).toString();
         const buyerDeposit = ethers.utils.parseEther(voucherSetInfo.deposit);
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
         const supplyId = voucherSetInfo._tokenIdSupply;
+        const owner = voucherSetInfo.voucherOwner.toLowerCase();
 
-        let tx;
-        let metadata = {};
-        let data;
+        const authData = getAccountStoredInLocalStorage(account);
 
         try {
-            tx = await bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
-                value: txValue.toString()
-            });
+            const correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            const metadata = {
+                _holder: account,
+                _issuer: owner,
+                _tokenIdSupply: supplyId,
+                _correlationId: correlationId,
+            };
 
-            const receipt = await tx.wait();
-
-            let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherCreated);
-
-            data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'address', 'bytes32']);
+            await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
 
         } catch (e) {
             setLoading(0);
@@ -354,20 +352,10 @@ function VoucherDetails(props) {
             return;
         }
 
-        metadata = {
-            txHash: tx.hash,
-            _tokenIdSupply: supplyId,
-            _tokenIdVoucher: data[0].toString(),
-            _issuer: data[1],
-            _holder: data[2]
-        };
-
-        const authData = getAccountStoredInLocalStorage(account);
-
         try {
-            await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-
-            history.push(ROUTE.ActivityVouchers)
+            await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
+                value: txValue.toString()
+            });
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -379,6 +367,7 @@ function VoucherDetails(props) {
 
         setActionPerformed(actionPerformed * -1)
         setLoading(0)
+        history.push(ROUTE.ActivityVouchers)
     }
 
     async function onComplain() {
@@ -590,10 +579,8 @@ function VoucherDetails(props) {
     const onCancelOrFaultVoucherSet = async () => {
 
         try {
-            const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
             setLoading(1);
-            await tx.wait();
-
+            await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -604,23 +591,8 @@ function VoucherDetails(props) {
             return;
         }
 
-        const authData = getAccountStoredInLocalStorage(account);
-
-        try {
-
-            await cancelVoucherSet(voucherSetDetails._tokenIdSupply, account, {}, authData.authToken);
-            history.push(ROUTE.Activity)
-
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message + ' :252'
-            }));
-        }
-
         setLoading(0)
+        history.push(ROUTE.Activity)
     }
     return (
         <>
