@@ -1,5 +1,5 @@
-var Filter = require('bad-words');
-var filter = new Filter();
+const Filter = require('bad-words');
+const filter = new Filter();
 
 export const profanityTest = (input) => {
   let profanityResult = filter.isProfane(input);
