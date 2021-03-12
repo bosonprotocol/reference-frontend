@@ -51,6 +51,7 @@
     "dompurify": "^2.2.3",
     "env-cmd": "^10.1.0",
     "ethers": "^5.0.24",
+    "humanize-duration": "^3.25.1",
     "jazzicon": "^1.5.0",
     "jwt-decode": "^3.1.2",
     "node-gyp": "^3.8.0",
@@ -79,7 +80,8 @@
     "start:demo": "env-cmd -f .env.demo react-scripts start",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "test-with-coverage": "react-scripts test --watchAll=false --coverage=true",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
