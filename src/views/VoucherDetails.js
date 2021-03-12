@@ -387,11 +387,9 @@ function VoucherDetails(props) {
         const authData = getAccountStoredInLocalStorage(account);
 
         try {
+
             tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
-
             await tx.wait();
-
-
 
         } catch (e) {
             setLoading(0);
@@ -405,12 +403,15 @@ function VoucherDetails(props) {
 
 
         try {
+
             const data = {
                 _id: voucherId,
                 status: VOUCHER_STATUSES.COMPLAINED
             };
 
             await updateVoucher(data, authData.authToken);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
+
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -442,10 +443,7 @@ function VoucherDetails(props) {
 
         try {
             tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
-
-            await tx.wait();
-
-
+            await tx.wait();  
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -464,6 +462,7 @@ function VoucherDetails(props) {
             };
 
             await updateVoucher(data, authData.authToken);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -498,8 +497,6 @@ function VoucherDetails(props) {
 
             await tx.wait();
 
-
-
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -510,7 +507,6 @@ function VoucherDetails(props) {
             return;
         }
 
-
         try {
             const data = {
                 _id: voucherId,
@@ -518,6 +514,8 @@ function VoucherDetails(props) {
             };
 
             await updateVoucher(data, authData.authToken);
+            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
+
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -578,6 +576,7 @@ function VoucherDetails(props) {
 
     const onCancelOrFaultVoucherSet = async () => {
 
+        setLoading(1);
         try {
             setLoading(1);
             await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
