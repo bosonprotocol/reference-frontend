@@ -68,14 +68,10 @@ function FormPrice({
   }
 
   const validateQuantity = (e) => {
-    let value = e.target.value
-    let correctPattern = value.match(/[0-9]+/g)?.length === 1
+    let value = e?.target?.value
+    const correctPattern = parseInt(value?.replace(/[^0-9]+/g, ''))
 
-    console.log(correctPattern)
-
-    correctPattern ? 
-    quantityValueReceiver(value) :
-    quantityValueReceiver(null)
+    quantityValueReceiver(correctPattern)
   }
 
   return (
@@ -84,7 +80,7 @@ function FormPrice({
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
           <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number" min="1" step="1" onInput={(e) => validateQuantity(e)} />
+            <input id="offer-quantity" value={getOfferingData(NAME.QUANTITY)} type="number" min="1" onInput={(e) => validateQuantity(e)} />
           </div>
         </div>
       </div>
