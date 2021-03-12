@@ -4,7 +4,6 @@ import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
 import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json';
 import FUND_LIMITS from './ABIs/FundLimitsOracle.json';
-import * as ethers from "ethers";
 import VOUCHER_KERNEL from './ABIs/VoucherKernel.json'
 
 function useContract(address, ABI, withSignerIfPossible = true) {
