@@ -69,25 +69,29 @@ export default function SubmitForm() {
 
         setLoading(1)
 
+        let dataArr = [
+          toFixed(new Date(start_date) / 1000, 0),
+          toFixed(new Date(end_date) / 1000, 0),
+          price.toString(),
+          seller_deposit.toString(),
+          buyer_deposit.toString(),
+          parseInt(quantity)
+        ];
+        const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
-        // let dataArr = [
-        //     toFixed(new Date(start_date) / 1000, 0),
-        //     toFixed(new Date(end_date) / 1000, 0),
-        //     price.toString(),
-        //     seller_deposit.toString(),
-        //     buyer_deposit.toString(),
-        //     parseInt(quantity)
-        // ];
-        // const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
+        let correlationId;
 
-        let tx;
-        let receipt;
-        let parsedEvent;
+        try {                   
+            correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            prepareVoucherFormData(correlationId, dataArr);
+            await createVoucherSet(formData, authData.authToken);
 
-        try {                          
-            // tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-            // receipt = await tx.wait();
-            // parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');             
+            await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            globalContext.dispatch(Action.fetchVoucherSets());
+
+            setLoading(0);
+            setRedirect(1);
+
         } catch (e) {     
             setLoading(0)
             modalContext.dispatch(ModalResolver.showModal({
@@ -97,47 +101,28 @@ export default function SubmitForm() {
             }));
             return;
         } 
-
-        try {
-            prepareVoucherFormData(parsedEvent, 'dataArr');
-
-            await createVoucherSet(formData, authData.authToken);
-
-            globalContext.dispatch(Action.fetchVoucherSets());
-
-            setLoading(0);
-            setRedirect(1);
-        } catch (e) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message
-            }));
-        }
     }
 
-    function prepareVoucherFormData(parsedEvent, dataArr) {
-        // const startDate = new Date(dataArr[0] * 1000);
-        // const endDate = new Date(dataArr[1] * 1000);
+    function prepareVoucherFormData(correlationId, dataArr) {
+        const startDate = new Date(dataArr[0] * 1000);
+        const endDate = new Date(dataArr[1] * 1000);
 
         appendFilesToFormData();
 
-
-        formData.append('title', "This is myt title");
-        formData.append('qty', 1);
-        formData.append('category', "category");
-        formData.append('startDate', 1615327200000);
-        formData.append('expiryDate', 1617224399000);
-        formData.append('offeredDate', 1615388785719);
-        formData.append('price', 15);
-        formData.append('buyerDeposit', 5);
-        formData.append('sellerDeposit', 1);
-        formData.append('description', "description");
+        formData.append('title', title);
+        formData.append('qty', dataArr[5]);
+        formData.append('category', category);
+        formData.append('startDate', startDate.getTime());
+        formData.append('expiryDate', endDate.getTime());
+        formData.append('price', dataArr[2]);
+        formData.append('buyerDeposit', dataArr[4]);
+        formData.append('sellerDeposit', dataArr[3]);
+        formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
-        formData.append('conditions', 'condition');
-        formData.append('voucherOwner', '0xE33Cfa2B6ea374E38EFC0Ea08bfd2E3d5101e456'.toLocaleLowerCase());
-        formData.append('_tokenIdSupply', '57896044618658097711785492504343954003538807256952374762451453283536180609024');
+        formData.append('conditions', condition);
+        formData.append('voucherOwner', account);
+        formData.append('_correlationId', correlationId);
     }
 
     function appendFilesToFormData() {

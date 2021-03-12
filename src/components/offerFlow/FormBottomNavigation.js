@@ -65,7 +65,7 @@ function FormBottomNavigation(props) {
       {lastScreenBoolean ? <SubmitForm/> :
       <div className="button primary" role="button"
         onClick={() => setActiveScreen(activeScreen + 1)}
-        disabled={false} >
+        disabled={disabled} >
         NEXT
       </div>}
     </div>
