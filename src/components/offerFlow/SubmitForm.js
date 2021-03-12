@@ -70,24 +70,24 @@ export default function SubmitForm() {
         setLoading(1)
 
 
-        let dataArr = [
-            toFixed(new Date(start_date) / 1000, 0),
-            toFixed(new Date(end_date) / 1000, 0),
-            price.toString(),
-            seller_deposit.toString(),
-            buyer_deposit.toString(),
-            parseInt(quantity)
-        ];
-        const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
+        // let dataArr = [
+        //     toFixed(new Date(start_date) / 1000, 0),
+        //     toFixed(new Date(end_date) / 1000, 0),
+        //     price.toString(),
+        //     seller_deposit.toString(),
+        //     buyer_deposit.toString(),
+        //     parseInt(quantity)
+        // ];
+        // const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
         let tx;
         let receipt;
         let parsedEvent;
 
         try {                          
-            tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-            receipt = await tx.wait();
-            parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');             
+            // tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            // receipt = await tx.wait();
+            // parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');             
         } catch (e) {     
             setLoading(0)
             modalContext.dispatch(ModalResolver.showModal({
@@ -99,7 +99,7 @@ export default function SubmitForm() {
         } 
 
         try {
-            prepareVoucherFormData(parsedEvent, dataArr);
+            prepareVoucherFormData(parsedEvent, 'dataArr');
 
             await createVoucherSet(formData, authData.authToken);
 
@@ -117,28 +117,27 @@ export default function SubmitForm() {
     }
 
     function prepareVoucherFormData(parsedEvent, dataArr) {
-        const startDate = new Date(dataArr[0] * 1000);
-        const endDate = new Date(dataArr[1] * 1000);
+        // const startDate = new Date(dataArr[0] * 1000);
+        // const endDate = new Date(dataArr[1] * 1000);
 
         appendFilesToFormData();
 
-        formData.append('title', title);
-        formData.append('qty', dataArr[5]);
-        formData.append('category', category);
-        formData.append('startDate', startDate.getTime());
-        formData.append('expiryDate', endDate.getTime());
-        formData.append('offeredDate', Date.now());
-        formData.append('price', dataArr[2]);
-        formData.append('buyerDeposit', dataArr[4]);
-        formData.append('sellerDeposit', dataArr[3]);
-        formData.append('sellerDepositCurrency', 'ETH');
-        formData.append('priceCurrency', 'ETH');
-        formData.append('description', description);
+
+        formData.append('title', "This is myt title");
+        formData.append('qty', 1);
+        formData.append('category', "category");
+        formData.append('startDate', 1615327200000);
+        formData.append('expiryDate', 1617224399000);
+        formData.append('offeredDate', 1615388785719);
+        formData.append('price', 15);
+        formData.append('buyerDeposit', 5);
+        formData.append('sellerDeposit', 1);
+        formData.append('description', "description");
         formData.append('location', "Location");
         formData.append('contact', "Contact");
-        formData.append('conditions', condition);
-        formData.append('voucherOwner', account);
-        formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
+        formData.append('conditions', 'condition');
+        formData.append('voucherOwner', '0xE33Cfa2B6ea374E38EFC0Ea08bfd2E3d5101e456'.toLocaleLowerCase());
+        formData.append('_tokenIdSupply', '57896044618658097711785492504343954003538807256952374762451453283536180609024');
     }
 
     function appendFilesToFormData() {
