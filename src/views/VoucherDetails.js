@@ -236,6 +236,7 @@ function VoucherDetails(props) {
         }
         return newStatusBlocks;
     }
+
    useEffect(() => {
     if(voucherDetails) {
         const resolveStatusBlocks = async () => {
@@ -590,8 +591,6 @@ function VoucherDetails(props) {
 
     }, [voucherStatus, voucherDetails, account, library])
 
-  
-
     useEffect(() => {
         if (!voucherSetDetails && account) {
             initVoucherDetails(account, modalContext, getVoucherDetails, voucherId).then(result => {
@@ -616,8 +615,7 @@ function VoucherDetails(props) {
 
         updateScrollerToBeOnTheRightMostStatus();
     }
-        
-       
+           
     }, [voucherStatus && statusBlocks])
 
     const onCancelOrFaultVoucherSet = async () => {
