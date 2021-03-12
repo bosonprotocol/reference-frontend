@@ -64,7 +64,6 @@ function VoucherDetails(props) {
 
     const differenceInPercent = (x, y) => (x / y) * 100
     const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
-    console.log(voucherSetDetails)
 
     const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
