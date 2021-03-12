@@ -6,10 +6,8 @@ import { useHistory } from "react-router"
 import * as ethers from "ethers";
 import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
 import { useBosonRouterContract, useVoucherKernalContract } from "../hooks/useContract";
-import { getEncodedTopic, decodeData } from "../hooks/useContract";
 import { ModalResolver } from "../contexts/Modal";
 import { formatDate } from "../helpers/Format"
-import VOUCHER_KERNEL from "../hooks/ABIs/VoucherKernel";
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import PopupMessage from "../components/shared/PopupMessage";
 import * as humanizeDuration from 'humanize-duration';
@@ -29,8 +27,6 @@ import Loading from "../components/offerFlow/Loading";
 
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
-
-import { SMART_CONTRACTS_EVENTS, VOUCHER_STATUSES } from "../hooks/configs";
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, useBosonRouterContract } from "../../hooks/useContract";
+import { useBosonRouterContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -14,7 +14,6 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
-import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 
 export default function SubmitForm() {
