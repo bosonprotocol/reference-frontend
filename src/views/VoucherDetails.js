@@ -65,7 +65,6 @@ function VoucherDetails(props) {
     const differenceInPercent = (x, y) => (x / y) * 100
     const expiryProgress = voucherDetails && differenceInPercent(timePast, timeAvailable) + '%';
 
-
     const daysPast = voucherDetails && convertToDays(new Date()) - convertToDays(new Date(voucherDetails.startDate)) + 1
     const daysAvailable = voucherDetails && convertToDays(new Date(voucherDetails.expiryDate)) - convertToDays(new Date(voucherDetails.startDate)) + 1
 
@@ -137,7 +136,6 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
             <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
         )
-
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
             <ContractInteractionButton
@@ -183,7 +181,7 @@ function VoucherDetails(props) {
         // don't show actions if:
         const blockActionConditions = [
             new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
-            new Date() <= new Date(voucherResource?.startDate), // has future start date
+            (new Date() <= new Date(voucherResource?.startDate)) && !!voucherDetails, // has future start date and is voucher
             voucherSetDetails?.qty <= 0, // no quantity
         ]
 
