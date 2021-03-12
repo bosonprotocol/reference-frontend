@@ -11,7 +11,7 @@ import Loading from "./Loading"
 import { SellerContext } from "../../contexts/Seller"
 import { GlobalContext, Action } from "../../contexts/Global"
 import ContractInteractionButton from "../shared/ContractInteractionButton";
-import { Route, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
