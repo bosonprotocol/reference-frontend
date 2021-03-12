@@ -305,7 +305,7 @@
     }
 
     .container {
-      height: calc(100vh - 100px);
+      height: calc(100vh - 110px);
       display: flex !important;
       flex-direction: column;
       justify-content: center;
@@ -341,7 +341,7 @@
 
         .button {
           position: absolute;
-          bottom: -18px;
+          bottom: -7px;
           left: 50%;
           transform: translate(-50%, 100%);
           z-index: 20;

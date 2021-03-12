@@ -66,13 +66,25 @@ function FormPrice({
     }
     valueReceiver(ethers.utils.parseEther(event.target.value))
   }
+
+  const validateQuantity = (e) => {
+    let value = e.target.value
+    let correctPattern = value.match(/[0-9]+/g)?.length === 1
+
+    console.log(correctPattern)
+
+    correctPattern ? 
+    quantityValueReceiver(value) :
+    quantityValueReceiver(null)
+  }
+
   return (
     <div className="price">
       <div className="row">
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
           <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number" min="1" onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)} />
+            <input id="offer-quantity" type="number" min="1" step="1" onInput={(e) => validateQuantity(e)} />
           </div>
         </div>
       </div>
