@@ -49,6 +49,7 @@ function VoucherDetails(props) {
     const [controls, setControls] = useState();
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
+    const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
@@ -266,6 +267,13 @@ function VoucherDetails(props) {
 
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
+        const depositsDistributed = [...Object.values(payments.distributedAmounts.buyerDeposit), ...Object.values(payments.distributedAmounts.sellerDeposit)].filter(x => x.hex !== "0x00").length > 0;
+
+        if(!depositsDistributed && voucherDetails.FINALIZED) {
+            setShowDepositsDistributionWarningMessage(true);
+        }
+
+
 
         const getPaymentMatrixSet = (row, column) => ethers.utils.formatEther(payments.distributedAmounts[row][column])
 
@@ -587,6 +595,13 @@ function VoucherDetails(props) {
                                     : null}
                             </div>
                             : null}
+
+                        {
+                            showDepositsDistributionWarningMessage ? 
+                            <div className="section depositsWarning"> The Voucher has been finalised and deposits will be distributed in the next hour. </div>
+                             : null
+                         }
+                           
                         <div className="section info">
                             <div className="section description">
                                 {<DescriptionBlock toggleImageView={setImageView} voucherSetDetails={voucherSetDetails} getProp={getProp} />}
