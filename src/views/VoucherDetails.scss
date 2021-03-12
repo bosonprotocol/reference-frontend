@@ -312,7 +312,7 @@
                 content: '';
                 position: absolute;
                 top: 0;
-                width: #{'var(--progress-percentage)'};
+                width: var(--progress-percentage);
                 bottom: 0;
                 left: 0;
                 background: #80F0BE;

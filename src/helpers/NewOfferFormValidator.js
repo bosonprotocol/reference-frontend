@@ -23,9 +23,10 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
 
   let quantityErrorMessage = null;
   const currentQuantityValue = getData(NAME.QUANTITY);
+  console.log(currentQuantityValue)
 
   if (currentQuantityValue) {
-    if (isNaN(parseInt(currentQuantityValue))) {
+    if (currentQuantityValue === '') {
       quantityErrorMessage = 'Must be a valid number'
     }
     if (currentQuantityValue <= 0) {
