@@ -196,7 +196,7 @@ function VoucherDetails(props) {
 
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
-        if (voucherDetails && !voucherDetails.FINALIZED) {
+        if (voucherDetails && !voucherDetails.FINALIZED && voucherDetails._tokenIdVoucher) {
             if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
                 return newStatusBlocks;
             }
