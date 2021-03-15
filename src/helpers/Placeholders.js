@@ -1,0 +1,1 @@
+export const newOfferCategories = <><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li></>

@@ -12,11 +12,10 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 90;
-    background: linear-gradient(0.17turn, #2c2c2c 0%, #4e5c56 30%, #657b72 32%, #2c2c2c 100%);
-    background-size: 1500% 1500%;
+    background: linear-gradient(0.17turn, #1d1f23 35%, #272f38 46%, #272f38 54%, #1d1f23 65%);
+    background-size: 1000% 1000%;
     transition: 0.8s ease-in-out;
-    animation: loadingPlaceholder 2.9s ease-in infinite reverse;
+    animation: loadingPlaceholder 3.1s ease-in infinite reverse;
   }
   
   &.error {
