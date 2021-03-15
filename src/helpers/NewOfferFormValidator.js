@@ -131,7 +131,7 @@ const priceValidation = (errorMessages, getData, priceSettings, currentQuantityV
     }
 
     if (currentQuantityValue && priceSettings[priceCurrency].max) {
-      if (currentPriceValue.mul(currentQuantityValue) > (priceSettings[priceCurrency].max)) {
+      if (currentPriceValue.mul(currentQuantityValue).gt(priceSettings[priceCurrency].max)) {
         priceErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[priceCurrency].max.div(currentQuantityValue)), 2)}`;
       }
     }
@@ -154,7 +154,7 @@ const sellerDepositValidation = (errorMessages, getData, priceSettings, currentQ
     }
 
     if (currentQuantityValue && priceSettings[sellerCurrency].max) {
-      if (currentSellerDepositValue.mul(currentQuantityValue) > (priceSettings[sellerCurrency].max)) {
+      if (currentSellerDepositValue.mul(currentQuantityValue).gt(priceSettings[sellerCurrency].max)) {
         sellerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[sellerCurrency].max.div(currentQuantityValue)), 2)}`;
       }
     }
@@ -177,7 +177,7 @@ const buyerDepositValidation = (errorMessages, getData, priceSettings, currentQu
     }
 
     if (currentQuantityValue && priceSettings[priceCurrency].max) {
-      if (currentBuyerDepositValue.mul(currentQuantityValue) > (priceSettings[priceCurrency].max)) {
+      if (currentBuyerDepositValue.mul(currentQuantityValue).gt(priceSettings[priceCurrency].max)) {
         buyerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[priceCurrency].max.div(currentQuantityValue)), 2)}`;
       }
     }
