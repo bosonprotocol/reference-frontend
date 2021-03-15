@@ -1,36 +1,23 @@
 import { ethers } from "ethers"
 import { toFixed } from "../utils/format-utils"
 import { NAME } from "./Dictionary"
-import { profanityTest } from "./Profanity"
+import { profanityCheck } from "./Profanity"
 import * as ValidationConfig from "./NewOfferFormValidationConfig";
 
 const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName, priceSettings) => {
   let newErrorMessages = { ...errorMessages };
 
-  // IMAGE VALIDATION
   newErrorMessages = imageValidation(newErrorMessages, getData);
-
-  // TITLE VALIDATION
   newErrorMessages = titleValidation(newErrorMessages, getData);
-
-  // DESCRIPTION VALIDATION
   newErrorMessages = descriptionValidation(newErrorMessages, getData);
 
-  // QUANTITY VALIDATION
   const quantityValidationCheck = quantityValidation(newErrorMessages, getData);
   newErrorMessages = quantityValidationCheck[0];
   const currentQuantityValue = quantityValidationCheck[1];
 
-  // PRICE VALIDATION
   newErrorMessages = priceValidation(newErrorMessages, getData, priceSettings, currentQuantityValue);
-
-  // SELLER DEPOSIT VALIDATION
   newErrorMessages = sellerDepositValidation(newErrorMessages, getData, priceSettings, currentQuantityValue);
-
-  // BUYER DEPOSIT VALIDATION
   newErrorMessages = buyerDepositValidation(newErrorMessages, getData, priceSettings, currentQuantityValue);
-
-  // DATES VALIDATION
   newErrorMessages = datesValidation(newErrorMessages, getData, lastInputChangeName);
 
   return newErrorMessages;
@@ -41,17 +28,14 @@ const imageValidation = (errorMessages, getData) => {
   const currentImageValue = getData(NAME.SELECTED_FILE);
 
   if (currentImageValue) {
-    // If file is too small
     if (currentImageValue.size < ValidationConfig.minimumFileSizeInKB) {
       imageErrorMessage = ValidationConfig.minSizeExceededError;
     }
 
-    // If file is too large
     if (currentImageValue.size > ValidationConfig.maximumFileSizeInMB) {
       imageErrorMessage = ValidationConfig.maxSizeExceededError;
     }
 
-    // If file is invalid type
     if (!ValidationConfig.allowedMimeTypes.includes(currentImageValue.type)) {
       imageErrorMessage = ValidationConfig.notAllowedMimeTypeError;
     }
@@ -75,7 +59,7 @@ const titleValidation = (errorMessages, getData) => {
       titleErrorMessage = ValidationConfig.maxTitleLengthError;
     }
 
-    let profanityResult = profanityTest(currentTitleValue);
+    let profanityResult = profanityCheck(currentTitleValue);
 
     if (profanityResult) {
       titleErrorMessage = profanityResult;
@@ -96,7 +80,7 @@ const descriptionValidation = (errorMessages, getData) => {
       descriptionErrorMessage = ValidationConfig.minDescriptionLengthError;
     }
 
-    let profanityResult = profanityTest(currentDescriptionValue);
+    let profanityResult = profanityCheck(currentDescriptionValue);
 
     if (profanityResult) {
       descriptionErrorMessage = profanityResult;
@@ -132,7 +116,7 @@ const quantityValidation = (errorMessages, getData) => {
     errorMessages = { ...errorMessages, [NAME.QUANTITY]: quantityErrorMessage };
   }
 
-  return [{ ...errorMessages }, currentQuantityValue];
+  return [errorMessages, currentQuantityValue];
 };
 
 const priceValidation = (errorMessages, getData, priceSettings, currentQuantityValue) => {
@@ -166,7 +150,7 @@ const sellerDepositValidation = (errorMessages, getData, priceSettings, currentQ
     const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C);
 
     if (currentSellerDepositValue <= 0) {
-      sellerDepositErrorMessage = 'Value cannot be less or equal to 0';
+      sellerDepositErrorMessage = ValidationConfig.minSellerDepositError;
     }
 
     if (currentQuantityValue && priceSettings[sellerCurrency].max) {
@@ -189,7 +173,7 @@ const buyerDepositValidation = (errorMessages, getData, priceSettings, currentQu
     const priceCurrency = getData(NAME.PRICE_C);
 
     if (currentBuyerDepositValue <= 0) {
-      buyerDepositErrorMessage = 'Value cannot be less or equal to 0';
+      buyerDepositErrorMessage = ValidationConfig.minBuyerDepositError;
     }
 
     if (currentQuantityValue && priceSettings[priceCurrency].max) {

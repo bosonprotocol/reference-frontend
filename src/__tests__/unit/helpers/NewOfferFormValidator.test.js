@@ -12,7 +12,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const data = {
             [NAME.SELECTED_FILE]: {
                 size: ValidationConfig.minimumFileSizeInKB,
-                type: 'image/png'
+                type: ValidationConfig.allowedMimeTypes[0]
             }
         };
 
@@ -29,7 +29,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const data = {
             [NAME.SELECTED_FILE]: {
                 size: ValidationConfig.maximumFileSizeInMB + 1, // force failure
-                type: 'image/png'
+                type: ValidationConfig.allowedMimeTypes[0]
             }
         };
 
@@ -46,7 +46,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const data = {
             [NAME.SELECTED_FILE]: {
                 size: ValidationConfig.minimumFileSizeInKB - 1, // force failure
-                type: 'image/png'
+                type: ValidationConfig.allowedMimeTypes[0]
             }
         };
 

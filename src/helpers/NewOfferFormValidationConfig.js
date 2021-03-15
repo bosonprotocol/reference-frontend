@@ -40,19 +40,19 @@ export const noDecimalQuantityError = `No decimal point allowed for quantity`;
 // END QUANTITY CONFIG
 
 // START PRICE CONFIG
-export const minPriceError = 'Value cannot be less or equal to 0';
+export const minPriceError = 'Value must be greater than 0';
 // END PRICE CONFIG
 
 // START SELLER DEPOSIT CONFIG
-export const minSellerDepositError = 'Value cannot be less or equal to 0';
+export const minSellerDepositError = 'Value must be greater than 0';
 // END SELLER DEPOSIT CONFIG
 
 // START BUYER DEPOSIT CONFIG
-export const minBuyerDepositError = 'Value cannot be less or equal to 0';
+export const minBuyerDepositError = 'Value must be greater than 0';
 // END BUYER DEPOSIT CONFIG
 
 // START DATES CONFIG
-export const startDateInPastError = "Start Date can't be set before Today.";
+export const startDateInPastError = "Start Date can't be set in the past.";
 export const startDateAfterExpiryError = "Start Date can't be set after the Expiry Date.";
 export const expiryDateBeforeStartDateError = "Expiry Date can't be set before Start Date.";
 // END DATES CONFIG
