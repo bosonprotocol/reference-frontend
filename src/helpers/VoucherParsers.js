@@ -1,7 +1,7 @@
-import { getAllVoucherSets, getVouchers } from "../hooks/api";
+import { getAllVoucherSets, getVouchers, getAccountVoucherSets, getVouchersFromSupply } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { MODAL_TYPES } from "../helpers/Dictionary";
+import { MODAL_TYPES, STATUS } from "../helpers/Dictionary";
 import { ModalResolver } from "../contexts/Modal";
 
 
@@ -49,6 +49,33 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
   return parsedVoucherSets
 }
 
+export const prepareAccountVoucherSetData = (rawVoucherSets) => {
+  let parsedVoucherSets = [];
+  
+  if(!rawVoucherSets) return
+
+  for (const voucherSet of rawVoucherSets.voucherSupplies) {
+      let parsedVoucherSet = {
+          _id: voucherSet._id,
+          title: voucherSet.title,
+          image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+          price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+          qty: voucherSet.qty,
+          startDate: voucherSet.startDate,
+          category: voucherSet.category,
+          description: voucherSet.description,
+          expiryDate: voucherSet.expiryDate,
+          visible: voucherSet.visible,
+          currency: voucherSet.currency ? voucherSet._currency : 'ETH',
+          voucherOwner: voucherSet.voucherOwner,
+      };
+
+      parsedVoucherSets.push(parsedVoucherSet)
+  }
+
+  return parsedVoucherSets
+}
+
 export const prepareVoucherData = (rawVouchers) => {
   let parsedVouchers = [];
   
@@ -81,6 +108,7 @@ export const prepareVoucherData = (rawVouchers) => {
   return parsedVouchers
 }
 
+
 export async function getAccountVouchers(account, modalContext) {
   if (!account) {
       return;
@@ -102,6 +130,30 @@ export async function getAccountVouchers(account, modalContext) {
   const vouchersParsed = allAccountVouchers.voucherData && prepareVoucherData(allAccountVouchers.voucherData)
 
   return vouchersParsed ? vouchersParsed : undefined
+}
+
+export async function getParsedAccountVoucherSets(account) {
+  if (!account) {
+      return;
+  }
+
+  const authData = getAccountStoredInLocalStorage(account);
+  const accountVoucherSets = await getAccountVoucherSets(authData.address);
+
+  const parsedData = prepareAccountVoucherSetData(accountVoucherSets)
+
+  return parsedData ? parsedData : undefined
+}
+
+export async function getParsedVouchersFromSupply(voucherSetId, account) {
+  if (!account) {
+      return;
+  }
+
+  const authData = getAccountStoredInLocalStorage(account);
+  const voucherFromSupply = await getVouchersFromSupply(voucherSetId, authData.authToken);
+
+  return voucherFromSupply ? voucherFromSupply : undefined
 }
 
 export const prepareVoucherDetails = (rawVoucher) => {
@@ -169,4 +221,14 @@ export async function addNewVoucher(account, getVoucherDetails, voucherId, array
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
   
   if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher) 
+}
+
+export const determineCurrentStatusOfVoucher = (voucherDetails) => {
+  const allStatuses = [];
+  if (voucherDetails.COMMITTED) allStatuses.push({ status: STATUS.COMMITED, date: voucherDetails.COMMITTED})
+  if (voucherDetails.REDEEMED) allStatuses.push({ status: STATUS.REDEEMED, date: voucherDetails.REDEEMED})
+  if (voucherDetails.REFUNDED) allStatuses.push({ status: STATUS.REFUNDED, date: voucherDetails.REFUNDED })
+  if (voucherDetails.COMPLAINED) allStatuses.push({ status: STATUS.COMPLAINED, date: voucherDetails.COMPLAINED})
+  if (voucherDetails.CANCELLED) allStatuses.push({ status: STATUS.CANCELLED, date: voucherDetails.CANCELLED})
+  return allStatuses.sort((a, b) => a.date > b.date ? 1 : -1)[allStatuses.length - 1]
 }
