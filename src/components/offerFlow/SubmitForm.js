@@ -93,11 +93,10 @@ export default function SubmitForm() {
             correlationId = (await bosonRouterContract.correlationIds(account)).toString()
             prepareVoucherFormData(correlationId, dataArr);
 
-            const receipt = await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
-
             const id = await createVoucherSet(formData, authData.authToken);
 
-            await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
+
             globalContext.dispatch(Action.fetchVoucherSets());
 
             setLoading(0);
