@@ -136,6 +136,12 @@ function VoucherDetails(props) {
                 : null
         )
 
+        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
+            <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
+        )
+
         return CASE
     }
 
@@ -146,8 +152,11 @@ function VoucherDetails(props) {
             owner: voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase(),
             holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase(),
         }
+        
+        const draftStatusCheck = !(voucherResource?._tokenIdVoucher || voucherResource?._tokenIdSupply)
 
         const statusPropagate = () => (
+            draftStatusCheck ? STATUS.DRAFT :
             voucherResource.FINALIZED ? STATUS.FINALIZED :
                 voucherResource.CANCELLED ?
                     (!voucherResource.COMPLAINED ? STATUS.CANCELLED : STATUS.COMPLANED_CANCELED) :
@@ -159,6 +168,7 @@ function VoucherDetails(props) {
                                         !voucherResource.COMMITTED ? STATUS.OFFERED :
                                             false
         )
+
 
         const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
         const status = voucherResource && statusPropagate()
@@ -508,7 +518,7 @@ function VoucherDetails(props) {
     useEffect(() => {
         setVoucherStatus(determineStatus())
 
-    }, [voucherDetails, account])
+    }, [voucherDetails, voucherSetDetails, account, actionPerformed, library])
 
     useEffect(() => {
 
