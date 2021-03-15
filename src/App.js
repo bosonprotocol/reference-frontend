@@ -91,8 +91,10 @@ function App() {
         const localStoredAccountData = getAccountStoredInLocalStorage(account);
         const onboardingCompleted = localStorage.getItem('onboarding-completed');
 
-        localStoredAccountData.activeToken = isTokenValid(localStoredAccountData.authToken)
-
+        if (localStoredAccountData) {
+            localStoredAccountData.activeToken = isTokenValid(localStoredAccountData.authToken)
+        }
+       
         if (!onboardingCompleted || localStoredAccountData.activeToken) {
             return;
         }

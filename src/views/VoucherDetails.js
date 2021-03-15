@@ -49,6 +49,7 @@ function VoucherDetails(props) {
     const [controls, setControls] = useState();
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
+    const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
@@ -135,6 +136,12 @@ function VoucherDetails(props) {
                 : null
         )
 
+        CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
+            <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
+        )
+
         return CASE
     }
 
@@ -145,8 +152,11 @@ function VoucherDetails(props) {
             owner: voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase(),
             holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase(),
         }
+        
+        const draftStatusCheck = !(voucherResource?._tokenIdVoucher || voucherResource?._tokenIdSupply)
 
         const statusPropagate = () => (
+            draftStatusCheck ? STATUS.DRAFT :
             voucherResource.FINALIZED ? STATUS.FINALIZED :
                 voucherResource.CANCELLED ?
                     (!voucherResource.COMPLAINED ? STATUS.CANCELLED : STATUS.COMPLANED_CANCELED) :
@@ -158,6 +168,7 @@ function VoucherDetails(props) {
                                         !voucherResource.COMMITTED ? STATUS.OFFERED :
                                             false
         )
+
 
         const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
         const status = voucherResource && statusPropagate()
@@ -185,7 +196,7 @@ function VoucherDetails(props) {
 
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
-        if (voucherDetails && !voucherDetails.FINALIZED) {
+        if (voucherDetails && !voucherDetails.FINALIZED && voucherDetails._tokenIdVoucher) {
             if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
                 return newStatusBlocks;
             }
@@ -266,6 +277,13 @@ function VoucherDetails(props) {
 
     const prepareEscrowData = async () => {
         const payments = await getPayments(voucherDetails, account, modalContext);
+        const depositsDistributed = [...Object.values(payments.distributedAmounts.buyerDeposit), ...Object.values(payments.distributedAmounts.sellerDeposit)].filter(x => x.hex !== "0x00").length > 0;
+
+        if(!depositsDistributed && voucherDetails.FINALIZED) {
+            setShowDepositsDistributionWarningMessage(true);
+        }
+
+
 
         const getPaymentMatrixSet = (row, column) => ethers.utils.formatEther(payments.distributedAmounts[row][column])
 
@@ -500,7 +518,7 @@ function VoucherDetails(props) {
     useEffect(() => {
         setVoucherStatus(determineStatus())
 
-    }, [voucherDetails, account])
+    }, [voucherDetails, voucherSetDetails, account, actionPerformed, library])
 
     useEffect(() => {
 
@@ -587,6 +605,13 @@ function VoucherDetails(props) {
                                     : null}
                             </div>
                             : null}
+
+                        {
+                            showDepositsDistributionWarningMessage ? 
+                            <div className="section depositsWarning"> The Voucher has been finalised and deposits will be distributed in the next hour. </div>
+                             : null
+                         }
+                           
                         <div className="section info">
                             <div className="section description">
                                 {<DescriptionBlock toggleImageView={setImageView} voucherSetDetails={voucherSetDetails} getProp={getProp} />}

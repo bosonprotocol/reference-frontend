@@ -47,6 +47,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.1.6",
     "axios": "^0.21.0",
+    "bad-words": "^3.0.4",
     "copy-to-clipboard": "^3.3.1",
     "dompurify": "^2.2.3",
     "env-cmd": "^10.1.0",
@@ -103,6 +104,8 @@
     ]
   },
   "devDependencies": {
-    "@web3-react/core": "^6.1.1"
+    "@web3-react/core": "^6.1.1",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1"
   }
 }
