@@ -4,7 +4,6 @@ import { getContract } from "../utils";
 import { SMART_CONTRACTS } from "./configs";
 import BOSON_ROUTER_ABI from './ABIs/BosonRouter.json';
 import FUND_LIMITS from './ABIs/FundLimitsOracle.json';
-import * as ethers from "ethers";
 import VOUCHER_KERNEL from './ABIs/VoucherKernel.json'
 
 function useContract(address, ABI, withSignerIfPossible = true) {
@@ -31,51 +30,4 @@ export function useFundLimitsContract() {
 
 export function useVoucherKernalContract() {
     return useContract(SMART_CONTRACTS.VoucherKernelContractAddress, VOUCHER_KERNEL.abi)
-}
-export async function findEventByName(txReceipt, eventName, ...eventFields) {
-    for (const key in txReceipt.events) {
-        if (txReceipt.events[key].event === eventName) {
-            const event = txReceipt.events[key]
-
-            const resultObj = {
-                txHash: txReceipt.transactionHash
-            }
-
-            for (let index = 0; index < eventFields.length; index++) {
-                resultObj[eventFields[index]] = event.args[eventFields[index]].toString();
-            }
-            return resultObj
-        }
-    }
-}
-
-export async function getEncodedTopic(receipt, abi, eventName) {
-    const interfaceInstance = new ethers.utils.Interface(abi);
-    for (const log in receipt.logs) {
-        const topics = receipt.logs[log].topics;
-        for (const index in topics) {
-
-            const encodedTopic = topics[index];
-
-            try {
-                // CHECK IF  TOPIC CORRESPONDS TO THE EVENT GIVEN TO FN
-                let event = await interfaceInstance.getEvent(encodedTopic);
-
-                if (event.name === eventName) return encodedTopic
-            } catch (error) {
-                // breaks silently as we do not need to do anything if the there is not such an event
-            }
-
-        }
-    }
-
-    return ''
-}
-
-export async function decodeData(receipt, encodedTopic, paramsArr) {
-    const decoder = new ethers.utils.AbiCoder();
-
-    const encodedData = receipt.logs.filter(e => e.topics.includes(encodedTopic))[0].data
-    return decoder.decode(paramsArr, encodedData)
-
 }
