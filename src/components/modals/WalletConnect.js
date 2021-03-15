@@ -241,9 +241,7 @@ function WalletAccount({loadingContext}) {
         loadingContext.dispatch(Toggle.Loading(wallet?.network, 1))
         web3?.eth?.net?.getNetworkType()?.then(netId => {
             setConnectedNetowrk(netId)
-            setTimeout(() => {
-                loadingContext.dispatch(Toggle.Loading(wallet?.network, 0))
-            }, 600);
+            loadingContext.dispatch(Toggle.Loading(wallet?.network, 0))
         })
     }, [])
 

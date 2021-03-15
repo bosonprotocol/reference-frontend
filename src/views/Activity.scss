@@ -303,4 +303,14 @@ section.activity {
       padding: 0;
     }
   }
+
+  .block.plceholder {
+    height: 180px;
+    border-radius: 8px;
+    margin: 20px 0;
+
+    &:first-child {
+      margin-top: 40px;
+    }
+  }
 }

@@ -1,1 +1,2 @@
 export const newOfferCategories = <><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li><li className="is-loading"></li></>
+export const activityBlockPlaceholder = <><div className="block plceholder is-loading"></div><div className="block plceholder is-loading"></div><div className="block plceholder is-loading"></div></>

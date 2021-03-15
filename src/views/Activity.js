@@ -5,6 +5,9 @@ import { Link, useHistory } from 'react-router-dom'
 import "./Activity.scss"
 
 import { GlobalContext } from '../contexts/Global'
+import { LoadingContext, Toggle, activity } from "../contexts/Loading";
+import { activityBlockPlaceholder } from "../helpers/Placeholders"
+
 
 import { ROUTE } from "../helpers/Dictionary"
 
@@ -77,6 +80,7 @@ export function ActivityVoucherSets() {
 function ActivityView(props) {
     const { voucherBlocks, voucherType, loading, account, title, voucherSetId, block } = props
     const globalContext = useContext(GlobalContext);
+    const loadingContext = useContext(LoadingContext);
 
     const [resultVouchers, setResultVouchers] = useState([])
     const [activeVouchers, setActiveVouchers] = useState([])
@@ -145,6 +149,10 @@ function ActivityView(props) {
         </div>
     }
 
+    useEffect(() => {
+        loadingContext.dispatch(Toggle.Loading(activity?.block, 1))
+    })
+
     return (
         <>
         <section className="activity atomic-scoped">
@@ -161,9 +169,12 @@ function ActivityView(props) {
                     </TabList>
                         <>
                             <TabPanel>
-                                {activeVouchers?.length > 0 && !!account?
+                                {!loadingContext.state[activity?.block] ?
+                                    (activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
-                                    activityMessage(1)
+                                    activityMessage(1))
+                                    :
+                                    activityBlockPlaceholder
                                 }
                             </TabPanel>
                             <TabPanel>
