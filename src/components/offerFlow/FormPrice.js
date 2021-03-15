@@ -44,7 +44,10 @@ function FormPrice({
       const maxFromContract = depositsPriceLimits[currency].max;
       if (quantity && quantity > 0) {
         const maxWithQuantityTakenIntoAccount = maxFromContract.div(quantity);
-        return toFixed(+ethers.utils.formatEther(maxWithQuantityTakenIntoAccount), 2)
+        return toFixed(+ethers.utils.formatEther(maxWithQuantityTakenIntoAccount), 
+          // if the rounded value of 2 decimal points will result to 0.00, increase the decimal point to 5 (will always have value below 10'000 quantity)
+          toFixed(+ethers.utils.formatEther(maxWithQuantityTakenIntoAccount), 2) === '0.00' ? 5 : 2
+        )
       }
       return ethers.utils.formatEther(maxFromContract)
     }
@@ -70,8 +73,13 @@ function FormPrice({
   const validateQuantity = (e) => {
     const value = parseInt(e.target.value)
 
-    if(value < 1000 || isNaN(value)) quantityValueReceiver(!isNaN(value) ? value : '')
-    if(isNaN(value)) e.target.value = ''
+    if(value < 10000 && !isNaN(value)) {
+      quantityValueReceiver(value)
+      e.target.value = value
+    } else {
+      e.target.value = ''
+      quantityValueReceiver('')
+    }
   }
 
   return (
