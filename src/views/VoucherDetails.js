@@ -30,6 +30,7 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
+import { id } from 'ethers/lib/utils';
 
 
 function VoucherDetails(props) {
@@ -387,7 +388,34 @@ function VoucherDetails(props) {
         const authData = getAccountStoredInLocalStorage(account);
 
         try {
-            const correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            const correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+            let correlationIdMapping = new Map(JSON.parse(localStorage.getItem('correlationIdMapping')));
+
+            if(!correlationIdMapping) {
+                localStorage.setItem('correlationIdMapping', JSON.stringify(Array.from(new Map())));
+                correlationIdMapping = new Map();
+            }
+            let idsUsedForTransactionsForTheAccount = correlationIdMapping.get(account);
+            if(!idsUsedForTransactionsForTheAccount) {
+                idsUsedForTransactionsForTheAccount = [];
+            }
+
+            if(idsUsedForTransactionsForTheAccount.includes(correlationId)) {
+               
+                    setLoading(0);
+                    modalContext.dispatch(ModalResolver.showModal({
+                        show: true,
+                        type: MODAL_TYPES.GENERIC_ERROR,
+                        content: 'Please wait for your recent transaction to be minted before sending another one.'
+                    }));
+                    return;
+                
+            } else {
+                idsUsedForTransactionsForTheAccount.push(correlationId);
+                correlationIdMapping.set(account, idsUsedForTransactionsForTheAccount);
+                localStorage.setItem('correlationIdMapping', JSON.stringify(Array.from(correlationIdMapping)));
+            }
+
             const metadata = {
                 _holder: account,
                 _issuer: owner,
