@@ -14,8 +14,8 @@ import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from 'react'
 import Loading from "../components/offerFlow/Loading";
 import MessageScreen from "../components/shared/MessageScreen"
-import { useEffect } from 'react/cjs/react.development';
 import { setTxHashToSupplyId } from '../utils/tx-hash';
+import { useEffect } from 'react';
 
 function ShowQR(props) {
     const voucherId = props.match.params.id;
