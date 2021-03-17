@@ -30,6 +30,7 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
+import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
 
 function VoucherDetails(props) {
@@ -50,6 +51,7 @@ function VoucherDetails(props) {
     const [actionPerformed, setActionPerformed] = useState(1);
     const [popupMessage, setPopupMessage] = useState();
     const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
+    const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
@@ -95,6 +97,12 @@ function VoucherDetails(props) {
         </div>
     )
 
+    useEffect(() => {
+        if(library && (voucherDetails || voucherSetDetails)) {
+          waitForRecentTransactionIfSuchExists(library, voucherDetails, voucherSetDetails, setRecentlySignedTxHash)
+     
+        }
+    },[voucherDetails, voucherSetDetails, library])
     // assign controlset to statuses
     const controlList = () => {
         const CASE = {}
@@ -177,7 +185,8 @@ function VoucherDetails(props) {
         const blockActionConditions = [
             new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
             (new Date() <= new Date(voucherResource?.startDate)) && !!voucherDetails, // has future start date and is voucher
-            voucherSetDetails?.qty <= 0, // no quantity
+            voucherSetDetails?.qty <= 0,// no quantity
+            recentlySignedTxHash!==''
         ]
 
         // status: undefined - user that has not logged in
@@ -408,9 +417,10 @@ function VoucherDetails(props) {
         }
 
         try {
-            await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
+            const tx = await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
                 value: txValue.toString()
             });
+            setRecentlySignedTxHash(tx.hash, supplyId);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -439,7 +449,9 @@ function VoucherDetails(props) {
         setLoading(1);
 
         try {
-            await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
+            const tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
+            setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+            
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
@@ -469,7 +481,8 @@ function VoucherDetails(props) {
         setLoading(1);
 
         try {
-            await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
+            const tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
+            setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
@@ -499,7 +512,8 @@ function VoucherDetails(props) {
         setLoading(1);
 
         try {
-            await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+            const tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
+            setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             setLoading(0);
@@ -518,14 +532,14 @@ function VoucherDetails(props) {
     useEffect(() => {
         setVoucherStatus(determineStatus())
 
-    }, [voucherDetails, voucherSetDetails, account, actionPerformed, library])
+    }, [voucherDetails, voucherSetDetails, account, actionPerformed, library, recentlySignedTxHash])
 
     useEffect(() => {
 
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
-    }, [voucherStatus, voucherDetails, account, library])
+    }, [voucherStatus, voucherDetails, account, library, recentlySignedTxHash])
 
     useEffect(() => {
         if (!voucherSetDetails && account) {
@@ -537,7 +551,9 @@ function VoucherDetails(props) {
 
     useEffect(() => {
         navigationContext.dispatch(Action.setRedemptionControl({
-            controls: controls
+            controls: controls ? controls : recentlySignedTxHash ? [(
+                <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>Transaction is in progress, please wait</div>
+            )] : null
         }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [controls, account, library])
@@ -558,7 +574,8 @@ function VoucherDetails(props) {
         setLoading(1);
         try {
             setLoading(1);
-            await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
+            const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
+            setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
         } catch (e) {
             setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
@@ -572,6 +589,7 @@ function VoucherDetails(props) {
         history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
         setLoading(0)
     }
+
 
     return (
         <>
@@ -631,6 +649,7 @@ function VoucherDetails(props) {
                                 {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
                             </div>
                         </div>
+                    
                     </div>
                 </div>
             </section>
