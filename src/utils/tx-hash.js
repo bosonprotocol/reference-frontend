@@ -10,11 +10,16 @@ export const waitForRecentTransactionIfSuchExists = (library, voucherDetails, vo
                 setRecentlySignedTxHash(recentlySignedTxHash)
     
                 const awaitForTx = async () => {
+                    const locationBeforeTxWait = window.location;
                     await library.waitForTransaction(recentlySignedTxHash);
+                    
                     const localStorageListWithDeletedTx = localStorageList.filter(x => x.txHash !==recentlySignedTxHash);
                     localStorage.setItem('recentlySignedTxIdToSupplyIdList', JSON.stringify(localStorageListWithDeletedTx))                            
-                    // eslint-disable-next-line no-self-assign
-                    window.location = window.location;
+
+                    if(locationBeforeTxWait.href === window.location.href) {
+                        // eslint-disable-next-line no-self-assign
+                        window.location = window.location
+                    }
                 }
                 awaitForTx();               
             }

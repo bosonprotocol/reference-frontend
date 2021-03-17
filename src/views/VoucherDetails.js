@@ -180,7 +180,7 @@ function VoucherDetails(props) {
 
         const role = voucherRoles.owner ? ROLE.SELLER : voucherRoles.holder ? ROLE.BUYER : ROLE.NON_BUYER_SELLER
         const status = voucherResource && statusPropagate()
-console.log('before block actions tx hash', recentlySignedTxHash)
+
         // don't show actions if:
         const blockActionConditions = [
             new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
@@ -188,14 +188,14 @@ console.log('before block actions tx hash', recentlySignedTxHash)
             voucherSetDetails?.qty <= 0,// no quantity
             recentlySignedTxHash!==''
         ]
-console.log(blockActionConditions)
+
         // status: undefined - user that has not logged in
         return !blockActionConditions.includes(true) ? OFFER_FLOW_SCENARIO[role][status] : undefined
     }
 
     const getControlState = () => {
         const controlResponse = controlList()
-console.log('control list', controlResponse)
+
         return voucherStatus ?
             controlResponse[voucherStatus] && controlResponse[voucherStatus]()
             : null
@@ -404,8 +404,7 @@ console.log('control list', controlResponse)
                 _correlationId: correlationId,
             };
 
-            const tx = await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-            console.log(tx)
+            await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
 
         } catch (e) {
             setLoading(0);
@@ -552,7 +551,9 @@ console.log('control list', controlResponse)
 
     useEffect(() => {
         navigationContext.dispatch(Action.setRedemptionControl({
-            controls: controls
+            controls: controls ? controls : recentlySignedTxHash ? [(
+                <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>Transaction is in progress, please wait</div>
+            )] : null
         }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [controls, account, library])
@@ -648,6 +649,7 @@ console.log('control list', controlResponse)
                                 {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
                             </div>
                         </div>
+                    
                     </div>
                 </div>
             </section>

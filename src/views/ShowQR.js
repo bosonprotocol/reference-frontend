@@ -15,7 +15,7 @@ import { useContext, useState } from 'react'
 import Loading from "../components/offerFlow/Loading";
 import MessageScreen from "../components/shared/MessageScreen"
 import { useEffect } from 'react/cjs/react.development';
-import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
+import { setTxHashToSupplyId } from '../utils/tx-hash';
 
 function ShowQR(props) {
     const voucherId = props.match.params.id;
@@ -25,7 +25,6 @@ function ShowQR(props) {
     const [messageType, setMessageType] = useState(false);
     const [link, setLink] = useState(ROUTE.Home);
     const [voucherDetails, setVoucherDetails] = useState(null);
-    const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('')
     const location = useLocation();
     
     const successMessage = "Redemption was successful"
@@ -35,11 +34,6 @@ function ShowQR(props) {
     
     const bosonRouterContract = useBosonRouterContract();
 
-    useEffect(()=> {
-        if(voucherDetails && library) {
-            waitForRecentTransactionIfSuchExists(library, voucherDetails, null, setRecentlySignedTxHash);
-        }
-    },[voucherDetails, library])
     useEffect(() => {
         if(account) {
             const resolveVoucherDetails = async () => {
