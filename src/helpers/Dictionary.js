@@ -32,6 +32,7 @@ export const CONTROL = {
     SET_REDEMPTION_CONTROL: 'redemption_flow_control',
     COMPLETE_ONBOARDING: 'complete-onboarding',
     DISPLAY_NAVIGATION: 'display-navigation',
+    DISPLAY_BOTTOM_NAVIGATION: 'display-bottom-navigation',
     CHECK_DATA_UPDATE: 'check-for-data-update',
 }
 
@@ -44,14 +45,14 @@ export const ROUTE = {
     NewOffer: '/sell',
     Activity: '/voucher-sets',
     ActivityVouchers: '/vouchers',
-    VoucherDetails: '/voucher',
-    VoucherSetDetails: '/voucher-set',
     CodeScanner: '/code-scanner',
     Default: '/default',
     PARAMS: {
         ID: '/:id',
     },
-    VoucherQRCode: '/qr'
+    VoucherQRCode: '/qr',
+    VoucherSetView: '/supply',
+    Details: '/details',
 }
 
 export const BOTTOM_NAV_TYPE = {
@@ -101,10 +102,12 @@ export const CURRENCY = {
 // this is a placeholder object
 export const STATUS = {
     VIEW_ONLY: 'voucher_status_view_only',
+    DRAFT: 'voucher_status_draft',
     OFFERED: 'voucher_status_offered',
     COMMITED: 'voucher_status_commited',
     REDEEMED: 'voucher_status_redeemed',
     COMPLAINED: 'voucher_status_complained',
+    EXPIRED: 'voucher_status_expired',
     REFUNDED: 'voucher_status_refunded',
     CANCELLED: 'voucher_status_cancelled',
     FINALIZED: 'voucher_status_finalized',

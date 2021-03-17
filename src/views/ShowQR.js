@@ -8,13 +8,14 @@ import { MODAL_TYPES, ROUTE, MESSAGE } from '../helpers/Dictionary'
 import ContractInteractionButton from "../components/shared/ContractInteractionButton";
 import { ModalContext, ModalResolver } from "../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { getVoucherDetails, updateVoucher } from "../hooks/api";
+import { getVoucherDetails } from "../hooks/api";
 import {  useBosonRouterContract } from "../hooks/useContract";
-import { VOUCHER_STATUSES } from "../hooks/configs";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from 'react'
 import Loading from "../components/offerFlow/Loading";
 import MessageScreen from "../components/shared/MessageScreen"
+import { setTxHashToSupplyId } from '../utils/tx-hash';
+import { useEffect } from 'react';
 
 function ShowQR(props) {
     const voucherId = props.match.params.id;
@@ -22,6 +23,8 @@ function ShowQR(props) {
     const modalContext = useContext(ModalContext);
     const [loading, setLoading] = useState(0);
     const [messageType, setMessageType] = useState(false);
+    const [link, setLink] = useState(ROUTE.Home);
+    const [voucherDetails, setVoucherDetails] = useState(null);
     const location = useLocation();
     
     const successMessage = "Redemption was successful"
@@ -31,6 +34,17 @@ function ShowQR(props) {
     
     const bosonRouterContract = useBosonRouterContract();
 
+    useEffect(() => {
+        if(account) {
+            const resolveVoucherDetails = async () => {
+                const authData = getAccountStoredInLocalStorage(account);
+                const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
+                setVoucherDetails(voucherDetails)
+            }
+            resolveVoucherDetails()
+        }
+   
+    }, [account, voucherId])
     async function onRedeem() {
         if (!library || !account) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -43,41 +57,17 @@ function ShowQR(props) {
 
         setLoading(1);
 
-        let tx;
-        // let data;
-        const authData = getAccountStoredInLocalStorage(account);
-        const voucherDetails = await getVoucherDetails(voucherId, authData.authToken);
 
         try {
-            tx = await bosonRouterContract.redeem(voucherDetails.voucher._tokenIdVoucher);
-
-            await tx.wait();
-
-            // let encodedTopic = await getEncodedTopic(receipt, VOUCHER_KERNEL.abi, SMART_CONTRACTS_EVENTS.VoucherRedeemed);
-            // data = await decodeData(receipt, encodedTopic, ['uint256', 'address', 'bytes32']);
-
-        } catch (e) {
-            setLoading(0);
-            setMessageType(MESSAGE.ERROR)
-            setMessageText(e.message)
-
-            return;
-        }
-
-
-        try {
-            const data = {
-                _id: voucherId,
-                status: VOUCHER_STATUSES.REDEEMED
-            };
-
-            await updateVoucher(data, authData.authToken);
+            const tx = await bosonRouterContract.redeem(voucherDetails.voucher._tokenIdVoucher);
+            setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
+            setLink(ROUTE.ActivityVouchers + '/' + voucherId + '/details')
             setMessageType(MESSAGE.SUCCESS)
         } catch (e) {
             setLoading(0);
             setMessageType(MESSAGE.ERROR)
             setMessageText(e.message)
-
+            return;
         }
 
         setLoading(0)
@@ -113,7 +103,7 @@ function ShowQR(props) {
                     messageType={messageType} 
                     title={messageType === 'success' ? successMessage : errorMessage} 
                     text={messageType === 'success' ? false : messageText} 
-                    link={ROUTE.Home}
+                    link={link}
                     setMessageType={messageType === 'success' ? false : setMessageType}
                 />
             }

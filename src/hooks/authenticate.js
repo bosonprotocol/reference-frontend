@@ -98,5 +98,6 @@ export const getAccountStoredInLocalStorage = (userAddress) => {
 
     const addressToLower = userAddress.toLowerCase();
     const record = allAddresses.find(e => e.address === addressToLower);
+
     return record ? record : ''
 }

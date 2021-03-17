@@ -104,7 +104,8 @@ h2:not(.def) {
 }
 
 .emulate-mobile {
-  &:not(.disabled) {
+  &:not(.disabled),
+  &:not(.no-bottom) {
     padding-top: 100px;
     padding-bottom: 81px;
   }
@@ -118,6 +119,12 @@ h2:not(.def) {
 
   &.disabled {
     .top-navigation,
+    .bottom-navigation {
+      display: none;
+    }
+  }
+
+  &.no-bottom {
     .bottom-navigation {
       display: none;
     }
@@ -230,6 +237,20 @@ header.top-navigation {
   padding-bottom: 15px;
   padding-top: 15px;
   z-index: 10;
+
+  .control-wrap {
+    .dual.split {
+      & > .button, a {
+        width: calc(50% - 8px);
+      }
+
+      .button.primary {
+        svg {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
 
   .default-nav  {
     .nav-container {

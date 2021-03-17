@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useContext } from 'react'
 
 import "./Home.scss"
 
-import Slider from "react-slick";
 
 import ProductBlock from "../components/home/ProductBlock";
 import CardBlock from "../components/home/CardBlock";
@@ -11,8 +10,13 @@ import CategoryMenu from "../components/home/CategoryMenu"
 import Onboarding from '../views/Onboarding'
 import QRCodeScanner from "../components/shared/QRCodeScanner"
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation } from 'swiper';
+
+import "swiper/swiper.min.css"
+
 import { animateEl, animateDel } from "../helpers/AnimationMap"
-import { productListSettings, cardListSettings } from "../helpers/SliderSettings"
+import { productListSettings } from "../helpers/SliderSettings"
 
 import { cardBlocks } from "../PlaceholderAPI"
 
@@ -21,8 +25,11 @@ import { GlobalContext, Action } from "../contexts/Global"
 import { useWeb3React } from "@web3-react/core";
 import { authenticateUser, getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
+SwiperCore.use([Navigation]);
+
 function Home() {
     const [productBlocks, setProductBlocks] = useState([]);
+    const [productBlocksFiltered, setProductBlocksFiltered] = useState([]);
     const homepage = useRef()
     const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
     const screensRef = useRef()
@@ -79,6 +86,10 @@ function Home() {
         authenticateUser(library, account, chainId);
     }
 
+    useEffect(() => {
+        setProductBlocksFiltered(productBlocks.filter((block) => block.qty > 0 ))
+    }, [productBlocks])
+
     return (
         <>
 
@@ -95,27 +106,73 @@ function Home() {
                     </div>
                     <section className="product-list">
                         <div className="container">
-                            <Slider { ...productListSettings }>
-                                { productBlocks.map((block, id) => block.qty > 0 && <ProductBlock key={ id } { ...block }
-                                                                                 delay={ `${ (id + animateDel.PL) * 50 }ms` }
-                                                                                 animate={ id < animateEl.PL }/>) }
-                            </Slider>
+                            {productBlocksFiltered?.length ? <Swiper
+                            spaceBetween={7}
+                            navigation
+                            slidesPerView={3}
+                            loop={productBlocksFiltered.length > 3 ? true : false}
+                            shortSwipes={false}
+                            threshold={5}
+                            freeMode={true}
+                            freeModeSticky={true}
+                            observer={true}
+                            observeParents={true}
+                            freeModeMomentumVelocityRatio={0.01}
+                            breakpoints={{
+                                320: {
+                                    slidesPerView: 2,
+                                    loop: productBlocksFiltered.length > 2 ? true : false
+                                },
+                                769: {
+                                  slidesPerView: 3,
+                                  loop: productBlocksFiltered.length > 3 ? true : false
+                                },
+                            }} >
+                            { productBlocksFiltered.map((block, id) =>
+                                <SwiperSlide key={id}>
+                                    <ProductBlock { ...block }
+                                    delay={ `${ (id + animateDel.PL) * 50 }ms` }
+                                    animate={ id < animateEl.PL }/>
+                                </SwiperSlide>) }
+                            </Swiper> : null}
                         </div>
                     </section>
                     <section className="card-list">
                         <div className="container erase-right">
-                            <Slider { ...cardListSettings }>
-                                { cardBlocks.map((block, id) => <CardBlock key={ id } { ...block }
-                                                                           delay={ `${ (id + animateDel.CL) * 50 }ms` }
-                                                                           animate={ id < animateEl.CL }/>) }
-                            </Slider>
+                        <Swiper
+                        spaceBetween={8}
+                        slidesPerView={'auto'}
+                        loop={true}
+                        navigation
+                        shortSwipes={false}
+                        threshold={5}
+                        freeMode={true}
+                        freeModeSticky={true}
+                        observer={true}
+                        observeParents={true}
+                        freeModeMomentumVelocityRatio={0.05} 
+                        breakpoints={{
+                            320: {
+                                slidesPerView: 'auto',
+                            },
+                            769: {
+                              slidesPerView: 2,
+                            },
+                        }} >
+                        { cardBlocks.map((block, id) => 
+                            <SwiperSlide key={id}>
+                                <CardBlock { ...block }
+                                delay={ `${ (id + animateDel.CL) * 50 }ms` }
+                                animate={ id < animateEl.CL }/>
+                            </SwiperSlide>) }
+                        </Swiper>
                         </div>
                     </section>
-                    {/*<section className="home-products">*/}
-                    {/*    <div className="container">*/}
-                    {/*        <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>*/}
-                    {/*    </div>*/}
-                    {/*</section>*/}
+                    {/* <section className="home-products">
+                       <div className="container">
+                           <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>
+                       </div>
+                    </section> */}
                 </div>
             </div>
         </>

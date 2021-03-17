@@ -7,7 +7,15 @@ import { updateBackgroundColor, bgColorPrimary, bgColorSecondary, bgColorBlack }
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
 let affordances = { }
-let bottomNavCurrent = -1
+let bottomLinksMap = {
+  'customControls': -1,
+  [ROUTE.Home]: 0,
+  [ROUTE.ActivityVouchers]: 1,
+  [ROUTE.NewOffer]: 2,
+  [ROUTE.Activity]: 3,
+  [ROUTE.Connect]: 4,
+}
+let bottomNavActiveLink = -1
 
 // recieve an array with affordances that should be dispplayed
 const enableControl = (affordancesArray) => {
@@ -23,28 +31,37 @@ const callLocationAttributes = { }
 callLocationAttributes[ROUTE.Home] = () => {
   enableControl(controlset_3)
   updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 0
+  bottomNavActiveLink = bottomLinksMap[ROUTE.Home]
 }
 callLocationAttributes[ROUTE.Connect] = () => {
   enableControl(controlset_1)
   updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 4
+  bottomNavActiveLink = bottomLinksMap[ROUTE.Connect]
 }
-callLocationAttributes[ROUTE.Activity] = () => {
-  enableControl(controlset_2)
-  updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 3
+callLocationAttributes[ROUTE.Activity] = (nested, param) => {
+  if(param === 'supply') {
+    enableControl(controlset_1)
+    updateBackgroundColor(bgColorBlack)
+  } else if(nested) {
+    enableControl(controlset_1)
+    updateBackgroundColor(bgColorSecondary)
+    bottomNavActiveLink = bottomLinksMap.customControls
+  } else {
+    enableControl(controlset_2)
+    updateBackgroundColor(bgColorBlack)
+    bottomNavActiveLink = bottomLinksMap[ROUTE.Activity]
+  }
 }
-callLocationAttributes[ROUTE.ActivityVouchers] = () => {
-  enableControl(controlset_2)
-  updateBackgroundColor(bgColorBlack)
-  bottomNavCurrent = 1
-}
-callLocationAttributes[ROUTE.ActivityVouchers] =
-callLocationAttributes[ROUTE.Activity] = () => {
-  enableControl(controlset_1)
-  updateBackgroundColor(bgColorSecondary)
-  bottomNavCurrent = -1
+callLocationAttributes[ROUTE.ActivityVouchers] = (nested) => {
+  if(nested) {
+    enableControl(controlset_1)
+    updateBackgroundColor(bgColorSecondary)
+    bottomNavActiveLink = bottomLinksMap.customControls
+  } else {
+    enableControl(controlset_2)
+    updateBackgroundColor(bgColorBlack)
+    bottomNavActiveLink = bottomLinksMap[ROUTE.ActivityVouchers]
+  }
 }
 
 // page not matching any
@@ -64,13 +81,17 @@ function LocationManager() {
 
   const location = useLocation()
 
-  const pageRoute = '/' + location.pathname.split('/')[1]
+  
+  const switchLocationMap = () => {
+    const pageRoute = '/' + location.pathname.split('/')[1]
+    const urlNested = location.pathname.split('/')[2]
+    const param = location.pathname.split('/')[3]
 
-  const switchLocationMap = (pageRoute) => {
+
     if(pageRoute === ROUTE.NewOffer) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)) 
     } 
-    else if(pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) {
+    else if((pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) && !!urlNested) {
       navigationContext.dispatch(Action.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER))
     }
     else {
@@ -83,9 +104,18 @@ function LocationManager() {
       navigationContext.dispatch(Action.displayNavigation(true))
     }
 
+    if(
+      param === "qr" ||
+      param === "supply"
+    ) {
+      navigationContext.dispatch(Action.displayBottomNavigation(false))
+    } else {
+      navigationContext.dispatch(Action.displayBottomNavigation(true))
+    }
+
     // trigger a function that will enable relative affordances to the current page
     return callLocationAttributes[pageRoute] ? 
-    callLocationAttributes[pageRoute]() : 
+    callLocationAttributes[pageRoute](urlNested, param) : 
     callLocationAttributes[ROUTE.Default]()
   }
 
@@ -93,9 +123,9 @@ function LocationManager() {
     window.scrollTo(0, 0);
 
     affordances = {}
-    switchLocationMap(pageRoute)
+    switchLocationMap()
 
-    navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavCurrent))
+    navigationContext.dispatch(Action.bottomNavListSelectedItem(bottomNavActiveLink))
 
     navigationContext.dispatch(Action.updateLocation())
     navigationContext.dispatch(Action.updateAffordances(

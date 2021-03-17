@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 
@@ -35,6 +35,10 @@ function FormPrice({
   const sellerDeposit = getOfferingData(NAME.SELLER_DEPOSIT);
   const buyerDeposit = getOfferingData(NAME.BUYER_DEPOSIT);
 
+  const priceInputRef = useRef(null);
+  const buyersDepositInputRef = useRef(null);
+  const sellersDepositInoutRef = useRef(null);
+
   const calculateMaxForCurrency = (currency) => {
     if (currency) {
       const maxFromContract = depositsPriceLimits[currency].max;
@@ -68,7 +72,7 @@ function FormPrice({
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
           <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number" onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)} />
+            <input id="offer-quantity" type="number" min="1" onChange={(e) => quantityValueReceiver(e.target ? e.target.value : null)} />
           </div>
         </div>
       </div>
@@ -78,8 +82,8 @@ function FormPrice({
           <div className="bind">
             <Currencies inputValueHandler={priceCurrencyReceiver} />
             <div className="input relative focus" data-error={priceErrorMessage ? "" : null}>
-              <input style={priceErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-price" type="number" onChange={(e) => updateValueIfValid(e, priceValueReceiver)} />
+              <input ref={priceInputRef} style={priceErrorMessage ? { color: '#FA5B66' } : {}}
+                id="offer-price" type="number" min="0" onWheel={() => priceInputRef.current.blur()} onChange={(e) => updateValueIfValid(e, priceValueReceiver)} />
               {
                 depositsPriceLimits[priceCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[priceCurrency] ? calculateMaxForCurrency(priceCurrency) : null} {priceCurrency}</div>
@@ -102,8 +106,8 @@ function FormPrice({
           <div className="bind">
             <Currencies inputValueHandler={sellerDepositCurrencyValueReceiver} />
             <div className="input relative focus" data-error={sellerDepositErrorMessage ? '' : null}>
-              <input style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-seller-deposit" type="number" onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
+              <input ref={sellersDepositInoutRef} style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
+                id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} type="number" min="0" onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
               {
                 depositsPriceLimits[sellerCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[sellerCurrency] ? calculateMaxForCurrency(sellerCurrency) : null} {sellerCurrency}</div>
@@ -123,8 +127,8 @@ function FormPrice({
           <label htmlFor="offer-buyer-deposit">Buyer’s Deposit Per Voucher</label>
           <div className="input relative focus" data-error={buyerDepositErrorMessage ? "" : null}>
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${priceCurrency}`}</div>
-            <input id="offer-buyer-deposit" style={buyerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-              type="number" name={NAME.BUYER_DEPOSIT} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
+            <input id="offer-buyer-deposit" ref={buyersDepositInputRef} style={buyerDepositErrorMessage ? { color: '#FA5B66' } : {}}
+              type="number" min="0" onWheel={() => buyersDepositInputRef.current.blur()} name={NAME.BUYER_DEPOSIT} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
             {
               depositsPriceLimits[priceCurrency].max ?
                 <div className="max">max {depositsPriceLimits[priceCurrency] ? calculateMaxForCurrency(priceCurrency) : null} {priceCurrency}</div>
