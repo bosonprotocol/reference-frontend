@@ -30,7 +30,6 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
-import { id } from 'ethers/lib/utils';
 
 
 function VoucherDetails(props) {
