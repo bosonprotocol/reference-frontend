@@ -39,7 +39,6 @@ export function ActivityAccountVouchers({title, voucherSetId, block}) {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
-     
 
     return <ActivityView block={block} voucherSetId={voucherSetId} title={title ? title : false} loading={loading} voucherBlocks={ accountVouchers } account={account} voucherType={ VOUCHER_TYPE.accountVoucher}/>
 }

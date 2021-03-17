@@ -1,7 +1,7 @@
 import { getAllVoucherSets, getVouchers, getAccountVoucherSets, getVouchersFromSupply } from "../hooks/api";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { MODAL_TYPES } from "../helpers/Dictionary";
+import { MODAL_TYPES, STATUS } from "../helpers/Dictionary";
 import { ModalResolver } from "../contexts/Modal";
 
 
@@ -221,4 +221,14 @@ export async function addNewVoucher(account, getVoucherDetails, voucherId, array
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
   
   if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher) 
+}
+
+export const determineCurrentStatusOfVoucher = (voucherDetails) => {
+  const allStatuses = [];
+  if (voucherDetails.COMMITTED) allStatuses.push({ status: STATUS.COMMITED, date: voucherDetails.COMMITTED})
+  if (voucherDetails.REDEEMED) allStatuses.push({ status: STATUS.REDEEMED, date: voucherDetails.REDEEMED})
+  if (voucherDetails.REFUNDED) allStatuses.push({ status: STATUS.REFUNDED, date: voucherDetails.REFUNDED })
+  if (voucherDetails.COMPLAINED) allStatuses.push({ status: STATUS.COMPLAINED, date: voucherDetails.COMPLAINED})
+  if (voucherDetails.CANCELLED) allStatuses.push({ status: STATUS.CANCELLED, date: voucherDetails.CANCELLED})
+  return allStatuses.sort((a, b) => a.date > b.date ? 1 : -1)[allStatuses.length - 1]
 }

@@ -45,22 +45,14 @@ export const createVoucherSet = async (data, token) => {
     const allVouchers = await axiosInstance.post(`/voucher-sets`, data, {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
-    return allVouchers.data;
+    return allVouchers.data.voucherSupply._id;
 };
 
 export const commitToBuy = async (supplyId, data, token) => {
-    const allVouchers = await axiosInstance.post(`/vouchers/commit-to-buy/${ supplyId }`, data, {
+    const voucherIdRawResult = await axiosInstance.post(`/vouchers/commit-to-buy/${ supplyId }`, data, {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
-    return allVouchers.data;
-};
-
-export const updateVoucher = async (data, token) => {
-    const redeemResponse = await axiosInstance.patch(`/vouchers/update`, data, {
-        headers: { 'Authorization': `Bearer ${ token }` }
-    });
-
-    return redeemResponse.data;
+    return voucherIdRawResult.data.voucherID;
 };
 
 export const getPaymentsDetails = async (tokenVoucherId, token) => {
@@ -69,16 +61,6 @@ export const getPaymentsDetails = async (tokenVoucherId, token) => {
     });
 
     return paymentsResponse.data;
-};
-
-export const cancelVoucherSet = async (supplyId, account, data, token) => {
-     return axiosInstance.patch(`/voucher-sets/update-supply-oncancel-intermediary`, {
-        _tokenIdSupply:supplyId,
-        voucherOwner: account,
-        qty: 0
-    }, {
-        headers: { 'Authorization': `Bearer ${ token }` }
-    });
 };
 
 export const getAccountVoucherSets = async (account) => {
