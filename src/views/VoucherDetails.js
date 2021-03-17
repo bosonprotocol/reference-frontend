@@ -394,9 +394,26 @@ function VoucherDetails(props) {
         const owner = voucherSetInfo.voucherOwner.toLowerCase();
 
         const authData = getAccountStoredInLocalStorage(account);
+        let correlationId 
 
         try {
-            const correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+            const tx = await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
+                value: txValue.toString()
+            });
+            setRecentlySignedTxHash(tx.hash, supplyId);
+        } catch (e) {
+            setLoading(0);
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: e.message
+            }));
+            return;
+        }
+
+        try {
+            
             const metadata = {
                 _holder: account,
                 _issuer: owner,
@@ -416,19 +433,7 @@ function VoucherDetails(props) {
             return;
         }
 
-        try {
-            const tx = await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
-                value: txValue.toString()
-            });
-            setRecentlySignedTxHash(tx.hash, supplyId);
-        } catch (e) {
-            setLoading(0);
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message
-            }));
-        }
+
 
         setActionPerformed(actionPerformed * -1)
         setLoading(0)
