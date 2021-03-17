@@ -14,7 +14,7 @@ import Identicon from "./Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
-import { LoadingContext, Toggle, wallet } from "../../contexts/Loading";
+import { LoadingContext, Toggle, wallet, account as loadingAccount } from "../../contexts/Loading";
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -122,6 +122,7 @@ export function WalletConnect({
     }, []);
 
     function onConnectionClicked(name) {
+        loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 1))
         if (name === "WalletConnect") {
             const walletConnectData = localStorage.getItem('walletconnect')
 
@@ -134,7 +135,9 @@ export function WalletConnect({
         }
 
         const current = connectorsByName[name];
-        activate(current);
+        activate(current).then(() => {
+            loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
+        });
     }
 
     return (
@@ -146,7 +149,9 @@ export function WalletConnect({
                     name={ "MetaMask" }
                     imageName={ MetaMaskLogo }
                     isActive={ connector === injected }
-                    onClick={ () => onConnectionClicked("MetaMask") }
+                    onClick={ () => {
+                        onConnectionClicked("MetaMask")
+                    } }
                 />
                 <WalletListItem
                     loadingContext={loadingContext}
@@ -158,7 +163,7 @@ export function WalletConnect({
                         if (connector?.walletConnectProvider?.wc?.uri) {
                             connector.walletConnectProvider = undefined;
                         }
-                        onConnectionClicked("WalletConnect");
+                        onConnectionClicked("WalletConnect")
                     } }
                 />
             </div>

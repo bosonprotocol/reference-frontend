@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { useHistory, useLocation } from "react-router"
 
@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 
 import { NavigationContext } from '../../../contexts/Navigation'
 import { GlobalContext } from '../../../contexts/Global'
+import { LoadingContext, account as loadingAccount } from "../../../contexts/Loading";
+
 
 import { AFFMAP, ROUTE } from "../../../helpers/Dictionary"
 
@@ -78,10 +80,16 @@ function TopNavigation() {
 
 const WalletConnection = (props) => {
   const { account, connector } = props
+  const [pageLoading, setPageLoading] = useState(1)
+  const loadingContext = useContext(LoadingContext)
+
+  useEffect(() => {
+    setPageLoading(loadingContext.state[loadingAccount.button])
+  }, [loadingContext.state])
   return (
     <Link to={ROUTE.Connect}>
     {account ? 
-      <div className="button flex ai-center connected-account-button"
+      <div className={`button flex ${pageLoading ? 'is-loading' : ''} ai-center connected-account-button`}
       role="button">
         <img
         className="provider-logo"
@@ -94,7 +102,7 @@ const WalletConnection = (props) => {
         <span>{ shortenAddress(account) }</span>
       </div>
       :
-      <div className="button linear"
+      <div className={`button linear ${pageLoading ? 'is-loading' : ''}`}
       role="button">Connect to a wallet</div> }
     </Link>
   )

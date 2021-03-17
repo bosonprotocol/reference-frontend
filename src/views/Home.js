@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState, useContext } from 'react'
 
 import "./Home.scss"
@@ -21,8 +22,7 @@ import { productListSettings } from "../helpers/SliderSettings"
 import { cardBlocks } from "../PlaceholderAPI"
 
 import { GlobalContext, Action } from "../contexts/Global"
-import { LoadingContext, Toggle, home } from "../contexts/Loading"
-import { homeSlider } from "../helpers/Placeholders"
+
 import { useWeb3React } from "@web3-react/core";
 import { authenticateUser, getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
@@ -30,16 +30,22 @@ SwiperCore.use([Navigation]);
 
 function Home() {
     const [productBlocks, setProductBlocks] = useState([]);
-    const [productBlocksFiltered, setProductBlocksFiltered] = useState([]);
+    const [productBlocksFiltered, setProductBlocksFiltered] = useState(false);
     const homepage = useRef()
     const [newUser, setNewUser] = useState(!localStorage.getItem('onboarding-completed'))
     const screensRef = useRef()
     const onboardingModalRef = useRef()
 
+    const [pageLoading, setPageLoading] = useState(1)
+
     const {account, library, chainId} = useWeb3React();
 
     const globalContext = useContext(GlobalContext)
-    const loadingContext = useContext(LoadingContext)
+
+    const loadingPlaceholder = <div className="slider"><div className="block is-loading"><div className="text is-loading"></div>
+    <div className="text is-loading"></div></div><div className="block is-loading"><div className="text is-loading"></div>
+    <div className="text is-loading"></div></div><div className="block is-loading"><div className="text is-loading"></div>
+    <div className="text is-loading"></div></div></div>
 
     const voucherSets = globalContext.state.allVoucherSets
 
@@ -80,8 +86,12 @@ function Home() {
     }
 
     useEffect(() => {
-        setProductBlocksFiltered(productBlocks.filter((block) => block.qty > 0 ))
+        if(productBlocks?.length) setProductBlocksFiltered(productBlocks?.filter((block) => block?.qty > 0 ))
     }, [productBlocks])
+
+    useEffect(() => {
+        if(productBlocksFiltered !== false) setPageLoading(0)
+    }, [productBlocksFiltered])
 
     return (
         <>
@@ -99,7 +109,8 @@ function Home() {
                     </div>
                     <section className="product-list">
                         <div className="container">
-                            {!productBlocksFiltered?.length ? <Swiper
+                            {!pageLoading ?
+                            productBlocksFiltered?.length ? <Swiper
                             spaceBetween={7}
                             navigation
                             slidesPerView={3}
@@ -127,9 +138,8 @@ function Home() {
                                     delay={ `${ (id + animateDel.PL) * 50 }ms` }
                                     animate={ id < animateEl.PL }/>
                                 </SwiperSlide>) }
-                            </Swiper> : 
-                            // homeSlider 
-                            null
+                            </Swiper> : null :
+                            loadingPlaceholder 
                             }
                         </div>
                     </section>

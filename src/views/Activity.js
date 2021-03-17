@@ -5,7 +5,6 @@ import { Link, useHistory } from 'react-router-dom'
 import "./Activity.scss"
 
 import { GlobalContext } from '../contexts/Global'
-import { LoadingContext, Toggle, activity } from "../contexts/Loading";
 import { activityBlockPlaceholder } from "../helpers/Placeholders"
 
 
@@ -22,7 +21,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { VOUCHER_TYPE, sortBlocks, ActiveTab } from "../helpers/ActivityHelper"
-import Loading from "../components/offerFlow/Loading";
 
 import { WalletConnect } from "../components/modals/WalletConnect"
 import { formatDate } from "../helpers/Format"
@@ -78,13 +76,14 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType, loading, account, title, voucherSetId, block } = props
+    const { voucherBlocks, voucherType, account, title, voucherSetId, block } = props
     const globalContext = useContext(GlobalContext);
-    const loadingContext = useContext(LoadingContext);
 
     const [resultVouchers, setResultVouchers] = useState([])
     const [activeVouchers, setActiveVouchers] = useState([])
     const [inactiveVouchers, setInactiveVouchers] = useState([])
+    const [pageLoading, setPageLoading] = useState(0)
+    const [isAuthenticated, setIsAuthenticated] = useState(JSON.parse(localStorage.getItem('isAuthenticated')))
 
     const getLastAction = (el) => {
         let latest = 0;
@@ -105,6 +104,9 @@ function ActivityView(props) {
         return latest
     }
 
+    useEffect(() => {
+        setPageLoading(1)
+    }, [])
 
     useEffect(() => {
         if(voucherSetId) {
@@ -124,14 +126,21 @@ function ActivityView(props) {
     }, [account, block])
 
     useEffect(() => {
+        console.log(voucherBlocks?.length, voucherSetId)
         if(voucherBlocks?.length && !voucherSetId) setResultVouchers(voucherBlocks)
-    }, [voucherBlocks])
+    }, [voucherBlocks, account])
 
     useEffect(() => {
         const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
 
         setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
         setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+
+        console.log(account, isAuthenticated, resultVouchers)
+        if(account && isAuthenticated) {
+            console.log('triue')
+            setPageLoading(0)
+        }
     }, [resultVouchers])
 
     const activityMessage = (tab) => {
@@ -148,8 +157,20 @@ function ActivityView(props) {
     }
 
     useEffect(() => {
-        loadingContext.dispatch(Toggle.Loading(activity?.block, 1))
-    })
+        console.log(isAuthenticated)
+        if(account) {
+            setIsAuthenticated(true)
+        }
+    }, [account])
+
+    useEffect(() => {
+        console.log(isAuthenticated)
+
+        if(!isAuthenticated && isAuthenticated !== undefined) {
+            console.log(resultVouchers, isAuthenticated, account)
+            setPageLoading(0)
+        }
+    }, [isAuthenticated])
 
     return (
         <>
@@ -159,7 +180,6 @@ function ActivityView(props) {
                     <h1>{title ? title : voucherType === VOUCHER_TYPE.accountVoucher ? 'My Vouchers' : 'Voucher Sets'}</h1>
                 </div>
                 {
-                !loading ?
                 <Tabs>
                     <TabList>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
@@ -167,7 +187,7 @@ function ActivityView(props) {
                     </TabList>
                         <>
                             <TabPanel>
-                                {!loadingContext.state[activity?.block] ?
+                                {!pageLoading ?
                                     (activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
                                     activityMessage(1))
@@ -183,7 +203,6 @@ function ActivityView(props) {
                             </TabPanel>
                         </> 
                 </Tabs>
-                : <Loading />
                 }
 
                 </div>

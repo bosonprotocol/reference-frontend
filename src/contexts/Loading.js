@@ -19,16 +19,16 @@ export const newOffer = {
   categories: 'newOffer-categories',
 }
 
-export const activity = {
-  block: 'activity-block',
+export const account = {
+  button: 'account-button'
 }
 
 export const LoadingInitialState = {
   [wallet.address]: 0,
   [wallet.network]: 0,
   [newOffer.categories]: 0,
-  [activity.block]: 1,
   [home.slider]: 0,
+  [account.button] : 1,
 };
 
 // payload resolver

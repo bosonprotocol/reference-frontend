@@ -42,26 +42,6 @@
       margin-top: 0;
     }
   }
-  .slider {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .block {
-      height: 175px;
-      width: calc((100% / 3) - 7px);
-      border-radius: 12px;
-
-      @media (max-width: 768px) {
-        width: calc((100% / 2) - 7px);
-        
-        &:last-child {
-          display: none;
-        }
-      }
-    }
-  }
 }
 
 .swiper-container {
