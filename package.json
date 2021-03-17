@@ -47,11 +47,14 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.1.6",
     "axios": "^0.21.0",
+    "bad-words": "^3.0.4",
     "copy-to-clipboard": "^3.3.1",
     "dompurify": "^2.2.3",
     "env-cmd": "^10.1.0",
     "ethers": "^5.0.24",
+    "humanize-duration": "^3.25.1",
     "jazzicon": "^1.5.0",
+    "jwt-decode": "^3.1.2",
     "node-gyp": "^3.8.0",
     "node-sass": "^4.14.1",
     "qrcode.react": "^1.0.1",
@@ -79,6 +82,9 @@
     "start:playground": "env-cmd -f .env.playground react-scripts start",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
+    "test": "react-scripts test --watchAll=false",
+    "test:coverage": "npm test -- --coverage",
+    "test:coverage:badge": "npm run test:coverage && coverage-badge-creator",
     "build:playground": "env-cmd -f .env.playground react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -102,6 +108,15 @@
     ]
   },
   "devDependencies": {
-    "@web3-react/core": "^6.1.1"
+    "@web3-react/core": "^6.1.1",
+    "chai": "^4.2.0",
+    "coverage-badge-creator": "^1.0.4",
+    "mocha": "^8.2.1"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json-summary",
+      "lcov"
+    ]
   }
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { findEventByName, useBosonRouterContract } from "../../hooks/useContract";
+import { useBosonRouterContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -14,12 +14,13 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
-import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
     const [loading, setLoading] = useState(0);
+    const [redirectLink, setRedirectLink] = useState(ROUTE.Home);
+    
     const sellerContext = useContext(SellerContext);
     const modalContext = useContext(ModalContext); 
     const location = useLocation();
@@ -43,6 +44,7 @@ export default function SubmitForm() {
     } = sellerContext.state.offeringData
 
     const { library, account } = useWeb3React();
+
     const bosonRouterContract = useBosonRouterContract();
     let formData = new FormData();
 
@@ -69,25 +71,30 @@ export default function SubmitForm() {
 
         setLoading(1)
 
-
         let dataArr = [
-            toFixed(new Date(start_date) / 1000, 0),
-            toFixed(new Date(end_date) / 1000, 0),
-            price.toString(),
-            seller_deposit.toString(),
-            buyer_deposit.toString(),
-            parseInt(quantity)
+          toFixed(new Date(start_date) / 1000, 0),
+          toFixed(new Date(end_date) / 1000, 0),
+          price.toString(),
+          seller_deposit.toString(),
+          buyer_deposit.toString(),
+          parseInt(quantity)
         ];
         const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
-        let tx;
-        let receipt;
-        let parsedEvent;
+        let correlationId;
 
-        try {                          
-            tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-            receipt = await tx.wait();
-            parsedEvent = await findEventByName(receipt, SMART_CONTRACTS_EVENTS.VoucherSetCreated, '_tokenIdSupply', '_seller', '_quantity', '_paymentType');             
+        try {                   
+            correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+           
+            await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            globalContext.dispatch(Action.fetchVoucherSets());
+
+            prepareVoucherFormData(correlationId, dataArr);
+            const id = await createVoucherSet(formData, authData.authToken);
+
+            setLoading(0);
+            setRedirectLink(ROUTE.ActivityVouchers + '/' + id + '/details')
+            setRedirect(1);
         } catch (e) {     
             setLoading(0)
             modalContext.dispatch(ModalResolver.showModal({
@@ -97,26 +104,9 @@ export default function SubmitForm() {
             }));
             return;
         } 
-
-        try {
-            prepareVoucherFormData(parsedEvent, dataArr);
-
-            await createVoucherSet(formData, authData.authToken);
-
-            globalContext.dispatch(Action.fetchVoucherSets());
-
-            setLoading(0);
-            setRedirect(1);
-        } catch (e) {
-            modalContext.dispatch(ModalResolver.showModal({
-                show: true,
-                type: MODAL_TYPES.GENERIC_ERROR,
-                content: e.message
-            }));
-        }
     }
 
-    function prepareVoucherFormData(parsedEvent, dataArr) {
+    function prepareVoucherFormData(correlationId, dataArr) {
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 
@@ -131,14 +121,12 @@ export default function SubmitForm() {
         formData.append('price', dataArr[2]);
         formData.append('buyerDeposit', dataArr[4]);
         formData.append('sellerDeposit', dataArr[3]);
-        formData.append('sellerDepositCurrency', 'ETH');
-        formData.append('priceCurrency', 'ETH');
         formData.append('description', description);
         formData.append('location', "Location");
         formData.append('contact', "Contact");
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
-        formData.append('_tokenIdSupply', parsedEvent._tokenIdSupply);
+        formData.append('_correlationId', correlationId);
     }
 
     function appendFilesToFormData() {
@@ -156,7 +144,7 @@ export default function SubmitForm() {
                         label="OFFER"
                         sourcePath={ location.pathname }
                     />
-                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={ROUTE.Home} />
+                    : <MessageScreen messageType={MESSAGE.SUCCESS} title={messageTitle} link={redirectLink} />
             }
         </>
     );
