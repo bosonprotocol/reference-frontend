@@ -82,7 +82,8 @@
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
     "test": "react-scripts test --watchAll=false",
-    "test-with-coverage": "react-scripts test --watchAll=false --coverage=true",
+    "test:coverage": "npm test -- --coverage",
+    "test:coverage:badge": "npm run test:coverage && coverage-badge-creator",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -106,6 +107,13 @@
   "devDependencies": {
     "@web3-react/core": "^6.1.1",
     "chai": "^4.2.0",
+    "coverage-badge-creator": "^1.0.4",
     "mocha": "^8.2.1"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json-summary",
+      "lcov"
+    ]
   }
 }
