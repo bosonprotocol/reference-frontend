@@ -20,8 +20,9 @@ import { productListSettings } from "../helpers/SliderSettings"
 
 import { cardBlocks } from "../PlaceholderAPI"
 
-import { BuyerContext } from "../contexts/Buyer"
 import { GlobalContext, Action } from "../contexts/Global"
+import { LoadingContext, Toggle, home } from "../contexts/Loading"
+import { homeSlider } from "../helpers/Placeholders"
 import { useWeb3React } from "@web3-react/core";
 import { authenticateUser, getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
@@ -37,8 +38,8 @@ function Home() {
 
     const {account, library, chainId} = useWeb3React();
 
-    const redeemContext = useContext(BuyerContext)
     const globalContext = useContext(GlobalContext)
+    const loadingContext = useContext(LoadingContext)
 
     const voucherSets = globalContext.state.allVoucherSets
 
@@ -51,15 +52,7 @@ function Home() {
         } else {
             setProductBlocks([])
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [voucherSets])
-
-    useEffect(() => {
-        setTimeout(() => {
-            homepage.current.classList.add('init')
-        }, 100);
-    }, [redeemContext.state])
 
     const completeOnboarding = () => {
         localStorage.setItem('onboarding-completed', '1')
@@ -106,7 +99,7 @@ function Home() {
                     </div>
                     <section className="product-list">
                         <div className="container">
-                            {productBlocksFiltered?.length ? <Swiper
+                            {!productBlocksFiltered?.length ? <Swiper
                             spaceBetween={7}
                             navigation
                             slidesPerView={3}
@@ -134,7 +127,10 @@ function Home() {
                                     delay={ `${ (id + animateDel.PL) * 50 }ms` }
                                     animate={ id < animateEl.PL }/>
                                 </SwiperSlide>) }
-                            </Swiper> : null}
+                            </Swiper> : 
+                            // homeSlider 
+                            null
+                            }
                         </div>
                     </section>
                     <section className="card-list">

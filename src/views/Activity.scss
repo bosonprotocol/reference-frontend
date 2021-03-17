@@ -304,13 +304,13 @@ section.activity {
     }
   }
 
+  .placeholder-parent {
+    margin-top: 40px;
+  }
+
   .block.plceholder {
     height: 180px;
     border-radius: 8px;
     margin: 20px 0;
-
-    &:first-child {
-      margin-top: 40px;
-    }
   }
 }

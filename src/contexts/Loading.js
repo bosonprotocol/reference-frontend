@@ -11,6 +11,10 @@ export const wallet = {
   network: 'wallet-network',
 }
 
+export const home = {
+  slider: 'home-slider',
+}
+
 export const newOffer = {
   categories: 'newOffer-categories',
 }
@@ -23,7 +27,8 @@ export const LoadingInitialState = {
   [wallet.address]: 0,
   [wallet.network]: 0,
   [newOffer.categories]: 0,
-  [activity.block]: 0,
+  [activity.block]: 1,
+  [home.slider]: 0,
 };
 
 // payload resolver

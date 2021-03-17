@@ -124,9 +124,7 @@ function ActivityView(props) {
     }, [account, block])
 
     useEffect(() => {
-        if(voucherBlocks?.length && !voucherSetId) {
-            setResultVouchers(voucherBlocks)
-        }
+        if(voucherBlocks?.length && !voucherSetId) setResultVouchers(voucherBlocks)
     }, [voucherBlocks])
 
     useEffect(() => {
