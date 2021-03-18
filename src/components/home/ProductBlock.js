@@ -10,7 +10,7 @@ import { ROUTE } from "../../helpers/Dictionary"
 
 
 function ProductBlock(props) {
-    const { id, title, image, price, deposit, col, delay } = props
+    const { id, title, image, price, deposit, col} = props
     const productType = col ? "col" : ""
 
     return (
@@ -19,7 +19,7 @@ function ProductBlock(props) {
             // onClick={ openProduct }
             className={ `product-block ${ productType } ` } //${ animate ? 'animate' : '' }
         >
-            <div className={ `product-image flex center ${ productType }` } style={{backgroundImage: `url('${image}')`, transitionDelay: delay}}></div>
+            <div className={ `product-image flex center ${ productType }` } style={{backgroundImage: `url('${image}')`}}></div>
             <h3>{ title }</h3>
             <div className="price flex ai-center">
                 <span><IconEth/>{ price } ETH</span>
