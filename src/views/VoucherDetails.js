@@ -30,6 +30,7 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
+import { isCorrelationIdAlreadySent } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
 
@@ -408,7 +409,20 @@ function VoucherDetails(props) {
         let correlationId 
 
         try {
-            correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+            const correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+           
+            const correlationIdRecentlySent = isCorrelationIdAlreadySent(correlationId, account);
+            
+            if(correlationIdRecentlySent) {
+                setLoading(0);
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please wait for your recent transaction to be minted before sending another one.'
+                }));
+                return;
+            }
+        
             const tx = await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
                 value: txValue.toString()
             });
