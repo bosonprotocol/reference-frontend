@@ -629,8 +629,8 @@ function VoucherDetails(props) {
                             : null}
 
                         {
-                            showDepositsDistributionWarningMessage ? 
-                            <div className="section depositsWarning"> The Voucher has been finalised and deposits will be distributed in the next hour. </div>
+                            !showDepositsDistributionWarningMessage ? 
+                            <div className="section depositsWarning"><span> Deposits will be distributed in 1 hour</span> </div>
                              : null
                          }
                            
