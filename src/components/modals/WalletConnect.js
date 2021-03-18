@@ -14,7 +14,7 @@ import Identicon from "./Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
-import { LoadingContext, Toggle, wallet, account as loadingAccount } from "../../contexts/Loading";
+import { LoadingContext, Toggle, account as loadingAccount } from "../../contexts/Loading";
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -68,7 +68,8 @@ export function WalletConnect({
                                   onSuccess,
                                   setWalletView,
                                   walletView = WALLET_VIEWS.ACCOUNT,
-                                  getData
+                                  getData,
+                                  pageLoading
                               }) {
     const isMounted = useRef(false);
     const context = useWeb3React();
@@ -145,18 +146,18 @@ export function WalletConnect({
             { account ? <WalletAccount loadingContext={loadingContext}/> : null }
             <div className="wallets">
                 <WalletListItem
-                    loadingContext={loadingContext}
                     name={ "MetaMask" }
                     imageName={ MetaMaskLogo }
+                    pageLoading={pageLoading}
                     isActive={ connector === injected }
                     onClick={ () => {
                         onConnectionClicked("MetaMask")
                     } }
                 />
                 <WalletListItem
-                    loadingContext={loadingContext}
                     name={ "WalletConnect" }
                     imageName={ WalletConnectLogo }
+                    pageLoading={pageLoading}
                     isActive={ connector === walletconnect }
                     onClick={ () => {
                         // if the user has already tried to connect, manually reset the connector
@@ -179,8 +180,8 @@ function WalletListItem({
                             name,
                             imageName,
                             onClick,
-                            loadingContext,
                             isActive,
+                            pageLoading,
                             imageStyle = {},
                         }) {
     return (
@@ -211,7 +212,7 @@ function WalletListItem({
                                  alt="Active wallet"/> Connected
                         </div>
                     ) :
-                    <div className={`button gray ${loadingContext.state[wallet?.network] ? 'is-loading' : ''}`} role="button">
+                    <div className={`button gray ${pageLoading ? 'is-loading' : ''}`} role="button">
                         CONNECT
                     </div>
                 }
@@ -224,6 +225,7 @@ function WalletAccount({loadingContext}) {
     const { account, connector } = useWeb3React();
     const [connectedNetowrk, setConnectedNetowrk] = useState()
     const web3 = new Web3(window.ethereum);
+
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -243,17 +245,15 @@ function WalletAccount({loadingContext}) {
 
 
     useEffect(() => {
-        loadingContext.dispatch(Toggle.Loading(wallet?.network, 1))
         web3?.eth?.net?.getNetworkType()?.then(netId => {
             setConnectedNetowrk(netId)
-            loadingContext.dispatch(Toggle.Loading(wallet?.network, 0))
         })
     }, [])
 
     return (
         <>
             <div className="connected-wallet">
-                <div className={`address relative ${loadingContext.state[wallet?.network] ? 'is-loading' : ''}`}>
+                <div className="address relative">
                     <div className="netowrk-info flex center">
                         <span className={`net-name`}>{connectedNetowrk}</span>
                     </div>

@@ -105,3 +105,41 @@ code {
   border-radius: 8px;
   margin: 20px 0;
 }
+
+.wallet-parent-palceholder {
+
+}
+
+.wallet-parent-palceholder .wallet {
+  width: 100%;
+  height: 115px;
+  margin-bottom: 33px;
+  border-radius: 8px;
+}
+
+.wallet-parent-palceholder .connection {
+  padding-top: 38px;
+  border-top: 1px solid #37414C;
+  width: 100%;
+}
+
+.wallet-parent-palceholder .connection .row {
+  width: 100%;
+  height: 48px;
+}
+
+.wallet-parent-palceholder .connection .row .left {
+  height: 100%;
+  width: 190px;
+  border-radius: 8px;
+}
+
+.wallet-parent-palceholder .connection .row:last-child {
+  margin-top: 8px;
+}
+
+.wallet-parent-palceholder .connection .row .right {
+  height: 43px;
+  width: 101px;
+  border-radius: 8px;
+}

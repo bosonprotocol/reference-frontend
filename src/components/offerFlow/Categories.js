@@ -2,7 +2,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import "./Categories.scss"
 import { categories } from "../../PlaceholderAPI"
-import { newOfferCategories } from "../../helpers/Placeholders"
 
 function Categories({inputValueReceiver}) {
   const categoryList = useRef()
@@ -35,10 +34,7 @@ function Categories({inputValueReceiver}) {
     <div ref={categoryList} className="categories">
       <div className="input focus no-border">
         <ul>
-          {!list ?
-            newOfferCategories :
-            list
-          }
+          {list ? list : null}
         </ul>
       </div>
     </div>

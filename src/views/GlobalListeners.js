@@ -20,27 +20,24 @@ function PopulateVouchers() {
     }, [globalContext.state.fetchVoucherSets])
 
     useEffect(() => {
-        const checkForAccount = async () => {
-            globalContext.dispatch(Action.updateAccount(account));
+        globalContext.dispatch(Action.updateAccount(account));
 
-            const localStoredAccountData = await getAccountStoredInLocalStorage(account);
+        const localStoredAccountData = getAccountStoredInLocalStorage(account);
+        
+        localStorage.setItem('isAuthenticated', `${!!localStoredAccountData}`)
 
-            setTimeout(() => {
-                loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
-            }, 500)
-            
-            localStorage.setItem('isAuthenticated', !!localStoredAccountData)
-            
-            if (!localStoredAccountData?.activeToken) {
-                return;
-            }
+        setTimeout(() => {
+            loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
+        }, 500)
 
-            if(localStoredAccountData) {
-                loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
-            }
+        
+        if (!localStoredAccountData?.activeToken) {
+            return;
         }
 
-        checkForAccount()
+        if(localStoredAccountData) {
+            loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
+        }
     }, [account])
 
     useEffect(() => {

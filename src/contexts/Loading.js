@@ -6,28 +6,11 @@ export const getData = getContextData
 
 export const LoadingContext = createContext()
 
-export const wallet = {
-  address: 'wallet-address',
-  network: 'wallet-network',
-}
-
-export const home = {
-  slider: 'home-slider',
-}
-
-export const newOffer = {
-  categories: 'newOffer-categories',
-}
-
 export const account = {
   button: 'account-button'
 }
 
 export const LoadingInitialState = {
-  [wallet.address]: 0,
-  [wallet.network]: 0,
-  [newOffer.categories]: 0,
-  [home.slider]: 0,
   [account.button] : 1,
 };
 
