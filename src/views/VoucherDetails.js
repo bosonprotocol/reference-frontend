@@ -56,7 +56,6 @@ function VoucherDetails(props) {
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
-    console.log(voucherSetDetails, voucherDetails)
     // int on index #2 is the X position of the block
     const tablePrices = [
         ['Payment Price', getProp('price'), 'ETH', 0],
