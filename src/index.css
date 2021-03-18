@@ -95,3 +95,13 @@ code {
     display: none;
   }
 }
+
+.placeholder-parent {
+  margin-top: 40px;
+}
+
+.block.plceholder {
+  height: 140px;
+  border-radius: 8px;
+  margin: 20px 0;
+}

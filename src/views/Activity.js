@@ -5,8 +5,6 @@ import { Link, useHistory } from 'react-router-dom'
 import "./Activity.scss"
 
 import { GlobalContext } from '../contexts/Global'
-import { activityBlockPlaceholder } from "../helpers/Placeholders"
-
 
 import { ROUTE } from "../helpers/Dictionary"
 
@@ -85,6 +83,8 @@ function ActivityView(props) {
     const [pageLoading, setPageLoading] = useState(0)
     const [isAuthenticated, setIsAuthenticated] = useState(JSON.parse(localStorage.getItem('isAuthenticated')))
 
+    const activityBlockPlaceholder = <div className="placeholder-parent"><div className="block plceholder is-loading"></div></div>
+
     const getLastAction = (el) => {
         let latest = 0;
         const compareDates = (el) => el ? 
@@ -126,7 +126,6 @@ function ActivityView(props) {
     }, [account, block])
 
     useEffect(() => {
-        console.log(voucherBlocks?.length, voucherSetId)
         if(voucherBlocks?.length && !voucherSetId) setResultVouchers(voucherBlocks)
     }, [voucherBlocks, account])
 
@@ -136,9 +135,7 @@ function ActivityView(props) {
         setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
         setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
 
-        console.log(account, isAuthenticated, resultVouchers)
         if(account && isAuthenticated) {
-            console.log('triue')
             setPageLoading(0)
         }
     }, [resultVouchers])
@@ -157,17 +154,13 @@ function ActivityView(props) {
     }
 
     useEffect(() => {
-        console.log(isAuthenticated)
         if(account) {
             setIsAuthenticated(true)
         }
     }, [account])
 
     useEffect(() => {
-        console.log(isAuthenticated)
-
         if(!isAuthenticated && isAuthenticated !== undefined) {
-            console.log(resultVouchers, isAuthenticated, account)
             setPageLoading(0)
         }
     }, [isAuthenticated])
