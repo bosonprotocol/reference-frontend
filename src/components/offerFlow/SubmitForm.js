@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { toFixed } from "../../utils/format-utils";
+import { isCorrelationIdAlreadySent } from "../../utils/duplicateCorrelationIdGuard";
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
@@ -84,7 +85,19 @@ export default function SubmitForm() {
         let correlationId;
 
         try {                   
-            correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+            correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+
+            const correlationIdRecentySent = isCorrelationIdAlreadySent(correlationId, account);
+
+            if(correlationIdRecentySent) {
+                setLoading(0);
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please wait for your recent transaction to be minted before sending another one.'
+                }));
+                return;
+            }
             prepareVoucherFormData(correlationId, dataArr);
             const id = await createVoucherSet(formData, authData.authToken);
 
