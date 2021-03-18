@@ -30,6 +30,7 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
+import { isCorrelationIdAlreadySent } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
 
@@ -52,9 +53,10 @@ function VoucherDetails(props) {
     const [popupMessage, setPopupMessage] = useState();
     const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
     const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
+    const [hideControlButtonsWaitPeriodExpired, setHideControlButtonsWaitPeriodExpired] = useState(false);
+
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
-
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
     // int on index #2 is the X position of the block
@@ -64,7 +66,6 @@ function VoucherDetails(props) {
         ['Buyer’s deposit', getProp('deposit'), 'ETH', 1],
         ['Seller’s deposit', getProp('sellerDeposit'), 'ETH', 1]
     ];
-
     const tableDate = [
         formatDate(getProp('startDate')),
         formatDate(getProp('expiryDate'))
@@ -186,7 +187,8 @@ function VoucherDetails(props) {
             new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
             (new Date() <= new Date(voucherResource?.startDate)) && !!voucherDetails, // has future start date and is voucher
             voucherSetDetails?.qty <= 0,// no quantity
-            recentlySignedTxHash!==''
+            recentlySignedTxHash!=='',
+            hideControlButtonsWaitPeriodExpired
         ]
 
         // status: undefined - user that has not logged in
@@ -205,6 +207,7 @@ function VoucherDetails(props) {
 
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
+       
         if (voucherDetails && !voucherDetails.FINALIZED && voucherDetails._tokenIdVoucher) {
             if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
                 return newStatusBlocks;
@@ -217,20 +220,25 @@ function VoucherDetails(props) {
 
             const complainPeriodStart = voucherStatus.complainPeriodStart;
             const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
-
+            
             let waitPeriodStart;
             let waitPeriod;
+
             if (currentStatus.status === STATUS.EXPIRED) {
                 waitPeriodStart = voucherDetails.EXPIRED;
                 waitPeriod = complainPeriod;
-            } else if (currentStatus.status === STATUS.CANCELLED || currentStatus.status === STATUS.REDEEMED || currentStatus.status === STATUS.REFUNDED) {
+            } else if(!voucherDetails.CANCELLED && !voucherDetails.COMPLAINED) {
                 waitPeriodStart = complainPeriodStart;
-                waitPeriod = complainPeriod;
-            } else if (currentStatus.status === STATUS.COMPLAINED) {
+                waitPeriod = complainPeriod.add(cancelFaultPeriod);        
+            } else if(voucherDetails.COMPLAINED){
                 waitPeriodStart = cancelFaultPeriodStart;
                 waitPeriod = cancelFaultPeriod;
+            }else if(voucherDetails.CANCELLED){
+                waitPeriodStart = complainPeriodStart;
+                waitPeriod = complainPeriod;
             }
 
+           
             if ((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
                 const currentBlockTimestamp = (await library.getBlock()).timestamp;
 
@@ -242,6 +250,10 @@ function VoucherDetails(props) {
                 const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000);
 
                 const diffInPercentage = calculateDifferenceInPercentage(timePast, timeAvailable);
+                
+                if(!(currentStatus === STATUS.EXPIRED) && diffInPercentage >= 100) {    
+                    setHideControlButtonsWaitPeriodExpired(true);
+                }
                 const expiryProgress = voucherDetails && diffInPercentage + '%';
                 document.documentElement.style.setProperty('--progress-percentage', expiryProgress ? parseInt(diffInPercentage) > 100 ? '100%' : expiryProgress : null);
 
@@ -398,6 +410,19 @@ function VoucherDetails(props) {
 
         try {
             correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+           
+            const correlationIdRecentlySent = isCorrelationIdAlreadySent(correlationId, account);
+            
+            if(correlationIdRecentlySent) {
+                setLoading(0);
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please wait for your recent transaction to be minted before sending another one.'
+                }));
+                return;
+            }
+        
             const tx = await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
                 value: txValue.toString()
             });
@@ -537,22 +562,22 @@ function VoucherDetails(props) {
     useEffect(() => {
         setVoucherStatus(determineStatus())
 
-    }, [voucherDetails, voucherSetDetails, account, actionPerformed, library, recentlySignedTxHash])
+    }, [voucherDetails, voucherSetDetails, account, actionPerformed, library, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired])
 
     useEffect(() => {
 
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
-    }, [voucherStatus, voucherDetails, account, library, recentlySignedTxHash])
+    }, [voucherStatus, voucherDetails, account, library, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired])
 
     useEffect(() => {
-        if (!voucherSetDetails && account) {
+        if (!voucherSetDetails && account && globalContext.state.allVoucherSets) {
             initVoucherDetails(account, modalContext, getVoucherDetails, voucherId).then(result => {
                 setVoucherDetails(result)
             })
         }
-    }, [account, actionPerformed])
+    }, [account, actionPerformed, globalContext.state.allVoucherSets])
 
     useEffect(() => {
         navigationContext.dispatch(Action.setRedemptionControl({
