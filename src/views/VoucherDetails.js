@@ -54,9 +54,9 @@ function VoucherDetails(props) {
     const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
-
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
+    console.log(voucherSetDetails, voucherDetails)
     // int on index #2 is the X position of the block
     const tablePrices = [
         ['Payment Price', getProp('price'), 'ETH', 0],
@@ -547,12 +547,12 @@ function VoucherDetails(props) {
     }, [voucherStatus, voucherDetails, account, library, recentlySignedTxHash])
 
     useEffect(() => {
-        if (!voucherSetDetails && account) {
+        if (!voucherSetDetails && account && globalContext.state.allVoucherSets) {
             initVoucherDetails(account, modalContext, getVoucherDetails, voucherId).then(result => {
                 setVoucherDetails(result)
             })
         }
-    }, [account, actionPerformed])
+    }, [account, actionPerformed, globalContext.state.allVoucherSets])
 
     useEffect(() => {
         navigationContext.dispatch(Action.setRedemptionControl({
