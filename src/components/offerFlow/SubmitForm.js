@@ -14,7 +14,7 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
-import { SMART_CONTRACTS, PAYMENT_METHODS_LABELS } from "../../hooks/configs";
+import { SMART_CONTRACTS, PAYMENT_METHODS_LABELS, PAYMENT_METHODS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
@@ -108,7 +108,9 @@ export default function SubmitForm() {
             await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
             setRecentlyUsedCorrelationId(correlationId, account);
 
-            prepareVoucherFormData(correlationId, dataArr);
+            const paymentType = paymentTypeResolver(price_currency, deposits_currency);
+
+            prepareVoucherFormData(correlationId, dataArr, paymentType);
 
             const id = await createVoucherSet(formData, authData.authToken);
 
@@ -128,7 +130,7 @@ export default function SubmitForm() {
         }
     }
 
-    function prepareVoucherFormData(correlationId, dataArr) {
+    function prepareVoucherFormData(correlationId, dataArr, paymentType) {
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 
@@ -149,6 +151,7 @@ export default function SubmitForm() {
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
         formData.append('_correlationId', correlationId);
+        formData.append('_paymentType', paymentType);
     }
 
     function appendFilesToFormData() {
@@ -212,3 +215,22 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
     }
 };
 
+const paymentTypeResolver = (priceCurrency, depositsCurrency) => {
+    switch(priceCurrency + depositsCurrency) {
+        case(PAYMENT_METHODS_LABELS.ETHETH): {
+            return PAYMENT_METHODS.ETHETH
+        }
+        case(PAYMENT_METHODS_LABELS.ETHBSN): {
+            return PAYMENT_METHODS.ETHBSN;
+        }
+        case(PAYMENT_METHODS_LABELS.BSNETH): {
+            return PAYMENT_METHODS.BSNETH;
+        }
+        case(PAYMENT_METHODS_LABELS.BSNBSN): {
+            return PAYMENT_METHODS.BSNBSN;
+        }
+        default:{
+            throw new Error('Unknown currency combination')
+        }
+    }
+}
