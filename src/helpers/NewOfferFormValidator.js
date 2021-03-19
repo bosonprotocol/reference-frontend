@@ -96,6 +96,9 @@ const quantityValidation = (errorMessages, getData) => {
   let quantityErrorMessage = null;
   const currentQuantityValue = getData(NAME.QUANTITY);
 
+  if (currentQuantityValue === '') {
+    quantityErrorMessage = null
+  }
   if (currentQuantityValue) {
     if (isNaN(parseInt(currentQuantityValue))) {
       quantityErrorMessage = ValidationConfig.invalidQuantityError;

@@ -52,9 +52,9 @@
   }
 
   .cancel {
-    margin-top: 47px;
-    width: 42px;
-    height: 42px;
+    margin-top: 33px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +65,7 @@
 
     &.new {
       background: #192028;
-      border-radius: 11.4286px;
+      border-radius: 7.61905px;
       border: none;
       box-shadow: 0px 1px 18px rgba(0, 0, 0, 0.4);
 
@@ -97,7 +97,7 @@
       &::after {
         content: '';
         width: 2px;
-        height: 20px;
+        height: 15.6px;
         border-radius: 2px;
         display: block;
         position: absolute;
@@ -272,6 +272,56 @@
           }
         }
       }
+      &.expiration {
+        margin-top: 36px;
+
+        .expiration-container {
+          background: #1F2833;
+          border-radius: 4px;
+          padding: 18px;
+          padding-bottom: 21px;
+
+          & > p {
+            font-family: 'Barlow', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+            color: #FFFFFF;
+          }
+          .time-left {
+            p {
+              font-family: 'Barlow', sans-serif;
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 112.4%;
+              text-align: center;
+              text-transform: uppercase;
+              color: #FFFFFF;
+              margin-bottom: 9px;
+            }
+            .progress {
+              background: #2A3542;
+              border-radius: 20px;
+              width: 67px;
+              height: 5px;
+              position: relative;
+              overflow: hidden;
+
+              &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                width: var(--progress-percentage);
+                bottom: 0;
+                left: 0;
+                background: #80F0BE;
+              }
+            }
+          }
+        }
+      }
       &.escrow {
         margin-top: 50px;
       }
@@ -296,6 +346,7 @@
             max-width: 151px;
             height: 180px;
             margin-bottom: 15px;
+            cursor: pointer;
             position: relative;
             
             img {
