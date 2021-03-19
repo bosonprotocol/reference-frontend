@@ -19,6 +19,7 @@ import { toFixed } from "../../utils/format-utils";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from "../../utils/duplicateCorrelationIdGuard";
+import { validateContractInteraction } from "../../helpers/BosonActionsValidator";
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
@@ -174,18 +175,53 @@ export default function SubmitForm() {
         </>
     );
 }
-const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, account, chainId, library, priceCurrency, depositsCurrency) => {
+const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, account, chainId, library, priceCurrency, depositsCurrency, modalContext) => {
     const currencyCombination = `${ priceCurrency }${ depositsCurrency }`;
     const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
     if (currencyCombination === PAYMENT_METHODS_LABELS.ETHETH) {
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderETHETH', [dataArr, { value: txValue }]);
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+            }));
+            return; 
+        }
         return bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNETH) {
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderTKNETH', [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]);
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+            }));
+            return; 
+        }
         return bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue });
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNBSN) {
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
 
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderTKNTKNWithPermit', [ SMART_CONTRACTS.BosonTokenContractAddress,
+                                                                                                                                                          SMART_CONTRACTS.BosonTokenContractAddress,
+                                                                                                                                                          txValue.toString(),
+                                                                                                                                                          signature.deadline,
+                                                                                                                                                          signature.v,
+                                                                                                                                                          signature.r,
+                                                                                                                                                          signature.s,
+                                                                                                                                                          dataArr]);
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+            }));
+            return; 
+        }
+        
         return bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
             SMART_CONTRACTS.BosonTokenContractAddress,
             SMART_CONTRACTS.BosonTokenContractAddress,
@@ -199,7 +235,21 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.ETHBSN) {
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
-
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderETHTKNWithPermit', [ SMART_CONTRACTS.BosonTokenContractAddress,
+                                                                                                                                                          txValue.toString(),
+                                                                                                                                                          signature.deadline,
+                                                                                                                                                          signature.v,
+                                                                                                                                                          signature.r,
+                                                                                                                                                          signature.s,
+                                                                                                                                                          dataArr ]);
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+            modalContext.dispatch(ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+            }));
+            return; 
+        }
         return bosonRouterContract.requestCreateOrderETHTKNWithPermit(
             SMART_CONTRACTS.BosonTokenContractAddress,
             txValue.toString(),

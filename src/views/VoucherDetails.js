@@ -67,7 +67,7 @@ function VoucherDetails(props) {
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
-
+console.log(voucherSetDetails, voucherDetails)
     const paymentType = getProp('paymentType');
     const currencyResolver = (paymentType) => {
         if (paymentType === PAYMENT_METHODS.ETHETH) {
