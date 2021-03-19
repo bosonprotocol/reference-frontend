@@ -83,7 +83,7 @@
     "start:playground": "env-cmd -f .env.playground react-scripts start",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "test:coverage": "npm test -- --coverage",
     "test:coverage:badge": "npm run test:coverage && coverage-badge-creator",
     "build:playground": "env-cmd -f .env.playground react-scripts build",
