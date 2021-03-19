@@ -156,7 +156,6 @@ function ActivityView(props) {
         }
 
         let result = await returnArray(getVouchers)
-  
         setResultVouchers(result)
         setFetchingData(0)
     }
@@ -171,7 +170,6 @@ function ActivityView(props) {
     useEffect(() => {
         if(resultVouchers?.length) {
             const blocksSorted = sortBlocks(resultVouchers, voucherType)
-    
             setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
             setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
         }
@@ -230,8 +228,8 @@ function ActivityView(props) {
 
 export const VoucherSetBlock = (props) => {
     const [expand,] = useState(1)
-    const { title, image, price, qty, currency, _id, openDetails } = props
-
+    const { title, image, price, qty, _id, openDetails, paymentType } = props
+    const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
@@ -247,7 +245,7 @@ export const VoucherSetBlock = (props) => {
                         <div className="title elipsis">{ title }</div>
                     </div>
                     <div className="price flex split">
-                        <div className="value flex center"><img src="/images/icon-eth.png" alt="eth"/>{ price } { currency }</div>
+                        <div className="value flex center"><img src="/images/icon-eth.png" alt="eth"/>{ price } { currency }</div> :
                         <div className="quantity"><span className="icon"><Quantity/></span> QTY: { qty }</div>
                     </div>
                 </div>
@@ -258,9 +256,10 @@ export const VoucherSetBlock = (props) => {
 }
 
 export const SingleVoucherBlock = (props) => {
-    const { voucherSetId, title, image, price, currency, id, _id, expiryDate,
-    COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED } = props
+    const { voucherSetId, title, image, price, id, _id, expiryDate,
+    COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED, paymentType } = props
 
+    // const [currency, setCurrency]
     const statusOrder = {
         'COMMITTED': new Date(COMMITTED).getTime(),
         'REDEEMED': new Date(REDEEMED).getTime(),
@@ -272,7 +271,8 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
-
+console.log(props)
+    const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
 
     return (
         <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>

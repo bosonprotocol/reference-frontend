@@ -59,6 +59,7 @@ export const ChildVoucherBlock = ({title, expiration, id}) => (
 
 export const ActiveTab = (props) => {
   const { products, voucherType, voucherSetId } = props
+
   return (
       <div className="vouchers-container">
           {
