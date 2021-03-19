@@ -45,7 +45,7 @@ function Home() {
 
     useEffect(() => {
         if(voucherSets) {
-            setProductBlocks(voucherSets)
+            setProductBlocks(voucherSets.filter(x => new Date(x?.expiryDate) > new Date()))
             productListSettings.infinite = voucherSets.length > 4;
         } else {
             setProductBlocks([])
