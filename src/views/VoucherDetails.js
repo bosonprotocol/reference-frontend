@@ -30,7 +30,7 @@ import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/
 
 import { IconQRScanner } from "../components/shared/Icons"
 import { calculateDifferenceInPercentage } from '../utils/math';
-import { isCorrelationIdAlreadySent } from '../utils/duplicateCorrelationIdGuard';
+import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
 
@@ -426,6 +426,7 @@ function VoucherDetails(props) {
             const tx = await bosonRouterContract.requestVoucherETHETH(supplyId, owner, {
                 value: txValue.toString()
             });
+            setRecentlyUsedCorrelationId(correlationId, account);
             setRecentlySignedTxHash(tx.hash, supplyId);
         } catch (e) {
             setLoading(0);

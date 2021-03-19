@@ -15,7 +15,7 @@ import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
 import { toFixed } from "../../utils/format-utils";
-import { isCorrelationIdAlreadySent } from "../../utils/duplicateCorrelationIdGuard";
+import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from "../../utils/duplicateCorrelationIdGuard";
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
@@ -100,7 +100,8 @@ export default function SubmitForm() {
             }
            
             await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-
+            setRecentlyUsedCorrelationId(correlationId, account);
+            
             prepareVoucherFormData(correlationId, dataArr);
             const id = await createVoucherSet(formData, authData.authToken);
 
