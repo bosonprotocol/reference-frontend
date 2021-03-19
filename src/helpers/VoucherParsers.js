@@ -144,7 +144,6 @@ export async function getParsedVouchersFromSupply(voucherSetId, account) {
 
   const authData = getAccountStoredInLocalStorage(account);
   const voucherFromSupply = await getVouchersFromSupply(voucherSetId, authData.authToken);
-console.log('vouchers', voucherFromSupply)
   return voucherFromSupply ? voucherFromSupply : undefined
 }
 
