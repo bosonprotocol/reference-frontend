@@ -28,5 +28,4 @@ export const setRecentlyUsedCorrelationId = (correlationId, account) => {
         idsUsedForTransactionsForTheAccount.push(correlationId);
         correlationIdMapping.set(account, idsUsedForTransactionsForTheAccount);
         localStorage.setItem('correlationIdMapping', JSON.stringify(Array.from(correlationIdMapping)));
-
 }
