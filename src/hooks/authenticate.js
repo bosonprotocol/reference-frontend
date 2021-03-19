@@ -4,7 +4,7 @@ import { generateNonce, verifySignature } from "./api";
 export const AUTH_ADDRESSES_KEY = "authAddresses";
 const ARGENT_PEER_NAME = "Argent";
 
-export const authenticateUser = async (library, account, chainId) => {
+export const authenticateUser = async (library, account, chainId, successCallback) => {
     const signerAddress = account;
 
     const nonce = await generateNonce(signerAddress);
@@ -42,7 +42,12 @@ export const authenticateUser = async (library, account, chainId) => {
     const signature = await splitSignature(signatureLike);
     const jwt = await verifySignature(signerAddress, isSmartWalletAccount, domain, { AuthSignature }, signature);
 
-    updateAuthToken(signerAddress, jwt)
+    
+    updateAuthToken(signerAddress, jwt);
+    if(successCallback) {
+        successCallback()
+    }
+   
 };
 
 const isSmartWallet = (library) => {

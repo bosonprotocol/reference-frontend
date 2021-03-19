@@ -84,7 +84,7 @@ useEffect( ()=> {
   const createInputValueReceiver = (inputName) => (value) => {
     if(value || value === ''){
 
-        if(!(inputName === NAME.IMAGE)) {
+      if(!(inputName === NAME.IMAGE)) {
           sellerContext.dispatch(Seller.updateOfferingData({
             [inputName]: value
           }))

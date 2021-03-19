@@ -54,60 +54,48 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
 }
 
 export const prepareAccountVoucherSetData = (rawVoucherSets) => {
-  let parsedVoucherSets = [];
-
   if(!rawVoucherSets) return
 
-  for (const voucherSet of rawVoucherSets.voucherSupplies) {
-      let parsedVoucherSet = {
-          _id: voucherSet._id,
-          title: voucherSet.title,
-          image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-          price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-          qty: voucherSet.qty,
-          startDate: voucherSet.startDate,
-          category: voucherSet.category,
-          description: voucherSet.description,
-          expiryDate: voucherSet.expiryDate,
-          visible: voucherSet.visible,
-          currency: voucherSet.currency ? voucherSet._currency : 'ETH',
-          voucherOwner: voucherSet.voucherOwner,
-      };
-
-      parsedVoucherSets.push(parsedVoucherSet)
-  }
+  const parsedVoucherSets = rawVoucherSets.voucherSupplies.map(voucherSet => ({
+    _id: voucherSet._id,
+    title: voucherSet.title,
+    image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+    price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+    qty: voucherSet.qty,
+    startDate: voucherSet.startDate,
+    category: voucherSet.category,
+    description: voucherSet.description,
+    expiryDate: voucherSet.expiryDate,
+    visible: voucherSet.visible,
+    currency: voucherSet.currency ? voucherSet._currency : 'ETH',
+    voucherOwner: voucherSet.voucherOwner,
+  }))
 
   return parsedVoucherSets
 }
 
 export const prepareVoucherData = (rawVouchers) => {
-  let parsedVouchers = [];
-
   if(!rawVouchers) return
 
-  for (const voucher of rawVouchers) {
-      let parsedVoucher = {
-          CANCELLED: voucher.CANCELLED,
-          COMMITTED: voucher.COMMITTED,
-          COMPLAINED: voucher.COMPLAINED,
-          EXPIRED: voucher.EXPIRED,
-          FINALIZED: voucher.FINALIZED,
-          REDEEMED: voucher.REDEEMED,
-          REFUNDED: voucher.REFUNDED,
-          id: voucher._id,
-          visible: voucher.visible,
-          title: voucher.title,
-          qty: voucher.qty,
-          price: ethers.utils.formatEther(voucher.price.$numberDecimal),
-          image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-          expiryDate: voucher.expiryDate,
-          description: voucher.description,
-          category: voucher.category,
-          currency: voucher.currency ? voucher._currency : 'ETH',
-      };
-
-      parsedVouchers.push(parsedVoucher)
-  }
+  const parsedVouchers = rawVouchers.map(voucher => ({
+    CANCELLED: voucher.CANCELLED,
+    COMMITTED: voucher.COMMITTED,
+    COMPLAINED: voucher.COMPLAINED,
+    EXPIRED: voucher.EXPIRED,
+    FINALIZED: voucher.FINALIZED,
+    REDEEMED: voucher.REDEEMED,
+    REFUNDED: voucher.REFUNDED,
+    id: voucher._id,
+    visible: voucher.visible,
+    title: voucher.title,
+    qty: voucher.qty,
+    price: ethers.utils.formatEther(voucher.price.$numberDecimal),
+    image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+    expiryDate: voucher.expiryDate,
+    description: voucher.description,
+    category: voucher.category,
+    currency: voucher.currency ? voucher._currency : 'ETH',
+  }))
 
   return parsedVouchers
 }

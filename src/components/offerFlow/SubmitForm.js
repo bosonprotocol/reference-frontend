@@ -14,10 +14,11 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
-import { SMART_CONTRACTS_EVENTS, SMART_CONTRACTS, PAYMENT_METHODS, PAYMENT_METHODS_LABELS } from "../../hooks/configs";
+import { SMART_CONTRACTS, PAYMENT_METHODS_LABELS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
+import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from "../../utils/duplicateCorrelationIdGuard";
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
@@ -89,18 +90,32 @@ export default function SubmitForm() {
 
         let correlationId;
 
-        try {
-            correlationId = (await bosonRouterContract.correlationIds(account)).toString()
+        try {                   
+            correlationId = (await bosonRouterContract.correlationIds(account)).toString();
+
+            const correlationIdRecentySent = isCorrelationIdAlreadySent(correlationId, account);
+
+            if(correlationIdRecentySent) {
+                setLoading(0);
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: 'Please wait for your recent transaction to be minted before sending another one.'
+                }));
+                return;
+            }
+           
+            await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
+            setRecentlyUsedCorrelationId(correlationId, account);
+
             prepareVoucherFormData(correlationId, dataArr);
 
             const id = await createVoucherSet(formData, authData.authToken);
 
-            await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
-
             globalContext.dispatch(Action.fetchVoucherSets());
 
             setLoading(0);
-            setRedirectLink(ROUTE.ActivityVouchers + '/' + id + '/details')
+            setRedirectLink(ROUTE.Activity + '/' + id + '/details')
             setRedirect(1);
         } catch (e) {
             setLoading(0)
@@ -157,23 +172,18 @@ export default function SubmitForm() {
     );
 }
 const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, account, chainId, library, priceCurrency, depositsCurrency) => {
-    let tx;
-
     const currencyCombination = `${ priceCurrency }${ depositsCurrency }`;
-    console.log(currencyCombination);
     const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
     if (currencyCombination === PAYMENT_METHODS_LABELS.ETHETH) {
-        tx = await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
-        return tx.wait();
+        return bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNETH) {
-        tx = await bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue });
-        return tx.wait();
+        return bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue });
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNBSN) {
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
 
-        tx = await bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
+        return bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
             SMART_CONTRACTS.BosonTokenContractAddress,
             SMART_CONTRACTS.BosonTokenContractAddress,
             txValue.toString(),
@@ -183,12 +193,11 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
             signature.s,
             dataArr
         );
-        return tx.wait();
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.ETHBSN) {
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
 
-        tx = await bosonRouterContract.requestCreateOrderETHTKNWithPermit(
+        return bosonRouterContract.requestCreateOrderETHTKNWithPermit(
             SMART_CONTRACTS.BosonTokenContractAddress,
             txValue.toString(),
             signature.deadline,
@@ -197,7 +206,6 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
             signature.s,
             dataArr
         );
-        return tx.wait();
     } else {
         console.error(`Currencies combination not found ${ currencyCombination }`);
         throw new Error('Something went wrong')

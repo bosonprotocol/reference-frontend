@@ -15,7 +15,6 @@ import SwiperCore, { Navigation } from 'swiper';
 
 import "swiper/swiper.min.css"
 
-import { animateEl, animateDel } from "../helpers/AnimationMap"
 import { productListSettings } from "../helpers/SliderSettings"
 
 import { cardBlocks } from "../PlaceholderAPI"
@@ -46,7 +45,7 @@ function Home() {
 
     useEffect(() => {
         if(voucherSets) {
-            setProductBlocks(voucherSets)
+            setProductBlocks(voucherSets.filter(x => new Date(x?.expiryDate) > new Date()))
             productListSettings.infinite = voucherSets.length > 4;
         } else {
             setProductBlocks([])
@@ -130,16 +129,14 @@ function Home() {
                             }} >
                             { productBlocksFiltered.map((block, id) =>
                                 <SwiperSlide key={id}>
-                                    <ProductBlock { ...block }
-                                    delay={ `${ (id + animateDel.PL) * 50 }ms` }
-                                    animate={ id < animateEl.PL }/>
+                                    <ProductBlock { ...block } />
                                 </SwiperSlide>) }
                             </Swiper> : null}
                         </div>
                     </section>
                     <section className="card-list">
                         <div className="container erase-right">
-                        <Swiper
+                        {cardBlocks?.length ? <Swiper
                         spaceBetween={8}
                         slidesPerView={'auto'}
                         loop={true}
@@ -161,11 +158,9 @@ function Home() {
                         }} >
                         { cardBlocks.map((block, id) => 
                             <SwiperSlide key={id}>
-                                <CardBlock { ...block }
-                                delay={ `${ (id + animateDel.CL) * 50 }ms` }
-                                animate={ id < animateEl.CL }/>
+                                <CardBlock { ...block } />
                             </SwiperSlide>) }
-                        </Swiper>
+                        </Swiper> : null}
                         </div>
                     </section>
                     {/* <section className="home-products">
