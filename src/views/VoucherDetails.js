@@ -23,7 +23,6 @@ import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helper
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import { NavigationContext, Action } from "../contexts/Navigation";
-import Loading from "../components/offerFlow/Loading";
 
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
@@ -33,16 +32,65 @@ import { calculateDifferenceInPercentage } from '../utils/math';
 import { isCorrelationIdAlreadySent } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
+const voucherPlaceholder = <div className="details-loading">
+    <div className="title is-loading-2"></div>
+    <div className="status-container">
+        <div className="h is-loading-2"></div>
+        <div className="status-chain flex ai-center">
+            <div className="status is-loading-2"></div>
+            <div className="status is-loading-2"></div>
+            <div className="status is-loading-2"></div>
+        </div>
+    </div>
+    <div className="paytable-loading">
+        <div className="h is-loading-2"></div>
+        <div className="header is-loading-2"></div>
+        <div className="table is-loading-2"></div>
+    </div>
+    <div className="image is-loading-2"></div>
+    <div className="description is-loading-2"></div>
+    <div className="table flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+    <div className="table flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+</div>
+
+const voucherSetPlaceholder = <div className="details-loading voucher-set">
+    <div className="title is-loading-2"></div>
+    <div className="image is-loading-2"></div>
+    <div className="description is-loading-2"></div>
+    <div className="table flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+    <div className="table l flex split">
+        <div className="left is-loading-2"></div>
+    </div>
+    <div className="table l t flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+    <div className="table l flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+</div>
+
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
     const [imageView, setImageView] = useState(0)
+    const [pageLoading, setPageLoading] = useState(0)
+    const [pageLoadingPlaceholder, setPageLoadingPlaceholder] = useState(voucherPlaceholder)
     const voucherId = props.match.params.id;
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
     const navigationContext = useContext(NavigationContext);
-    const [loading, setLoading] = useState(0);
     const bosonRouterContract = useBosonRouterContract();
     const voucherKernalContract = useVoucherKernalContract();
     const { library, account } = useWeb3React();
@@ -385,12 +433,10 @@ function VoucherDetails(props) {
             return;
         }
 
-        setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
 
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -414,7 +460,6 @@ function VoucherDetails(props) {
             const correlationIdRecentlySent = isCorrelationIdAlreadySent(correlationId, account);
             
             if(correlationIdRecentlySent) {
-                setLoading(0);
                 modalContext.dispatch(ModalResolver.showModal({
                     show: true,
                     type: MODAL_TYPES.GENERIC_ERROR,
@@ -428,7 +473,6 @@ function VoucherDetails(props) {
             });
             setRecentlySignedTxHash(tx.hash, supplyId);
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -449,7 +493,6 @@ function VoucherDetails(props) {
             await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
 
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -461,7 +504,6 @@ function VoucherDetails(props) {
 
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
         history.push(ROUTE.ActivityVouchers)
     }
 
@@ -476,7 +518,6 @@ function VoucherDetails(props) {
             return;
         }
 
-        setLoading(1);
 
         try {
             const tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
@@ -484,7 +525,6 @@ function VoucherDetails(props) {
             
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -494,7 +534,6 @@ function VoucherDetails(props) {
         }
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
     }
 
     async function onRefund() {
@@ -508,14 +547,11 @@ function VoucherDetails(props) {
             return;
         }
 
-        setLoading(1);
-
         try {
             const tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -525,7 +561,6 @@ function VoucherDetails(props) {
         }
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
     }
 
     async function onCoF() {
@@ -539,14 +574,11 @@ function VoucherDetails(props) {
             return;
         }
 
-        setLoading(1);
-
         try {
             const tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -556,7 +588,6 @@ function VoucherDetails(props) {
         }
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
     }
 
     useEffect(() => {
@@ -601,13 +632,10 @@ function VoucherDetails(props) {
 
     const onCancelOrFaultVoucherSet = async () => {
 
-        setLoading(1);
         try {
-            setLoading(1);
             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
             setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -617,15 +645,34 @@ function VoucherDetails(props) {
         }
 
         history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
-        setLoading(0)
     }
+
+    useEffect(() => {
+        if(voucherSetDetails) setPageLoading(0)
+        escrowData &&
+        escrowData.then(res => {
+            if(res && voucherStatus && statusBlocks) setPageLoading(0)
+        })
+    }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails])
+
+    useEffect(() => {
+        const isNotVoucherSet = '/'+window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
+
+        if(isNotVoucherSet) {
+            setPageLoading(1)
+        } else {
+            setPageLoadingPlaceholder(voucherSetPlaceholder)
+            setPageLoading(!voucherSetDetails)
+        }
+        // setPageLoadingPlaceholder(voucherSetPlaceholder)
+    }, [])
 
 
     return (
         <>
-            { loading ? <Loading /> : null}
             { <PopupMessage {...popupMessage} />}
-            <section className="voucher-details no-bg">
+            {pageLoading ? pageLoadingPlaceholder : null}
+            <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
                 {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">

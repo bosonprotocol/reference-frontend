@@ -143,3 +143,130 @@ code {
   width: 101px;
   border-radius: 8px;
 }
+
+.details-loading {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 22px;
+  width: 100%;
+}
+
+.details-loading .title {
+  width: 200px;
+  height: 28px;
+}
+
+.details-loading .status-container {
+  margin-top: 44px;
+}
+
+.details-loading .status-container .h {
+  width: 55px;
+  height: 22px;
+  margin-bottom: 19px;
+}
+
+.details-loading .status-container .status {
+  height: 57px;
+  width: 115px;
+}
+
+.details-loading .status-container .status:nth-child(2) {
+  width: 85px;
+  margin-left: 10px;
+}
+
+.details-loading .status-container .status:nth-child(3) {
+  width: 205px;
+  margin-left: 10px;
+}
+
+.details-loading .paytable-loading {
+  margin-top: 50px;
+}
+
+.details-loading .paytable-loading .h {
+  margin-bottom: 27px;
+  height: 22px;
+  width: 175px;
+}
+
+.details-loading .paytable-loading .header {
+  height: 28px;
+  width: 331px;
+}
+
+.details-loading .paytable-loading .table {
+  width: 331px;
+  height: 138px;
+  margin-top: 12px;
+}
+
+.details-loading .image {
+  width: 150px;
+  height: 150px;
+  margin-top: 70px;
+}
+
+.details-loading .description {
+  height: 44px;
+  width: 100px;
+  margin-top: 30px;
+}
+
+.details-loading .table {
+  margin-top: 30px;
+}
+
+.details-loading .table .left {
+  height: 22px;
+  width: 200px;
+}
+
+.details-loading .table .right {
+  height: 22px;
+  width: 140px;
+}
+
+.details-loading .is-loading-2::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #1c242b;
+  background: linear-gradient(0.17turn, #1c242b 35%, #242e35 46%, #1c242b 65%);
+  background-size: 1000% 1000%;
+  transition: 0.8s ease-in-out;
+  animation: loadingPlaceholder 2.5s ease-in infinite reverse;
+}
+
+.details-loading.voucher-set .image {
+  width: 500px;
+  height: 250px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  margin-top: 70px;
+}
+
+.details-loading.voucher-set .description {
+  width: 200px;
+}
+
+.details-loading.voucher-set .table.l .left,
+.details-loading.voucher-set .table.l .right {
+  height: 45px;
+}
+
+.details-loading.voucher-set .table.t {
+  margin-top: 10px;
+}
+
+.is-loading-2 {
+  position: relative;
+  overflow: hidden;
+  transition: 0.8s ease-in-out;
+  border-radius: 8px;
+}
