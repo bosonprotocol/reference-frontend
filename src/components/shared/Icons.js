@@ -18,6 +18,13 @@ export const IconEth = ({ color }) => (
   </svg>
 )
 
+export const IconBsn = ({ color }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
+    <path d="M9.83673 9.83667L5.00465 12.7704L0 9.83667L5.00465 16.9122L9.83673 9.83667Z" fill={color ? color : '#46ade3'}/>
+    <path d="M5.00465 11.2173L0 8.28357L5.00465 0L9.83673 8.28357L5.00465 11.2173Z" fill={color ? color : '#46ade3'}/>
+  </svg>
+)
+
 export const IconDeposit = ({ color }) => (
   <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M1.00001 5.50001L6.5 11L12 5.50001" stroke={color ? color : '#80F0BE'} strokeWidth="2"/>

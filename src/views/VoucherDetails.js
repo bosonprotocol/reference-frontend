@@ -773,7 +773,7 @@ function VoucherDetails(props) {
                             </div>
                             { voucherSetDetails ?
                                 <div className="section price">
-                                    { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
+                                    { tablePrices.some(item => item) ? <PriceTable paymentType={paymentType} data={ tablePrices }/> : null }
                                 </div>
                                 : null }
                             <div className="section date">
