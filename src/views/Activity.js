@@ -189,9 +189,12 @@ function ActivityView(props) {
                                 }
                             </TabPanel>
                             <TabPanel>
-                                {inactiveVouchers?.length > 0 && !!account?
+                                {!pageLoading ?
+                                    (inactiveVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
-                                    activityMessage()
+                                    activityMessage())
+                                    :
+                                    activityBlockPlaceholder
                                 }
                             </TabPanel>
                         </> 

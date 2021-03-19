@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 
 import { SellerContext, getData } from "../../contexts/Seller"
 import { NAME } from '../../helpers/Dictionary'
@@ -9,6 +9,7 @@ import SubmitForm from "./SubmitForm"
 function FormBottomNavigation(props) {
   const { lastScreenBoolean, activeScreen, setActiveScreen, errorMessages } = props
   const [disabled, setDisabled] = useState(true)
+  const buttonRef = useRef()
 
 
   const sellerContext = useContext(SellerContext)
@@ -59,15 +60,26 @@ function FormBottomNavigation(props) {
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeScreen, errorMessages ])
+
+  const detectInvalidClicks = () => {
+    if(buttonRef.current.disabled) {
+      buttonRef.current.classList.add('message')
+
+      setTimeout(() => {
+        buttonRef.current.classList.remove('message')
+      }, 2000);
+    }
+  }
   
   return (
-    <div className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
+    <div onClick={()=>detectInvalidClicks()} className={`bottom-navigation relative${lastScreenBoolean ? ' offer' : ''}`}>
       {lastScreenBoolean ? <SubmitForm/> :
-      <div className="button primary" role="button"
+      <button className="button primary"
+      ref={buttonRef}
         onClick={() => setActiveScreen(activeScreen + 1)}
         disabled={disabled} >
         NEXT
-      </div>}
+      </button>}
     </div>
   )
 }
