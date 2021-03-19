@@ -3,6 +3,7 @@ import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { MODAL_TYPES, STATUS } from "../helpers/Dictionary";
 import { ModalResolver } from "../contexts/Modal";
+import { PAYMENT_METHODS } from "../hooks/configs";
 
 
 export async function fetchVoucherSets() {
@@ -14,7 +15,7 @@ export async function fetchVoucherSets() {
 
 export const prepareVoucherSetData = (rawVoucherSets) => {
   let parsedVoucherSets = [];
-  
+
   if(!rawVoucherSets) return
 
   for (const voucherSet of rawVoucherSets.voucherSupplies) {
@@ -31,6 +32,8 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
           description: voucherSet.description,
           expiryDate: voucherSet.expiryDate,
           location: voucherSet.location,
+          priceCurrency: voucherSet.priceCurrency,
+          sellerDepositCurrency: voucherSet.sellerDepositCurrency,
           offeredDate: voucherSet.offeredDate,
           sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
           startDate: voucherSet.startDate,
@@ -41,6 +44,7 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
           __v: voucherSet.__v,
           _id: voucherSet._id,
           _tokenIdSupply: voucherSet._tokenIdSupply,
+          paymentType: voucherSet._paymentType ? voucherSet._paymentType : PAYMENT_METHODS.ETHETH
       };
 
       parsedVoucherSets.push(parsedVoucherSet)
@@ -176,11 +180,11 @@ export const prepareVoucherDetails = (rawVoucher) => {
 };
 
 export async function initVoucherDetails(account, modalContext, getVoucherDetails, voucherId) {
-  
+
   if (!account) {
     return;
   }
-  
+
   const authData = getAccountStoredInLocalStorage(account);
 
   if (!authData.activeToken) {
@@ -193,22 +197,22 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
   }
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);  
+  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
   if(parsedVoucher) return parsedVoucher
 }
 
 export async function addNewVoucher(account, getVoucherDetails, voucherId, arrayOfAllVouchers) {
-  
+
   if (!account) {
     return;
   }
-  
+
   const authData = getAccountStoredInLocalStorage(account);
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
-  
-  if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher) 
+
+  if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher)
 }
 
 export const determineCurrentStatusOfVoucher = (voucherDetails) => {

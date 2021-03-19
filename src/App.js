@@ -69,8 +69,7 @@ function App() {
         account,
         library,
         chainId
-    } = context;
-
+    } = context;  
     const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
 
     const triedEager = useEagerConnect();

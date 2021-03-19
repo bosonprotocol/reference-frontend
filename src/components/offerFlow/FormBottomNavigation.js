@@ -62,7 +62,7 @@ function FormBottomNavigation(props) {
   }, [activeScreen, errorMessages ])
 
   const detectInvalidClicks = () => {
-    if(buttonRef.current.disabled) {
+    if(buttonRef?.current?.disabled) {
       buttonRef.current.classList.add('message')
 
       setTimeout(() => {
