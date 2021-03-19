@@ -26,7 +26,7 @@ import { SMART_CONTRACTS } from '../hooks/configs'
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const depositsPriceLimits = {
-  [CURRENCY.ETH]: { 
+  [CURRENCY.ETH]: {
     max: 0
   },
   [CURRENCY.BSN]: {
@@ -47,8 +47,8 @@ function NewOffer() {
   const [lastInputChangeName, setLastInputChangeName] = useState(null);
   const inputFallback = {
     [NAME.PRICE_C]: CURRENCY.ETH,
-    [NAME.SELLER_DEPOSIT_C]: CURRENCY.ETH,
-    [NAME.DATE_START]: new Date().setHours(0,0,0,0), 
+    [NAME.DEPOSITS_C]: CURRENCY.ETH,
+    [NAME.DATE_START]: new Date().setHours(0,0,0,0),
   }
 const fundLimitsContract = useFundLimitsContract();
 
@@ -56,10 +56,10 @@ useEffect( ()=> {
   if(fundLimitsContract) {
   async function setLimits() {
     const ethLimit = await fundLimitsContract.getETHLimit();
-    const bosonLimit = await fundLimitsContract.getTokenLimit(SMART_CONTRACTS.BosonTokenDepositContractAddress);
+    const bosonLimit = await fundLimitsContract.getTokenLimit(SMART_CONTRACTS.BosonTokenContractAddress);
     depositsPriceLimits[CURRENCY.ETH] = {max: ethLimit};
     depositsPriceLimits[CURRENCY.BSN] = {max: bosonLimit};
-  } 
+  }
   setLimits()
   }
 
@@ -75,7 +75,7 @@ useEffect( ()=> {
     }
       // eslint-disable-next-line react-hooks/exhaustive-deps
   } ,[sellerContext.state.offeringData, lastInputChangeName]);
-  
+
   useEffect(()=> {
     sellerContext.dispatch(Seller.resetOfferingData())
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,8 +83,8 @@ useEffect( ()=> {
 
   const createInputValueReceiver = (inputName) => (value) => {
     if(value || value === ''){
-       
-        if(!(inputName === NAME.IMAGE)) {
+
+      if(!(inputName === NAME.IMAGE)) {
           sellerContext.dispatch(Seller.updateOfferingData({
             [inputName]: value
           }))
@@ -93,7 +93,7 @@ useEffect( ()=> {
             [NAME.SELECTED_FILE]: value
           }))
           const fileReader = new FileReader();
-          
+
           fileReader.addEventListener('load', (e) => {
                sellerContext.dispatch(Seller.updateOfferingData({[inputName]: e.currentTarget.result}));
 
@@ -102,7 +102,7 @@ useEffect( ()=> {
           fileReader.readAsDataURL(value)
         }
         setLastInputChangeName(inputName);
-    } 
+    }
 
     if(value === null && (inputName === NAME.PRICE || inputName === NAME.BUYER_DEPOSIT || inputName === NAME.SELLER_DEPOSIT)) {
       sellerContext.dispatch(Seller.updateOfferingData({[inputName]: value}));
@@ -112,7 +112,7 @@ useEffect( ()=> {
     <Categories inputValueReceiver={createInputValueReceiver(NAME.CATEGORY)} />,
     <FormUploadPhoto inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
     uploadImageErrorMessage={errorMessages[NAME.IMAGE]}/>,
-    <FormGeneral titleValueReceiver={createInputValueReceiver(NAME.TITLE) }  
+    <FormGeneral titleValueReceiver={createInputValueReceiver(NAME.TITLE) }
     titleErrorMessage={errorMessages[NAME.TITLE]}
     conditionValueReceiver={createInputValueReceiver(NAME.CONDITION)}
     descriptionValueReceiver={createInputValueReceiver(NAME.DESCRIPTION)}
@@ -122,7 +122,7 @@ useEffect( ()=> {
     depositsPriceLimits={depositsPriceLimits}
       priceValueReceiver={createInputValueReceiver(NAME.PRICE)}
       priceCurrencyReceiver={createInputValueReceiver(NAME.PRICE_C)}
-      sellerDepositCurrencyValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT_C)}
+      sellerDepositCurrencyValueReceiver={createInputValueReceiver(NAME.DEPOSITS_C)}
       sellerDepositValueReceiver={createInputValueReceiver(NAME.SELLER_DEPOSIT)}
       buyerPriceSuffixValueReceiver={createInputValueReceiver(NAME.PRICE_SUFFIX)}
       buyerDepositValueReceiver={createInputValueReceiver(NAME.BUYER_DEPOSIT)}
@@ -133,7 +133,7 @@ useEffect( ()=> {
       buyerDepositErrorMessage={errorMessages[NAME.BUYER_DEPOSIT]}
 
     />,
-    <FormDate 
+    <FormDate
       startDateValueReceiver={createInputValueReceiver(NAME.DATE_START)}
       startDateErrorMessage={errorMessages[NAME.DATE_START]}
       endDateValueReceiver={createInputValueReceiver(NAME.DATE_END)}

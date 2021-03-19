@@ -86,7 +86,6 @@
     "test:coverage": "npm test -- --coverage",
     "test:coverage:badge": "npm run test:coverage && coverage-badge-creator",
     "build:playground": "env-cmd -f .env.playground react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

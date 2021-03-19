@@ -1,9 +1,8 @@
 import { ModalContext } from "../contexts/Modal";
 import { refreshTokenIfExpired } from "../utils/auth";
 import { axiosInstance } from "./api";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { useEffect } from "react/cjs/react.development";
 
 export const useExpiredTokenResponseInterceptor = () => {
     const modalContext = useContext(ModalContext);
