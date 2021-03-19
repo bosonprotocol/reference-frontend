@@ -1,13 +1,12 @@
-import React from 'react'
+import React     from 'react'
 
 import { Link } from "react-router-dom"
 
 import "./ProductBlock.scss"
 
-import { IconEth, IconDeposit } from "../shared/Icons"
+import { IconEth, IconDeposit, IconBsn } from "../shared/Icons"
 
 import { ROUTE } from "../../helpers/Dictionary"
-import { useState } from 'react/cjs/react.development'
 
 
 function ProductBlock(props) {
@@ -27,7 +26,7 @@ function ProductBlock(props) {
             <h3>{ title }</h3>
             <div className="price flex ai-center">
                 {
-                    priceCurrency === 'ETH' ?  <span><IconEth/>{ price } ETH</span> :  <span><IconEth/>{ price } BSN </span>
+                    priceCurrency === 'ETH' ?  <span><IconEth/>{ price } ETH</span> :  <span><IconBsn/>{ price } BSN </span>
                     
                 }
                {
