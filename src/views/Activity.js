@@ -20,21 +20,9 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { VOUCHER_TYPE, sortBlocks, ActiveTab } from "../helpers/ActivityHelper"
-import Loading from "../components/offerFlow/Loading";
 
 import { WalletConnect } from "../components/modals/WalletConnect"
 import { formatDate } from "../helpers/Format"
-
-const MessageType = {
-    [VOUCHER_TYPE.voucherSet]: {
-        active: 'open voucher sets',
-        inactive: 'closed voucher sets',
-    },
-    [VOUCHER_TYPE.accountVoucher]: {
-        active: 'active vouchers',
-        inactive: 'inactive vouchers',
-    }
-}
 
 export function ActivityAccountVouchers({title, voucherSetId, block}) {
     const [accountVouchers, setAccountVouchers] = useState([])
@@ -87,13 +75,16 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-    const { voucherBlocks, voucherType, loading, account, title, voucherSetId, block } = props
+    const { voucherBlocks, voucherType, account, title, voucherSetId, block } = props
+    const globalContext = useContext(GlobalContext);
 
     const [resultVouchers, setResultVouchers] = useState([])
     const [activeVouchers, setActiveVouchers] = useState([])
     const [inactiveVouchers, setInactiveVouchers] = useState([])
-    const [fetchedNewVoucherSets, setFetchedNewVoucherSets] = useState([])
-    const [fetchingData, setFetchingData] = useState(0)
+    const [pageLoading, setPageLoading] = useState(0)
+    const [isAuthenticated, setIsAuthenticated] = useState(JSON.parse(localStorage.getItem('isAuthenticated')))
+
+    const activityBlockPlaceholder = <div className="placeholder-parent"><div className="block plceholder is-loading"></div></div>
 
     const getLastAction = (el) => {
         let latest = 0;
@@ -114,6 +105,9 @@ function ActivityView(props) {
         return latest
     }
 
+    useEffect(() => {
+        setPageLoading(1)
+    }, [])
 
     useEffect(() => {
         if(voucherSetId) {
@@ -133,53 +127,24 @@ function ActivityView(props) {
     }, [account, block])
 
     useEffect(() => {
-        if(voucherBlocks?.length && !voucherSetId) {
-            setFetchedNewVoucherSets(voucherBlocks)
-        }
-    }, [voucherBlocks])
-
-    const checkForActiveVouchers = async (getVouchers) => {
-        const returnArray = async (voucherSetArray) => {
-            let result = []
-            
-            for(let voucherSet in voucherSetArray) {
-                let setCopy = voucherSetArray[voucherSet]
-                let activeVouchers = 0
-                let supplyResult = await getParsedVouchersFromSupply(voucherSetArray[voucherSet]._id, account)
-
-                supplyResult.vouchers.forEach(voucher => !voucher.FINALIZED ? activeVouchers += 1 : null)
-                setCopy.hasActiveVouchers = activeVouchers
-    
-                result.push(setCopy)
-            }
-
-            return result
-        }
-
-        let result = await returnArray(getVouchers)
-        setResultVouchers(result)
-        setFetchingData(0)
-    }
+        if(voucherBlocks?.length && !voucherSetId) setResultVouchers(voucherBlocks)
+    }, [voucherBlocks, account])
 
     useEffect(() => {
-        if(fetchedNewVoucherSets?.length) {
-            setFetchingData(1)
-            checkForActiveVouchers(fetchedNewVoucherSets)
-        }
-    }, [fetchedNewVoucherSets])
+        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
 
-    useEffect(() => {
-        if(resultVouchers?.length) {
-            const blocksSorted = sortBlocks(resultVouchers, voucherType)
-            setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-            setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+
+        if(account && isAuthenticated) {
+            setPageLoading(0)
         }
     }, [resultVouchers])
 
-    const activityMessage = (messageType) => {
+    const activityMessage = (tab) => {
         return account ?
         <div className="no-vouchers flex column center">
-        <p>You currently have no {messageType}.</p>
+        <p>You currently have no {`${tab?'active':'inactive'}`} vouchers.</p>
         <IconActivityMessage />
         </div>
         :
@@ -189,6 +154,18 @@ function ActivityView(props) {
         </div>
     }
 
+    useEffect(() => {
+        if(account) {
+            setIsAuthenticated(true)
+        }
+    }, [account])
+
+    useEffect(() => {
+        if(!isAuthenticated && isAuthenticated !== undefined) {
+            setPageLoading(0)
+        }
+    }, [isAuthenticated])
+
     return (
         <>
         <section className="activity atomic-scoped">
@@ -197,7 +174,6 @@ function ActivityView(props) {
                     <h1>{title ? title : voucherType === VOUCHER_TYPE.accountVoucher ? 'My Vouchers' : 'Voucher Sets'}</h1>
                 </div>
                 {
-                !loading && !fetchingData ?
                 <Tabs>
                     <TabList>
                         <Tab>{voucherType === VOUCHER_TYPE.accountVoucher ? 'Active' : 'Open'}</Tab>
@@ -205,20 +181,25 @@ function ActivityView(props) {
                     </TabList>
                         <>
                             <TabPanel>
-                                {activeVouchers?.length > 0 && !!account?
+                                {!pageLoading ?
+                                    (activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
-                                    activityMessage(MessageType[voucherType].active)
+                                    activityMessage(1))
+                                    :
+                                    activityBlockPlaceholder
                                 }
                             </TabPanel>
                             <TabPanel>
-                                {inactiveVouchers?.length > 0 && !!account?
+                                {!pageLoading ?
+                                    (inactiveVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
-                                    activityMessage(MessageType[voucherType].inactive)
+                                    activityMessage())
+                                    :
+                                    activityBlockPlaceholder
                                 }
                             </TabPanel>
                         </> 
                 </Tabs>
-                : <Loading />
                 }
 
                 </div>
