@@ -50,6 +50,7 @@ export function ActivityVoucherSetView() {
 
     const voucherSetId = locationPath[locationPath.length -2]
     const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+    console.log(globalContext.state.allVoucherSets)
 
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
@@ -254,7 +255,9 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
-console.log(props)
+
+    console.log(paymentType)
+
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 
