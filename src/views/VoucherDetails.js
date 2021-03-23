@@ -26,7 +26,7 @@ import { HorizontalScrollView } from "rc-horizontal-scroll";
 import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
 
 import { useWeb3React } from "@web3-react/core";
-import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helpers/Dictionary";
+import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES, MESSAGE } from "../helpers/Dictionary";
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import { NavigationContext, Action } from "../contexts/Navigation";
@@ -39,6 +39,8 @@ import { calculateDifferenceInPercentage } from '../utils/math';
 import { onAttemptToApprove } from "../hooks/approveWithPermit";
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
+
+import MessageScreen from "../components/shared/MessageScreen"
 
 const voucherPlaceholder = <div className="details-loading">
     <div className="title is-loading-2"></div>
@@ -111,6 +113,7 @@ function VoucherDetails(props) {
     const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
     const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
     const [hideControlButtonsWaitPeriodExpired, setHideControlButtonsWaitPeriodExpired] = useState(false);
+    const [disablePage, setDisablePage] = useState(0);
 
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
@@ -181,6 +184,7 @@ function VoucherDetails(props) {
     },[voucherDetails, voucherSetDetails, library])
     // assign controlset to statuses
     const controlList = () => {
+        setDisablePage(0)
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
@@ -229,6 +233,19 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
             <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
         )
+
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMMITED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.FINALIZED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLANED_CANCELED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.VIEW_ONLY]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLAINED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REDEEMED]] = () => {
+            setDisablePage(1)
+            return null
+        }
 
         return CASE
     }
@@ -725,7 +742,7 @@ function VoucherDetails(props) {
         <>
             { <PopupMessage {...popupMessage} />}
             {pageLoading ? pageLoadingPlaceholder : null}
-            <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
+            {!disablePage ? <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
                 {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
@@ -785,6 +802,9 @@ function VoucherDetails(props) {
 
                 </div>
             </section>
+            :
+            <MessageScreen messageType={MESSAGE.LOCKED} title="It looks like you don't have access to this" link={ROUTE.Home} />
+            }
         </>
     )
 }
