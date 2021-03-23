@@ -114,6 +114,7 @@ function VoucherDetails(props) {
     const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
     const [hideControlButtonsWaitPeriodExpired, setHideControlButtonsWaitPeriodExpired] = useState(false);
     const [disablePage, setDisablePage] = useState(0);
+    const [cancelMessage, setCancelMessage] = useState(false);
 
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
@@ -705,16 +706,29 @@ function VoucherDetails(props) {
         try {
             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
             setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
+
+            setCancelMessage({
+                type: MESSAGE.SUCCESS,
+                title: 'The voucher set was cancelled',
+                text: 'The vouchers have been canceled, except the ones that were committed',
+                link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
+                setMessageType: setCancelMessage,
+            })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
                 content: e.message
             }));
-            return;
-        }
 
-        history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
+            setCancelMessage({
+                type: MESSAGE.ERROR,
+                title: 'Error cancelation',
+                text: 'The set of vouchers has not been canceled, please try again',
+                link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
+                setMessageType: setCancelMessage,
+            })
+        }
     }
 
     useEffect(() => {
@@ -740,6 +754,7 @@ function VoucherDetails(props) {
 
     return (
         <>
+            {cancelMessage ? <MessageScreen {...cancelMessage} /> : null}
             { <PopupMessage {...popupMessage} />}
             {pageLoading ? pageLoadingPlaceholder : null}
             {!disablePage ? <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
