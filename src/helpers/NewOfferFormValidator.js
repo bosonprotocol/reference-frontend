@@ -99,12 +99,13 @@ const quantityValidation = (errorMessages, getData) => {
   if (currentQuantityValue === '') {
     quantityErrorMessage = null
   }
-  if (currentQuantityValue) {
+  
+  if (currentQuantityValue || currentQuantityValue === 0) {
     if (isNaN(parseInt(currentQuantityValue))) {
       quantityErrorMessage = ValidationConfig.invalidQuantityError;
     }
 
-    if (currentQuantityValue <= 0) {
+    if (currentQuantityValue < ValidationConfig.quantitySettings.min) {
       quantityErrorMessage = ValidationConfig.minQuantityError;
     }
 
