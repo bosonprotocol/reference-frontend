@@ -81,6 +81,14 @@ function FormPrice({
         e.target.value = ''
         quantityValueReceiver('')
       }
+    } else {
+      const valueString = value.toString()
+
+      if(valueString.includes('.')) {
+        const valueTokens = valueString.split('.')
+        e.target.value = valueTokens[0]
+        quantityValueReceiver(parseInt(e.target.value))
+      }
     }
   }
 
