@@ -71,24 +71,19 @@ function FormPrice({
   }
 
   const validateQuantity = (e) => {
-    const value = parseInt(e.target.value)
-    
-    if(!isNaN(value)) {
-      if(value < 10000) {
-        quantityValueReceiver(value)
-        e.target.value = value
+    const value = parseInt(e.target.value);
+
+    if (Number.isInteger(value)) {
+      if (value < 10000) {
+        quantityValueReceiver(value);
+        e.target.value = value;
       } else {
-        e.target.value = ''
-        quantityValueReceiver('')
+        e.target.value = '';
+        quantityValueReceiver('');
       }
     } else {
-      const valueString = value.toString()
-
-      if(valueString.includes('.')) {
-        const valueTokens = valueString.split('.')
-        e.target.value = valueTokens[0]
-        quantityValueReceiver(parseInt(e.target.value))
-      }
+      e.target.value = '';
+      quantityValueReceiver('');
     }
   }
 
