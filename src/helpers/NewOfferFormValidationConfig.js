@@ -31,7 +31,8 @@ export const minDescriptionLengthError = `Description must be at least ${descrip
 
 // START QUANTITY CONFIG
 export const quantitySettings = {
-    max: 10
+    max: 10,
+    min: 1,
 };
 export const invalidQuantityError = 'Must be a valid number';
 export const minQuantityError = 'Value must be greater than 0';
