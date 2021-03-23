@@ -34,7 +34,7 @@ import { NavigationContext, Action } from "../contexts/Navigation";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
 
-import { IconQRScanner } from "../components/shared/Icons";
+import { IconQRScanner, IconWarning } from "../components/shared/Icons";
 import { calculateDifferenceInPercentage } from '../utils/math';
 import { onAttemptToApprove } from "../hooks/approveWithPermit";
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
@@ -702,6 +702,7 @@ function VoucherDetails(props) {
 
     useEffect(() => {
         if(voucherSetDetails) setPageLoading(0)
+        console.log(escrowData)
         escrowData &&
         escrowData.then(res => {
             if(res && voucherStatus && statusBlocks) setPageLoading(0)
@@ -756,7 +757,7 @@ function VoucherDetails(props) {
 
                         {
                             showDepositsDistributionWarningMessage ? 
-                            <div className="section depositsWarning"><span> Deposits will be distributed in 1 hour</span> </div>
+                            <div className="section depositsWarning flex center"><IconWarning /> <span> Deposits will be distributed in 1 hour</span> </div>
                              : null
                          }
                            
