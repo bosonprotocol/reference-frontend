@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext } from "react";
+import { ethers } from "ethers";
 
-import { TableRow, DateTable } from "../shared/TableContent"
-
-import { SellerContext } from "../../contexts/Seller"
-
-import { formatDate } from "../../helpers/Format"
-import { ethers } from 'ethers'
+import { TableRow, DateTable } from "../shared/TableContent";
+import { SellerContext } from "../../contexts/Seller";
+import { formatDate, exponentToDecimal } from "../../helpers/Format";
 
 function FormSummary() {
   const sellerContext = useContext(SellerContext)
@@ -29,8 +27,8 @@ function FormSummary() {
 
   const tablePrices = [
     (price && price_currency) && ['Payment Price', ethers.utils.formatEther(price) + price_currency],
-    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, (ethers.utils.formatEther(buyer_deposit) * quantity) + deposits_currency],
-    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, (ethers.utils.formatEther(seller_deposit) * quantity) + deposits_currency],
+    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(buyer_deposit) * quantity) + deposits_currency],
+    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(seller_deposit) * quantity) + deposits_currency],
   ]
 
   const tableDate = [
