@@ -18,10 +18,25 @@ export const IconEth = ({ color }) => (
   </svg>
 )
 
+export const IconBsn = ({ color }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
+    <path d="M9.83673 9.83667L5.00465 12.7704L0 9.83667L5.00465 16.9122L9.83673 9.83667Z" fill={color ? color : '#46ade3'}/>
+    <path d="M5.00465 11.2173L0 8.28357L5.00465 0L9.83673 8.28357L5.00465 11.2173Z" fill={color ? color : '#46ade3'}/>
+  </svg>
+)
+
 export const IconDeposit = ({ color }) => (
   <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M1.00001 5.50001L6.5 11L12 5.50001" stroke={color ? color : '#80F0BE'} strokeWidth="2"/>
     <path d="M6.5 9.77783L6.5 2.4445" stroke={color ? color : '#80F0BE'} strokeWidth="2"/>
+  </svg>
+)
+
+export const IconWarning = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+  <circle cx="7" cy="7" r="7" fill="#77F2BC"/>
+  <rect x="6" y="2" width="2" height="7" rx="1" fill="#2A3542"/>
+  <rect x="6" y="10" width="2" height="2" rx="1" fill="#2A3542"/>
   </svg>
 )
 

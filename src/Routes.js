@@ -13,16 +13,20 @@ import { ActivityVoucherSets, ActivityAccountVouchers, ActivityVoucherSetView } 
 import VoucherDetails from "./views/VoucherDetails"
 import QRScanner from "./views/QRScanner"
 import Home from './views/Home'
-import Connect from "./views/Connect";
+import Connect from "./views/Connect"; 
 import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 
 import { NavigationContext } from "./contexts/Navigation"
+import { useExpiredTokenResponseInterceptor } from './hooks/useExpiredTokenResponseInterceptor'
 
 function Routes() {
   const navigationContext = useContext(NavigationContext)
   const displayNav = navigationContext.state.displayNavigation
   const displayBottomNav = navigationContext.state.displayBottomNavigation
+  
+  useExpiredTokenResponseInterceptor();
+
   return (
     // class - dark|light; (default: dark)
     <div className={`emulate-mobile theme ${!displayBottomNav ? 'no-bottom' : ''} ${!displayNav ? 'disabled' : ''}`}>

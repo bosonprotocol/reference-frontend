@@ -1,9 +1,9 @@
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Web3ReactProvider, createWeb3ReactRoot } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 
-import "./index.css";
 import App from "./App";
 import { NetworkContextName } from "./constants";
 

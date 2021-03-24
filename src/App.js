@@ -17,6 +17,7 @@ import { SellerContext, SellerInitialState, SellerReducer } from "./contexts/Sel
 import { GlobalContext, GlobalInitialState, GlobalReducer } from "./contexts/Global"
 import { ModalContext, ModalInitialState, ModalReducer } from "./contexts/Modal";
 import { NavigationContext, NavigationInitialState, NavigationReducer } from "./contexts/Navigation";
+import { LoadingContext, LoadingInitialState, LoadingReducer } from "./contexts/Loading";
 
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
@@ -33,6 +34,7 @@ function App() {
     const [globalState, globalDispatch] = useReducer(GlobalReducer, GlobalInitialState);
     const [modalState, modalDispatch] = useReducer(ModalReducer, ModalInitialState);
     const [navigationState, navigationDispatch] = useReducer(NavigationReducer, NavigationInitialState);
+    const [loadingState, loadingDispatch] = useReducer(LoadingReducer, LoadingInitialState);
 
     const redeemContextValue = {
         state: buyerState,
@@ -63,14 +65,18 @@ function App() {
         dispatch: navigationDispatch
     }
 
+    const loadingContextValue = {
+        state: loadingState,
+        dispatch: loadingDispatch
+    }
+
     const context = useWeb3React();
     const {
         active,
         account,
         library,
         chainId
-    } = context;
-
+    } = context;  
     const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
 
     const triedEager = useEagerConnect();
@@ -110,9 +116,11 @@ function App() {
                     <SellerContext.Provider value={ sellerContextValue }>
                         <WalletContext.Provider value={ walletContextValue }>
                             <NavigationContext.Provider value={ navigationContextValue }>
-                                <GlobalListeners  />
-                                    <Routes />
-                                <ContextModal/>
+                                <LoadingContext.Provider value={ loadingContextValue }>
+                                    <GlobalListeners  />
+                                        <Routes />
+                                    <ContextModal/>
+                                </LoadingContext.Provider>
                             </NavigationContext.Provider>
                         </WalletContext.Provider>
                     </SellerContext.Provider>

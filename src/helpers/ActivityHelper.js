@@ -11,7 +11,7 @@ export const VOUCHER_TYPE = {
   voucherSet: 2,
 }
 
-export const sortBlocks = (blocksArray, voucherType, globalContext) => {
+export const sortBlocks = (blocksArray, voucherType) => {
   const tabGroup = {
     active: [],
     inactive: [],
@@ -19,7 +19,11 @@ export const sortBlocks = (blocksArray, voucherType, globalContext) => {
 
   if(voucherType === VOUCHER_TYPE.voucherSet) {
     blocksArray.forEach(voucherSet => {
-      voucherSet.qty <= 0 ?
+      let quantity = voucherSet.qty > 0
+      let activeVouchers = voucherSet.hasActiveVouchers
+      let expired = new Date(voucherSet.expiryDate).getTime() < new Date().getTime()
+
+      !activeVouchers && (!quantity || expired) ?
       tabGroup.inactive.push(voucherSet) :
       tabGroup.active.push(voucherSet)
     })
@@ -55,6 +59,7 @@ export const ChildVoucherBlock = ({title, expiration, id}) => (
 
 export const ActiveTab = (props) => {
   const { products, voucherType, voucherSetId } = props
+
   return (
       <div className="vouchers-container">
           {

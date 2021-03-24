@@ -11,7 +11,10 @@ const fetchProgressFallback = parseInt(localStorage.getItem('offeringProgress'))
 
 export const SellerInitialState = {
   offeringProgress: fetchProgressFallback ? fetchProgressFallback : 0,
-  offeringData: {}
+  offeringData: {
+    price_currency: 'ETH',
+    deposits_currency: 'ETH',
+  }
 };
 
 export const Seller = {
@@ -44,7 +47,7 @@ export const SellerReducer = (state, action) => {
         offeringProgress: action.payload
       }
     },
-    
+
     [DIC.UPDATE_OFFERING_DATA]: () => {
       let update = {
         ...state.offeringData,
