@@ -35,7 +35,6 @@ export function ActivityAccountVouchers({title, voucherSetId, block}) {
 
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
-            console.log(result)
             setAccountVouchers(result)
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,7 +66,6 @@ export function ActivityVoucherSets() {
 
     useEffect(() => {
         getParsedAccountVoucherSets(account).then(voucherSets => {
-            console.log(voucherSets)
             if(voucherSets) setVoucherBlocks(voucherSets)
         })
 
@@ -218,8 +216,9 @@ function ActivityView(props) {
 export const VoucherSetBlock = (props) => {
     const [expand,] = useState(1)
     const { title, image, price, qty, _id, openDetails, paymentType } = props
-    const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
-    const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
+    const mockPaymentType = paymentType ? paymentType : 1
+    const currency = mockPaymentType === 1 || mockPaymentType === 2 ? 'ETH' : 'BSN';
+    const currencyIcon = mockPaymentType === 1 || mockPaymentType === 2 ? <IconEth /> : <IconBsn />
 
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
@@ -263,10 +262,10 @@ export const SingleVoucherBlock = (props) => {
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
 
-    console.log(paymentType)
+    const mockPaymentType = paymentType ? paymentType : 1
 
-    const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
-    const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
+    const currency = mockPaymentType === 1 || mockPaymentType === 2 ? 'ETH' : 'BSN';
+    const currencyIcon = mockPaymentType === 1 || mockPaymentType === 2 ? <IconEth /> : <IconBsn />
 
     return (
         <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>

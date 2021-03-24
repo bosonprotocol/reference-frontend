@@ -95,6 +95,7 @@ export const prepareVoucherData = (rawVouchers) => {
     description: voucher.description,
     category: voucher.category,
     currency: voucher.currency ? voucher._currency : 'ETH',
+    paymentType: voucher.paymentType ? voucher.paymentType : 1,
   }))
 
   return parsedVouchers
@@ -119,7 +120,6 @@ export async function getAccountVouchers(account, modalContext) {
 
 
   const allAccountVouchers = await getVouchers(authData.authToken);
-  console.log(allAccountVouchers.voucherData)
   const vouchersParsed = allAccountVouchers.voucherData && prepareVoucherData(allAccountVouchers.voucherData)
 
   return vouchersParsed ? vouchersParsed : undefined

@@ -26,7 +26,6 @@ export const getVouchers = async (token) => {
         headers: { 'Authorization': `Bearer ${ token }` }
     });
 
-    console.log(allVouchers)
     return allVouchers.data;
 };
 
