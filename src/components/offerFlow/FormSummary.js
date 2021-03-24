@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {BigNumber, ethers} from "ethers";
+import { ethers } from "ethers";
 
 import { TableRow, DateTable } from "../shared/TableContent";
 import { SellerContext } from "../../contexts/Seller";
