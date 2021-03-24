@@ -6,12 +6,9 @@ import { useWeb3React } from "@web3-react/core";
 import { fetchVoucherSets } from "../helpers/VoucherParsers"
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 
-import { useHistory } from "react-router-dom"
-
 function PopulateVouchers() {
     const globalContext = useContext(GlobalContext)
     const loadingContext = useContext(LoadingContext)
-    const history = useHistory()
 
     const { account } = useWeb3React();
 
@@ -41,10 +38,6 @@ function PopulateVouchers() {
         if(localStoredAccountData) {
             loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
         }
-
-
-        // history.replaceState(null, '', )
-        // console.log(window.history)
     }, [account])
 
     useEffect(() => {
