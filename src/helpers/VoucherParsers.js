@@ -162,6 +162,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
       expiryDate: rawVoucher.expiryDate,
       category: rawVoucher.category,
       voucherOwner: rawVoucher.voucherOwner,
+      paymentType: rawVoucher.paymentType,
       holder: rawVoucher._holder,
       CANCELLED: rawVoucher.CANCELLED,
       COMMITTED: rawVoucher.COMMITTED,
@@ -197,6 +198,7 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
+
   if(parsedVoucher) return parsedVoucher
 }
 

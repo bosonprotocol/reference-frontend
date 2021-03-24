@@ -130,8 +130,6 @@ function VoucherDetails(props) {
         }
     };
 
-    console.log(voucherDetails)
-
     const currencies = currencyResolver(paymentType);
 
     // int on index #2 is the X position of the block
@@ -439,17 +437,17 @@ function VoucherDetails(props) {
             {
                 PAYMENT: {
                     title: 'PAYMENT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[0],
                     position: tablePositions.price,
                 },
                 BUYER_DEPOSIT: {
                     title: 'BUYER DEPOSIT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[1],
                     position: tablePositions.buyerDeposit,
                 },
                 SELLER_DEPOSIT: {
                     title: 'SELLER DEPOSIT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[1],
                     position: tablePositions.sellerDeposit,
                 },
             }
@@ -653,7 +651,6 @@ function VoucherDetails(props) {
     }, [voucherDetails, voucherSetDetails, account, actionPerformed, library, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired])
 
     useEffect(() => {
-
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
@@ -709,7 +706,7 @@ function VoucherDetails(props) {
         escrowData.then(res => {
             if(res && voucherStatus && statusBlocks) setPageLoading(0)
         })
-    }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails])
+    }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails, voucherDetails])
 
     useEffect(() => {
         const isNotVoucherSet = '/'+window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
