@@ -18,6 +18,7 @@ import ShowQR from "./views/ShowQR"
 import NewOffer from "./views/NewOffer"
 
 import { NavigationContext } from "./contexts/Navigation"
+import GlobalListeners from "./views/GlobalListeners"
 import { useExpiredTokenResponseInterceptor } from './hooks/useExpiredTokenResponseInterceptor'
 
 function Routes() {
@@ -33,6 +34,7 @@ function Routes() {
       <Router>
           <LocationManager />
           <TopNavigation />
+          <GlobalListeners  />
           <Switch>
               <Route exact path={ ROUTE.CodeScanner } component={ QRScanner }/>
               <Route exact strict path={ ROUTE.Connect } component={ Connect }/>

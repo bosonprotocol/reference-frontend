@@ -3,8 +3,6 @@ import "./styles/Global.scss"
 
 import React, { useEffect, useReducer } from 'react'
 
-import GlobalListeners from "./views/GlobalListeners"
-
 import { useEagerConnect, useInactiveListener } from './hooks'
 
 import "./styles/Animations.scss"
@@ -117,7 +115,6 @@ function App() {
                         <WalletContext.Provider value={ walletContextValue }>
                             <NavigationContext.Provider value={ navigationContextValue }>
                                 <LoadingContext.Provider value={ loadingContextValue }>
-                                    <GlobalListeners  />
                                         <Routes />
                                     <ContextModal/>
                                 </LoadingContext.Provider>
