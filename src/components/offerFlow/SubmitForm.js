@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createVoucherSet } from "../../hooks/api";
-import { useBosonRouterContract } from "../../hooks/useContract";
+import { useBosonRouterContract, useBosonTokenContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -14,16 +14,19 @@ import ContractInteractionButton from "../shared/ContractInteractionButton";
 import { useLocation } from 'react-router-dom';
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { MODAL_TYPES, MESSAGE, ROUTE } from "../../helpers/Dictionary";
+import { SMART_CONTRACTS, PAYMENT_METHODS_LABELS, PAYMENT_METHODS } from "../../hooks/configs";
 import { toFixed } from "../../utils/format-utils";
-import { isCorrelationIdAlreadySent } from "../../utils/duplicateCorrelationIdGuard";
+import { onAttemptToApprove } from "../../hooks/approveWithPermit";
+
+import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from "../../utils/duplicateCorrelationIdGuard";
 
 export default function SubmitForm() {
     const [redirect, setRedirect] = useState(0);
     const [loading, setLoading] = useState(0);
     const [redirectLink, setRedirectLink] = useState(ROUTE.Home);
-    
+
     const sellerContext = useContext(SellerContext);
-    const modalContext = useContext(ModalContext); 
+    const modalContext = useContext(ModalContext);
     const location = useLocation();
 
     const globalContext = useContext(GlobalContext);
@@ -36,6 +39,8 @@ export default function SubmitForm() {
         price,
         seller_deposit,
         buyer_deposit,
+        price_currency,
+        deposits_currency,
         quantity,
         title,
         category,
@@ -44,12 +49,14 @@ export default function SubmitForm() {
         selected_file, // switch with image to use blob
     } = sellerContext.state.offeringData
 
-    const { library, account } = useWeb3React();
-
+    const { library, account, chainId } = useWeb3React();
     const bosonRouterContract = useBosonRouterContract();
+    const bosonTokenContract = useBosonTokenContract();
     let formData = new FormData();
 
+
     async function onCreateVoucherSet() {
+
         if (!library || !account) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -80,7 +87,6 @@ export default function SubmitForm() {
           buyer_deposit.toString(),
           parseInt(quantity)
         ];
-        const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
         let correlationId;
 
@@ -99,9 +105,13 @@ export default function SubmitForm() {
                 return;
             }
            
-            await bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+            await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency);
+            setRecentlyUsedCorrelationId(correlationId, account);
 
-            prepareVoucherFormData(correlationId, dataArr);
+            const paymentType = paymentTypeResolver(price_currency, deposits_currency);
+
+            prepareVoucherFormData(correlationId, dataArr, paymentType);
+
             const id = await createVoucherSet(formData, authData.authToken);
 
             globalContext.dispatch(Action.fetchVoucherSets());
@@ -109,7 +119,7 @@ export default function SubmitForm() {
             setLoading(0);
             setRedirectLink(ROUTE.Activity + '/' + id + '/details')
             setRedirect(1);
-        } catch (e) {     
+        } catch (e) {
             setLoading(0)
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -117,10 +127,10 @@ export default function SubmitForm() {
                 content: e.message
             }));
             return;
-        } 
+        }
     }
 
-    function prepareVoucherFormData(correlationId, dataArr) {
+    function prepareVoucherFormData(correlationId, dataArr, paymentType) {
         const startDate = new Date(dataArr[0] * 1000);
         const endDate = new Date(dataArr[1] * 1000);
 
@@ -141,6 +151,7 @@ export default function SubmitForm() {
         formData.append('conditions', condition);
         formData.append('voucherOwner', account);
         formData.append('_correlationId', correlationId);
+        formData.append('_paymentType', paymentType);
     }
 
     function appendFilesToFormData() {
@@ -162,4 +173,64 @@ export default function SubmitForm() {
             }
         </>
     );
+}
+const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, account, chainId, library, priceCurrency, depositsCurrency) => {
+    const currencyCombination = `${ priceCurrency }${ depositsCurrency }`;
+    const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
+
+    if (currencyCombination === PAYMENT_METHODS_LABELS.ETHETH) {
+        return bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
+    } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNETH) {
+        return bosonRouterContract.requestCreateOrderTKNETH(SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue });
+    } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNBSN) {
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
+
+        return bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
+            SMART_CONTRACTS.BosonTokenContractAddress,
+            SMART_CONTRACTS.BosonTokenContractAddress,
+            txValue.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            dataArr
+        );
+    } else if (currencyCombination === PAYMENT_METHODS_LABELS.ETHBSN) {
+        //ToDo: Split functionality in two step, first sign, then send tx
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
+
+        return bosonRouterContract.requestCreateOrderETHTKNWithPermit(
+            SMART_CONTRACTS.BosonTokenContractAddress,
+            txValue.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            dataArr
+        );
+    } else {
+        console.error(`Currencies combination not found ${ currencyCombination }`);
+        throw new Error('Something went wrong')
+    }
+};
+
+const paymentTypeResolver = (priceCurrency, depositsCurrency) => {
+    switch(priceCurrency + depositsCurrency) {
+        case(PAYMENT_METHODS_LABELS.ETHETH): {
+            return PAYMENT_METHODS.ETHETH
+        }
+        case(PAYMENT_METHODS_LABELS.ETHBSN): {
+            return PAYMENT_METHODS.ETHBSN;
+        }
+        case(PAYMENT_METHODS_LABELS.BSNETH): {
+            return PAYMENT_METHODS.BSNETH;
+        }
+        case(PAYMENT_METHODS_LABELS.BSNBSN): {
+            return PAYMENT_METHODS.BSNBSN;
+        }
+        default:{
+            throw new Error('Unknown currency combination')
+        }
+    }
 }

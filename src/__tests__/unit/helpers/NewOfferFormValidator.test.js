@@ -277,7 +277,7 @@ describe("NewOfferFormValidator - Seller deposit validation", () => {
             [NAME.PRICE]: 1,
             [NAME.PRICE_C]: "ETH",
             [NAME.SELLER_DEPOSIT]: 1,
-            [NAME.SELLER_DEPOSIT_C]: "ETH"
+            [NAME.DEPOSITS_C]: "ETH"
         };
 
         const existingErrors = [];
@@ -304,7 +304,7 @@ describe("NewOfferFormValidator - Seller deposit validation", () => {
             [NAME.PRICE]: 1,
             [NAME.PRICE_C]: "ETH",
             [NAME.SELLER_DEPOSIT]: -0.1, // Todo check why 0 doesn't fail; must be below 0
-            [NAME.SELLER_DEPOSIT_C]: "ETH"
+            [NAME.DEPOSITS_C]: "ETH"
         };
 
         const existingErrors = [];

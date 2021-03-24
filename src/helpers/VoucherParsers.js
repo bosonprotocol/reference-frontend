@@ -3,6 +3,7 @@ import * as ethers from "ethers";
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { MODAL_TYPES, STATUS } from "../helpers/Dictionary";
 import { ModalResolver } from "../contexts/Modal";
+import { PAYMENT_METHODS } from "../hooks/configs";
 
 
 export async function fetchVoucherSets() {
@@ -14,7 +15,7 @@ export async function fetchVoucherSets() {
 
 export const prepareVoucherSetData = (rawVoucherSets) => {
   let parsedVoucherSets = [];
-  
+
   if(!rawVoucherSets) return
 
   for (const voucherSet of rawVoucherSets.voucherSupplies) {
@@ -31,6 +32,8 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
           description: voucherSet.description,
           expiryDate: voucherSet.expiryDate,
           location: voucherSet.location,
+          priceCurrency: voucherSet.priceCurrency,
+          sellerDepositCurrency: voucherSet.sellerDepositCurrency,
           offeredDate: voucherSet.offeredDate,
           sellerDeposit: ethers.utils.formatEther(voucherSet.sellerDeposit.$numberDecimal),
           startDate: voucherSet.startDate,
@@ -41,6 +44,7 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
           __v: voucherSet.__v,
           _id: voucherSet._id,
           _tokenIdSupply: voucherSet._tokenIdSupply,
+          paymentType: voucherSet._paymentType ? voucherSet._paymentType : PAYMENT_METHODS.ETHETH
       };
 
       parsedVoucherSets.push(parsedVoucherSet)
@@ -50,60 +54,48 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
 }
 
 export const prepareAccountVoucherSetData = (rawVoucherSets) => {
-  let parsedVoucherSets = [];
-  
   if(!rawVoucherSets) return
 
-  for (const voucherSet of rawVoucherSets.voucherSupplies) {
-      let parsedVoucherSet = {
-          _id: voucherSet._id,
-          title: voucherSet.title,
-          image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-          price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-          qty: voucherSet.qty,
-          startDate: voucherSet.startDate,
-          category: voucherSet.category,
-          description: voucherSet.description,
-          expiryDate: voucherSet.expiryDate,
-          visible: voucherSet.visible,
-          currency: voucherSet.currency ? voucherSet._currency : 'ETH',
-          voucherOwner: voucherSet.voucherOwner,
-      };
-
-      parsedVoucherSets.push(parsedVoucherSet)
-  }
+  const parsedVoucherSets = rawVoucherSets.voucherSupplies.map(voucherSet => ({
+    _id: voucherSet._id,
+    title: voucherSet.title,
+    image: voucherSet.imagefiles[0]?.url ? voucherSet.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+    price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+    qty: voucherSet.qty,
+    startDate: voucherSet.startDate,
+    category: voucherSet.category,
+    description: voucherSet.description,
+    expiryDate: voucherSet.expiryDate,
+    visible: voucherSet.visible,
+    currency: voucherSet.currency ? voucherSet._currency : 'ETH',
+    voucherOwner: voucherSet.voucherOwner,
+  }))
 
   return parsedVoucherSets
 }
 
 export const prepareVoucherData = (rawVouchers) => {
-  let parsedVouchers = [];
-  
   if(!rawVouchers) return
 
-  for (const voucher of rawVouchers) {
-      let parsedVoucher = {
-          CANCELLED: voucher.CANCELLED,
-          COMMITTED: voucher.COMMITTED,
-          COMPLAINED: voucher.COMPLAINED,
-          EXPIRED: voucher.EXPIRED,
-          FINALIZED: voucher.FINALIZED,
-          REDEEMED: voucher.REDEEMED,
-          REFUNDED: voucher.REFUNDED,
-          id: voucher._id,
-          visible: voucher.visible,
-          title: voucher.title,
-          qty: voucher.qty,
-          price: ethers.utils.formatEther(voucher.price.$numberDecimal),
-          image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
-          expiryDate: voucher.expiryDate,
-          description: voucher.description,
-          category: voucher.category,
-          currency: voucher.currency ? voucher._currency : 'ETH',
-      };
-
-      parsedVouchers.push(parsedVoucher)
-  }
+  const parsedVouchers = rawVouchers.map(voucher => ({
+    CANCELLED: voucher.CANCELLED,
+    COMMITTED: voucher.COMMITTED,
+    COMPLAINED: voucher.COMPLAINED,
+    EXPIRED: voucher.EXPIRED,
+    FINALIZED: voucher.FINALIZED,
+    REDEEMED: voucher.REDEEMED,
+    REFUNDED: voucher.REFUNDED,
+    id: voucher._id,
+    visible: voucher.visible,
+    title: voucher.title,
+    qty: voucher.qty,
+    price: ethers.utils.formatEther(voucher.price.$numberDecimal),
+    image: voucher.imagefiles[0]?.url ? voucher.imagefiles[0].url : 'images/temp/product-block-image-temp.png',
+    expiryDate: voucher.expiryDate,
+    description: voucher.description,
+    category: voucher.category,
+    currency: voucher.currency ? voucher._currency : 'ETH',
+  }))
 
   return parsedVouchers
 }
@@ -152,7 +144,6 @@ export async function getParsedVouchersFromSupply(voucherSetId, account) {
 
   const authData = getAccountStoredInLocalStorage(account);
   const voucherFromSupply = await getVouchersFromSupply(voucherSetId, authData.authToken);
-
   return voucherFromSupply ? voucherFromSupply : undefined
 }
 
@@ -188,11 +179,11 @@ export const prepareVoucherDetails = (rawVoucher) => {
 };
 
 export async function initVoucherDetails(account, modalContext, getVoucherDetails, voucherId) {
-  
+
   if (!account) {
     return;
   }
-  
+
   const authData = getAccountStoredInLocalStorage(account);
 
   if (!authData.activeToken) {
@@ -205,22 +196,22 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
   }
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
-  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);  
+  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
   if(parsedVoucher) return parsedVoucher
 }
 
 export async function addNewVoucher(account, getVoucherDetails, voucherId, arrayOfAllVouchers) {
-  
+
   if (!account) {
     return;
   }
-  
+
   const authData = getAccountStoredInLocalStorage(account);
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
-  
-  if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher) 
+
+  if(parsedVoucher) arrayOfAllVouchers.push(parsedVoucher)
 }
 
 export const determineCurrentStatusOfVoucher = (voucherDetails) => {

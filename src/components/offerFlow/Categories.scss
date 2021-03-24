@@ -3,9 +3,10 @@
 
   ul {
     li {
-      padding: 10px 0;
+      margin: 10px 0;
       cursor: pointer;
       transition: 0.18s ease-in-out;
+      min-height: 40px;
 
       img {
         margin-right: 17px;

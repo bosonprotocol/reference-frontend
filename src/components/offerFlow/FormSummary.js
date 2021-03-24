@@ -9,17 +9,17 @@ import { ethers } from 'ethers'
 
 function FormSummary() {
   const sellerContext = useContext(SellerContext)
-  const { 
-    category, 
-    title, 
-    description, 
-    quantity, 
-    start_date, 
-    end_date, 
+  const {
+    category,
+    title,
+    description,
+    quantity,
+    start_date,
+    end_date,
     price,
     price_currency,
     seller_deposit,
-    seller_deposit_currency, 
+    deposits_currency,
     buyer_deposit,
     image,
   } = sellerContext.state.offeringData
@@ -29,8 +29,8 @@ function FormSummary() {
 
   const tablePrices = [
     (price && price_currency) && ['Payment Price', ethers.utils.formatEther(price) + price_currency],
-    (buyer_deposit && price_currency) && ['Buyer’s Deposit', ethers.utils.formatEther(buyer_deposit) + price_currency],
-    (seller_deposit && seller_deposit_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, (ethers.utils.formatEther(seller_deposit) * quantity) + seller_deposit_currency],
+    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, (ethers.utils.formatEther(buyer_deposit) * quantity) + deposits_currency],
+    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, (ethers.utils.formatEther(seller_deposit) * quantity) + deposits_currency],
   ]
 
   const tableDate = [

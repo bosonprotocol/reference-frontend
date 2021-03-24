@@ -34,6 +34,7 @@ export const CONTROL = {
     DISPLAY_NAVIGATION: 'display-navigation',
     DISPLAY_BOTTOM_NAVIGATION: 'display-bottom-navigation',
     CHECK_DATA_UPDATE: 'check-for-data-update',
+    TOGGLE_LOADING: 'toggle-loading',
 }
 
 // ROUTE strings are used to navigate to url
@@ -81,7 +82,7 @@ export const NAME = {
     PRICE_C: 'price_currency',
     PRICE: 'price',
     PRICE_SUFFIX: 'price_suffix',
-    SELLER_DEPOSIT_C: 'seller_deposit_currency',
+    DEPOSITS_C: 'deposits_currency',
     SELLER_DEPOSIT: 'seller_deposit',
     SELLER_SUFFIX: 'seller_suffix',
     BUYER_DEPOSIT: 'buyer_deposit',
