@@ -27,8 +27,8 @@ function FormSummary() {
 
   const tablePrices = [
     (price && price_currency) && ['Payment Price', ethers.utils.formatEther(price) + price_currency],
-    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(ethers.BigNumber.from(buyer_deposit)) * quantity) + deposits_currency],
-    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(ethers.BigNumber.from(seller_deposit)) * quantity) + deposits_currency],
+    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, totalDepositCalcEth(buyer_deposit, quantity) + deposits_currency],
+    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, totalDepositCalcEth(seller_deposit, quantity) + deposits_currency],
   ]
 
   const tableDate = [
@@ -53,6 +53,23 @@ function FormSummary() {
       </div>
     </div>
   )
+}
+
+/**
+ * Calculates total (price * quantity) in ETH.
+ * Required due to last digit shift in ethers multiplication.
+ * @param value The value to be multiplied by the quantity
+ * @param quantity The quantity
+ * @returns {string} Total in ETH - formatted
+ */
+function totalDepositCalcEth(value, quantity) {
+  const weiToEth = 1000000000000000000;
+  const newValue = ethers.utils.formatEther(value);
+  const newDeposit = ethers.utils.parseEther(quantity.toString());
+  const totalInWei = newValue * newDeposit;
+  const totalDeposit = totalInWei / weiToEth;
+
+  return exponentToDecimal(totalDeposit.toString());
 }
 
 export default FormSummary
