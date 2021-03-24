@@ -35,6 +35,7 @@ export function ActivityAccountVouchers({title, voucherSetId, block}) {
 
         getAccountVouchers(account, modalContext).then(result => {
             setLoading(0);
+            console.log(result)
             setAccountVouchers(result)
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,7 +51,6 @@ export function ActivityVoucherSetView() {
 
     const voucherSetId = locationPath[locationPath.length -2]
     const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
-    console.log(globalContext.state.allVoucherSets)
 
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
@@ -62,14 +62,20 @@ export function ActivityVoucherSetView() {
 
 export function ActivityVoucherSets() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
+    const globalContext = useContext(GlobalContext);
     const { account } = useWeb3React();
 
     useEffect(() => {
         getParsedAccountVoucherSets(account).then(voucherSets => {
+            console.log(voucherSets)
             if(voucherSets) setVoucherBlocks(voucherSets)
         })
 
     }, [account])
+
+    useEffect(() => {
+        console.log(globalContext.state.allVoucherSets)
+    }, [voucherBlocks])
 
     
     return <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/>
@@ -214,6 +220,7 @@ export const VoucherSetBlock = (props) => {
     const { title, image, price, qty, _id, openDetails, paymentType } = props
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
+
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
@@ -243,7 +250,7 @@ export const SingleVoucherBlock = (props) => {
     const { voucherSetId, title, image, price, id, _id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED, paymentType } = props
 
-    // const [currency, setCurrency]
+    // const [currency, setCurrency]    
     const statusOrder = {
         'COMMITTED': new Date(COMMITTED).getTime(),
         'REDEEMED': new Date(REDEEMED).getTime(),

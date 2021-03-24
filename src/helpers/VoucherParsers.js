@@ -119,6 +119,7 @@ export async function getAccountVouchers(account, modalContext) {
 
 
   const allAccountVouchers = await getVouchers(authData.authToken);
+  console.log(allAccountVouchers.voucherData)
   const vouchersParsed = allAccountVouchers.voucherData && prepareVoucherData(allAccountVouchers.voucherData)
 
   return vouchersParsed ? vouchersParsed : undefined
@@ -144,6 +145,7 @@ export async function getParsedVouchersFromSupply(voucherSetId, account) {
 
   const authData = getAccountStoredInLocalStorage(account);
   const voucherFromSupply = await getVouchersFromSupply(voucherSetId, authData.authToken);
+  
   return voucherFromSupply ? voucherFromSupply : undefined
 }
 
@@ -162,7 +164,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
       expiryDate: rawVoucher.expiryDate,
       category: rawVoucher.category,
       voucherOwner: rawVoucher.voucherOwner,
-      paymentType: rawVoucher.paymentType,
+      paymentType: rawVoucher?.paymentType ? rawVoucher?.paymentType : 1,
       holder: rawVoucher._holder,
       CANCELLED: rawVoucher.CANCELLED,
       COMMITTED: rawVoucher.COMMITTED,
