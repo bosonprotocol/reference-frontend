@@ -444,16 +444,20 @@
 }
 
 .depositsWarning {
-  background: #2A3542;
-  width: 200px;
+  width: 331px;
   padding: 6px;
-  margin-left: 65px;
   margin-top: 10px;
-  color: #FA5B66;
+  line-height: 112.4%;
+  background: #2A3542;
+  border-radius: 4px;
   font-family: Barlow;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
-  line-height: 112.4%;
-  
+  text-align: center;
+  color: #FFFFFF;
+
+  span {
+    margin-left: 11px;
+  }
 }
