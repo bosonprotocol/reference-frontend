@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ethers } from "ethers";
+import {BigNumber, ethers} from "ethers";
 
 import { TableRow, DateTable } from "../shared/TableContent";
 import { SellerContext } from "../../contexts/Seller";
@@ -27,8 +27,8 @@ function FormSummary() {
 
   const tablePrices = [
     (price && price_currency) && ['Payment Price', ethers.utils.formatEther(price) + price_currency],
-    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(buyer_deposit) * quantity) + deposits_currency],
-    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(seller_deposit) * quantity) + deposits_currency],
+    (buyer_deposit && deposits_currency) && [`Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(ethers.BigNumber.from(buyer_deposit)) * quantity) + deposits_currency],
+    (seller_deposit && deposits_currency) && [`Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? 's' : ''}`, exponentToDecimal(ethers.utils.formatEther(ethers.BigNumber.from(seller_deposit)) * quantity) + deposits_currency],
   ]
 
   const tableDate = [
