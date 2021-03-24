@@ -65,8 +65,8 @@ function FormSummary() {
 function totalDepositCalcEth(value, quantity) {
   const weiToEth = 1000000000000000000;
   const newValue = ethers.utils.formatEther(value);
-  const newDeposit = ethers.utils.parseEther(quantity.toString());
-  const totalInWei = newValue * newDeposit;
+  const newQuantity = ethers.utils.parseEther(quantity.toString());
+  const totalInWei = newValue * newQuantity;
   const totalDeposit = totalInWei / weiToEth;
 
   return exponentToDecimal(totalDeposit.toString());
