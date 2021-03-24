@@ -73,7 +73,7 @@ export function exponentToDecimal(num) {
         while (mag++) {
             z += '0';
         }
-        return z + str.replace(/^\-/,'');
+        return z + str.replace(/^\/-/,'');
     }
 
     mag -= str.length;
