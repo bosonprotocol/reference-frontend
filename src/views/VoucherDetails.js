@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
+import "./VoucherDetails.scss";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
