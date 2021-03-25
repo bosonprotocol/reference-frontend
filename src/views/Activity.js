@@ -216,9 +216,8 @@ function ActivityView(props) {
 export const VoucherSetBlock = (props) => {
     const [expand,] = useState(1)
     const { title, image, price, qty, _id, openDetails, paymentType } = props
-    const mockPaymentType = paymentType ? paymentType : 1
-    const currency = mockPaymentType === 1 || mockPaymentType === 2 ? 'ETH' : 'BSN';
-    const currencyIcon = mockPaymentType === 1 || mockPaymentType === 2 ? <IconEth /> : <IconBsn />
+    const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
+    const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
@@ -262,10 +261,8 @@ export const SingleVoucherBlock = (props) => {
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
 
-    const mockPaymentType = paymentType ? paymentType : 1
-
-    const currency = mockPaymentType === 1 || mockPaymentType === 2 ? 'ETH' : 'BSN';
-    const currencyIcon = mockPaymentType === 1 || mockPaymentType === 2 ? <IconEth /> : <IconBsn />
+    const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
+    const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 
     return (
         <div className={`voucher-block flex ${voucherSetId ? 'supply' : ''}`}>
