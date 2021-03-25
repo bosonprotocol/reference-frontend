@@ -72,8 +72,7 @@ export function useEagerConnect() {
     const [tried, setTried] = useState(false);
 
     useEffect(() => {
-        const lastActiveConnectorType = localStorage.getItem('previous-connector')
-        console.log(lastActiveConnectorType);
+        const lastActiveConnectorType = localStorage.getItem('previous-connector');
 
         if (lastActiveConnectorType === CONNECTOR_TYPES.WALLET_CONNECT) {
             const walletConnectData = localStorage.getItem('walletconnect');
