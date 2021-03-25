@@ -154,7 +154,7 @@ export function WalletConnect({
                     name={ CONNECTOR_TYPES.METAMASK }
                     imageName={ MetaMaskLogo }
                     pageLoading={ pageLoading }
-                    isActive={ connector === injected }
+                    isActive={ connector === injected && active }
                     onClick={ () => {
                         onConnectionClicked("MetaMask")
                     } }
@@ -163,7 +163,7 @@ export function WalletConnect({
                     name={ CONNECTOR_TYPES.WALLET_CONNECT }
                     imageName={ WalletConnectLogo }
                     pageLoading={ pageLoading }
-                    isActive={ connector === walletconnect }
+                    isActive={ connector === walletconnect && active }
                     onClick={ () => {
                         // if the user has already tried to connect, manually reset the connector
                         if (connector?.walletConnectProvider?.wc?.uri) {
