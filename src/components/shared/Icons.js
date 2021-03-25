@@ -40,6 +40,14 @@ export const IconDeposit = ({ color }) => (
   </svg>
 )
 
+export const IconWarning = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+  <circle cx="7" cy="7" r="7" fill="#77F2BC"/>
+  <rect x="6" y="2" width="2" height="7" rx="1" fill="#2A3542"/>
+  <rect x="6" y="10" width="2" height="2" rx="1" fill="#2A3542"/>
+  </svg>
+)
+
 export const IconQR = ({ color, size, noBorder }) => (
   <svg width={size ? (size).toString() : '42'} height={size ? (size).toString() : '42'} viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="13.2852" y="13.2854" width="6.93603" height="6.93603" rx="2.19032" fill={color ? color : '#B9CDE3'}/>

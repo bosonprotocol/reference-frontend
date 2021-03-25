@@ -71,14 +71,19 @@ function FormPrice({
   }
 
   const validateQuantity = (e) => {
-    const value = parseInt(e.target.value)
+    const value = parseInt(e.target.value);
 
-    if(value < 10000 && !isNaN(value)) {
-      quantityValueReceiver(value)
-      e.target.value = value
+    if (Number.isInteger(value)) {
+      if (value < 10000) {
+        quantityValueReceiver(value);
+        e.target.value = value;
+      } else {
+        e.target.value = '';
+        quantityValueReceiver('');
+      }
     } else {
-      e.target.value = ''
-      quantityValueReceiver('')
+      e.target.value = '';
+      quantityValueReceiver('');
     }
   }
 

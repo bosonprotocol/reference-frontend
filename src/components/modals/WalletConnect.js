@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useContext, useState } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
-import Web3 from "web3";
 import { usePrevious } from "../../hooks";
-import { shortenAddress } from "../../utils";
+import { ChainLabels, shortenAddress } from "../../utils";
 // import Modal from "../shared/Modal";
 import { injected, RINKEBY_ID, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
@@ -21,6 +20,11 @@ export const WALLET_VIEWS = {
     OPTIONS_SECONDARY: "options_secondary",
     ACCOUNT: "account",
     PENDING: "pending",
+};
+
+export const CONNECTOR_TYPES = {
+    METAMASK: "MetaMask",
+    WALLET_CONNECT: "WalletConnect"
 };
 
 export function getWalletTitle({ account, walletView, setWalletView }) {
@@ -124,7 +128,7 @@ export function WalletConnect({
 
     function onConnectionClicked(name) {
         loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 1))
-        if (name === "WalletConnect") {
+        if (name === CONNECTOR_TYPES.WALLET_CONNECT) {
             const walletConnectData = localStorage.getItem('walletconnect')
 
             const walletConnectDataObject = JSON.parse(walletConnectData);
@@ -136,6 +140,7 @@ export function WalletConnect({
         }
 
         const current = connectorsByName[name];
+        localStorage.setItem('previous-connector', name)
         activate(current).then(() => {
             loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
         });
@@ -143,28 +148,28 @@ export function WalletConnect({
 
     return (
         <>
-            { account ? <WalletAccount loadingContext={loadingContext}/> : null }
+            { account ? <WalletAccount loadingContext={ loadingContext }/> : null }
             <div className="wallets">
                 <WalletListItem
-                    name={ "MetaMask" }
+                    name={ CONNECTOR_TYPES.METAMASK }
                     imageName={ MetaMaskLogo }
-                    pageLoading={pageLoading}
-                    isActive={ connector === injected }
+                    pageLoading={ pageLoading }
+                    isActive={ connector === injected && active }
                     onClick={ () => {
                         onConnectionClicked("MetaMask")
                     } }
                 />
                 <WalletListItem
-                    name={ "WalletConnect" }
+                    name={ CONNECTOR_TYPES.WALLET_CONNECT }
                     imageName={ WalletConnectLogo }
-                    pageLoading={pageLoading}
-                    isActive={ connector === walletconnect }
+                    pageLoading={ pageLoading }
+                    isActive={ connector === walletconnect && active }
                     onClick={ () => {
                         // if the user has already tried to connect, manually reset the connector
                         if (connector?.walletConnectProvider?.wc?.uri) {
                             connector.walletConnectProvider = undefined;
                         }
-                        onConnectionClicked("WalletConnect")
+                        onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT)
                     } }
                 />
             </div>
@@ -212,7 +217,7 @@ function WalletListItem({
                                  alt="Active wallet"/> Connected
                         </div>
                     ) :
-                    <div className={`button gray ${pageLoading ? 'is-loading' : ''}`} role="button">
+                    <div className={ `button gray ${ pageLoading ? 'is-loading' : '' }` } role="button">
                         CONNECT
                     </div>
                 }
@@ -221,11 +226,8 @@ function WalletListItem({
     );
 }
 
-function WalletAccount({loadingContext}) {
-    const { account, connector } = useWeb3React();
-    const [connectedNetowrk, setConnectedNetowrk] = useState()
-    const web3 = new Web3(window.ethereum);
-
+function WalletAccount({ loadingContext }) {
+    const { account, connector, chainId } = useWeb3React();
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -243,19 +245,12 @@ function WalletAccount({loadingContext}) {
         <span style={ { marginLeft: "4px" } }>Copy Address</span>
     </CopyHelper>
 
-
-    useEffect(() => {
-        web3?.eth?.net?.getNetworkType()?.then(netId => {
-            setConnectedNetowrk(netId)
-        })
-    }, [])
-
     return (
         <>
             <div className="connected-wallet">
                 <div className="address relative">
                     <div className="netowrk-info flex center">
-                        <span className={`net-name`}>{connectedNetowrk}</span>
+                        <span className={ `net-name` }>{ ChainLabels[chainId] }</span>
                     </div>
                     <div className="url flex ai-center">{ getStatusIcon() }{ shortenAddress(account) }</div>
                     <div className="copy">{ copyButton }</div>
