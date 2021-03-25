@@ -1,43 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
 
-import { useHistory } from "react-router"
-import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
+import ShowQR from "./ShowQR"
+import "./VoucherDetails.scss";
 
-import {
-    PAYMENT_METHODS,
-} from "../hooks/configs";
-
+import { useHistory } from "react-router";
+import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
-import { ModalResolver } from "../contexts/Modal";
-import { formatDate } from "../helpers/Format"
-import ContractInteractionButton from "../components/shared/ContractInteractionButton";
-import PopupMessage from "../components/shared/PopupMessage";
 import * as humanizeDuration from 'humanize-duration';
-import "./VoucherDetails.scss"
-
-import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent"
 import { HorizontalScrollView } from "rc-horizontal-scroll";
 
-import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
+import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
+import { PAYMENT_METHODS } from "../hooks/configs";
+import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { onAttemptToApprove } from "../hooks/approveWithPermit";
 
-import { useWeb3React } from "@web3-react/core";
+import { formatDate } from "../helpers/Format";
 import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helpers/Dictionary";
+import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
+
+import { ModalResolver } from "../contexts/Modal";
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import { NavigationContext, Action } from "../contexts/Navigation";
 
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
-
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
+import PopupMessage from "../components/shared/PopupMessage";
+import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent";
+import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram";
 import { IconQRScanner, IconWarning } from "../components/shared/Icons";
+
 import { calculateDifferenceInPercentage } from '../utils/math';
-import { onAttemptToApprove } from "../hooks/approveWithPermit";
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
-
-import ShowQR from "./ShowQR"
 
 const voucherPlaceholder = <div className="details-loading">
     <div className="title is-loading-2"></div>

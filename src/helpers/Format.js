@@ -50,3 +50,35 @@ export function formatDate(date, type) {
 
     return newFormat
 }
+
+/**
+ * Converts e-formatted numbers to decimal-formatted
+ * string.
+ * @param num The exponential formatted number
+ * @returns {string}
+ */
+export function exponentToDecimal(num) {
+    const data = String(num).split(/[eE]/);
+    if (data.length === 1) {
+        return data[0];
+    }
+
+    const sign = this < 0 ? '-' : '';
+    const str = data[0].replace('.', '');
+    let z = '';
+    let mag = Number(data[1]) + 1;
+
+    if (mag < 0) {
+        z = sign + '0.';
+        while (mag++) {
+            z += '0';
+        }
+        return z + str.replace(/^\/-/,'');
+    }
+
+    mag -= str.length;
+    while (mag--) {
+        z += '0';
+    }
+    return str + z;
+}
