@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import "./EscrowDiagram.scss"
 import PopupMessage from "../../components/shared/PopupMessage";
+import { exponentToDecimal } from "../../helpers/Format";
 
 function EscrowDiagram(props) {
     const [escrowData, setEscrowData] = useState({})
@@ -63,7 +64,7 @@ const EscrowRow = (props) => {
             <div className="block flex relative">
                 
                 {
-                    position.map((block, index) => block ? <div key={index} className={ `cell val position_${ index+1 } color_${ color }` }>{ `${block} ${currency}` }</div> : null) 
+                    position.map((block, index) => block ? <div key={index} className={ `cell val position_${ index+1 } color_${ color }` }>{ `${exponentToDecimal(block)} ${currency}` }</div> : null)
                 }
                 <div className="cell"></div>
                 <div className="cell"></div>
