@@ -22,6 +22,11 @@ export const WALLET_VIEWS = {
     PENDING: "pending",
 };
 
+export const CONNECTOR_TYPES = {
+    METAMASK: "MetaMask",
+    WALLET_CONNECT: "WalletConnect"
+};
+
 export function getWalletTitle({ account, walletView, setWalletView }) {
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
         return <h1 className="account-title">Account</h1>;
@@ -123,7 +128,7 @@ export function WalletConnect({
 
     function onConnectionClicked(name) {
         loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 1))
-        if (name === "WalletConnect") {
+        if (name === CONNECTOR_TYPES.WALLET_CONNECT) {
             const walletConnectData = localStorage.getItem('walletconnect')
 
             const walletConnectDataObject = JSON.parse(walletConnectData);
@@ -135,6 +140,7 @@ export function WalletConnect({
         }
 
         const current = connectorsByName[name];
+        localStorage.setItem('previous-connector', name)
         activate(current).then(() => {
             loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
         });
@@ -145,7 +151,7 @@ export function WalletConnect({
             { account ? <WalletAccount loadingContext={ loadingContext }/> : null }
             <div className="wallets">
                 <WalletListItem
-                    name={ "MetaMask" }
+                    name={ CONNECTOR_TYPES.METAMASK }
                     imageName={ MetaMaskLogo }
                     pageLoading={ pageLoading }
                     isActive={ connector === injected }
@@ -154,7 +160,7 @@ export function WalletConnect({
                     } }
                 />
                 <WalletListItem
-                    name={ "WalletConnect" }
+                    name={ CONNECTOR_TYPES.WALLET_CONNECT }
                     imageName={ WalletConnectLogo }
                     pageLoading={ pageLoading }
                     isActive={ connector === walletconnect }
@@ -163,7 +169,7 @@ export function WalletConnect({
                         if (connector?.walletConnectProvider?.wc?.uri) {
                             connector.walletConnectProvider = undefined;
                         }
-                        onConnectionClicked("WalletConnect")
+                        onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT)
                     } }
                 />
             </div>

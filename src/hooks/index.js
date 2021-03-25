@@ -4,13 +4,14 @@ import { useWeb3React } from "@web3-react/core";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
 import { NetworkContextName } from "../constants";
-import { injected } from "../connectors";
+import { injected, walletconnect } from "../connectors";
 import { parseLocalStorage } from "../utils";
 import {
     authenticateUser,
     createUnauthenticatedLocalStorageRecord,
     getAccountStoredInLocalStorage
 } from "./authenticate";
+import { CONNECTOR_TYPES } from "../components/modals/WalletConnect";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
@@ -71,6 +72,19 @@ export function useEagerConnect() {
     const [tried, setTried] = useState(false);
 
     useEffect(() => {
+        const lastActiveConnectorType = localStorage.getItem('previous-connector')
+        console.log(lastActiveConnectorType);
+
+        if (lastActiveConnectorType === CONNECTOR_TYPES.WALLET_CONNECT) {
+            const walletConnectData = localStorage.getItem('walletconnect');
+            const walletConnectDataObject = JSON.parse(walletConnectData);
+
+            if (walletConnectDataObject) {
+                activate(walletconnect);
+                return
+            }
+        }
+
         injected.isAuthorized().then((isAuthorized) => {
             if (isAuthorized) {
                 activate(injected, undefined, true).catch(() => {
