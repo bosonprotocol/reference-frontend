@@ -63,9 +63,16 @@ function FormPrice({
   }
 
   const updateValueIfValid = (event, valueReceiver) => {
+    const maxLength = 20; // 18 + 2 for the pre-decimal number and the decimal point
     if (!event || isNaN(parseInt(event.target.value)) || !isValid(event.target.value)) {
-      valueReceiver(null)
-      return;
+      if (event.target.value.length >= maxLength) {
+        event.target.value = event.target.value.substr(0, maxLength);
+        valueReceiver(ethers.utils.parseEther(event.target.value))
+        return;
+      } else {
+        valueReceiver(null)
+        return;
+      }
     }
     valueReceiver(ethers.utils.parseEther(event.target.value))
   }
