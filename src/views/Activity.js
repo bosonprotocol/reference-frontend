@@ -231,6 +231,7 @@ export const VoucherSetBlock = (props) => {
     const { title, image, price, qty, _id, openDetails, paymentType } = props
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
+
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
@@ -260,7 +261,7 @@ export const SingleVoucherBlock = (props) => {
     const { voucherSetId, title, image, price, id, _id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED, paymentType } = props
 
-    // const [currency, setCurrency]
+    // const [currency, setCurrency]    
     const statusOrder = {
         'COMMITTED': new Date(COMMITTED).getTime(),
         'REDEEMED': new Date(REDEEMED).getTime(),

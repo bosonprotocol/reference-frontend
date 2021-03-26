@@ -69,6 +69,7 @@ export const prepareAccountVoucherSetData = (rawVoucherSets) => {
     visible: voucherSet.visible,
     currency: voucherSet.currency ? voucherSet._currency : 'ETH',
     voucherOwner: voucherSet.voucherOwner,
+    paymentType: voucherSet._paymentType ?  voucherSet._paymentType : 1,
   }))
 
   return parsedVoucherSets
@@ -95,8 +96,9 @@ export const prepareVoucherData = (rawVouchers) => {
     description: voucher.description,
     category: voucher.category,
     currency: voucher.currency ? voucher._currency : 'ETH',
+    paymentType: voucher.paymentType ? voucher.paymentType : 1,
   }))
-
+  
   return parsedVouchers
 }
 
@@ -144,6 +146,7 @@ export async function getParsedVouchersFromSupply(voucherSetId, account) {
 
   const authData = getAccountStoredInLocalStorage(account);
   const voucherFromSupply = await getVouchersFromSupply(voucherSetId, authData.authToken);
+  
   return voucherFromSupply ? voucherFromSupply : undefined
 }
 
@@ -162,6 +165,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
       expiryDate: rawVoucher.expiryDate,
       category: rawVoucher.category,
       voucherOwner: rawVoucher.voucherOwner,
+      paymentType: rawVoucher?.paymentType ? rawVoucher?.paymentType : 1,
       holder: rawVoucher._holder,
       CANCELLED: rawVoucher.CANCELLED,
       COMMITTED: rawVoucher.COMMITTED,
@@ -197,6 +201,7 @@ export async function initVoucherDetails(account, modalContext, getVoucherDetail
 
   const rawVoucherDetails = await getVoucherDetails(voucherId, authData.authToken);
   const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
+
   if(parsedVoucher) return parsedVoucher
 }
 

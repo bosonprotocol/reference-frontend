@@ -114,6 +114,7 @@ function VoucherDetails(props) {
 
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
+
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 
     const paymentType = getProp('paymentType');
@@ -450,17 +451,17 @@ function VoucherDetails(props) {
             {
                 PAYMENT: {
                     title: 'PAYMENT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[0],
                     position: tablePositions.price,
                 },
                 BUYER_DEPOSIT: {
                     title: 'BUYER DEPOSIT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[1],
                     position: tablePositions.buyerDeposit,
                 },
                 SELLER_DEPOSIT: {
                     title: 'SELLER DEPOSIT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[1],
                     position: tablePositions.sellerDeposit,
                 },
             }
@@ -680,7 +681,6 @@ function VoucherDetails(props) {
     }, [voucherDetails, voucherSetDetails, account, actionPerformed, library, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired])
 
     useEffect(() => {
-
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
@@ -756,7 +756,7 @@ function VoucherDetails(props) {
         escrowData.then(res => {
             if(res && voucherStatus && statusBlocks) setPageLoading(0)
         })
-    }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails])
+    }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails, voucherDetails])
 
     useEffect(() => {
         const isNotVoucherSet = '/'+window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
