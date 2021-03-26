@@ -84,7 +84,7 @@ function FormPrice({
     const value = parseInt(e.target.value);
 
     if (Number.isInteger(value)) {
-      if (value < 10000) {
+      if (value < 100000000000000) {
         quantityValueReceiver(value);
         e.target.value = value;
       } else {
@@ -97,13 +97,26 @@ function FormPrice({
     }
   }
 
+  /**
+   * If the final character in an input field is
+   * a full-stop then this function removes it.
+   * To use, call it using "onBlur".
+   * @param e
+   */
+  const removePointOnLoseFocus = (e) => {
+    const lastChar = e.target.value.toString().substr(e.target.value.length - 1);
+    if (lastChar === ".") {
+      e.target.value = e.target.value.substr(0, e.target.value.length - 1);
+    }
+  }
+
   return (
     <div className="price">
       <div className="row">
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
           <div className="input focus" data-error={quantityErrorMessage}>
-            <input id="offer-quantity" type="number" min="1" max="10" onInput={(e) => validateQuantity(e)} />
+            <input id="offer-quantity" onInput={(e) => validateQuantity(e)} />
           </div>
         </div>
       </div>
@@ -114,7 +127,7 @@ function FormPrice({
             <Currencies inputValueHandler={priceCurrencyReceiver} />
             <div className="input relative focus" data-error={priceErrorMessage ? "" : null}>
               <input ref={priceInputRef} style={priceErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-price" onWheel={() => priceInputRef.current.blur()} onChange={(e) => updateValueIfValid(e, priceValueReceiver)} />
+                id="offer-price" onWheel={() => priceInputRef.current.blur()} onBlur={(e) => removePointOnLoseFocus(e)} onChange={(e) => updateValueIfValid(e, priceValueReceiver)} />
               {
                 depositsPriceLimits[priceCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[priceCurrency] ? calculateMaxForCurrency(priceCurrency) : null} {priceCurrency}</div>
@@ -138,7 +151,7 @@ function FormPrice({
             <Currencies inputValueHandler={sellerDepositCurrencyValueReceiver} />
             <div className="input relative focus" data-error={sellerDepositErrorMessage ? '' : null}>
               <input ref={sellersDepositInoutRef} style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
+                id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} onBlur={(e) => removePointOnLoseFocus(e)} onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
               {
                 depositsPriceLimits[depositsCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
@@ -159,7 +172,7 @@ function FormPrice({
           <div className="input relative focus" data-error={buyerDepositErrorMessage ? "" : null}>
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${depositsCurrency}`}</div>
             <input id="offer-buyer-deposit" ref={buyersDepositInputRef} style={buyerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-              onWheel={() => buyersDepositInputRef.current.blur()} name={NAME.BUYER_DEPOSIT} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
+              onWheel={() => buyersDepositInputRef.current.blur()} name={NAME.BUYER_DEPOSIT} onBlur={(e) => removePointOnLoseFocus(e)} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
             {
               depositsPriceLimits[depositsCurrency].max ?
                 <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
