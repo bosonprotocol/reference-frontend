@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
+import "./VoucherDetails.scss";
 import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -15,8 +16,8 @@ import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api
 import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
 import { onAttemptToApprove } from "../hooks/approveWithPermit";
 
+import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES, MESSAGE } from "../helpers/Dictionary";
 import { formatDate } from "../helpers/Format";
-import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helpers/Dictionary";
 import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
 
 import { ModalResolver } from "../contexts/Modal";
@@ -33,6 +34,8 @@ import { IconQRScanner, IconWarning } from "../components/shared/Icons";
 import { calculateDifferenceInPercentage } from '../utils/math';
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
+
+import MessageScreen from "../components/shared/MessageScreen"
 
 const voucherPlaceholder = <div className="details-loading">
     <div className="title is-loading-2"></div>
@@ -106,6 +109,8 @@ function VoucherDetails(props) {
     const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
     const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
     const [hideControlButtonsWaitPeriodExpired, setHideControlButtonsWaitPeriodExpired] = useState(false);
+    const [disablePage, setDisablePage] = useState(0);
+    const [cancelMessage, setCancelMessage] = useState(false);
 
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
@@ -177,6 +182,7 @@ function VoucherDetails(props) {
     },[voucherDetails, voucherSetDetails, library])
     // assign controlset to statuses
     const controlList = () => {
+        setDisablePage(0)
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
@@ -225,6 +231,19 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
             <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
         )
+
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMMITED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.FINALIZED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLANED_CANCELED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.VIEW_ONLY]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLAINED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REDEEMED]] = () => {
+            setDisablePage(1)
+            return null
+        }
 
         return CASE
     }
@@ -626,13 +645,29 @@ function VoucherDetails(props) {
         try {
             const tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
+
+            setCancelMessage({
+                messageType: MESSAGE.SUCCESS,
+                title: 'The voucher was cancelled',
+                link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: true},
+            })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
                 content: e.message + ' :233'
             }));
+
+            setCancelMessage({
+                messageType: MESSAGE.ERROR,
+                title: 'Error cancelation',
+                text: 'The voucher has not been canceled, please try again',
+                link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: false},
+            })
             return;
         }
 
@@ -678,21 +713,41 @@ function VoucherDetails(props) {
         }
     }, [voucherStatus && statusBlocks])
 
+    const cancelMessageCloseButton = (val, props) => {
+        setCancelMessage(val)
+        if(props.refresh) window.location.reload()
+    }
+
     const onCancelOrFaultVoucherSet = async () => {
 
         try {
             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
             setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
+
+            setCancelMessage({
+                messageType: MESSAGE.SUCCESS,
+                title: 'The voucher set was cancelled',
+                text: 'The vouchers have been canceled, except the ones that were committed',
+                link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: true},
+            })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
                 content: e.message
             }));
-            return;
-        }
 
-        history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
+            setCancelMessage({
+                messageType: MESSAGE.ERROR,
+                title: 'Error cancelation',
+                text: 'The set of vouchers has not been canceled, please try again',
+                link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: false},
+            })
+        }
     }
 
     useEffect(() => {
@@ -718,9 +773,10 @@ function VoucherDetails(props) {
 
     return (
         <>
+            {cancelMessage ? <MessageScreen {...cancelMessage} /> : null}
             { <PopupMessage {...popupMessage} />}
             {pageLoading ? pageLoadingPlaceholder : null}
-            <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
+            {!disablePage ? <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
                 {showQRCode ? <ShowQR setShowQRCode={setShowQRCode} voucherId={voucherDetails?.id} /> : null}
                 {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
@@ -781,6 +837,9 @@ function VoucherDetails(props) {
 
                 </div>
             </section>
+            :
+            <MessageScreen subprops={{button: 'HOME PAGE'}} messageType={MESSAGE.LOCKED} title="Invalid link" link={ROUTE.Home} />
+            }
         </>
     )
 }
