@@ -61,7 +61,6 @@ export function ActivityVoucherSetView() {
 
 export function ActivityVoucherSets() {
     const [voucherBlocks, setVoucherBlocks] = useState([])
-    const globalContext = useContext(GlobalContext);
     const { account } = useWeb3React();
 
     useEffect(() => {
@@ -70,10 +69,6 @@ export function ActivityVoucherSets() {
         })
 
     }, [account])
-
-    useEffect(() => {
-        console.log(globalContext.state.allVoucherSets)
-    }, [voucherBlocks])
 
     
     return <ActivityView voucherBlocks={ voucherBlocks } account={account} voucherType={ VOUCHER_TYPE.voucherSet }/>
@@ -137,6 +132,7 @@ function ActivityView(props) {
 
     useEffect(() => {
         const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+
 
         setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
         setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))

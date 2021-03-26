@@ -69,6 +69,7 @@ export const prepareAccountVoucherSetData = (rawVoucherSets) => {
     visible: voucherSet.visible,
     currency: voucherSet.currency ? voucherSet._currency : 'ETH',
     voucherOwner: voucherSet.voucherOwner,
+    paymentType: voucherSet._paymentType ?  voucherSet._paymentType : 1,
   }))
 
   return parsedVoucherSets
@@ -97,7 +98,7 @@ export const prepareVoucherData = (rawVouchers) => {
     currency: voucher.currency ? voucher._currency : 'ETH',
     paymentType: voucher.paymentType ? voucher.paymentType : 1,
   }))
-
+  
   return parsedVouchers
 }
 
