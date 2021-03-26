@@ -1,42 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-
-import { useHistory } from "react-router"
-import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
-
-import {
-    PAYMENT_METHODS,
-} from "../hooks/configs";
-
-
-import { Link } from "react-router-dom";
-
+import { useHistory } from "react-router";
+import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
-import { ModalResolver } from "../contexts/Modal";
-import { formatDate } from "../helpers/Format"
-import ContractInteractionButton from "../components/shared/ContractInteractionButton";
-import PopupMessage from "../components/shared/PopupMessage";
 import * as humanizeDuration from 'humanize-duration';
-import "./VoucherDetails.scss"
-
-import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent"
 import { HorizontalScrollView } from "rc-horizontal-scroll";
 
-import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
+import ShowQR from "./ShowQR"
+import "./VoucherDetails.scss";
 
-import { useWeb3React } from "@web3-react/core";
+import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
+import { PAYMENT_METHODS } from "../hooks/configs";
+import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { onAttemptToApprove } from "../hooks/approveWithPermit";
+
+import { formatDate } from "../helpers/Format";
 import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helpers/Dictionary";
+import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
+
+import { ModalResolver } from "../contexts/Modal";
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import { NavigationContext, Action } from "../contexts/Navigation";
 
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
+import PopupMessage from "../components/shared/PopupMessage";
+import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent";
+import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram";
+import { IconQRScanner, IconWarning } from "../components/shared/Icons";
 
-import { IconQRScanner } from "../components/shared/Icons";
 import { calculateDifferenceInPercentage } from '../utils/math';
-import { onAttemptToApprove } from "../hooks/approveWithPermit";
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
@@ -92,6 +86,7 @@ const voucherSetPlaceholder = <div className="details-loading voucher-set">
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
+    const [showQRCode, setShowQRCode] = useState(0)
     const [imageView, setImageView] = useState(0)
     const [pageLoading, setPageLoading] = useState(0)
     const [pageLoadingPlaceholder, setPageLoadingPlaceholder] = useState(voucherPlaceholder)
@@ -167,7 +162,7 @@ function VoucherDetails(props) {
         <div className="image-view-overlay flex center" onClick={ () => setImageView(0) }>
             <div className="button-container">
                 <div className="container">
-                    <div className="cancel new" onClick={ () => setImageView(0) }><span className="icon"></span></div>
+                    <div className="cancel new" onClick={ () => {setImageView(0)} }><span className="icon"></span></div>
                 </div>
             </div>
             <img src={ getProp('image') } alt=""/>
@@ -196,10 +191,10 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
                 <div className="action button refund" role="button" onClick={ () => onRefund() }>REFUND</div>
-                <Link
+                <div className="action button redeem" role="button" onClick={ () => setShowQRCode(1) }><IconQRScanner/> REDEEM</div>
+                {/* <Link
                     to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                    <div className="action button redeem" role="button"><IconQRScanner/> REDEEM</div>
-                </Link>
+                </Link> */}
             </div>
         )
 
@@ -702,6 +697,7 @@ function VoucherDetails(props) {
 
     useEffect(() => {
         if(voucherSetDetails) setPageLoading(0)
+        console.log(escrowData)
         escrowData &&
         escrowData.then(res => {
             if(res && voucherStatus && statusBlocks) setPageLoading(0)
@@ -726,6 +722,7 @@ function VoucherDetails(props) {
             { <PopupMessage {...popupMessage} />}
             {pageLoading ? pageLoadingPlaceholder : null}
             <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
+                {showQRCode ? <ShowQR setShowQRCode={setShowQRCode} voucherId={voucherDetails?.id} /> : null}
                 {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
@@ -756,7 +753,7 @@ function VoucherDetails(props) {
 
                         {
                             showDepositsDistributionWarningMessage ? 
-                            <div className="section depositsWarning"><span> Deposits will be distributed in 1 hour</span> </div>
+                            <div className="section depositsWarning flex center"><IconWarning /> <span> Deposits will be distributed in 1 hour</span> </div>
                              : null
                          }
                            

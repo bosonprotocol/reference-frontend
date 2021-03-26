@@ -10,6 +10,14 @@ export const ChainId = {
     KOVAN: 42,
 };
 
+export const ChainLabels = {
+    1: "MAINNET",
+    3: "ROPSTEN",
+    4: "RINKEBY",
+    5: "GÖRLI",
+    42: "KOVAN"
+};
+
 export function shortenAddress(address, chars = 4) {
     const parsed = isAddress(address);
     if (!parsed) {

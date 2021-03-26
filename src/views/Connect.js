@@ -21,22 +21,6 @@ const ACTION = {
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
     const context = useWeb3React();
-    const isAuthenticated = JSON.parse(localStorage.getItem("isAuthenticated"))
-    const [pageLoading, setPageLoading] = useState(0);
-
-    const pagePlaceholder = <div className="wallet-parent-palceholder">
-        <div className="wallet is-loading"></div>
-        <div className="connection">
-            <div className="row flex split">
-                <div className="left is-loading"></div>
-                <div className="right is-loading"></div>
-            </div>
-            <div className="row flex split">
-                <div className="left is-loading"></div>
-                <div className="right is-loading"></div>
-            </div>
-        </div>
-    </div>
 
     const {
         active,
@@ -68,24 +52,14 @@ export default function Connect() {
         }
     }, []);
 
-    useEffect(() => {
-        if(isAuthenticated === true && active === false) setPageLoading(1)
-    }, [active, triedEager])
-
-    useEffect(() => {
-        if(active) setPageLoading(0)
-    }, [active])
-
-    const ConnectedWallet = <WalletConnect pageLoading={pageLoading} getData={ACTION.GET_DATA} walletView={ walletView } setWalletView={ setWalletView }/>
+    const ConnectedWallet = <WalletConnect getData={ ACTION.GET_DATA } walletView={ walletView }
+                                           setWalletView={ setWalletView }/>
 
     return (
         <section className="connect activity">
             <div className="container l">
                 <h1>Wallet</h1>
-                {!pageLoading ?
-                    ConnectedWallet :
-                    pagePlaceholder
-                }
+                { ConnectedWallet }
             </div>
         </section>
     );
