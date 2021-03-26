@@ -131,14 +131,32 @@ function ActivityView(props) {
     }, [voucherBlocks, account])
 
     useEffect(() => {
-        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+        const sortVouchersToActiveAndInactive = async () => {
+            if (voucherType === VOUCHER_TYPE.voucherSet && resultVouchers) {
+                for (let i in resultVouchers) {
+                    const supply = await getParsedVouchersFromSupply(resultVouchers[i]._id, account);
 
-        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+                    let hasActive = false;
+                    for (let j = 0; j < supply?.vouchers?.length; j++) {
+                        if (!!supply?.vouchers[j].FINALIZED === false) {
+                            hasActive = true;
+                        }
+                    }
+                    resultVouchers[i].hasActiveVouchers = hasActive // check if there are active vouchers
+                }
+            }
 
-        if(account && isAuthenticated) {
-            setPageLoading(0)
+            const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+
+            setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+            setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+    
+            if(account && isAuthenticated) {
+                setPageLoading(0)
+            }
         }
+
+        sortVouchersToActiveAndInactive()
     }, [resultVouchers])
 
     const activityMessage = (tab) => {
@@ -254,6 +272,7 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
+    
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 
