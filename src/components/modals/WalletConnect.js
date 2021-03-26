@@ -238,11 +238,6 @@ function WalletAccount() {
     </CopyHelper>
 
     function removeWallet() {
-        localStorage.removeItem('walletconnect')
-        deactivate();
-    }
-
-    function changeWalletConnectedWithWalletConnect() {
         localStorage.removeItem('walletconnect');
         // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
         if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
@@ -250,6 +245,10 @@ function WalletAccount() {
         }
         deactivate();
         connector.deactivate();
+    }
+
+    function changeWalletConnectedWithWalletConnect() {
+        removeWallet();
         activate(walletconnect)
     }
 
