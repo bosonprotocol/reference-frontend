@@ -838,7 +838,7 @@ function VoucherDetails(props) {
                 </div>
             </section>
             :
-            <MessageScreen messageType={MESSAGE.LOCKED} title="It looks like you don't have access to this" link={ROUTE.Home} />
+            <MessageScreen subprops={{button: 'HOME PAGE'}} messageType={MESSAGE.LOCKED} title="Invalid link" link={ROUTE.Home} />
             }
         </>
     )
