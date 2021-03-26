@@ -131,27 +131,14 @@ function ActivityView(props) {
     }, [voucherBlocks, account])
 
     useEffect(() => {
-        const sortVouchersToActiveAndInactive = async () => {
-            if(voucherType === VOUCHER_TYPE.voucherSet && resultVouchers) {
-                for(let i in resultVouchers) {
-                    const supply = await getParsedVouchersFromSupply(resultVouchers[i]._id, account)
-                    resultVouchers[i].hasActiveVouchers = !!supply.vouchers.length
+        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
 
-                }
-            }
+        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
 
-            const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
-
-            setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-            setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-    
-            if(account && isAuthenticated) {
-                setPageLoading(0)
-            }
+        if(account && isAuthenticated) {
+            setPageLoading(0)
         }
-
-        sortVouchersToActiveAndInactive()
-
     }, [resultVouchers])
 
     const activityMessage = (tab) => {
@@ -267,6 +254,7 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
+console.log(props)
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 

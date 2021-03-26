@@ -33,6 +33,7 @@ export const PriceTable = (props) => {
   const dataCopy = setRows(data, 2)
 
   // const currenyIcon = currency ? 
+  console.log(data)
 
 
   const iconList = (currencyIcon) => [
