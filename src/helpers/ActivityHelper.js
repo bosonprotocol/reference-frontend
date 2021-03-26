@@ -19,6 +19,7 @@ export const sortBlocks = (blocksArray, voucherType) => {
 
   if(voucherType === VOUCHER_TYPE.voucherSet) {
     blocksArray.forEach(voucherSet => {
+      console.log(voucherSet)
       let quantity = voucherSet.qty > 0
       let activeVouchers = voucherSet.hasActiveVouchers
       let expired = new Date(voucherSet.expiryDate).getTime() < new Date().getTime()
