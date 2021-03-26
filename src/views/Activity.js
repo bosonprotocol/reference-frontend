@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import "./Activity.scss"
 
-import { GlobalContext } from '../contexts/Global'
+import { GlobalContext, Action } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
@@ -48,8 +48,19 @@ export function ActivityVoucherSetView() {
     const globalContext = useContext(GlobalContext);
     const locationPath = history.location.pathname.split('/')
 
-    const voucherSetId = locationPath[locationPath.length -2]
-    const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+    const [voucherSetId, setVoucherSetId] = useState()
+    const [block, setBlock] = useState()
+
+    useEffect(() => {
+        globalContext.dispatch(Action.fetchVoucherSets())
+    }, [])
+
+    useEffect(() => {
+        const getVoucherSet = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+
+        setVoucherSetId(locationPath[locationPath.length -2])
+        setBlock(getVoucherSet)
+    }, [globalContext.state.allVoucherSets, voucherSetId])
 
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
