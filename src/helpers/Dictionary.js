@@ -140,6 +140,7 @@ export const OFFER_FLOW_SCENARIO = populateOfferFlowScenario()
 export const MESSAGE = {
     SUCCESS: 'success',
     ERROR: 'error',
+    LOCKED: 'locked',
 }
 
 

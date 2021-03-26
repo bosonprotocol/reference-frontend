@@ -355,7 +355,10 @@
                     background-image: url('../images/icon-eth.png');
                   }
                   &.BSN {
-                    background-image: url('../images/icon-eth.png');
+                    background-image: url('../images/icon-bsn.png');
+                    background-repeat: no-repeat;
+                    width: 15px;
+                    background-position: center;
                   }
                 }
 

@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import "./Activity.scss"
 
-import { GlobalContext } from '../contexts/Global'
+import { GlobalContext, Action } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
@@ -48,8 +48,19 @@ export function ActivityVoucherSetView() {
     const globalContext = useContext(GlobalContext);
     const locationPath = history.location.pathname.split('/')
 
-    const voucherSetId = locationPath[locationPath.length -2]
-    const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+    const [voucherSetId, setVoucherSetId] = useState()
+    const [block, setBlock] = useState()
+
+    useEffect(() => {
+        globalContext.dispatch(Action.fetchVoucherSets())
+    }, [])
+
+    useEffect(() => {
+        const getVoucherSet = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+
+        setVoucherSetId(locationPath[locationPath.length -2])
+        setBlock(getVoucherSet)
+    }, [globalContext.state.allVoucherSets, voucherSetId])
 
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
@@ -131,20 +142,49 @@ function ActivityView(props) {
     }, [voucherBlocks, account])
 
     useEffect(() => {
-        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+        const sortVouchersToActiveAndInactive = async () => {
+            if (voucherType === VOUCHER_TYPE.voucherSet && resultVouchers) {
+                for (let i in resultVouchers) {
+                    const supply = await getParsedVouchersFromSupply(resultVouchers[i]._id, account);
 
-        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+                    let hasActive = false;
+                    for (let j = 0; j < supply?.vouchers?.length; j++) {
+                        if (!!supply?.vouchers[j].FINALIZED === false) {
+                            hasActive = true;
+                        }
+                    }
+                    resultVouchers[i].hasActiveVouchers = hasActive // check if there are active vouchers
+                }
+            }
 
-        if(account && isAuthenticated) {
-            setPageLoading(0)
+            const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+
+            setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+            setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+    
+            if(account && isAuthenticated) {
+                setPageLoading(0)
+            }
         }
+
+        sortVouchersToActiveAndInactive()
     }, [resultVouchers])
 
-    const activityMessage = (tab) => {
+    const activityMessageType = {
+        [VOUCHER_TYPE.accountVoucher]: {
+            active: 'active vouchers.',
+            inactive: 'inactive vouchers.',
+        },
+        [VOUCHER_TYPE.voucherSet]: {
+            active: 'open voucher sets.',
+            inactive: 'closed voucher sets.',
+        }
+    }
+
+    const activityMessage = (message) => {
         return account ?
         <div className="no-vouchers flex column center">
-        <p>You currently have no {`${tab?'active':'inactive'}`} vouchers.</p>
+        <p>You currently have no {message}</p>
         <IconActivityMessage />
         </div>
         :
@@ -184,7 +224,7 @@ function ActivityView(props) {
                                 {!pageLoading ?
                                     (activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
-                                    activityMessage(1))
+                                    activityMessage(activityMessageType[voucherType].active))
                                     :
                                     activityBlockPlaceholder
                                 }
@@ -193,7 +233,7 @@ function ActivityView(props) {
                                 {!pageLoading ?
                                     (inactiveVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
-                                    activityMessage())
+                                    activityMessage(activityMessageType[voucherType].inactive))
                                     :
                                     activityBlockPlaceholder
                                 }
@@ -213,6 +253,7 @@ export const VoucherSetBlock = (props) => {
     const { title, image, price, qty, _id, openDetails, paymentType } = props
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
+
     return (
         <Link to={!openDetails ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView : ROUTE.Activity + `/${_id}` + ROUTE.Details}>
         <div className={ `collapsible state_${ expand > 0 ? 'opened' : 'collapsed' }` }>
@@ -242,7 +283,7 @@ export const SingleVoucherBlock = (props) => {
     const { voucherSetId, title, image, price, id, _id, expiryDate,
     COMMITTED, REDEEMED, REFUNDED, COMPLAINED, CANCELLED, FINALIZED, paymentType } = props
 
-    // const [currency, setCurrency]
+    // const [currency, setCurrency]    
     const statusOrder = {
         'COMMITTED': new Date(COMMITTED).getTime(),
         'REDEEMED': new Date(REDEEMED).getTime(),
@@ -254,7 +295,7 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
-console.log(props)
+    
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 

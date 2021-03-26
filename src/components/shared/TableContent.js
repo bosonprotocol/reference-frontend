@@ -32,10 +32,6 @@ export const PriceTable = (props) => {
   const { data } = props
   const dataCopy = setRows(data, 2)
 
-  // const currenyIcon = currency ? 
-  console.log(data)
-
-
   const iconList = (currencyIcon) => [
     currencyIcon === 'ETH' ? <IconEth color="#5D6F84" /> : <IconBsn color="#5D6F84" />,
     <IconDeposit color="#5D6F84" />
