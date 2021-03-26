@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import * as humanizeDuration from 'humanize-duration';
 import { HorizontalScrollView } from "rc-horizontal-scroll";
+
+import ShowQR from "./ShowQR"
+import "./VoucherDetails.scss";
 
 import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
 import { PAYMENT_METHODS } from "../hooks/configs";
@@ -31,8 +33,6 @@ import { IconQRScanner, IconWarning } from "../components/shared/Icons";
 import { calculateDifferenceInPercentage } from '../utils/math';
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
-
-import "./VoucherDetails.scss";
 
 const voucherPlaceholder = <div className="details-loading">
     <div className="title is-loading-2"></div>
@@ -86,6 +86,7 @@ const voucherSetPlaceholder = <div className="details-loading voucher-set">
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
+    const [showQRCode, setShowQRCode] = useState(0)
     const [imageView, setImageView] = useState(0)
     const [pageLoading, setPageLoading] = useState(0)
     const [pageLoadingPlaceholder, setPageLoadingPlaceholder] = useState(voucherPlaceholder)
@@ -160,7 +161,7 @@ function VoucherDetails(props) {
         <div className="image-view-overlay flex center" onClick={ () => setImageView(0) }>
             <div className="button-container">
                 <div className="container">
-                    <div className="cancel new" onClick={ () => setImageView(0) }><span className="icon"></span></div>
+                    <div className="cancel new" onClick={ () => {setImageView(0)} }><span className="icon"></span></div>
                 </div>
             </div>
             <img src={ getProp('image') } alt=""/>
@@ -189,10 +190,10 @@ function VoucherDetails(props) {
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
                 <div className="action button refund" role="button" onClick={ () => onRefund() }>REFUND</div>
-                <Link
+                <div className="action button redeem" role="button" onClick={ () => setShowQRCode(1) }><IconQRScanner/> REDEEM</div>
+                {/* <Link
                     to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                    <div className="action button redeem" role="button"><IconQRScanner/> REDEEM</div>
-                </Link>
+                </Link> */}
             </div>
         )
 
@@ -721,6 +722,7 @@ function VoucherDetails(props) {
             { <PopupMessage {...popupMessage} />}
             {pageLoading ? pageLoadingPlaceholder : null}
             <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
+                {showQRCode ? <ShowQR setShowQRCode={setShowQRCode} voucherId={voucherDetails?.id} /> : null}
                 {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
