@@ -141,9 +141,15 @@ export function WalletConnect({
         activate(current);
     }
 
+    function walletConnectAccountChanged() {
+        onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT)
+    }
+
     return (
         <>
-            { account && active ? <WalletAccount/> : null }
+            { account && active ? <WalletAccount onWalletConnectAccountChanged={ () => {
+                walletConnectAccountChanged()
+            } }/> : null }
             <div className="wallets">
                 <WalletListItem
                     name={ CONNECTOR_TYPES.METAMASK }
@@ -218,7 +224,7 @@ function WalletListItem({
     );
 }
 
-function WalletAccount() {
+function WalletAccount({ onWalletConnectAccountChanged }) {
     const { account, connector, chainId, activate, deactivate } = useWeb3React();
 
     function getStatusIcon() {
@@ -249,7 +255,10 @@ function WalletAccount() {
 
     function changeWalletConnectedWithWalletConnect() {
         removeWallet();
-        activate(walletconnect)
+        activate(walletconnect).then(() => {
+                onWalletConnectAccountChanged()
+            }
+        );
     }
 
     return (
