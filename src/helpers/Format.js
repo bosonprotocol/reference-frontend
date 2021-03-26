@@ -93,8 +93,6 @@ export function exponentToDecimal(num) {
  * @returns {string} Total in ETH - formatted
  */
 export function totalDepositCalcEth(value, quantity) {
-    console.log(value)
-    console.log(quantity)
     if (!value || !quantity) {
         return "";
     }
