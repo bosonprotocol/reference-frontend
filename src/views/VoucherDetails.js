@@ -726,7 +726,6 @@ function VoucherDetails(props) {
 
     useEffect(() => {
         if(voucherSetDetails) setPageLoading(0)
-        console.log(escrowData)
         escrowData &&
         escrowData.then(res => {
             if(res && voucherStatus && statusBlocks) setPageLoading(0)
