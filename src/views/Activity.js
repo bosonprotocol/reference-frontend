@@ -131,14 +131,26 @@ function ActivityView(props) {
     }, [voucherBlocks, account])
 
     useEffect(() => {
-        const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+        const sortVouchersToActiveAndInactive = async () => {
+            if(voucherType === VOUCHER_TYPE.voucherSet && resultVouchers) {
+                for(let i in resultVouchers) {
+                    const supply = await getParsedVouchersFromSupply(resultVouchers[i]._id, account)
+                    resultVouchers[i].hasActiveVouchers = !!supply.vouchers.length // check if there are active vouchers
 
-        setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
-        setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+                }
+            }
 
-        if(account && isAuthenticated) {
-            setPageLoading(0)
+            const blocksSorted = sortBlocks(resultVouchers, voucherType, globalContext)
+
+            setActiveVouchers(blocksSorted.active?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+            setInactiveVouchers(blocksSorted.inactive?.sort((a, b) => getLastAction(a) > getLastAction(b) ? -1 : 1))
+    
+            if(account && isAuthenticated) {
+                setPageLoading(0)
+            }
         }
+
+        sortVouchersToActiveAndInactive()
     }, [resultVouchers])
 
     const activityMessage = (tab) => {
