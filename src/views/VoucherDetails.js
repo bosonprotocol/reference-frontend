@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-
-import ShowQR from "./ShowQR"
-import "./VoucherDetails.scss";
-
 import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import * as humanizeDuration from 'humanize-duration';
 import { HorizontalScrollView } from "rc-horizontal-scroll";
+
+import ShowQR from "./ShowQR"
+import "./VoucherDetails.scss";
 
 import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
 import { PAYMENT_METHODS } from "../hooks/configs";
@@ -162,7 +161,7 @@ function VoucherDetails(props) {
         <div className="image-view-overlay flex center" onClick={ () => setImageView(0) }>
             <div className="button-container">
                 <div className="container">
-                    <div className="cancel new" onClick={ () => {console.log('toggle'); setImageView(0)} }><span className="icon"></span></div>
+                    <div className="cancel new" onClick={ () => {setImageView(0)} }><span className="icon"></span></div>
                 </div>
             </div>
             <img src={ getProp('image') } alt=""/>
