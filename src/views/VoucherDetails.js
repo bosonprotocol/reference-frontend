@@ -644,13 +644,29 @@ function VoucherDetails(props) {
         try {
             const tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
+
+            setCancelMessage({
+                messageType: MESSAGE.SUCCESS,
+                title: 'The voucher was cancelled',
+                link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: true},
+            })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
                 content: e.message + ' :233'
             }));
+
+            setCancelMessage({
+                messageType: MESSAGE.ERROR,
+                title: 'Error cancelation',
+                text: 'The voucher has not been canceled, please try again',
+                link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: false},
+            })
             return;
         }
 
@@ -697,6 +713,11 @@ function VoucherDetails(props) {
         }
     }, [voucherStatus && statusBlocks])
 
+    const cancelMessageCloseButton = (val, props) => {
+        setCancelMessage(val)
+        if(props.refresh) window.location.reload()
+    }
+
     const onCancelOrFaultVoucherSet = async () => {
 
         try {
@@ -704,11 +725,12 @@ function VoucherDetails(props) {
             setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
 
             setCancelMessage({
-                type: MESSAGE.SUCCESS,
+                messageType: MESSAGE.SUCCESS,
                 title: 'The voucher set was cancelled',
                 text: 'The vouchers have been canceled, except the ones that were committed',
                 link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
-                setMessageType: setCancelMessage,
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: true},
             })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -718,18 +740,18 @@ function VoucherDetails(props) {
             }));
 
             setCancelMessage({
-                type: MESSAGE.ERROR,
+                messageType: MESSAGE.ERROR,
                 title: 'Error cancelation',
                 text: 'The set of vouchers has not been canceled, please try again',
                 link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
-                setMessageType: setCancelMessage,
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: false},
             })
         }
     }
 
     useEffect(() => {
         if(voucherSetDetails) setPageLoading(0)
-        console.log(escrowData)
         escrowData &&
         escrowData.then(res => {
             if(res && voucherStatus && statusBlocks) setPageLoading(0)
