@@ -313,6 +313,7 @@
       .screen {
         padding-bottom: 0;
         height: clamp(700px, 64vh, 100vh);
+        max-height: calc(100vh - 110px);
 
         .top {
           margin-top: #{'min(4vh, 86px)'};

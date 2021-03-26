@@ -17,8 +17,7 @@ import MessageScreen from "../components/shared/MessageScreen"
 import { setTxHashToSupplyId } from '../utils/tx-hash';
 import { useEffect } from 'react';
 
-function ShowQR(props) {
-    const voucherId = props.match.params.id;
+function ShowQR({voucherId, setShowQRCode}) {
     const { library, account } = useWeb3React();
     const modalContext = useContext(ModalContext);
     const [loading, setLoading] = useState(0);
@@ -33,6 +32,12 @@ function ShowQR(props) {
     const [messageText, setMessageText] = useState(errorSubMessage);
     
     const bosonRouterContract = useBosonRouterContract();
+
+    const goToDetails = () => {
+        window.location.reload(); 
+        setShowQRCode(false)
+        setMessageType(false)
+    }
 
     useEffect(() => {
         if(account) {
@@ -78,6 +83,11 @@ function ShowQR(props) {
             { loading ? <Loading/> : null }
             {   !messageType ?
                 <section className="show-qr-code static-page atomic-scoped flex ai-center">
+                    <div className="button-container">
+                        <div className="container">
+                            <div className="cancel new" onClick={ () => setShowQRCode(0) }><span className="icon"></span></div>
+                        </div>
+                    </div>
                     <div className="container l infinite">
                         <div className="wrapper w100 relative flex column center">
                             <div className="info show-qr flex column ai-center">
@@ -104,7 +114,7 @@ function ShowQR(props) {
                     title={messageType === 'success' ? successMessage : errorMessage} 
                     text={messageType === 'success' ? false : messageText} 
                     link={link}
-                    setMessageType={messageType === 'success' ? false : setMessageType}
+                    setMessageType={messageType === 'success' ? goToDetails : setMessageType}
                 />
             }
         </>
