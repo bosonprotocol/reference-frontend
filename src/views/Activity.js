@@ -272,7 +272,7 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
-// console.log(props)
+
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 
