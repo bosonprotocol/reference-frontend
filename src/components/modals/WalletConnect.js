@@ -13,7 +13,7 @@ import Identicon from "./Identicon";
 import CopyHelper from "../../copyHelper";
 import './WalletConnect.scss'
 import { WalletContext } from "../../contexts/Wallet";
-import { LoadingContext, Toggle, account as loadingAccount } from "../../contexts/Loading";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 
 export const WALLET_VIEWS = {
     OPTIONS: "options",
@@ -72,8 +72,7 @@ export function WalletConnect({
                                   onSuccess,
                                   setWalletView,
                                   walletView = WALLET_VIEWS.ACCOUNT,
-                                  getData,
-                                  pageLoading
+                                  getData
                               }) {
     const isMounted = useRef(false);
     const context = useWeb3React();
@@ -87,7 +86,6 @@ export function WalletConnect({
     } = context;
 
     const walletContext = useContext(WalletContext);
-    const loadingContext = useContext(LoadingContext);
     const connectorsByName = walletContext.walletState.connectorsByName;
 
     const previousAccount = usePrevious(account);
@@ -127,7 +125,6 @@ export function WalletConnect({
     }, []);
 
     function onConnectionClicked(name) {
-        loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 1))
         if (name === CONNECTOR_TYPES.WALLET_CONNECT) {
             const walletConnectData = localStorage.getItem('walletconnect')
 
@@ -141,19 +138,16 @@ export function WalletConnect({
 
         const current = connectorsByName[name];
         localStorage.setItem('previous-connector', name)
-        activate(current).then(() => {
-            loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0))
-        });
+        activate(current);
     }
 
     return (
         <>
-            { account ? <WalletAccount loadingContext={ loadingContext }/> : null }
+            { account && active ? <WalletAccount/> : null }
             <div className="wallets">
                 <WalletListItem
                     name={ CONNECTOR_TYPES.METAMASK }
                     imageName={ MetaMaskLogo }
-                    pageLoading={ pageLoading }
                     isActive={ connector === injected && active }
                     onClick={ () => {
                         onConnectionClicked("MetaMask")
@@ -162,7 +156,6 @@ export function WalletConnect({
                 <WalletListItem
                     name={ CONNECTOR_TYPES.WALLET_CONNECT }
                     imageName={ WalletConnectLogo }
-                    pageLoading={ pageLoading }
                     isActive={ connector === walletconnect && active }
                     onClick={ () => {
                         // if the user has already tried to connect, manually reset the connector
@@ -186,7 +179,6 @@ function WalletListItem({
                             imageName,
                             onClick,
                             isActive,
-                            pageLoading,
                             imageStyle = {},
                         }) {
     return (
@@ -217,7 +209,7 @@ function WalletListItem({
                                  alt="Active wallet"/> Connected
                         </div>
                     ) :
-                    <div className={ `button gray ${ pageLoading ? 'is-loading' : '' }` } role="button">
+                    <div className={ `button gray` } role="button">
                         CONNECT
                     </div>
                 }
@@ -226,8 +218,8 @@ function WalletListItem({
     );
 }
 
-function WalletAccount({ loadingContext }) {
-    const { account, connector, chainId } = useWeb3React();
+function WalletAccount() {
+    const { account, connector, chainId, activate, deactivate } = useWeb3React();
 
     function getStatusIcon() {
         if (connector === injected) {
@@ -245,6 +237,21 @@ function WalletAccount({ loadingContext }) {
         <span style={ { marginLeft: "4px" } }>Copy Address</span>
     </CopyHelper>
 
+    function removeWallet() {
+        localStorage.removeItem('walletconnect');
+        // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
+        if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
+            connector.walletConnectProvider = undefined
+        }
+        deactivate();
+        connector.deactivate();
+    }
+
+    function changeWalletConnectedWithWalletConnect() {
+        removeWallet();
+        activate(walletconnect)
+    }
+
     return (
         <>
             <div className="connected-wallet">
@@ -254,6 +261,15 @@ function WalletAccount({ loadingContext }) {
                     </div>
                     <div className="url flex ai-center">{ getStatusIcon() }{ shortenAddress(account) }</div>
                     <div className="copy">{ copyButton }</div>
+                    { connector === walletconnect ?
+                        <div className={ `wallet-connect-buttons-wrapper` }>
+                            <div className={ `button gray` } role="button"
+                                 onClick={ removeWallet }>Remove
+                            </div>
+                            <div className={ `button change gray` } role="button"
+                                 onClick={ changeWalletConnectedWithWalletConnect }>Change
+                            </div>
+                        </div> : null }
                 </div>
                 {/* <div className="control flex split">
                     <div className="button gray w50">REMOVE</div>
