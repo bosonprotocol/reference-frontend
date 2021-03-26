@@ -132,11 +132,17 @@ function ActivityView(props) {
 
     useEffect(() => {
         const sortVouchersToActiveAndInactive = async () => {
-            if(voucherType === VOUCHER_TYPE.voucherSet && resultVouchers) {
-                for(let i in resultVouchers) {
-                    const supply = await getParsedVouchersFromSupply(resultVouchers[i]._id, account)
-                    resultVouchers[i].hasActiveVouchers = !!supply.vouchers.length // check if there are active vouchers
+            if (voucherType === VOUCHER_TYPE.voucherSet && resultVouchers) {
+                for (let i in resultVouchers) {
+                    const supply = await getParsedVouchersFromSupply(resultVouchers[i]._id, account);
 
+                    let hasActive = false;
+                    for (let j = 0; j < supply?.vouchers?.length; j++) {
+                        if (!!supply?.vouchers[j].FINALIZED === false) {
+                            hasActive = true;
+                        }
+                    }
+                    resultVouchers[i].hasActiveVouchers = hasActive // check if there are active vouchers
                 }
             }
 
@@ -266,7 +272,7 @@ export const SingleVoucherBlock = (props) => {
     const statuses = statusOrder ? Object.entries(statusOrder)
     .sort(([,a],[,b]) => a-b)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {}) : null
-console.log(props)
+// console.log(props)
     const currency = paymentType === 1 || paymentType === 2 ? 'ETH' : 'BSN';
     const currencyIcon = paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />
 
