@@ -159,10 +159,21 @@ function ActivityView(props) {
         sortVouchersToActiveAndInactive()
     }, [resultVouchers])
 
-    const activityMessage = (tab) => {
+    const activityMessageType = {
+        [VOUCHER_TYPE.accountVoucher]: {
+            active: 'active vouchers.',
+            inactive: 'inactive vouchers.',
+        },
+        [VOUCHER_TYPE.voucherSet]: {
+            active: 'open voucher sets.',
+            inactive: 'closed voucher sets.',
+        }
+    }
+
+    const activityMessage = (message) => {
         return account ?
         <div className="no-vouchers flex column center">
-        <p>You currently have no {`${tab?'active':'inactive'}`} vouchers.</p>
+        <p>You currently have no {message}</p>
         <IconActivityMessage />
         </div>
         :
@@ -202,7 +213,7 @@ function ActivityView(props) {
                                 {!pageLoading ?
                                     (activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
-                                    activityMessage(1))
+                                    activityMessage(activityMessageType[voucherType].active))
                                     :
                                     activityBlockPlaceholder
                                 }
@@ -211,7 +222,7 @@ function ActivityView(props) {
                                 {!pageLoading ?
                                     (inactiveVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
-                                    activityMessage())
+                                    activityMessage(activityMessageType[voucherType].inactive))
                                     :
                                     activityBlockPlaceholder
                                 }
