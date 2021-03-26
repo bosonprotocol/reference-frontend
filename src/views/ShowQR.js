@@ -34,6 +34,7 @@ function ShowQR({voucherId, setShowQRCode}) {
     const bosonRouterContract = useBosonRouterContract();
 
     const goToDetails = () => {
+        window.location.reload(); 
         setShowQRCode(false)
         setMessageType(false)
     }
