@@ -5,6 +5,7 @@ import { SellerContext, getData } from "../../contexts/Seller"
 import Currencies from "./Currencies"
 
 import { NAME } from "../../helpers/Dictionary"
+import { totalDepositCalcEth, formatStringAsNumber } from "../../helpers/Format"
 import { ethers } from 'ethers'
 import { toFixed } from '../../utils/format-utils'
 
@@ -64,16 +65,18 @@ function FormPrice({
 
   const updateValueIfValid = (event, valueReceiver) => {
     const maxLength = 20; // 18 + 2 for the pre-decimal number and the decimal point
-    if (!event || isNaN(parseInt(event.target.value)) || !isValid(event.target.value)) {
-      if (event.target.value.length >= maxLength) {
-        event.target.value = event.target.value.substr(0, maxLength);
-        valueReceiver(ethers.utils.parseEther(event.target.value))
-        return;
-      } else {
-        valueReceiver(null)
-        return;
-      }
+
+    if (event.target.value.length >= maxLength) {
+      event.target.value = event.target.value.substr(0, maxLength); // restrict input length
     }
+
+    event.target.value = formatStringAsNumber(event.target.value); // restrict to numeric value with optional decimal value
+
+    if (!event || isNaN(parseInt(event.target.value)) || !isValid(event.target.value)) {
+      valueReceiver(null);
+      return;
+    }
+
     valueReceiver(ethers.utils.parseEther(event.target.value))
   }
 
@@ -111,7 +114,7 @@ function FormPrice({
             <Currencies inputValueHandler={priceCurrencyReceiver} />
             <div className="input relative focus" data-error={priceErrorMessage ? "" : null}>
               <input ref={priceInputRef} style={priceErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-price" type="number" min="0" onWheel={() => priceInputRef.current.blur()} onChange={(e) => updateValueIfValid(e, priceValueReceiver)} />
+                id="offer-price" onWheel={() => priceInputRef.current.blur()} onChange={(e) => updateValueIfValid(e, priceValueReceiver)} />
               {
                 depositsPriceLimits[priceCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[priceCurrency] ? calculateMaxForCurrency(priceCurrency) : null} {priceCurrency}</div>
@@ -135,7 +138,7 @@ function FormPrice({
             <Currencies inputValueHandler={sellerDepositCurrencyValueReceiver} />
             <div className="input relative focus" data-error={sellerDepositErrorMessage ? '' : null}>
               <input ref={sellersDepositInoutRef} style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} type="number" min="0" onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
+                id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
               {
                 depositsPriceLimits[depositsCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
@@ -156,7 +159,7 @@ function FormPrice({
           <div className="input relative focus" data-error={buyerDepositErrorMessage ? "" : null}>
             <div name={NAME.PRICE_SUFFIX} className="pseudo">{`${buyer} ${depositsCurrency}`}</div>
             <input id="offer-buyer-deposit" ref={buyersDepositInputRef} style={buyerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-              type="number" min="0" onWheel={() => buyersDepositInputRef.current.blur()} name={NAME.BUYER_DEPOSIT} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
+              onWheel={() => buyersDepositInputRef.current.blur()} name={NAME.BUYER_DEPOSIT} onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)} />
             {
               depositsPriceLimits[depositsCurrency].max ?
                 <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
@@ -188,7 +191,7 @@ const getLimitCalculationsBar = (amount, quantity, currency, errorMessage) => (
       </span>
     </p>
     <p className="field dual" style={{ padding: '15px 13px' }}>
-      {`=    ${ethers.utils.formatEther(amount.mul(quantity))} ${currency}`}
+      {`=    ${totalDepositCalcEth(amount, quantity)} ${currency}`}
     </p>
   </div>
 
