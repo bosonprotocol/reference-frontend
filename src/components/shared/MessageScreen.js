@@ -25,7 +25,7 @@ function MessageScreen({messageType, title, text, link, setMessageType, subprops
           <p className="description">{text}</p>
         </div>
         <div className="action">
-          <div className="button primary" onClick={()=> !setMessageType ? history.push(link) : setMessageType(false, subprops)}>{subprops.button ? subprops.button : 'CLOSE'}</div>
+          <div className="button primary" onClick={()=> !setMessageType ? history.push(link) : setMessageType(false, subprops)}>{subprops?.button ? subprops.button : 'CLOSE'}</div>
         </div>
       </div>
     </section>
