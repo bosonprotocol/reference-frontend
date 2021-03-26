@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import "./Activity.scss"
 
-import { GlobalContext } from '../contexts/Global'
+import { GlobalContext, Action } from '../contexts/Global'
 
 import { ROUTE } from "../helpers/Dictionary"
 
@@ -48,8 +48,19 @@ export function ActivityVoucherSetView() {
     const globalContext = useContext(GlobalContext);
     const locationPath = history.location.pathname.split('/')
 
-    const voucherSetId = locationPath[locationPath.length -2]
-    const block = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+    const [voucherSetId, setVoucherSetId] = useState()
+    const [block, setBlock] = useState()
+
+    useEffect(() => {
+        globalContext.dispatch(Action.fetchVoucherSets())
+    }, [])
+
+    useEffect(() => {
+        const getVoucherSet = globalContext.state.allVoucherSets.find(voucher => voucher.id === voucherSetId)
+
+        setVoucherSetId(locationPath[locationPath.length -2])
+        setBlock(getVoucherSet)
+    }, [globalContext.state.allVoucherSets, voucherSetId])
 
     return <section className="activity atomic-scoped">
         <div className="vouchers-container container">
@@ -159,10 +170,21 @@ function ActivityView(props) {
         sortVouchersToActiveAndInactive()
     }, [resultVouchers])
 
-    const activityMessage = (tab) => {
+    const activityMessageType = {
+        [VOUCHER_TYPE.accountVoucher]: {
+            active: 'active vouchers.',
+            inactive: 'inactive vouchers.',
+        },
+        [VOUCHER_TYPE.voucherSet]: {
+            active: 'open voucher sets.',
+            inactive: 'closed voucher sets.',
+        }
+    }
+
+    const activityMessage = (message) => {
         return account ?
         <div className="no-vouchers flex column center">
-        <p>You currently have no {`${tab?'active':'inactive'}`} vouchers.</p>
+        <p>You currently have no {message}</p>
         <IconActivityMessage />
         </div>
         :
@@ -202,7 +224,7 @@ function ActivityView(props) {
                                 {!pageLoading ?
                                     (activeVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ activeVouchers }/> :
-                                    activityMessage(1))
+                                    activityMessage(activityMessageType[voucherType].active))
                                     :
                                     activityBlockPlaceholder
                                 }
@@ -211,7 +233,7 @@ function ActivityView(props) {
                                 {!pageLoading ?
                                     (inactiveVouchers?.length > 0 && !!account?
                                     <ActiveTab voucherSetId={voucherSetId && voucherSetId} voucherType={voucherType} products={ inactiveVouchers }/> :
-                                    activityMessage())
+                                    activityMessage(activityMessageType[voucherType].inactive))
                                     :
                                     activityBlockPlaceholder
                                 }
