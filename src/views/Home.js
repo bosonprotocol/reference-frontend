@@ -52,7 +52,8 @@ function Home() {
 
     useEffect(() => {
         if(voucherSets) {
-            setProductBlocks(voucherSets.filter(x => new Date(x?.expiryDate) > new Date()))
+            // filter by "expiry date in future" and "don't show voucher sets to their creator/supplier"
+            setProductBlocks(voucherSets.filter(x => new Date(x?.expiryDate) > new Date() && x.voucherOwner !== account.toLowerCase()));
             productListSettings.infinite = voucherSets.length > 4;
         } else {
             setProductBlocks([])
