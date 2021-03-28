@@ -113,7 +113,7 @@ function Home() {
                             spaceBetween={7}
                             navigation
                             slidesPerView={3}
-                            loop={productBlocksFiltered.length > 3 ? true : false}
+                            loop={true}
                             shortSwipes={false}
                             threshold={5}
                             freeMode={true}
@@ -124,11 +124,9 @@ function Home() {
                             breakpoints={{
                                 320: {
                                     slidesPerView: 2,
-                                    loop: productBlocksFiltered.length > 2 ? true : false
                                 },
                                 769: {
                                   slidesPerView: 3,
-                                  loop: productBlocksFiltered.length > 3 ? true : false
                                 },
                             }} >
                             { productBlocksFiltered.map((block, id) =>
