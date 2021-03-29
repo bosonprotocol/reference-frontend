@@ -111,8 +111,6 @@ export default function SubmitForm() {
 
             prepareVoucherFormData(correlationId, dataArr, paymentType);
 
-            const id = await createVoucherSet(formData, authData.authToken);
-
             globalContext.dispatch(Action.fetchVoucherSets());
 
             setLoading(0);
