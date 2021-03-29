@@ -36,6 +36,7 @@ import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../uti
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
 
 import MessageScreen from "../components/shared/MessageScreen"
+import { validateContractInteraction } from '../helpers/BosonActionsValidator';
 
 const voucherPlaceholder = <div className="details-loading">
     <div className="title is-loading-2"></div>
@@ -116,7 +117,7 @@ function VoucherDetails(props) {
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
 
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
-console.log(voucherSetDetails, voucherDetails)
+
     const paymentType = getProp('paymentType');
     const currencyResolver = (paymentType) => {
         if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -157,29 +158,29 @@ console.log(voucherSetDetails, voucherDetails)
         setPopupMessage({
             text,
             controls: <div className="flex split buttons-pair">
-                <div className="button gray" role="button" onClick={ () => setPopupMessage(false) }>BACK</div>
-                <div className="button primary" role="button" onClick={ () => callAction() }>CONFIRM</div>
+                <div className="button gray" role="button" onClick={() => setPopupMessage(false)}>BACK</div>
+                <div className="button primary" role="button" onClick={() => callAction()}>CONFIRM</div>
             </div>,
         })
     }
 
     const ViewImageFullScreen = () => (
-        <div className="image-view-overlay flex center" onClick={ () => setImageView(0) }>
+        <div className="image-view-overlay flex center" onClick={() => setImageView(0)}>
             <div className="button-container">
                 <div className="container">
-                    <div className="cancel new" onClick={ () => {setImageView(0)} }><span className="icon"></span></div>
+                    <div className="cancel new" onClick={() => { setImageView(0) }}><span className="icon"></span></div>
                 </div>
             </div>
-            <img src={ getProp('image') } alt=""/>
+            <img src={getProp('image')} alt="" />
         </div>
     )
 
     useEffect(() => {
-        if(library && (voucherDetails || voucherSetDetails)) {
-          waitForRecentTransactionIfSuchExists(library, voucherDetails, voucherSetDetails, setRecentlySignedTxHash)
-     
+        if (library && (voucherDetails || voucherSetDetails)) {
+            waitForRecentTransactionIfSuchExists(library, voucherDetails, voucherSetDetails, setRecentlySignedTxHash)
+
         }
-    },[voucherDetails, voucherSetDetails, library])
+    }, [voucherDetails, voucherSetDetails, library])
     // assign controlset to statuses
     const controlList = () => {
         setDisablePage(0)
@@ -187,17 +188,17 @@ console.log(voucherSetDetails, voucherDetails)
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
             CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
-                CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
-                    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
-                        <div className="action button cof"
-                             onClick={ () => confirmAction(onCoF, "Are you sure you want to cancel this voucher?") }
-                             role="button">Cancel or fault</div>
-                    )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
+                <div className="action button cof"
+                    onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")}
+                    role="button">Cancel or fault</div>
+            )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
-                <div className="action button refund" role="button" onClick={ () => onRefund() }>REFUND</div>
-                <div className="action button redeem" role="button" onClick={ () => setShowQRCode(1) }><IconQRScanner/> REDEEM</div>
+                <div className="action button refund" role="button" onClick={() => onRefund()}>REFUND</div>
+                <div className="action button redeem" role="button" onClick={() => setShowQRCode(1)}><IconQRScanner /> REDEEM</div>
                 {/* <Link
                     to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
                 </Link> */}
@@ -206,44 +207,44 @@ console.log(voucherSetDetails, voucherDetails)
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
             CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
-                CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-                    <div className="action button complain" role="button" onClick={ () => onComplain() }>COMPLAIN</div>
-                )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
+                <div className="action button complain" role="button" onClick={() => onComplain()}>COMPLAIN</div>
+            )
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] =
             CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]] = () => (
                 <ContractInteractionButton
                     className="action button commit"
-                    handleClick={ () => onCommitToBuy() }
-                    label={ `COMMIT TO BUY ${ voucherSetDetails?.price }` }
+                    handleClick={() => onCommitToBuy()}
+                    label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
                 />
             )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.OFFERED]] = () => (
             voucherSetDetails && voucherSetDetails?.qty > 0 && account?.toLowerCase() === voucherSetDetails.voucherOwner.toLowerCase() ?
                 <div className="button cancelVoucherSet"
-                     onClick={ () => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?") }
-                     role="button">CANCEL VOUCHER SET</div>
+                    onClick={() => confirmAction(onCancelOrFaultVoucherSet, "Are you sure you want to cancel the voucher set?")}
+                    role="button">CANCEL VOUCHER SET</div>
                 : null
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
-            <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
-        )
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
+                <div className="button cancelVoucherSet" role="button" style={{ border: 'none' }} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
+            )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMMITED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.FINALIZED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLANED_CANCELED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.VIEW_ONLY]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLAINED]] =
-        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REDEEMED]] = () => {
-            setDisablePage(1)
-            return null
-        }
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.FINALIZED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLANED_CANCELED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.VIEW_ONLY]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLAINED]] =
+            CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REDEEMED]] = () => {
+                setDisablePage(1)
+                return null
+            }
 
         return CASE
     }
@@ -255,21 +256,21 @@ console.log(voucherSetDetails, voucherDetails)
             owner: voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase(),
             holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase(),
         }
-        
+
         const draftStatusCheck = !(voucherResource?._tokenIdVoucher || voucherResource?._tokenIdSupply)
 
         const statusPropagate = () => (
             draftStatusCheck ? STATUS.DRAFT :
-            voucherResource.FINALIZED ? STATUS.FINALIZED :
-                voucherResource.CANCELLED ?
-                    (!voucherResource.COMPLAINED ? STATUS.CANCELLED : STATUS.COMPLANED_CANCELED) :
-                    voucherResource.COMPLAINED ? STATUS.COMPLAINED :
-                        voucherResource.REFUNDED ? STATUS.REFUNDED :
-                            voucherResource.REDEEMED ? STATUS.REDEEMED :
-                                voucherResource.COMMITTED ? STATUS.COMMITED :
-                                    !voucherResource?.qty ? STATUS.VIEW_ONLY :
-                                        !voucherResource.COMMITTED ? STATUS.OFFERED :
-                                            false
+                voucherResource.FINALIZED ? STATUS.FINALIZED :
+                    voucherResource.CANCELLED ?
+                        (!voucherResource.COMPLAINED ? STATUS.CANCELLED : STATUS.COMPLANED_CANCELED) :
+                        voucherResource.COMPLAINED ? STATUS.COMPLAINED :
+                            voucherResource.REFUNDED ? STATUS.REFUNDED :
+                                voucherResource.REDEEMED ? STATUS.REDEEMED :
+                                    voucherResource.COMMITTED ? STATUS.COMMITED :
+                                        !voucherResource?.qty ? STATUS.VIEW_ONLY :
+                                            !voucherResource.COMMITTED ? STATUS.OFFERED :
+                                                false
         )
 
 
@@ -281,7 +282,7 @@ console.log(voucherSetDetails, voucherDetails)
             new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
             (new Date() <= new Date(voucherResource?.startDate)) && !!voucherDetails, // has future start date and is voucher
             voucherSetDetails?.qty <= 0,// no quantity
-            recentlySignedTxHash!=='',
+            recentlySignedTxHash !== '',
             hideControlButtonsWaitPeriodExpired
         ]
 
@@ -299,7 +300,7 @@ console.log(voucherSetDetails, voucherDetails)
     const [statusBlocks, setStatusBlocks] = useState(voucherDetails ? [] : false);
 
     const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
-       
+
         if (voucherDetails && !voucherDetails.FINALIZED && voucherDetails._tokenIdVoucher) {
             if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
                 return newStatusBlocks;
@@ -312,25 +313,25 @@ console.log(voucherSetDetails, voucherDetails)
 
             const complainPeriodStart = voucherStatus.complainPeriodStart;
             const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
-            
+
             let waitPeriodStart;
             let waitPeriod;
 
             if (currentStatus.status === STATUS.EXPIRED) {
                 waitPeriodStart = voucherDetails.EXPIRED;
                 waitPeriod = complainPeriod;
-            } else if(!voucherDetails.CANCELLED && !voucherDetails.COMPLAINED) {
+            } else if (!voucherDetails.CANCELLED && !voucherDetails.COMPLAINED) {
                 waitPeriodStart = complainPeriodStart;
-                waitPeriod = complainPeriod.add(cancelFaultPeriod);        
-            } else if(voucherDetails.COMPLAINED){
+                waitPeriod = complainPeriod.add(cancelFaultPeriod);
+            } else if (voucherDetails.COMPLAINED) {
                 waitPeriodStart = cancelFaultPeriodStart;
                 waitPeriod = cancelFaultPeriod;
-            }else if(voucherDetails.CANCELLED){
+            } else if (voucherDetails.CANCELLED) {
                 waitPeriodStart = complainPeriodStart;
                 waitPeriod = complainPeriod;
             }
 
-           
+
             if ((waitPeriod && waitPeriod.gt(ethers.BigNumber.from('0'))) || currentStatus.status === STATUS.COMMITED) {
                 const currentBlockTimestamp = (await library.getBlock()).timestamp;
 
@@ -342,8 +343,8 @@ console.log(voucherSetDetails, voucherDetails)
                 const timeAvailable = voucherDetails && (end?.getTime() / 1000) - (start?.getTime() / 1000);
 
                 const diffInPercentage = calculateDifferenceInPercentage(timePast, timeAvailable);
-                
-                if(!(currentStatus === STATUS.EXPIRED) && diffInPercentage >= 100) {    
+
+                if (!(currentStatus === STATUS.EXPIRED) && diffInPercentage >= 100) {
                     setHideControlButtonsWaitPeriodExpired(true);
                 }
                 const expiryProgress = voucherDetails && diffInPercentage + '%';
@@ -520,14 +521,14 @@ console.log(voucherSetDetails, voucherDetails)
         const owner = voucherSetInfo.voucherOwner.toLowerCase();
 
         const authData = getAccountStoredInLocalStorage(account);
-        let correlationId 
+        let correlationId
 
         try {
             correlationId = (await bosonRouterContract.correlationIds(account)).toString();
-           
+
             const correlationIdRecentlySent = isCorrelationIdAlreadySent(correlationId, account);
-            
-            if(correlationIdRecentlySent) {
+
+            if (correlationIdRecentlySent) {
                 modalContext.dispatch(ModalResolver.showModal({
                     show: true,
                     type: MODAL_TYPES.GENERIC_ERROR,
@@ -535,8 +536,8 @@ console.log(voucherSetDetails, voucherDetails)
                 }));
                 return;
             }
-        
-            const tx = await commitToBuyTransactionCreator(bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, bosonTokenContract, library, account, chainId);
+
+            const tx = await commitToBuyTransactionCreator(bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, bosonTokenContract, library, account, chainId, modalContext);
 
             setRecentlyUsedCorrelationId(correlationId, account);
             setRecentlySignedTxHash(tx.hash, supplyId);
@@ -550,7 +551,7 @@ console.log(voucherSetDetails, voucherDetails)
         }
 
         try {
-            
+
             const metadata = {
                 _holder: account,
                 _issuer: owner,
@@ -588,9 +589,20 @@ console.log(voucherSetDetails, voucherDetails)
 
 
         try {
+            const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'complain', [voucherDetails._tokenIdVoucher]);
+    
+            if (contractInteractionDryRunErrorMessageMaker({ action: 'Complain', account })) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: contractInteractionDryRunErrorMessageMaker({ action: 'Complain', account })
+                }));
+                return;
+            }
+    
             const tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-            
+
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -616,6 +628,17 @@ console.log(voucherSetDetails, voucherDetails)
         }
 
         try {
+            const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'refund', [voucherDetails._tokenIdVoucher]);
+    
+            if (contractInteractionDryRunErrorMessageMaker({ action: 'Refund', account })) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: contractInteractionDryRunErrorMessageMaker({ action: 'Refund', account })
+                }));
+                return;
+            }
+
             const tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
@@ -643,6 +666,17 @@ console.log(voucherSetDetails, voucherDetails)
         }
 
         try {
+            const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'cancelOrFault', [voucherDetails._tokenIdVoucher]);
+    
+            if (contractInteractionDryRunErrorMessageMaker({ action: 'Cancel or Fault', account })) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: contractInteractionDryRunErrorMessageMaker({ action: 'Cancel or Fault', account })
+                }));
+                return;
+            }
+
             const tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
@@ -651,7 +685,7 @@ console.log(voucherSetDetails, voucherDetails)
                 title: 'The voucher was cancelled',
                 link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
-                subprops: {refresh: true},
+                subprops: { refresh: true },
             })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -666,7 +700,7 @@ console.log(voucherSetDetails, voucherDetails)
                 text: 'The voucher has not been canceled, please try again',
                 link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
-                subprops: {refresh: false},
+                subprops: { refresh: false },
             })
             return;
         }
@@ -697,7 +731,7 @@ console.log(voucherSetDetails, voucherDetails)
     useEffect(() => {
         navigationContext.dispatch(Action.setRedemptionControl({
             controls: controls ? controls : recentlySignedTxHash ? [(
-                <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>Transaction is in progress, please wait</div>
+                <div className="button cancelVoucherSet" role="button" style={{ border: 'none' }} disabled onClick={(e) => e.preventDefault()}>Transaction is in progress, please wait</div>
             )] : null
         }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -715,12 +749,23 @@ console.log(voucherSetDetails, voucherDetails)
 
     const cancelMessageCloseButton = (val, props) => {
         setCancelMessage(val)
-        if(props.refresh) window.location.reload()
+        if (props.refresh) window.location.reload()
     }
 
     const onCancelOrFaultVoucherSet = async () => {
 
         try {
+            const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCancelOrFaultVoucherSet', [voucherSetDetails._tokenIdSupply]);
+    
+            if (contractInteractionDryRunErrorMessageMaker({ action: 'Cancel or Fault', account })) {
+                modalContext.dispatch(ModalResolver.showModal({
+                    show: true,
+                    type: MODAL_TYPES.GENERIC_ERROR,
+                    content: contractInteractionDryRunErrorMessageMaker({ action: 'Cancel or Fault', account })
+                }));
+                return;
+            }
+
             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
             setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
 
@@ -730,7 +775,7 @@ console.log(voucherSetDetails, voucherDetails)
                 text: 'The vouchers have been canceled, except the ones that were committed',
                 link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
-                subprops: {refresh: true},
+                subprops: { refresh: true },
             })
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
@@ -745,23 +790,23 @@ console.log(voucherSetDetails, voucherDetails)
                 text: 'The set of vouchers has not been canceled, please try again',
                 link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
-                subprops: {refresh: false},
+                subprops: { refresh: false },
             })
         }
     }
 
     useEffect(() => {
-        if(voucherSetDetails) setPageLoading(0)
+        if (voucherSetDetails) setPageLoading(0)
         escrowData &&
-        escrowData.then(res => {
-            if(res && voucherStatus && statusBlocks) setPageLoading(0)
-        })
+            escrowData.then(res => {
+                if (res && voucherStatus && statusBlocks) setPageLoading(0)
+            })
     }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails, voucherDetails])
 
     useEffect(() => {
-        const isNotVoucherSet = '/'+window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
+        const isNotVoucherSet = '/' + window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
 
-        if(isNotVoucherSet) {
+        if (isNotVoucherSet) {
             setPageLoading(1)
         } else {
             setPageLoadingPlaceholder(voucherSetPlaceholder)
@@ -776,69 +821,69 @@ console.log(voucherSetDetails, voucherDetails)
             {cancelMessage ? <MessageScreen {...cancelMessage} /> : null}
             { <PopupMessage {...popupMessage} />}
             {pageLoading ? pageLoadingPlaceholder : null}
-            {!disablePage ? <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
+            {!disablePage ? <section className="voucher-details no-bg" style={{ display: !pageLoading ? 'block' : 'none' }}>
                 {showQRCode ? <ShowQR setShowQRCode={setShowQRCode} voucherId={voucherDetails?.id} /> : null}
                 {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
                         <div className="section title">
-                            <h1>{ getProp('title') }</h1>
+                            <h1>{getProp('title')}</h1>
                         </div>
-                        { !voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks ?
+                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER && statusBlocks ?
                             <div className="section status">
                                 <h2>Status</h2>
                                 <div className="status-container flex" id='horizontal-view-container'>
                                     <HorizontalScrollView
-                                        items={ statusBlocks }
-                                        ItemComponent={ ({ item }) => item.jsx }
+                                        items={statusBlocks}
+                                        ItemComponent={({ item }) => item.jsx}
                                         defaultSpace='0'
                                         spaceBetweenItems='8px'
-                                        moveSpeed={ 1 }
+                                        moveSpeed={1}
                                     />
                                 </div>
                             </div>
-                            : null }
-                        { !voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
+                            : null}
+                        {!voucherSetDetails && voucherStatus?.split(':')[0] !== ROLE.NON_BUYER_SELLER ?
                             <div className="section escrow">
-                                { escrowData ?
-                                    <EscrowDiagram escrowData={ escrowData }/>
-                                    : null }
+                                {escrowData ?
+                                    <EscrowDiagram escrowData={escrowData} />
+                                    : null}
                             </div>
-                            : null }
+                            : null}
 
                         {
-                            showDepositsDistributionWarningMessage ? 
-                            <div className="section depositsWarning flex center"><IconWarning /> <span> Deposits will be distributed in 1 hour</span> </div>
-                             : null
-                         }
-                           
+                            showDepositsDistributionWarningMessage ?
+                                <div className="section depositsWarning flex center"><IconWarning /> <span> Deposits will be distributed in 1 hour</span> </div>
+                                : null
+                        }
+
                         <div className="section info">
                             <div className="section description">
-                                { <DescriptionBlock toggleImageView={ setImageView }
-                                                    voucherSetDetails={ voucherSetDetails } getProp={ getProp }/> }
+                                {<DescriptionBlock toggleImageView={setImageView}
+                                    voucherSetDetails={voucherSetDetails} getProp={getProp} />}
                             </div>
                             <div className="section category">
                             </div>
                             <div className="section general">
-                                {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */ }
-                                { getProp('category') ? <TableRow data={ tableCategory }/> : null }
+                                {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */}
+                                {getProp('category') ? <TableRow data={tableCategory} /> : null}
                             </div>
-                            { voucherSetDetails ?
+                            {voucherSetDetails ?
                                 <div className="section price">
-                                    { tablePrices.some(item => item) ? <PriceTable paymentType={paymentType} data={ tablePrices }/> : null }
+                                    {tablePrices.some(item => item) ? <PriceTable paymentType={paymentType} data={tablePrices} /> : null}
                                 </div>
-                                : null }
+                                : null}
                             <div className="section date">
-                                { tableDate.some(item => item) ? <DateTable data={ tableDate }/> : null }
+                                {tableDate.some(item => item) ? <DateTable data={tableDate} /> : null}
                             </div>
                         </div>
-                    
+
                     </div>
 
                 </div>
             </section>
-            :
-            <MessageScreen subprops={{button: 'HOME PAGE'}} messageType={MESSAGE.LOCKED} title="Invalid link" link={ROUTE.Home} />
+                :
+                <MessageScreen subprops={{ button: 'HOME PAGE' }} messageType={MESSAGE.LOCKED} title="Invalid link" link={ROUTE.Home} />
             }
         </>
     )
@@ -846,46 +891,46 @@ console.log(voucherSetDetails, voucherDetails)
 
 function singleStatusComponent({ title, date, color, progress, status }) {
 
-    const jsx = (<div key={ title } className={ `status-block color_${ color }` }>
+    const jsx = (<div key={title} className={`status-block color_${color}`}>
         <h3 className="status-name">
-            { title }
+            {title}
             {
                 progress ? <div className="progress"></div> : null
             }
         </h3>
-        <p className="status-details">{ !progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${ new Date(date).getTime() - new Date().getTime() > 0 ? humanizeDuration(new Date(date).getTime() - new Date().getTime(), {
+        <p className="status-details">{!progress || (progress && status === STATUS.COMMITED) ? formatDate(date, 'string') : `${new Date(date).getTime() - new Date().getTime() > 0 ? humanizeDuration(new Date(date).getTime() - new Date().getTime(), {
             round: true,
             largest: 1
-        }) : 'Finished' }` }</p>
+        }) : 'Finished'}`}</p>
     </div>);
     return { jsx, date }
 
 }
 
 function finalStatusComponent(hasBeenRedeemed, hasBeenComplained, hasBeenCancelOrFault, expiredDate) {
-    const jsx = (<div className={ `status-block` }>
+    const jsx = (<div className={`status-block`}>
         <div className="final-status-container">
-            { hasBeenRedeemed ?
+            {hasBeenRedeemed ?
                 <h3 className="status-name color_1">REDEMPTION</h3> :
                 <h3 className="status-name color_2">NO REDEMPTION</h3>
             }
-            { hasBeenComplained ?
+            {hasBeenComplained ?
                 <h3 className="status-name color_3">COMPLAINT</h3> :
                 <h3 className="status-name color_4">NO COMPLAINT</h3>
             }
-            { hasBeenCancelOrFault ?
+            {hasBeenCancelOrFault ?
                 <h3 className="status-name color_5">CANCEL/FAULT</h3> :
                 <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
             }
         </div>
-        <p className="status-details">{ `Finalised on ${ formatDate(expiredDate, 'string') }` }</p>
+        <p className="status-details">{`Finalised on ${formatDate(expiredDate, 'string')}`}</p>
     </div>)
     return { jsx, date: expiredDate }
 }
 
 export default VoucherDetails
 
-const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, tokenContract, library, account, chainId) => {
+const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, tokenContract, library, account, chainId, modalContext) => {
     const paymentType = voucherSetInfo.paymentType;
 
     if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -900,6 +945,24 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
 
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensDeposit);
+
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestVoucherETHTKNWithPermit', [
+            supplyId,
+            voucherSetInfo.voucherOwner,
+            tokensDeposit.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s, { value: txValue }]);
+
+        if (contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })
+            }));
+            return;
+        }
 
         return bosonRouterContract.requestVoucherETHTKNWithPermit(
             supplyId,
@@ -917,6 +980,23 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
 
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestVoucherTKNTKNSameWithPermit', [supplyId,
+            voucherSetInfo.voucherOwner,
+            txValue.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s]);
+
+        if (contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })
+            }));
+            return;
+        }
+
         return bosonRouterContract.requestVoucherTKNTKNSameWithPermit(
             supplyId,
             voucherSetInfo.voucherOwner,
@@ -933,6 +1013,25 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensDeposit);
 
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestVoucherTKNETHWithPermit', [
+            supplyId,
+            voucherSetInfo.voucherOwner,
+            tokensDeposit.toString(),
+            signature.deadline,
+            signature.v,
+            signature.r,
+            signature.s,
+            { value: txValue.toString() }]);
+
+        if (contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })
+            }));
+            return;
+        }
+
         return bosonRouterContract.requestVoucherTKNETHWithPermit(
             supplyId,
             voucherSetInfo.voucherOwner,
@@ -944,7 +1043,7 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
             { value: txValue.toString() }
         );
     } else {
-        console.error(`Payment type not found ${ paymentType }`);
+        console.error(`Payment type not found ${paymentType}`);
         throw new Error('Something went wrong')
     }
 }

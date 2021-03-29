@@ -181,22 +181,22 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
 
     if (currencyCombination === PAYMENT_METHODS_LABELS.ETHETH) {
         const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderETHETH', [dataArr, { value: txValue }]);
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
-                content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+                content: contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})
             }));
             return; 
         }
         return bosonRouterContract.requestCreateOrderETHETH(dataArr, { value: txValue });
     } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNETH) {
         const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderTKNETH', [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]);
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
-                content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+                content: contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})
             }));
             return; 
         }
@@ -213,11 +213,11 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
                                                                                                                                                           signature.r,
                                                                                                                                                           signature.s,
                                                                                                                                                           dataArr]);
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
-                content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+                content: contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})
             }));
             return; 
         }
@@ -242,11 +242,11 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
                                                                                                                                                           signature.r,
                                                                                                                                                           signature.s,
                                                                                                                                                           dataArr ]);
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})) {
+        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
             show: true,
             type: MODAL_TYPES.GENERIC_ERROR,
-            content: contractInteractionDryRunErrorMessageMaker({action: 'Commit', account})
+            content: contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})
             }));
             return; 
         }
