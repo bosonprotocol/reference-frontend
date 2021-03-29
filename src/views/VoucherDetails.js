@@ -590,7 +590,6 @@ function VoucherDetails(props) {
             return;
         }
 
-
         try {
             const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'complain', [voucherDetails._tokenIdVoucher]);
     
@@ -817,7 +816,6 @@ function VoucherDetails(props) {
         }
         // setPageLoadingPlaceholder(voucherSetPlaceholder)
     }, [])
-
 
     return (
         <>

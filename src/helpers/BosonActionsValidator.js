@@ -22,8 +22,8 @@ export const validateContractInteraction = async (contract, actionName, params) 
             complaintUserFriendlyErrorMessageMaker = () => 'Unknown error occured, please try again later and if the problem persist, see the console for details/contact administrator'
         }
     }
+    
     return complaintUserFriendlyErrorMessageMaker;
-
 }
 
 const extractErrorMessageFromError = (e) => {
