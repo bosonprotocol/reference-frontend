@@ -2,6 +2,7 @@ import { smartContractToUserFriendlyErrorMapping } from "../constants/ErrorMessa
 
 export const validateContractInteraction = async (contract, actionName, params) => {
     let complaintUserFriendlyErrorMessageMaker = () => '';
+
     try {
         if(params) {
             await contract.callStatic[actionName](...params)

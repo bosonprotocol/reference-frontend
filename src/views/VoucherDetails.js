@@ -538,9 +538,12 @@ function VoucherDetails(props) {
             }
 
             const tx = await commitToBuyTransactionCreator(bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, bosonTokenContract, library, account, chainId, modalContext);
-
-            setRecentlyUsedCorrelationId(correlationId, account);
-            setRecentlySignedTxHash(tx.hash, supplyId);
+            if(!tx) {
+                return
+            }
+                setRecentlyUsedCorrelationId(correlationId, account);
+                setRecentlySignedTxHash(tx.hash, supplyId);
+            
         } catch (e) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -933,8 +936,35 @@ export default VoucherDetails
 const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, tokenContract, library, account, chainId, modalContext) => {
     const paymentType = voucherSetInfo.paymentType;
 
+    const tokensBalance = await tokenContract.balanceOf(account);
+    const ethBalance = await tokenContract.provider.getBalance(account);
+  
     if (paymentType === PAYMENT_METHODS.ETHETH) {
         const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+
+        if (ethBalance.lt(txValue)) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'You do not have enough ETH to execute this transaction.'
+            }));
+            return;
+        }
+
+        const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestVoucherETHETH', [
+            supplyId, voucherSetInfo.voucherOwner, {
+                value: txValue.toString()
+            }]);
+
+        if (contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: contractInteractionDryRunErrorMessageMaker({ action: 'Commit', account })
+            }));
+            return;
+        }
+
 
         return bosonRouterContract.requestVoucherETHETH(supplyId, voucherSetInfo.voucherOwner, {
             value: txValue.toString()
@@ -942,6 +972,24 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
     } else if (paymentType === PAYMENT_METHODS.ETHBSN) {
         const txValue = ethers.BigNumber.from(price);
         const tokensDeposit = ethers.BigNumber.from(buyerDeposit);
+
+        if (ethBalance.lt(txValue)) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'You do not have enough ETH to execute this transaction.'
+            }));
+            return;
+        }
+
+        if (tokensBalance.lt(tokensDeposit)) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'You do not have enough BSN to execute this transaction.'
+            }));
+            return;
+        }
 
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensDeposit);
@@ -975,14 +1023,23 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
             { value: txValue.toString() }
         );
     } else if (paymentType === PAYMENT_METHODS.BSNBSN) {
-        const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+        const tokensTxValue = ethers.BigNumber.from(price).add(buyerDeposit);
+
+        if (tokensBalance.lt(tokensTxValue)) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'You do not have enough BSN to execute this transaction.'
+            }));
+            return;
+        }
 
         //ToDo: Split functionality in two step, first sign, then send tx
-        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, txValue);
+        const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensTxValue);
 
         const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestVoucherTKNTKNSameWithPermit', [supplyId,
             voucherSetInfo.voucherOwner,
-            txValue.toString(),
+            tokensTxValue.toString(),
             signature.deadline,
             signature.v,
             signature.r,
@@ -1000,7 +1057,7 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
         return bosonRouterContract.requestVoucherTKNTKNSameWithPermit(
             supplyId,
             voucherSetInfo.voucherOwner,
-            txValue.toString(),
+            tokensTxValue.toString(),
             signature.deadline,
             signature.v,
             signature.r,
@@ -1009,6 +1066,24 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
     } else if (paymentType === PAYMENT_METHODS.BSNETH) {
         const txValue = ethers.BigNumber.from(buyerDeposit);
         const tokensDeposit = ethers.BigNumber.from(price);
+
+        if (ethBalance.lt(txValue)) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'You do not have enough ETH to execute this transaction.'
+            }));
+            return;
+        }
+
+        if (tokensBalance.lt(tokensDeposit)) {
+            modalContext.dispatch(ModalResolver.showModal({
+                show: true,
+                type: MODAL_TYPES.GENERIC_ERROR,
+                content: 'You do not have enough BSN to execute this transaction.'
+            }));
+            return;
+        }
 
         //ToDo: Split functionality in two step, first sign, then send tx
         const signature = await onAttemptToApprove(tokenContract, library, account, chainId, tokensDeposit);
