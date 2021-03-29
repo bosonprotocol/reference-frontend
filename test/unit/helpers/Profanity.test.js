@@ -1,7 +1,7 @@
+import { profanityCheck } from "../../../src/helpers/Profanity";
+
 const chai = require("chai");
 const { expect } = chai;
-
-import { profanityCheck } from "../../../helpers/Profanity";
 
 describe("Profanity - Check input", () => {
     it("Expect no profanity error", async () => {

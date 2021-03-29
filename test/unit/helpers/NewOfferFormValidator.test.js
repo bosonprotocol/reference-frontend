@@ -1,11 +1,11 @@
-import {CURRENCY} from "../../../helpers/Dictionary";
+import {CURRENCY} from "../../../src/helpers/Dictionary";
 
 const chai = require("chai");
 const { expect } = chai;
 
-const NewOfferFormValidator = require("../../../helpers/NewOfferFormValidator");
-const ValidationConfig = require("../../../helpers/NewOfferFormValidationConfig");
-const { NAME } = require("../../../helpers/Dictionary");
+const NewOfferFormValidator = require("../../../src/helpers/NewOfferFormValidator");
+const ValidationConfig = require("../../../src/helpers/NewOfferFormValidationConfig");
+const { NAME } = require("../../../src/helpers/Dictionary");
 
 describe("NewOfferFormValidator - Image upload form validation", () => {
     it("Expect no validation error", () => {

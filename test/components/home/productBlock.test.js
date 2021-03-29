@@ -2,10 +2,12 @@ import React from "react";
 import { render } from "enzyme";
 import { MemoryRouter } from 'react-router-dom';
 
-import ProductBlock from "../../../components/home/ProductBlock";
-import { IconEth, IconBsn } from "../../../components/shared/Icons"; // todo include icons for tests
+import ProductBlock from "../../../src/components/home/ProductBlock";
+// TODO: include icons for tests
+import { IconEth, IconBsn } from "../../../src/components/shared/Icons";
 
-/** Required to wrap element due to HREF link.
+/**
+ * Required to wrap element due to HREF link.
  * Enzyme fails if component passed to render()
  * contains a link.
  */
