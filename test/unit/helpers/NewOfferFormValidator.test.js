@@ -1,11 +1,7 @@
-import {CURRENCY} from "../../../src/helpers/Dictionary";
-
-const chai = require("chai");
-const { expect } = chai;
-
-const NewOfferFormValidator = require("../../../src/helpers/NewOfferFormValidator");
-const ValidationConfig = require("../../../src/helpers/NewOfferFormValidationConfig");
-const { NAME } = require("../../../src/helpers/Dictionary");
+import { CURRENCY } from "../../../src/helpers/Dictionary";
+import * as NewOfferFormValidator from "../../../src/helpers/NewOfferFormValidator";
+import * as ValidationConfig from "../../../src/helpers/NewOfferFormValidationConfig";
+import { NAME } from "../../../src/helpers/Dictionary";
 
 describe("NewOfferFormValidator - Image upload form validation", () => {
     it("Expect no validation error", () => {
@@ -22,7 +18,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const imageError = newErrors[NAME.IMAGE];
 
-        expect(imageError).to.eql(null);
+        expect(imageError).toEqual(null);
     });
 
     it("Expect validation error - file too large", () => {
@@ -39,7 +35,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const imageError = newErrors[NAME.IMAGE];
 
-        expect(imageError).to.eql(ValidationConfig.maxSizeExceededError);
+        expect(imageError).toEqual(ValidationConfig.maxSizeExceededError);
     });
 
     it("Expect validation error - file too small", () => {
@@ -56,7 +52,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const imageError = newErrors[NAME.IMAGE];
 
-        expect(imageError).to.eql(ValidationConfig.minSizeExceededError);
+        expect(imageError).toEqual(ValidationConfig.minSizeExceededError);
     });
 
     it("Expect validation error - file type invalid", () => {
@@ -73,7 +69,7 @@ describe("NewOfferFormValidator - Image upload form validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const imageError = newErrors[NAME.IMAGE];
 
-        expect(imageError).to.eql(ValidationConfig.notAllowedMimeTypeError);
+        expect(imageError).toEqual(ValidationConfig.notAllowedMimeTypeError);
     });
 });
 
@@ -89,7 +85,7 @@ describe("NewOfferFormValidator - Title validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const titleError = newErrors[NAME.TITLE];
 
-        expect(titleError).to.eql(null);
+        expect(titleError).toEqual(null);
     });
 
     it("Expect validation error - title too short", () => {
@@ -103,7 +99,7 @@ describe("NewOfferFormValidator - Title validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const titleError = newErrors[NAME.TITLE];
 
-        expect(titleError).to.eql(ValidationConfig.minTitleLengthError);
+        expect(titleError).toEqual(ValidationConfig.minTitleLengthError);
     });
 
     it("Expect validation error - title too long", () => {
@@ -117,7 +113,7 @@ describe("NewOfferFormValidator - Title validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const titleError = newErrors[NAME.TITLE];
 
-        expect(titleError).to.eql(ValidationConfig.maxTitleLengthError);
+        expect(titleError).toEqual(ValidationConfig.maxTitleLengthError);
     });
 });
 
@@ -133,7 +129,7 @@ describe("NewOfferFormValidator - Description validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const descriptionError = newErrors[NAME.DESCRIPTION];
 
-        expect(descriptionError).to.eql(null);
+        expect(descriptionError).toEqual(null);
     });
 
     it("Expect validation error - description too short", () => {
@@ -147,7 +143,7 @@ describe("NewOfferFormValidator - Description validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const descriptionError = newErrors[NAME.DESCRIPTION];
 
-        expect(descriptionError).to.eql(ValidationConfig.minDescriptionLengthError);
+        expect(descriptionError).toEqual(ValidationConfig.minDescriptionLengthError);
     });
 });
 
@@ -163,7 +159,7 @@ describe("NewOfferFormValidator - Quantity validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const quantityError = newErrors[NAME.QUANTITY];
 
-        expect(quantityError).to.eql(null);
+        expect(quantityError).toEqual(null);
     });
 
     it("Expect validation error - quantity too low", () => {
@@ -177,7 +173,7 @@ describe("NewOfferFormValidator - Quantity validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const quantityError = newErrors[NAME.QUANTITY];
 
-        expect(quantityError).to.eql(ValidationConfig.minQuantityError);
+        expect(quantityError).toEqual(ValidationConfig.minQuantityError);
     });
 
     it("Expect validation error - quantity too high", () => {
@@ -191,7 +187,7 @@ describe("NewOfferFormValidator - Quantity validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const quantityError = newErrors[NAME.QUANTITY];
 
-        expect(quantityError).to.eql(ValidationConfig.maxQuantityError);
+        expect(quantityError).toEqual(ValidationConfig.maxQuantityError);
     });
 
     it("Expect validation error - quantity is decimal", () => {
@@ -205,7 +201,7 @@ describe("NewOfferFormValidator - Quantity validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, null);
         const quantityError = newErrors[NAME.QUANTITY];
 
-        expect(quantityError).to.eql(ValidationConfig.noDecimalQuantityError);
+        expect(quantityError).toEqual(ValidationConfig.noDecimalQuantityError);
     });
 });
 
@@ -232,7 +228,7 @@ describe("NewOfferFormValidator - Price validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, priceSettings);
         const priceError = newErrors[NAME.PRICE];
 
-        expect(priceError).to.eql(null);
+        expect(priceError).toEqual(null);
     });
 
     it("Expect validation error - price too low", () => {
@@ -257,7 +253,7 @@ describe("NewOfferFormValidator - Price validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, priceSettings);
         const priceError = newErrors[NAME.PRICE];
 
-        expect(priceError).to.eql(ValidationConfig.minPriceError);
+        expect(priceError).toEqual(ValidationConfig.minPriceError);
     });
 });
 
@@ -286,7 +282,7 @@ describe("NewOfferFormValidator - Seller deposit validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, priceSettings);
         const sellerDepositError = newErrors[NAME.SELLER_DEPOSIT];
 
-        expect(sellerDepositError).to.eql(null);
+        expect(sellerDepositError).toEqual(null);
     });
 
     it("Expect validation error - seller deposit too low", () => {
@@ -313,7 +309,7 @@ describe("NewOfferFormValidator - Seller deposit validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, priceSettings);
         const sellerDepositError = newErrors[NAME.SELLER_DEPOSIT];
 
-        expect(sellerDepositError).to.eql(ValidationConfig.minSellerDepositError);
+        expect(sellerDepositError).toEqual(ValidationConfig.minSellerDepositError);
     });
 });
 
@@ -341,7 +337,7 @@ describe("NewOfferFormValidator - Buyer deposit validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, priceSettings);
         const buyerDepositError = newErrors[NAME.BUYER_DEPOSIT];
 
-        expect(buyerDepositError).to.eql(null);
+        expect(buyerDepositError).toEqual(null);
     });
 
     it("Expect validation error - buyer deposit too low", () => {
@@ -367,7 +363,7 @@ describe("NewOfferFormValidator - Buyer deposit validation", () => {
         const newErrors = NewOfferFormValidator.checkForErrorsInNewOfferForm(existingErrors, getData, null, priceSettings);
         const buyerDepositError = newErrors[NAME.BUYER_DEPOSIT];
 
-        expect(buyerDepositError).to.eql(ValidationConfig.minBuyerDepositError);
+        expect(buyerDepositError).toEqual(ValidationConfig.minBuyerDepositError);
     });
 });
 
@@ -401,8 +397,8 @@ describe("NewOfferFormValidator - Dates validation", () => {
         const startDateError = newErrors[NAME.DATE_START];
         const endDateError = newErrors[NAME.DATE_END];
 
-        expect(startDateError).to.eql(null);
-        expect(endDateError).to.eql(null);
+        expect(startDateError).toEqual(null);
+        expect(endDateError).toEqual(null);
     });
 
     it("Expect validation error - start date in past", () => {
@@ -435,8 +431,8 @@ describe("NewOfferFormValidator - Dates validation", () => {
         const startDateError = newErrors[NAME.DATE_START];
         const endDateError = newErrors[NAME.DATE_END];
 
-        expect(startDateError).to.eql(ValidationConfig.startDateInPastError);
-        expect(endDateError).to.eql(null);
+        expect(startDateError).toEqual(ValidationConfig.startDateInPastError);
+        expect(endDateError).toEqual(null);
     });
 
     it("Expect validation error - start date after expiry date", () => {
@@ -469,8 +465,8 @@ describe("NewOfferFormValidator - Dates validation", () => {
         const startDateError = newErrors[NAME.DATE_START];
         const endDateError = newErrors[NAME.DATE_END];
 
-        expect(startDateError).to.eql(ValidationConfig.startDateAfterExpiryError);
-        expect(endDateError).to.eql(null);
+        expect(startDateError).toEqual(ValidationConfig.startDateAfterExpiryError);
+        expect(endDateError).toEqual(null);
     });
 
     it("Expect validation error - expiry date before start date", () => {
@@ -503,7 +499,7 @@ describe("NewOfferFormValidator - Dates validation", () => {
         const startDateError = newErrors[NAME.DATE_START];
         const endDateError = newErrors[NAME.DATE_END];
 
-        expect(startDateError).to.eql(null);
-        expect(endDateError).to.eql(ValidationConfig.expiryDateBeforeStartDateError);
+        expect(startDateError).toEqual(null);
+        expect(endDateError).toEqual(ValidationConfig.expiryDateBeforeStartDateError);
     });
 });

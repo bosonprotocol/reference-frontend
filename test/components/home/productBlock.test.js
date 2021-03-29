@@ -3,8 +3,6 @@ import { render } from "enzyme";
 import { MemoryRouter } from 'react-router-dom';
 
 import ProductBlock from "../../../src/components/home/ProductBlock";
-// TODO: include icons for tests
-import { IconEth, IconBsn } from "../../../src/components/shared/Icons";
 
 /**
  * Required to wrap element due to HREF link.
