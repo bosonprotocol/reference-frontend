@@ -113,10 +113,10 @@ function VoucherDetails(props) {
     const [disablePage, setDisablePage] = useState(0);
     const [cancelMessage, setCancelMessage] = useState(false);
 
-    const voucherSets = globalContext.state.allVoucherSets
-    const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
+    const voucherSets = globalContext.state.allVoucherSets;
+    const voucherSetDetails = voucherSets.find(set => set.id === voucherId);
 
-    const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
+    const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null);
 
     const paymentType = getProp('paymentType');
     const currencyResolver = (paymentType) => {
@@ -192,7 +192,7 @@ function VoucherDetails(props) {
             CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] = () => (
                 <div className="action button cof"
                     onClick={() => confirmAction(onCoF, "Are you sure you want to cancel this voucher?")}
-                    role="button">Cancel or fault</div>
+                    role="button">Cancel or Fault</div>
             )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
@@ -215,7 +215,7 @@ function VoucherDetails(props) {
                 <ContractInteractionButton
                     className="action button commit"
                     handleClick={() => onCommitToBuy()}
-                    label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+                    label={`COMMIT TO BUY ${voucherSetDetails?.price} ${currencyResolver(voucherSetDetails?.paymentType)[0]}`}
                 />
             )
 
@@ -521,7 +521,7 @@ function VoucherDetails(props) {
         const owner = voucherSetInfo.voucherOwner.toLowerCase();
 
         const authData = getAccountStoredInLocalStorage(account);
-        let correlationId
+        let correlationId;
 
         try {
             correlationId = (await bosonRouterContract.correlationIds(account)).toString();
@@ -538,7 +538,7 @@ function VoucherDetails(props) {
             }
 
             const tx = await commitToBuyTransactionCreator(bosonRouterContract, supplyId, voucherSetInfo, price, buyerDeposit, bosonTokenContract, library, account, chainId, modalContext);
-            if(!tx) {
+            if (!tx) {
                 return
             }
                 setRecentlyUsedCorrelationId(correlationId, account);
@@ -554,7 +554,6 @@ function VoucherDetails(props) {
         }
 
         try {
-
             const metadata = {
                 _holder: account,
                 _issuer: owner,
@@ -615,11 +614,10 @@ function VoucherDetails(props) {
             return;
         }
 
-        setActionPerformed(actionPerformed * -1)
+        setActionPerformed(actionPerformed * -1);
     }
 
     async function onRefund() {
-
         if (!library || !account) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -699,7 +697,7 @@ function VoucherDetails(props) {
             setCancelMessage({
                 messageType: MESSAGE.ERROR,
                 title: 'Error cancelation',
-                text: 'The voucher has not been canceled, please try again',
+                text: 'The voucher has not been cancelled, please try again',
                 link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
                 subprops: { refresh: false },
@@ -750,12 +748,11 @@ function VoucherDetails(props) {
     }, [voucherStatus && statusBlocks])
 
     const cancelMessageCloseButton = (val, props) => {
-        setCancelMessage(val)
-        if (props.refresh) window.location.reload()
+        setCancelMessage(val);
+        if (props.refresh) window.location.reload();
     }
 
     const onCancelOrFaultVoucherSet = async () => {
-
         try {
             const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCancelOrFaultVoucherSet', [voucherSetDetails._tokenIdSupply]);
     
@@ -774,7 +771,7 @@ function VoucherDetails(props) {
             setCancelMessage({
                 messageType: MESSAGE.SUCCESS,
                 title: 'The voucher set was cancelled',
-                text: 'The vouchers have been canceled, except the ones that were committed',
+                text: 'The vouchers have been cancelled, except the ones that were committed.',
                 link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
                 subprops: { refresh: true },
@@ -788,8 +785,8 @@ function VoucherDetails(props) {
 
             setCancelMessage({
                 messageType: MESSAGE.ERROR,
-                title: 'Error cancelation',
-                text: 'The set of vouchers has not been canceled, please try again',
+                title: 'Error cancellation',
+                text: 'The set of vouchers has not been cancelled, please try again.',
                 link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
                 setMessageType: cancelMessageCloseButton,
                 subprops: { refresh: false },
@@ -798,21 +795,21 @@ function VoucherDetails(props) {
     }
 
     useEffect(() => {
-        if (voucherSetDetails) setPageLoading(0)
+        if (voucherSetDetails) setPageLoading(0);
         escrowData &&
             escrowData.then(res => {
-                if (res && voucherStatus && statusBlocks) setPageLoading(0)
+                if (res && voucherStatus && statusBlocks) setPageLoading(0);
             })
     }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails, voucherDetails])
 
     useEffect(() => {
-        const isNotVoucherSet = '/' + window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
+        const isNotVoucherSet = '/' + window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers;
 
         if (isNotVoucherSet) {
-            setPageLoading(1)
+            setPageLoading(1);
         } else {
-            setPageLoadingPlaceholder(voucherSetPlaceholder)
-            setPageLoading(!voucherSetDetails)
+            setPageLoadingPlaceholder(voucherSetPlaceholder);
+            setPageLoading(!voucherSetDetails);
         }
         // setPageLoadingPlaceholder(voucherSetPlaceholder)
     }, [])
@@ -1117,6 +1114,6 @@ const commitToBuyTransactionCreator = async (bosonRouterContract, supplyId, vouc
         );
     } else {
         console.error(`Payment type not found ${paymentType}`);
-        throw new Error('Something went wrong')
+        throw new Error('Something went wrong');
     }
 }
