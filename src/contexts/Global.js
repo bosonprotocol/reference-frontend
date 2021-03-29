@@ -15,6 +15,7 @@ export const GlobalInitialState = {
   fetchVoucherSets: 1,
   account: null,
   checkDataUpdate: 1,
+  checkAccountUpdate: 1
 };
 
 export const Action = {
@@ -82,7 +83,8 @@ export const GlobalReducer = (state, action) => {
     },
     [DIC.UPDATE_ACCOUNT]: () => {
       return {
-        account: action.payload
+        account: action.payload,
+        checkAccountUpdate: state.checkAccountUpdate * -1
       }
     },
     [DIC.FETCH_VOUCHER_SETS]: () => {

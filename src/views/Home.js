@@ -58,7 +58,7 @@ function Home() {
         } else {
             setProductBlocks([])
         }
-    }, [voucherSets])
+    }, [voucherSets, globalContext.state.checkAccountUpdate])
 
     const completeOnboarding = () => {
         localStorage.setItem('onboarding-completed', '1')
