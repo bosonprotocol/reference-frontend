@@ -38,7 +38,7 @@ function FormPrice({
 
   const priceInputRef = useRef(null);
   const buyersDepositInputRef = useRef(null);
-  const sellersDepositInoutRef = useRef(null);
+  const sellersDepositInputRef = useRef(null);
 
   const calculateMaxForCurrency = (currency) => {
     if (currency) {
@@ -54,17 +54,18 @@ function FormPrice({
     }
 
   }
+
   const isValid = (value) => {
     try {
       ethers.utils.parseEther(value);
-      return true
+      return true;
     } catch (e) {
       return false;
     }
   }
 
   const updateValueIfValid = (event, valueReceiver) => {
-    const maxLength = 20; // 18 + 2 for the pre-decimal number and the decimal point
+    const maxLength = 20; // 18 + 2 = ETH token denomination + pre-decimal number and the decimal point
 
     if (event.target.value.length >= maxLength) {
       event.target.value = event.target.value.substr(0, maxLength); // restrict input length
@@ -77,14 +78,14 @@ function FormPrice({
       return;
     }
 
-    valueReceiver(ethers.utils.parseEther(event.target.value))
+    valueReceiver(ethers.utils.parseEther(event.target.value));
   }
 
   const validateQuantity = (e) => {
     const value = parseInt(e.target.value);
 
     if (Number.isInteger(value)) {
-      if (value < 100000000000000) {
+      if (value <= 100000) { // arbitrary but set to 6 due to the number of decimal digits in "max" hint (in input field)
         quantityValueReceiver(value);
         e.target.value = value;
       } else {
@@ -150,8 +151,8 @@ function FormPrice({
           <div className="bind">
             <Currencies inputValueHandler={sellerDepositCurrencyValueReceiver} />
             <div className="input relative focus" data-error={sellerDepositErrorMessage ? '' : null}>
-              <input ref={sellersDepositInoutRef} style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
-                id="offer-seller-deposit" onWheel={() => sellersDepositInoutRef.current.blur()} onBlur={(e) => removePointOnLoseFocus(e)} onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
+              <input ref={sellersDepositInputRef} style={sellerDepositErrorMessage ? { color: '#FA5B66' } : {}}
+                id="offer-seller-deposit" onWheel={() => sellersDepositInputRef.current.blur()} onBlur={(e) => removePointOnLoseFocus(e)} onChange={(e) => updateValueIfValid(e, sellerDepositValueReceiver)} />
               {
                 depositsPriceLimits[depositsCurrency]?.max ?
                   <div className="max">max {depositsPriceLimits[depositsCurrency] ? calculateMaxForCurrency(depositsCurrency) : null} {depositsCurrency}</div>
