@@ -34,7 +34,6 @@ export const onAttemptToApprove = async (tokenContract, library, account, chainI
         deadline: deadline
     };
 
-    console.log(message);
     const data = JSON.stringify({
         types: {
             EIP712Domain,

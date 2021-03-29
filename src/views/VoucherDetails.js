@@ -1,56 +1,102 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-
-import { useHistory } from "react-router"
-import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
-
-import {
-    PAYMENT_METHODS,
-} from "../hooks/configs";
-
-
-import { Link } from "react-router-dom";
-
+import "./VoucherDetails.scss";
+import { useHistory } from "react-router";
+import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
-import { ModalResolver } from "../contexts/Modal";
-import { formatDate } from "../helpers/Format"
-import ContractInteractionButton from "../components/shared/ContractInteractionButton";
-import PopupMessage from "../components/shared/PopupMessage";
 import * as humanizeDuration from 'humanize-duration';
-import "./VoucherDetails.scss"
-
-import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent"
 import { HorizontalScrollView } from "rc-horizontal-scroll";
 
-import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram"
+import ShowQR from "./ShowQR"
+import "./VoucherDetails.scss";
 
-import { useWeb3React } from "@web3-react/core";
-import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES } from "../helpers/Dictionary";
+import { useVoucherKernalContract, useBosonRouterContract, useBosonTokenContract } from "../hooks/useContract";
+import { PAYMENT_METHODS } from "../hooks/configs";
+import { getVoucherDetails, getPaymentsDetails, commitToBuy } from "../hooks/api";
+import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
+import { onAttemptToApprove } from "../hooks/approveWithPermit";
+
+import { ROLE, OFFER_FLOW_SCENARIO, STATUS, ROUTE, MODAL_TYPES, MESSAGE } from "../helpers/Dictionary";
+import { formatDate } from "../helpers/Format";
+import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
+
+import { ModalResolver } from "../contexts/Modal";
 import { ModalContext } from "../contexts/Modal";
 import { GlobalContext } from "../contexts/Global";
 import { NavigationContext, Action } from "../contexts/Navigation";
-import Loading from "../components/offerFlow/Loading";
 
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { determineCurrentStatusOfVoucher, initVoucherDetails } from "../helpers/VoucherParsers"
+import ContractInteractionButton from "../components/shared/ContractInteractionButton";
+import PopupMessage from "../components/shared/PopupMessage";
+import { DateTable, TableRow, PriceTable, DescriptionBlock } from "../components/shared/TableContent";
+import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram";
+import { IconQRScanner, IconWarning } from "../components/shared/Icons";
 
-import { IconQRScanner } from "../components/shared/Icons";
 import { calculateDifferenceInPercentage } from '../utils/math';
-import { onAttemptToApprove } from "../hooks/approveWithPermit";
 import { isCorrelationIdAlreadySent, setRecentlyUsedCorrelationId } from '../utils/duplicateCorrelationIdGuard';
 import { setTxHashToSupplyId, waitForRecentTransactionIfSuchExists } from '../utils/tx-hash';
+
+import MessageScreen from "../components/shared/MessageScreen"
+
+const voucherPlaceholder = <div className="details-loading">
+    <div className="title is-loading-2"></div>
+    <div className="status-container">
+        <div className="h is-loading-2"></div>
+        <div className="status-chain flex ai-center">
+            <div className="status is-loading-2"></div>
+            <div className="status is-loading-2"></div>
+            <div className="status is-loading-2"></div>
+        </div>
+    </div>
+    <div className="paytable-loading">
+        <div className="h is-loading-2"></div>
+        <div className="header is-loading-2"></div>
+        <div className="table is-loading-2"></div>
+    </div>
+    <div className="image is-loading-2"></div>
+    <div className="description is-loading-2"></div>
+    <div className="table flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+    <div className="table flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+</div>
+
+const voucherSetPlaceholder = <div className="details-loading voucher-set">
+    <div className="title is-loading-2"></div>
+    <div className="image is-loading-2"></div>
+    <div className="description is-loading-2"></div>
+    <div className="table flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+    <div className="table l flex split">
+        <div className="left is-loading-2"></div>
+    </div>
+    <div className="table l t flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+    <div className="table l flex split">
+        <div className="left is-loading-2"></div>
+        <div className="right is-loading-2"></div>
+    </div>
+</div>
 
 
 function VoucherDetails(props) {
     const [voucherDetails, setVoucherDetails] = useState(null)
     const [escrowData, setEscrowData] = useState(null)
+    const [showQRCode, setShowQRCode] = useState(0)
     const [imageView, setImageView] = useState(0)
+    const [pageLoading, setPageLoading] = useState(0)
+    const [pageLoadingPlaceholder, setPageLoadingPlaceholder] = useState(voucherPlaceholder)
     const voucherId = props.match.params.id;
     const modalContext = useContext(ModalContext);
     const globalContext = useContext(GlobalContext);
     const navigationContext = useContext(NavigationContext);
-    const [loading, setLoading] = useState(0);
     const bosonRouterContract = useBosonRouterContract();
     const bosonTokenContract = useBosonTokenContract();
     const voucherKernalContract = useVoucherKernalContract();
@@ -63,9 +109,12 @@ function VoucherDetails(props) {
     const [showDepositsDistributionWarningMessage, setShowDepositsDistributionWarningMessage] = useState(false);
     const [recentlySignedTxHash, setRecentlySignedTxHash] = useState('');
     const [hideControlButtonsWaitPeriodExpired, setHideControlButtonsWaitPeriodExpired] = useState(false);
+    const [disablePage, setDisablePage] = useState(0);
+    const [cancelMessage, setCancelMessage] = useState(false);
 
     const voucherSets = globalContext.state.allVoucherSets
     const voucherSetDetails = voucherSets.find(set => set.id === voucherId)
+
     const getProp = prop => voucherSetDetails ? voucherSetDetails[prop] : (voucherDetails ? voucherDetails[prop] : null)
 console.log(voucherSetDetails, voucherDetails)
     const paymentType = getProp('paymentType');
@@ -118,7 +167,7 @@ console.log(voucherSetDetails, voucherDetails)
         <div className="image-view-overlay flex center" onClick={ () => setImageView(0) }>
             <div className="button-container">
                 <div className="container">
-                    <div className="cancel new" onClick={ () => setImageView(0) }><span className="icon"></span></div>
+                    <div className="cancel new" onClick={ () => {setImageView(0)} }><span className="icon"></span></div>
                 </div>
             </div>
             <img src={ getProp('image') } alt=""/>
@@ -133,6 +182,7 @@ console.log(voucherSetDetails, voucherDetails)
     },[voucherDetails, voucherSetDetails, library])
     // assign controlset to statuses
     const controlList = () => {
+        setDisablePage(0)
         const CASE = {}
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
@@ -147,10 +197,10 @@ console.log(voucherSetDetails, voucherDetails)
         CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
             <div className="flex dual split">
                 <div className="action button refund" role="button" onClick={ () => onRefund() }>REFUND</div>
-                <Link
+                <div className="action button redeem" role="button" onClick={ () => setShowQRCode(1) }><IconQRScanner/> REDEEM</div>
+                {/* <Link
                     to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                    <div className="action button redeem" role="button"><IconQRScanner/> REDEEM</div>
-                </Link>
+                </Link> */}
             </div>
         )
 
@@ -181,6 +231,19 @@ console.log(voucherSetDetails, voucherDetails)
         CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
             <div className="button cancelVoucherSet" role="button" style={{border: 'none'}} disabled onClick={(e) => e.preventDefault()}>DRAFT: TRANSACTION IS BEING PROCESSED</div>
         )
+
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMMITED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.FINALIZED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLANED_CANCELED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.VIEW_ONLY]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLAINED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REDEEMED]] = () => {
+            setDisablePage(1)
+            return null
+        }
 
         return CASE
     }
@@ -388,17 +451,17 @@ console.log(voucherSetDetails, voucherDetails)
             {
                 PAYMENT: {
                     title: 'PAYMENT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[0],
                     position: tablePositions.price,
                 },
                 BUYER_DEPOSIT: {
                     title: 'BUYER DEPOSIT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[1],
                     position: tablePositions.buyerDeposit,
                 },
                 SELLER_DEPOSIT: {
                     title: 'SELLER DEPOSIT',
-                    currency: voucherDetails?.currency,
+                    currency: currencies[1],
                     position: tablePositions.sellerDeposit,
                 },
             }
@@ -439,12 +502,10 @@ console.log(voucherSetDetails, voucherDetails)
             return;
         }
 
-        setLoading(1)
 
         const voucherSetInfo = voucherSetDetails;
 
         if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -467,7 +528,6 @@ console.log(voucherSetDetails, voucherDetails)
             const correlationIdRecentlySent = isCorrelationIdAlreadySent(correlationId, account);
             
             if(correlationIdRecentlySent) {
-                setLoading(0);
                 modalContext.dispatch(ModalResolver.showModal({
                     show: true,
                     type: MODAL_TYPES.GENERIC_ERROR,
@@ -481,7 +541,6 @@ console.log(voucherSetDetails, voucherDetails)
             setRecentlyUsedCorrelationId(correlationId, account);
             setRecentlySignedTxHash(tx.hash, supplyId);
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -502,7 +561,6 @@ console.log(voucherSetDetails, voucherDetails)
             await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
 
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -514,7 +572,6 @@ console.log(voucherSetDetails, voucherDetails)
 
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
         history.push(ROUTE.ActivityVouchers)
     }
 
@@ -529,7 +586,6 @@ console.log(voucherSetDetails, voucherDetails)
             return;
         }
 
-        setLoading(1);
 
         try {
             const tx = await bosonRouterContract.complain(voucherDetails._tokenIdVoucher);
@@ -537,7 +593,6 @@ console.log(voucherSetDetails, voucherDetails)
             
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -547,7 +602,6 @@ console.log(voucherSetDetails, voucherDetails)
         }
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
     }
 
     async function onRefund() {
@@ -561,14 +615,11 @@ console.log(voucherSetDetails, voucherDetails)
             return;
         }
 
-        setLoading(1);
-
         try {
             const tx = await bosonRouterContract.refund(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
             history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -578,7 +629,6 @@ console.log(voucherSetDetails, voucherDetails)
         }
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
     }
 
     async function onCoF() {
@@ -592,24 +642,36 @@ console.log(voucherSetDetails, voucherDetails)
             return;
         }
 
-        setLoading(1);
-
         try {
             const tx = await bosonRouterContract.cancelOrFault(voucherDetails._tokenIdVoucher);
             setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-            history.push(ROUTE.ActivityVouchers + '/' + voucherId + '/details');
+
+            setCancelMessage({
+                messageType: MESSAGE.SUCCESS,
+                title: 'The voucher was cancelled',
+                link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: true},
+            })
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
                 content: e.message + ' :233'
             }));
+
+            setCancelMessage({
+                messageType: MESSAGE.ERROR,
+                title: 'Error cancelation',
+                text: 'The voucher has not been canceled, please try again',
+                link: ROUTE.Activity + '/' + voucherDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: false},
+            })
             return;
         }
 
         setActionPerformed(actionPerformed * -1)
-        setLoading(0)
     }
 
 
@@ -619,7 +681,6 @@ console.log(voucherSetDetails, voucherDetails)
     }, [voucherDetails, voucherSetDetails, account, actionPerformed, library, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired])
 
     useEffect(() => {
-
         if (voucherDetails) setEscrowData(prepareEscrowData())
         setControls(getControlState())
 
@@ -652,34 +713,72 @@ console.log(voucherSetDetails, voucherDetails)
         }
     }, [voucherStatus && statusBlocks])
 
+    const cancelMessageCloseButton = (val, props) => {
+        setCancelMessage(val)
+        if(props.refresh) window.location.reload()
+    }
+
     const onCancelOrFaultVoucherSet = async () => {
 
-        setLoading(1);
         try {
-            setLoading(1);
             const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(voucherSetDetails._tokenIdSupply);
             setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
+
+            setCancelMessage({
+                messageType: MESSAGE.SUCCESS,
+                title: 'The voucher set was cancelled',
+                text: 'The vouchers have been canceled, except the ones that were committed',
+                link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: true},
+            })
         } catch (e) {
-            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
                 content: e.message
             }));
-            return;
-        }
 
-        history.push(ROUTE.Activity + '/' + voucherSetDetails.id + '/details')
-        setLoading(0)
+            setCancelMessage({
+                messageType: MESSAGE.ERROR,
+                title: 'Error cancelation',
+                text: 'The set of vouchers has not been canceled, please try again',
+                link: ROUTE.Activity + '/' + voucherSetDetails.id + '/details',
+                setMessageType: cancelMessageCloseButton,
+                subprops: {refresh: false},
+            })
+        }
     }
+
+    useEffect(() => {
+        if(voucherSetDetails) setPageLoading(0)
+        escrowData &&
+        escrowData.then(res => {
+            if(res && voucherStatus && statusBlocks) setPageLoading(0)
+        })
+    }, [voucherStatus, statusBlocks, escrowData, voucherSetDetails, voucherDetails])
+
+    useEffect(() => {
+        const isNotVoucherSet = '/'+window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
+
+        if(isNotVoucherSet) {
+            setPageLoading(1)
+        } else {
+            setPageLoadingPlaceholder(voucherSetPlaceholder)
+            setPageLoading(!voucherSetDetails)
+        }
+        // setPageLoadingPlaceholder(voucherSetPlaceholder)
+    }, [])
 
 
     return (
         <>
-            { loading ? <Loading/> : null }
-            { <PopupMessage { ...popupMessage } /> }
-            <section className="voucher-details no-bg">
-                { imageView ? <ViewImageFullScreen/> : null }
+            {cancelMessage ? <MessageScreen {...cancelMessage} /> : null}
+            { <PopupMessage {...popupMessage} />}
+            {pageLoading ? pageLoadingPlaceholder : null}
+            {!disablePage ? <section className="voucher-details no-bg" style={{display: !pageLoading ? 'block' : 'none'}}>
+                {showQRCode ? <ShowQR setShowQRCode={setShowQRCode} voucherId={voucherDetails?.id} /> : null}
+                {imageView ? <ViewImageFullScreen /> : null}
                 <div className="container erase">
                     <div className="content">
                         <div className="section title">
@@ -709,7 +808,7 @@ console.log(voucherSetDetails, voucherDetails)
 
                         {
                             showDepositsDistributionWarningMessage ? 
-                            <div className="section depositsWarning"><span> Deposits will be distributed in 1 hour</span> </div>
+                            <div className="section depositsWarning flex center"><IconWarning /> <span> Deposits will be distributed in 1 hour</span> </div>
                              : null
                          }
                            
@@ -726,7 +825,7 @@ console.log(voucherSetDetails, voucherDetails)
                             </div>
                             { voucherSetDetails ?
                                 <div className="section price">
-                                    { tablePrices.some(item => item) ? <PriceTable data={ tablePrices }/> : null }
+                                    { tablePrices.some(item => item) ? <PriceTable paymentType={paymentType} data={ tablePrices }/> : null }
                                 </div>
                                 : null }
                             <div className="section date">
@@ -738,6 +837,9 @@ console.log(voucherSetDetails, voucherDetails)
 
                 </div>
             </section>
+            :
+            <MessageScreen subprops={{button: 'HOME PAGE'}} messageType={MESSAGE.LOCKED} title="Invalid link" link={ROUTE.Home} />
+            }
         </>
     )
 }

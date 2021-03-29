@@ -1,4 +1,4 @@
-import { IconCalendar, IconDeposit, IconEth, IconLocation } from "./Icons"
+import { IconCalendar, IconDeposit, IconEth, IconBsn, IconLocation } from "./Icons"
 
 function setRows(list, howMany) {
   var result = []
@@ -32,19 +32,16 @@ export const PriceTable = (props) => {
   const { data } = props
   const dataCopy = setRows(data, 2)
 
-
-  const iconList = [
-    <IconEth color="#5D6F84" />,
+  const iconList = (currencyIcon) => [
+    currencyIcon === 'ETH' ? <IconEth color="#5D6F84" /> : <IconBsn color="#5D6F84" />,
     <IconDeposit color="#5D6F84" />
   ]
 
-  const defaultCurrency = 'ETH'
-
   const jsxBlock = (title, value, currency, icon, id) => <div key={id} className="block flex">
-    <div className="icon">{iconList[icon]}</div>
+    <div className="icon">{iconList(currency)[icon]}</div>
     <div className="text">
       <p className="title">{title}</p>
-      <p className="value">{value} {currency ? currency : defaultCurrency}</p>
+      <p className="value">{value} {currency}</p>
     </div>
   </div>
 

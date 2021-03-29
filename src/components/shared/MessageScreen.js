@@ -1,11 +1,11 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { IconSuccess, IconError } from "./Icons"
+import { IconSuccess, IconError, LockedIcon } from "./Icons"
 import { MESSAGE } from "../../helpers/Dictionary"
 
 import "./MessageScreen.scss"
 
-function MessageScreen({messageType, title, text, link, setMessageType}) {
+function MessageScreen({messageType, title, text, link, setMessageType, subprops}) {
   const history = useHistory()
  
   return (
@@ -17,13 +17,15 @@ function MessageScreen({messageType, title, text, link, setMessageType}) {
               <IconSuccess /> :
             messageType === MESSAGE.ERROR ?
               <IconError /> : 
+            messageType === MESSAGE.LOCKED ?
+              <LockedIcon /> :
             null
           }</div>
           <p className="title">{title}</p>
           <p className="description">{text}</p>
         </div>
         <div className="action">
-          <div className="button primary" onClick={()=> !setMessageType ? history.push(link) : setMessageType(false)}>CLOSE</div>
+          <div className="button primary" onClick={()=> !setMessageType ? history.push(link) : setMessageType(false, subprops)}>{subprops?.button ? subprops.button : 'CLOSE'}</div>
         </div>
       </div>
     </section>

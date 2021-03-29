@@ -1,6 +1,5 @@
 @import "./Reset.scss";
 @import "./FlexGrid.scss";
-@import "./Placeholder.scss";
 @import "./Buttons.scss";
 @import "./Settings.scss";
 
@@ -328,5 +327,11 @@ header.top-navigation {
 }
 
 .show-qr-code {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 11;
+  background-color: #{'rgb(var(--page-color))'};
 }

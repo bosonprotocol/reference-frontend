@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
 import {
@@ -20,6 +21,7 @@ const ACTION = {
 export default function Connect() {
     const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
     const context = useWeb3React();
+
     const {
         active,
     } = context;
@@ -50,13 +52,14 @@ export default function Connect() {
         }
     }, []);
 
-    const ConnectedWallet = <WalletConnect getData={ACTION.GET_DATA} walletView={ walletView } setWalletView={ setWalletView }/>
+    const ConnectedWallet = <WalletConnect getData={ ACTION.GET_DATA } walletView={ walletView }
+                                           setWalletView={ setWalletView }/>
 
     return (
         <section className="connect activity">
             <div className="container l">
                 <h1>Wallet</h1>
-                {ConnectedWallet}
+                { ConnectedWallet }
             </div>
         </section>
     );

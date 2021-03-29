@@ -1,6 +1,6 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { act } from "@testing-library/react";
 
 import CardBlock from "../../../components/home/CardBlock";
 

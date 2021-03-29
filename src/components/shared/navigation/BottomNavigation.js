@@ -42,7 +42,7 @@ function BottomNavigation() {
             <div className="default-nav w100 flex center">
               <div className="nav-container flex center">
                 {Object.entries(routing).map((route, i) => <div key={i} className="link">
-                  <Link className="def" to={ROUTE[route[0]]}>{route[1]}</Link>
+                  <Link key={i} className="def" to={ROUTE[route[0]]}>{route[1]}</Link>
                 </div>)}
               </div>
             </div> :

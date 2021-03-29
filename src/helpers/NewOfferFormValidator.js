@@ -99,12 +99,13 @@ const quantityValidation = (errorMessages, getData) => {
   if (currentQuantityValue === '') {
     quantityErrorMessage = null
   }
-  if (currentQuantityValue) {
+  
+  if (currentQuantityValue || currentQuantityValue === 0) {
     if (isNaN(parseInt(currentQuantityValue))) {
       quantityErrorMessage = ValidationConfig.invalidQuantityError;
     }
 
-    if (currentQuantityValue <= 0) {
+    if (currentQuantityValue < ValidationConfig.quantitySettings.min) {
       quantityErrorMessage = ValidationConfig.minQuantityError;
     }
 
@@ -148,17 +149,17 @@ const priceValidation = (errorMessages, getData, priceSettings, currentQuantityV
 const sellerDepositValidation = (errorMessages, getData, priceSettings, currentQuantityValue) => {
   let sellerDepositErrorMessage = null;
   const currentSellerDepositValue = getData(NAME.SELLER_DEPOSIT);
+  const currentSellerDepositCurrency = getData(NAME.DEPOSITS_C);
 
-  if (getData(NAME.SELLER_DEPOSIT_C) && currentSellerDepositValue) {
-    const sellerCurrency = getData(NAME.SELLER_DEPOSIT_C);
+  if (currentSellerDepositCurrency && currentSellerDepositValue) {
 
     if (currentSellerDepositValue <= 0) {
       sellerDepositErrorMessage = ValidationConfig.minSellerDepositError;
     }
 
-    if (currentQuantityValue && priceSettings[sellerCurrency].max) {
-      if (currentSellerDepositValue.mul(currentQuantityValue).gt(priceSettings[sellerCurrency].max)) {
-        sellerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[sellerCurrency].max.div(currentQuantityValue)), 2)}`;
+    if (currentQuantityValue && priceSettings[currentSellerDepositCurrency].max) {
+      if (currentSellerDepositValue.mul(currentQuantityValue).gt(priceSettings[currentSellerDepositCurrency].max)) {
+        sellerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[currentSellerDepositCurrency].max.div(currentQuantityValue)), 2)}`;
       }
     }
 

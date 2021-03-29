@@ -34,6 +34,7 @@ export const CONTROL = {
     DISPLAY_NAVIGATION: 'display-navigation',
     DISPLAY_BOTTOM_NAVIGATION: 'display-bottom-navigation',
     CHECK_DATA_UPDATE: 'check-for-data-update',
+    TOGGLE_LOADING: 'toggle-loading',
 }
 
 // ROUTE strings are used to navigate to url
@@ -139,6 +140,7 @@ export const OFFER_FLOW_SCENARIO = populateOfferFlowScenario()
 export const MESSAGE = {
     SUCCESS: 'success',
     ERROR: 'error',
+    LOCKED: 'locked',
 }
 
 
