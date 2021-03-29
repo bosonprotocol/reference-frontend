@@ -233,6 +233,7 @@ function VoucherDetails(props) {
         )
 
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMMITED]] =
+        CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]] =
         CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]] =
@@ -286,7 +287,9 @@ function VoucherDetails(props) {
         ]
 
         // status: undefined - user that has not logged in
-        return !blockActionConditions.includes(true) ? OFFER_FLOW_SCENARIO[role][status] : undefined
+        return !blockActionConditions.includes(true) ? OFFER_FLOW_SCENARIO[role][status] ?
+            OFFER_FLOW_SCENARIO[role][status] : OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]
+        : undefined
     }
 
     const getControlState = () => {
@@ -762,7 +765,7 @@ function VoucherDetails(props) {
         const isNotVoucherSet = '/'+window.location.pathname.split('/')[1] === ROUTE.ActivityVouchers
 
         if(isNotVoucherSet) {
-            setPageLoading(1)
+            setPageLoading(0)
         } else {
             setPageLoadingPlaceholder(voucherSetPlaceholder)
             setPageLoading(!voucherSetDetails)
