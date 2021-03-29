@@ -38,10 +38,14 @@
     "test:coverage:badge": "npm run test:coverage && coverage-badge-creator",
     "app:lint": "eslint \"src/**/*.{js,jsx}\"",
     "app:lint-fix": "eslint --fix \"src/**/*.{js,jsx}\"",
+    "app:format": "prettier --list-different \"src/**/*.{js,jsx}\"",
+    "app:format-fix": "prettier --write \"src/**/*.{js,jsx}\"",
     "tests:lint": "eslint \"test/**/*.{spec,test}.{js,jsx}\"",
     "tests:lint-fix": "eslint --fix \"test/**/*.{spec,test}.{js,jsx}\"",
+    "tests:format": "prettier --list-different \"test/**/*.js\"",
+    "tests:format-fix": "prettier --write \"test/**/*.js\"",
     "tests:unit": "node scripts/test.js --watchAll=false",
-    "tests:coverage": "npm run tests:unit -- --coverage"
+    "tests:unit:coverage": "npm run tests:unit -- --coverage"
   },
   "dependencies": {
     "@babel/core": "7.12.3",
@@ -86,6 +90,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^7.11.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.1",
@@ -117,6 +122,7 @@
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "5.0.2",
+    "prettier": "^2.2.1",
     "prompts": "2.4.0",
     "qrcode.react": "^1.0.1",
     "rc-horizontal-scroll": "^1.1.1",
@@ -195,7 +201,8 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "prettier"
     ]
   },
   "browserslist": {
