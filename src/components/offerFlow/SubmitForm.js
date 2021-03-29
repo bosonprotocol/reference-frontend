@@ -47,7 +47,7 @@ export default function SubmitForm() {
         description,
         condition,
         selected_file, // switch with image to use blob
-    } = sellerContext.state.offeringData
+    } = sellerContext.state.offeringData;
 
     const { library, account, chainId } = useWeb3React();
     const bosonRouterContract = useBosonRouterContract();
@@ -56,7 +56,6 @@ export default function SubmitForm() {
 
 
     async function onCreateVoucherSet() {
-
         if (!library || !account) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
@@ -72,12 +71,12 @@ export default function SubmitForm() {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
-                content: 'Please check your wallet for Signature Request. Once authentication message is signed you can proceed'
+                content: 'Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.'
             }));
             return;
         }
 
-        setLoading(1)
+        setLoading(1);
 
         let dataArr = [
           toFixed(new Date(start_date) / 1000, 0),
@@ -95,7 +94,7 @@ export default function SubmitForm() {
 
             const correlationIdRecentySent = isCorrelationIdAlreadySent(correlationId, account);
 
-            if(correlationIdRecentySent) {
+            if (correlationIdRecentySent) {
                 setLoading(0);
                 modalContext.dispatch(ModalResolver.showModal({
                     show: true,
@@ -112,15 +111,15 @@ export default function SubmitForm() {
 
             prepareVoucherFormData(correlationId, dataArr, paymentType);
 
-            const id = await createVoucherSet(formData, authData.authToken);
+            await createVoucherSet(formData, authData.authToken);
 
             globalContext.dispatch(Action.fetchVoucherSets());
 
             setLoading(0);
-            setRedirectLink(ROUTE.Activity + '/' + id + '/details')
+            setRedirectLink(ROUTE.Activity);
             setRedirect(1);
         } catch (e) {
-            setLoading(0)
+            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
