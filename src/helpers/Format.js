@@ -1,3 +1,5 @@
+import {ethers} from "ethers";
+
 export function slugify(str)
 {
   str = str.replace(/^\s+|\s+$/g, '');
@@ -81,4 +83,37 @@ export function exponentToDecimal(num) {
         z += '0';
     }
     return str + z;
+}
+
+/**
+ * Calculates total (price * quantity) in ETH.
+ * Required due to last digit shift in ethers multiplication.
+ * @param value The value to be multiplied by the quantity
+ * @param quantity The quantity
+ * @returns {string} Total in ETH - formatted
+ */
+export function totalDepositCalcEth(value, quantity) {
+    if (!value || !quantity) {
+        return "";
+    }
+
+    return ethers.utils.formatEther(value.mul(quantity));
+}
+
+/**
+ * Input string will be sanitised if not only
+ * consisting of numbers and a single decimal
+ * point.
+ * @param str Input string
+ * @returns {string} Formatted number as string
+ */
+export function formatStringAsNumber(str) {
+    str = str.replace(/[^0-9.]/g, ''); // restrict to numbers & decimal points
+
+    const decCount = str.split(".")
+    if (decCount.length > 1) {
+        str = [decCount[0], decCount[1]].join("."); // if 2 decimal points, remove 2nd point and succeeding values
+    }
+
+    return str;
 }
