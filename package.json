@@ -169,7 +169,7 @@
       "<rootDir>/test/**/*.{spec,test}.{js,jsx}"
     ],
     "testEnvironment": "jsdom",
-    "testRunner": "/Users/tobyclemson/Code/boson/bosonprotocol/reference-frontend/node_modules/jest-circus/runner.js",
+    "testRunner": "<rootDir>/node_modules/jest-circus/runner.js",
     "transform": {
       "^.+\\.(js|jsx|mjs|cjs)$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
