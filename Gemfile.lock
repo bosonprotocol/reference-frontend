@@ -123,6 +123,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-19
+  x86_64-linux
 
 DEPENDENCIES
   confidante (~> 0.27)
@@ -132,4 +133,4 @@ DEPENDENCIES
   rake_fly (~> 2.7)
 
 BUNDLED WITH
-   2.2.14
+   2.2.15
