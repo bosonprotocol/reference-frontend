@@ -107,6 +107,18 @@ function App() {
 
     }, [account, library, chainId]);
 
+    useEffect(() => {
+        const localstorage_v = process.env.REACT_APP_FRONT_END_LOCALSTORAGE_VERSION
+
+        if(localStorage['localstorage_v'] !== localstorage_v) {
+            const onboarding_completed = localStorage['onboarding-completed']
+
+            localStorage.clear();
+            localStorage['localstorage_v'] = localstorage_v
+            localStorage['onboarding-completed'] = onboarding_completed
+        }
+    }, [])
+
     return (
         <ModalContext.Provider value={ modalContextValue }>
             <GlobalContext.Provider value={ globalContextValue }>
