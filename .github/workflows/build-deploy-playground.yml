@@ -1,25 +1,10 @@
-name: Playground - Build and Deploy
+name: Playground Deployment
 on:
   push:
     branches:
       - playground
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
-      - name: Install Dependencies
-        run: npm install
-      - name: Build
-        run: npm run build:playground
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: build
-          path: build
   deploy:
     name: Deploy
     needs: build
