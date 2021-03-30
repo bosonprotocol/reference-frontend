@@ -44,7 +44,8 @@ For instructions on how to get set up with these specific versions:
 To run the app, run the following:
 
 ```shell script
-./go app:start
+npm install
+npm run start
 ```
 
 A browser window will open at http://localhost:3000/ with a live version of the 
