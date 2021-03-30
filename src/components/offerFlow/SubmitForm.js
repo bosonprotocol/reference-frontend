@@ -81,13 +81,13 @@ export default function SubmitForm() {
         setLoading(1)
 
         let dataArr = [
-          toFixed(new Date(start_date).getTime(), 0),
-          toFixed(new Date(end_date).getTime(), 0),
-          price.toString(),
-          seller_deposit.toString(),
-          buyer_deposit.toString(),
-          parseInt(quantity)
-        ];
+            toFixed(new Date(start_date) / 1000, 0),
+            toFixed(new Date(end_date) / 1000, 0),
+            price.toString(),
+            seller_deposit.toString(),
+            buyer_deposit.toString(),
+            parseInt(quantity)
+          ];
 
         let correlationId;
 
@@ -137,8 +137,8 @@ export default function SubmitForm() {
     }
 
     function prepareVoucherFormData(correlationId, dataArr, paymentType) {
-        const startDate = new Date(+dataArr[0]);
-        const endDate = new Date(+dataArr[1]);
+        const startDate = new Date(dataArr[0] * 1000);
+        const endDate = new Date(dataArr[1] * 1000);
 
         appendFilesToFormData();
 
