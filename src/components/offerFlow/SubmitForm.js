@@ -139,7 +139,6 @@ export default function SubmitForm() {
     function prepareVoucherFormData(correlationId, dataArr, paymentType) {
         const startDate = new Date(+dataArr[0]);
         const endDate = new Date(+dataArr[1]);
-        console.log(startDate.getTime(),endDate.getTime() )
 
         appendFilesToFormData();
 
