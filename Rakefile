@@ -164,7 +164,7 @@ namespace :ci do
 
       t.target = configuration.concourse_team
       t.team = configuration.concourse_team
-      t.pipeline = "reference-backend-develop"
+      t.pipeline = "reference-frontend-develop"
 
       t.config = 'pipelines/develop/pipeline.yaml'
 
@@ -190,7 +190,7 @@ namespace :ci do
 
       t.target = configuration.concourse_team
       t.team = configuration.concourse_team
-      t.pipeline = "reference-backend-builder"
+      t.pipeline = "reference-frontend-builder"
 
       t.config = 'pipelines/builder/pipeline.yaml'
 
@@ -222,7 +222,7 @@ namespace :ci do
 
         t.target = configuration.concourse_team
         t.team = configuration.concourse_team
-        t.pipeline = "reference-backend-pr-#{to_pipeline_name(branch)}"
+        t.pipeline = "reference-frontend-pr-#{to_pipeline_name(branch)}"
 
         t.config = 'pipelines/pr/pipeline.yaml'
 
