@@ -108,9 +108,9 @@ export default function SubmitForm() {
            
             const created = await createNewVoucherSet(dataArr, bosonRouterContract, bosonTokenContract, account, chainId, library, price_currency, deposits_currency, modalContext, seller_deposit.add(buyer_deposit));
             
-            if(!created) {
+            if (!created) {
                 setLoading(0);
-                return
+                return;
             }
             setRecentlyUsedCorrelationId(correlationId, account);
 
@@ -123,10 +123,10 @@ export default function SubmitForm() {
             globalContext.dispatch(Action.fetchVoucherSets());
 
             setLoading(0);
-            setRedirectLink(ROUTE.Activity + '/' + id + '/details')
+            setRedirectLink(ROUTE.Activity + '/' + id + '/details');
             setRedirect(1);
         } catch (e) {
-            setLoading(0)
+            setLoading(0);
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -200,7 +200,7 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
 
         const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderETHETH', [dataArr, { value: txValue }]);
        
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
+        if (contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -223,7 +223,7 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
 
         const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(bosonRouterContract, 'requestCreateOrderTKNETH', [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]);
        
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
+        if (contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -255,7 +255,7 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
                                                                                                                                                           signature.r,
                                                                                                                                                           signature.s,
                                                                                                                                                           dataArr]);
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
+        if (contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
                 show: true,
                 type: MODAL_TYPES.GENERIC_ERROR,
@@ -294,7 +294,7 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
                                                                                                                                                           signature.r,
                                                                                                                                                           signature.s,
                                                                                                                                                           dataArr ]);
-        if(contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
+        if (contractInteractionDryRunErrorMessageMaker({action: 'Create a new Voucher Set', account})) {
             modalContext.dispatch(ModalResolver.showModal({
             show: true,
             type: MODAL_TYPES.GENERIC_ERROR,
@@ -313,7 +313,7 @@ const createNewVoucherSet = async (dataArr, bosonRouterContract, tokenContract, 
         );
     } else {
         console.error(`Currencies combination not found ${ currencyCombination }`);
-        throw new Error('Something went wrong')
+        throw new Error('Something went wrong');
     }
 };
 
