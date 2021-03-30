@@ -5,6 +5,10 @@ import { SellerContext, getData } from "../../contexts/Seller";
 import Currencies from "./Currencies";
 
 import { NAME } from "../../helpers/Dictionary";
+import {
+  totalDepositCalcEth,
+  formatStringAsNumber,
+} from "../../helpers/Format";
 import { ethers } from "ethers";
 import { toFixed } from "../../utils/format-utils";
 
@@ -36,7 +40,7 @@ function FormPrice({
 
   const priceInputRef = useRef(null);
   const buyersDepositInputRef = useRef(null);
-  const sellersDepositInoutRef = useRef(null);
+  const sellersDepositInputRef = useRef(null);
 
   const calculateMaxForCurrency = (currency) => {
     if (currency) {
@@ -57,6 +61,7 @@ function FormPrice({
       return ethers.utils.formatEther(maxFromContract);
     }
   };
+
   const isValid = (value) => {
     try {
       ethers.utils.parseEther(value);
@@ -67,6 +72,14 @@ function FormPrice({
   };
 
   const updateValueIfValid = (event, valueReceiver) => {
+    const maxLength = 20; // 18 + 2 = ETH token denomination + pre-decimal number and the decimal point
+
+    if (event.target.value.length >= maxLength) {
+      event.target.value = event.target.value.substr(0, maxLength); // restrict input length
+    }
+
+    event.target.value = formatStringAsNumber(event.target.value); // restrict to numeric value with optional decimal value
+
     if (
       !event ||
       isNaN(parseInt(event.target.value)) ||
@@ -75,6 +88,7 @@ function FormPrice({
       valueReceiver(null);
       return;
     }
+
     valueReceiver(ethers.utils.parseEther(event.target.value));
   };
 
@@ -82,7 +96,8 @@ function FormPrice({
     const value = parseInt(e.target.value);
 
     if (Number.isInteger(value)) {
-      if (value < 10000) {
+      if (value <= 100000) {
+        // arbitrary but set to 6 due to the number of decimal digits in "max" hint (in input field)
         quantityValueReceiver(value);
         e.target.value = value;
       } else {
@@ -95,19 +110,27 @@ function FormPrice({
     }
   };
 
+  /**
+   * If the final character in an input field is
+   * a full-stop then this function removes it.
+   * To use, call it using "onBlur".
+   * @param e
+   */
+  const removePointOnLoseFocus = (e) => {
+    const lastChar = e.target.value
+      .toString()
+      .substr(e.target.value.length - 1);
+    if (lastChar === ".") {
+      e.target.value = e.target.value.substr(0, e.target.value.length - 1);
+    }
+  };
   return (
     <div className="price">
       <div className="row">
         <div className="field">
           <label htmlFor="offer-quantity">Quantity</label>
           <div className="input focus" data-error={quantityErrorMessage}>
-            <input
-              id="offer-quantity"
-              type="number"
-              min="1"
-              max="10"
-              onInput={(e) => validateQuantity(e)}
-            />
+            <input id="offer-quantity" onInput={(e) => validateQuantity(e)} />
           </div>
         </div>
       </div>
@@ -124,9 +147,8 @@ function FormPrice({
                 ref={priceInputRef}
                 style={priceErrorMessage ? { color: "#FA5B66" } : {}}
                 id="offer-price"
-                type="number"
-                min="0"
                 onWheel={() => priceInputRef.current.blur()}
+                onBlur={(e) => removePointOnLoseFocus(e)}
                 onChange={(e) => updateValueIfValid(e, priceValueReceiver)}
               />
               {depositsPriceLimits[priceCurrency]?.max ? (
@@ -164,12 +186,11 @@ function FormPrice({
               data-error={sellerDepositErrorMessage ? "" : null}
             >
               <input
-                ref={sellersDepositInoutRef}
+                ref={sellersDepositInputRef}
                 style={sellerDepositErrorMessage ? { color: "#FA5B66" } : {}}
                 id="offer-seller-deposit"
-                onWheel={() => sellersDepositInoutRef.current.blur()}
-                type="number"
-                min="0"
+                onWheel={() => sellersDepositInputRef.current.blur()}
+                onBlur={(e) => removePointOnLoseFocus(e)}
                 onChange={(e) =>
                   updateValueIfValid(e, sellerDepositValueReceiver)
                 }
@@ -212,10 +233,9 @@ function FormPrice({
               id="offer-buyer-deposit"
               ref={buyersDepositInputRef}
               style={buyerDepositErrorMessage ? { color: "#FA5B66" } : {}}
-              type="number"
-              min="0"
               onWheel={() => buyersDepositInputRef.current.blur()}
               name={NAME.BUYER_DEPOSIT}
+              onBlur={(e) => removePointOnLoseFocus(e)}
               onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)}
             />
             {depositsPriceLimits[depositsCurrency].max ? (
@@ -261,7 +281,7 @@ const getLimitCalculationsBar = (amount, quantity, currency, errorMessage) => (
       </span>
     </p>
     <p className="field dual" style={{ padding: "15px 13px" }}>
-      {`=    ${ethers.utils.formatEther(amount.mul(quantity))} ${currency}`}
+      {`=    ${totalDepositCalcEth(amount, quantity)} ${currency}`}
     </p>
   </div>
 );

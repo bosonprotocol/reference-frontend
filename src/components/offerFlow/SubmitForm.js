@@ -84,7 +84,7 @@ export default function SubmitForm() {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content:
-            "Please check your wallet for Signature Request. Once authentication message is signed you can proceed",
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -145,12 +145,12 @@ export default function SubmitForm() {
 
       prepareVoucherFormData(correlationId, dataArr, paymentType);
 
-      const id = await createVoucherSet(formData, authData.authToken);
+      await createVoucherSet(formData, authData.authToken);
 
       globalContext.dispatch(Action.fetchVoucherSets());
 
       setLoading(0);
-      setRedirectLink(ROUTE.Activity + "/" + id + "/details");
+      setRedirectLink(ROUTE.Activity);
       setRedirect(1);
     } catch (e) {
       setLoading(0);
