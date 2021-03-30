@@ -8,26 +8,120 @@ This is a reference app meant to show how to integrate Boson into a React front-
 
 **Table of Contents**:
 
-- [Install and setup](#install-and-setup)
+- [Local Development](#local-development)
+- [Testing](#testing)
+- [Code Linting](#code-linting)
 - [Front-end Doc](#front-end-doc)
   - [Offer Flow](#offer-flow)
     - [`components/NewOffer.js`](#componentsnewofferjs)
     - [Configuring input fields](#configuring-input-fields)
     - [`helpers/Dictionary.js`](#helpersdictionaryjs)
 - [Contributing](#contributing)
-  - [Running tests](#running-tests)
 - [License](#license)
 
-## Install and setup
+## Local Development
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). To install it, clone this repo. Then, run:
+### Prerequisites
 
-```
+For local development of the reference-backend, your development machine will need a few
+tools installed.
+
+At a minimum, you'll need:
+* Node (12.20)
+* NPM (> 6)
+* Ruby (2.7)
+* Bundler (> 2)
+* Git
+* Docker
+* direnv
+
+For instructions on how to get set up with these specific versions:
+* See the [OS X guide](docs/setup/osx.md) if you are on a Mac.
+* See the [Linux guide](docs/setup/linux.md) if you use a Linux distribution.
+
+### Running the app locally
+
+To run the app, run the following:
+
+```shell script
 npm install
 npm run start
 ```
 
-It will open a browser window at http://localhost:3000/ with a live version of the code. You're all set to edit and have it rerender there. For more run scripts, take a look at the package.json file.
+A browser window will open at http://localhost:3000/ with a live version of the 
+code. You're all set to edit and have it rerender there.
+
+### Running the build
+
+We have a fully automated local build process to check that your changes are
+good to be merged. To run the build:
+
+```shell script
+./go
+````
+
+By default, the build process fetches all dependencies, compiles, lints,
+formats and tests the codebase. There are also tasks for each step. This and
+subsequent sections provide more details of each of the tasks.
+
+To fetch dependencies:
+
+```shell script
+./go dependencies:install
+```
+
+## Testing
+
+All tests are written using [Jest](https://jestjs.io/).
+
+To run the unit tests:
+
+```shell script
+./go tests:unit
+```
+
+## Code Linting
+
+Both the app itself and the tests are linted and formatted as part of
+the build process.
+
+For the tests, we use:
+* [eslint](https://eslint.org/) for linting
+* [prettier](https://prettier.io/) for formatting
+
+To lint the app:
+
+```shell script
+./go app:lint
+```
+
+This will check if the linter is satisfied. If instead you want to attempt to
+automatically fix any linting issues:
+
+```shell script
+./go app:lint_fix
+```
+
+To check the formatting of the app:
+
+```shell script
+./go app:format
+```
+
+To automatically fix formatting issues:
+
+```shell script
+./go app:format_fix
+```
+
+Similarly, for the tests, to perform the same tasks:
+
+```shell script
+./go tests:lint
+./go tests:lint_fix
+./go tests:format
+./go tests:format_fix
+```
 
 ## Front-end Doc
 
@@ -68,14 +162,6 @@ Questions are also welcome, as long as they are tech related. We can use them to
 All PRs must pass all tests before being merged.
 
 By being in this community, you agree to the [Code of Conduct](CODE_OF_CONDUCT.md). Take a look at it, if you haven't already.
-
-### Running tests
-
-Before submitting a PR, ensure that it passes the tests:
-
-```
-npm test
-```
 
 ## License
 
