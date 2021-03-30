@@ -35,7 +35,6 @@
     "build:dev": "env-cmd -f .env.dev node scripts/build.js",
     "build:demo": "env-cmd -f .env.demo node scripts/build.js",
     "build:playground": "env-cmd -f .env.playground node scripts/build.js",
-    "test:coverage:badge": "npm run test:coverage && coverage-badge-creator",
     "app:lint": "eslint \"src/**/*.{js,jsx}\"",
     "app:lint-fix": "eslint --fix \"src/**/*.{js,jsx}\"",
     "app:format": "prettier --list-different \"src/**/*.{js,jsx}\"",
@@ -45,7 +44,8 @@
     "tests:format": "prettier --list-different \"test/**/*.js\"",
     "tests:format-fix": "prettier --write \"test/**/*.js\"",
     "tests:unit": "node scripts/test.js --watchAll=false",
-    "tests:unit:coverage": "npm run tests:unit -- --coverage"
+    "tests:unit:coverage": "npm run tests:unit -- --coverage",
+    "tests:coverage:badge": "coverage-badge-creator"
   },
   "dependencies": {
     "@babel/core": "7.12.3",
