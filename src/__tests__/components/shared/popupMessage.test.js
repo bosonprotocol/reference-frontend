@@ -6,34 +6,34 @@ import PopupMessage from "../../../components/shared/PopupMessage";
 
 let container = null;
 beforeEach(() => {
-    // setup a DOM element as a render target
-    container = document.createElement("div");
-    document.body.appendChild(container);
+  // setup a DOM element as a render target
+  container = document.createElement("div");
+  document.body.appendChild(container);
 });
 
 afterEach(() => {
-    // cleanup on exiting
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
+  // cleanup on exiting
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
 });
 
 describe("Component - Pop-up Message", () => {
-    it("Expect pass - renders with correct text", () => {
-        const messageText = "TEST - FAKE POP-UP MESSAGE";
+  it("Expect pass - renders with correct text", () => {
+    const messageText = "TEST - FAKE POP-UP MESSAGE";
 
-        act(() => {
-            render(<PopupMessage text={messageText}/>, container);
-        });
-
-        expect(container.textContent).toBe(messageText);
+    act(() => {
+      render(<PopupMessage text={messageText} />, container);
     });
 
-    it("Expect pass - renders with no text if nothing provided", () => {
-        act(() => {
-            render(<PopupMessage/>, container);
-        });
+    expect(container.textContent).toBe(messageText);
+  });
 
-        expect(container.textContent).toBe(""); // expect empty text
+  it("Expect pass - renders with no text if nothing provided", () => {
+    act(() => {
+      render(<PopupMessage />, container);
     });
+
+    expect(container.textContent).toBe(""); // expect empty text
+  });
 });

@@ -1,0 +1,4 @@
+---
+ci_provisioning_role_arn: "arn:aws:iam::%{hiera('rdm_management_account_id')}:role/cross-account-admin-role"
+ci_deployment_type: "%{ci_deployment_type}"
+ci_deployment_label: "%{ci_deployment_label}"
