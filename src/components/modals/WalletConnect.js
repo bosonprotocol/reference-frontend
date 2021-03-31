@@ -14,6 +14,7 @@ import CopyHelper from "../../copyHelper";
 import "./WalletConnect.scss";
 import { WalletContext } from "../../contexts/Wallet";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+import { isMobile } from "@walletconnect/utils";
 
 export const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -152,25 +153,31 @@ export function WalletConnect({
         />
       ) : null}
       <div className="wallets">
-        {!(window.web3 || window.ethereum) ? (
-          <a href={"https://metamask.io/"} target={"_blank"}>
+        {!isMobile() ? (
+          !(window.web3 || window.ethereum) ? (
+            <a
+              href={"https://metamask.io/"}
+              target={"_blank"}
+              rel={"noreferrer"}
+            >
+              <WalletListItem
+                name={CONNECTOR_TYPES.METAMASK}
+                imageName={MetaMaskLogo}
+                isActive={false}
+                onClick={null}
+              />
+            </a>
+          ) : (
             <WalletListItem
               name={CONNECTOR_TYPES.METAMASK}
               imageName={MetaMaskLogo}
-              isActive={false}
-              onClick={null}
+              isActive={connector === injected && active}
+              onClick={() => {
+                onConnectionClicked(CONNECTOR_TYPES.METAMASK);
+              }}
             />
-          </a>
-        ) : (
-          <WalletListItem
-            name={CONNECTOR_TYPES.METAMASK}
-            imageName={MetaMaskLogo}
-            isActive={connector === injected && active}
-            onClick={() => {
-              onConnectionClicked(CONNECTOR_TYPES.METAMASK);
-            }}
-          />
-        )}
+          )
+        ) : null}
         <WalletListItem
           name={CONNECTOR_TYPES.WALLET_CONNECT}
           imageName={WalletConnectLogo}
