@@ -220,7 +220,7 @@ function WalletListItem({
       <div className="status">
         {isActive ? (
           <div className="active-wallet-indicator">
-            <img src="images/active-wallet.png" alt="Active wallet" /> Connected
+            <img src="images/wallets/active-wallet.png" alt="Active wallet" /> Connected
           </div>
         ) : (
           <div className={`button gray`} role="button">

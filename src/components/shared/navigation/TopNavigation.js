@@ -115,7 +115,7 @@ const WalletConnection = (props) => {
             alt="Connected account"
           />
           <div className="active-wallet-indicator flex">
-            <img src="images/active-wallet.png" alt="Active wallet" />
+            <img src="images/wallets/active-wallet.png" alt="Active wallet" />
           </div>
           <span>{shortenAddress(account)}</span>
         </div>

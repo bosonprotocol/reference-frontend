@@ -26,7 +26,7 @@ function EscrowDiagram(props) {
       <div className="main col-2 reduce-1 flex column">
         <div className="title flex ai-center jc-center pad-last">
           <img
-            src="images/boson-logo-small.png"
+            src="images/boson/boson-logo-small.png"
             alt="Boson Logo"
             className="pe-none"
           />
