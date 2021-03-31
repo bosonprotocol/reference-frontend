@@ -16,11 +16,16 @@ import NewOfferSummary from "../../components/new-offer/new-offer-summary/NewOff
 import { SellerContext, Seller } from "../../contexts/Seller";
 import { NavigationContext, Action } from "../../contexts/Navigation";
 
-import { NAME, CURRENCY, MODAL_TYPES, ROUTE } from "../../helpers/Dictionary";
+import {
+  NAME,
+  CURRENCY,
+  MODAL_TYPES,
+  ROUTE,
+} from "../../helpers/configs/Dictionary";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
-import { checkForErrorsInNewOfferForm } from "../../helpers/NewOfferFormValidator";
+import { checkForErrorsInNewOfferForm } from "../../helpers/validators/NewOfferFormValidator";
 import { useFundLimitsContract } from "../../hooks/useContract";
 import { SMART_CONTRACTS } from "../../hooks/configs";
 

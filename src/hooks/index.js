@@ -5,7 +5,7 @@ import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
 import { NetworkContextName } from "../constants";
 import { injected, walletconnect } from "../connectors";
-import { parseLocalStorage } from "../utils";
+import { parseLocalStorage } from "../utils/FormatUtils";
 import {
   authenticateUser,
   createUnauthenticatedLocalStorageRecord,

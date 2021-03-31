@@ -9,7 +9,7 @@ import "./NewOfferDates.scss";
 // https://www.npmjs.com/package/react-datepicker
 
 import { Arrow } from "../../shared/icons/Icons";
-import { NAME } from "../../../helpers/Dictionary";
+import { NAME } from "../../../helpers/configs/Dictionary";
 
 function NewOfferDates({
   startDateValueReceiver,

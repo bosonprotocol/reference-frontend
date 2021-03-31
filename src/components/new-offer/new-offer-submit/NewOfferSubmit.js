@@ -16,19 +16,23 @@ import { GlobalContext, Action } from "../../../contexts/Global";
 import ContractInteractionButton from "../../shared/contract-interaction/contract-interaction-button/ContractInteractionButton";
 import { useLocation } from "react-router-dom";
 import { ModalContext, ModalResolver } from "../../../contexts/Modal";
-import { MODAL_TYPES, MESSAGE, ROUTE } from "../../../helpers/Dictionary";
+import {
+  MODAL_TYPES,
+  MESSAGE,
+  ROUTE,
+} from "../../../helpers/configs/Dictionary";
 import {
   SMART_CONTRACTS,
   PAYMENT_METHODS_LABELS,
   PAYMENT_METHODS,
 } from "../../../hooks/configs";
-import { toFixed } from "../../../utils/format-utils";
+import { toFixed } from "../../../utils/FormatUtils";
 import { onAttemptToApprove } from "../../../hooks/approveWithPermit";
 
 import {
   isCorrelationIdAlreadySent,
   setRecentlyUsedCorrelationId,
-} from "../../../utils/duplicateCorrelationIdGuard";
+} from "../../../utils/DuplicateCorrelationIdGuard";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);

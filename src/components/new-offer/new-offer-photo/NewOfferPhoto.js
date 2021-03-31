@@ -6,7 +6,7 @@ import "./NewOfferPhoto.scss";
 
 import { IconPhoto } from "../../shared/icons/Icons";
 
-import { NAME } from "../../../helpers/Dictionary";
+import { NAME } from "../../../helpers/configs/Dictionary";
 
 function UploadPhoto({ inputValueReceiver, uploadImageErrorMessage }) {
   const sellerContext = useContext(SellerContext);

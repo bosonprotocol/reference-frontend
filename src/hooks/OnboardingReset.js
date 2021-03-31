@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 import { GlobalContext, Action } from "../contexts/Global";
 
-import { ROUTE } from "../helpers/Dictionary";
+import { ROUTE } from "../helpers/configs/Dictionary";
 
 function OnboardingReset() {
   const globalContext = useContext(GlobalContext);

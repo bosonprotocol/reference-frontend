@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 import { TableRow, DateTable } from "../../shared/table-content/TableContent";
 import { SellerContext } from "../../../contexts/Seller";
-import { formatDate, totalDepositCalcEth } from "../../../helpers/Format";
+import { formatDate, totalDepositCalcEth } from "../../../utils/FormatUtils";
 
 function NewOfferSummary() {
   const sellerContext = useContext(SellerContext);

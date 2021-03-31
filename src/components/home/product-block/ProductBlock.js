@@ -6,7 +6,7 @@ import "./ProductBlock.scss";
 
 import { IconEth, IconDeposit, IconBsn } from "../../shared/icons/Icons";
 
-import { ROUTE } from "../../../helpers/Dictionary";
+import { ROUTE } from "../../../helpers/configs/Dictionary";
 
 function ProductBlock(props) {
   const { id, title, image, price, deposit, col, paymentType } = props;

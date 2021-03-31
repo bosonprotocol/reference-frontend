@@ -1,7 +1,7 @@
 import { createContext } from "react";
-import { DIC, CONTROL } from "../helpers/Dictionary";
+import { DIC, CONTROL } from "../helpers/configs/Dictionary";
 // import { disableScroll, enableScroll } from "../helpers/ScrollManipulation"
-import { getData as getContextData } from "../helpers/Context";
+import { getData as getContextData } from "../helpers/ContextHelper";
 
 export const getData = getContextData;
 

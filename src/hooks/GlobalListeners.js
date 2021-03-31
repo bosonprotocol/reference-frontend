@@ -7,7 +7,7 @@ import {
   account as loadingAccount,
 } from "../contexts/Loading";
 import { useWeb3React } from "@web3-react/core";
-import { fetchVoucherSets } from "../helpers/VoucherParsers";
+import { fetchVoucherSets } from "../helpers/parsers/VoucherAndSetParsers";
 import { getAccountStoredInLocalStorage } from "./authenticate";
 
 function PopulateVouchers() {

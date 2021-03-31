@@ -2,13 +2,17 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router";
 import { NavigationContext, Action } from "../../../../contexts/Navigation";
 
-import { ROUTE, AFFMAP, BOTTOM_NAV_TYPE } from "../../../../helpers/Dictionary";
+import {
+  ROUTE,
+  AFFMAP,
+  BOTTOM_NAV_TYPE,
+} from "../../../../helpers/configs/Dictionary";
 import {
   updateBackgroundColor,
   bgColorPrimary,
   bgColorSecondary,
   bgColorBlack,
-} from "../../../../helpers/CSS";
+} from "../../../../helpers/CSSHelper";
 
 // object affordances contains all of the available affordances assigned with false (don't show) by default
 let affordances = {};

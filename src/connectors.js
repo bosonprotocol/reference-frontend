@@ -1,6 +1,6 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
-import { NetworkConnector } from "./utils/networkConnector";
+import { NetworkConnector } from "./utils/NetworkConnector";
 
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {

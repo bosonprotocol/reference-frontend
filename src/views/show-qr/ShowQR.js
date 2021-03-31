@@ -4,7 +4,7 @@ import QRCode from "qrcode.react";
 
 import "../../styles/StaticPage.scss";
 
-import { MODAL_TYPES, ROUTE, MESSAGE } from "../../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE, MESSAGE } from "../../helpers/configs/Dictionary";
 import ContractInteractionButton from "../../components/shared/contract-interaction/contract-interaction-button/ContractInteractionButton";
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
@@ -14,7 +14,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from "react";
 import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner";
 import GenericMessage from "../generic-message/GenericMessage";
-import { setTxHashToSupplyId } from "../../utils/tx-hash";
+import { setTxHashToSupplyId } from "../../utils/BlockchainUtils";
 import { useEffect } from "react";
 
 function ShowQR({ voucherId, setShowQRCode }) {

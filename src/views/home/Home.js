@@ -15,7 +15,7 @@ import SwiperCore, { Navigation } from "swiper";
 
 import "swiper/swiper.min.css";
 
-import { productListSettings } from "../../helpers/SliderSettings";
+import { productListConfig } from "../../helpers/configs/SliderConfig";
 
 import { cardBlocks } from "../../PlaceholderAPI";
 
@@ -76,7 +76,7 @@ function Home() {
             x.voucherOwner !== account?.toLowerCase()
         )
       );
-      productListSettings.infinite = voucherSets.length > 4;
+      productListConfig.infinite = voucherSets.length > 4;
     } else {
       setProductBlocks([]);
     }

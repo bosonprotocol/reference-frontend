@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 
-import { NAME } from "../../../helpers/Dictionary";
+import { NAME } from "../../../helpers/configs/Dictionary";
 import { SellerContext, getData } from "../../../contexts/Seller";
 
 function NewOfferGeneral({

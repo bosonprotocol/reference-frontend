@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { CURRENCY } from "../../../../helpers/Dictionary";
+import { CURRENCY } from "../../../../helpers/configs/Dictionary";
 
 function CurrencySelector(props) {
   const { name, inputValueHandler } = props;

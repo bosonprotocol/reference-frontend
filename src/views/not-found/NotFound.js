@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ROUTE } from "../../helpers/Dictionary";
+import { ROUTE } from "../../helpers/configs/Dictionary";
 
 function NotFound() {
   return (
