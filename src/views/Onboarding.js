@@ -15,7 +15,7 @@ function slide1() {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson-logo.png"
+            src="images/boson/boson-logo.png"
             alt="Boson Protocol Logo"
             className="pe-none"
           />
@@ -24,7 +24,7 @@ function slide1() {
       </div>
       <div className="slide-image flex center">
         <img
-          src="images/onboarding-slide-1.jpg"
+          src="images/onboarding/onboarding-slide-1.jpg"
           alt="Boson Network"
           className="pe-none"
         />
@@ -47,7 +47,7 @@ function slide2() {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson-logo.png"
+            src="images/boson/boson-logo.png"
             alt="Boson Protocol Logo"
             className="pe-none"
           />
@@ -75,7 +75,7 @@ function slide3(completeOnboarding) {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson-logo.png"
+            src="images/boson/boson-logo.png"
             alt="Boson Protocol Logo"
             className="pe-none"
           />
@@ -87,14 +87,14 @@ function slide3(completeOnboarding) {
           <div className="scan">
             <div className="phone-bg flex center">
               <p>Scan the QR code</p>
-              <img src="images/onboarding-slide-3-qr.svg" alt="QR Code Read" />
+              <img src="images/onboarding/onboarding-slide-3-qr.svg" alt="QR Code Read" />
             </div>
           </div>
           <div className="show">
-            <img src="images/onboarding-slide-3-show.svg" alt="Show QR Code" />
+            <img src="images/onboarding/onboarding-slide-3-show.svg" alt="Show QR Code" />
           </div>
           <div className="background">
-            <img src="images/onboarding-slide-3-net.svg" alt="Net" />
+            <img src="images/onboarding/onboarding-slide-3-net.svg" alt="Net" />
           </div>
         </div>
       </div>

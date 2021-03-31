@@ -25,7 +25,7 @@ function ConnectToMetamask() {
           </Link>
           <div className="info connect flex column ai-center">
             <div className="metamask-logo">
-              <img src="images/metamask-logo.png" alt="MetaMask" />
+              <img src="images/wallets/metamask-logo.png" alt="MetaMask" />
             </div>
             <p>Connect your Ethereum wallet to Boson Protocol</p>
           </div>
