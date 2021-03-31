@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ROUTE } from "./helpers/Dictionary";
 
 import OnboardingReset from "./hooks/OnboardingReset";
-import ConnectToMetamask from "./views/connect-wallet/ConnectToMetamask";
 import TopNavigation from "./components/shared/navigation/TopNavigation";
 import BottomNavigation from "./components/shared/navigation/BottomNavigation";
 import LocationManager from "./components/shared/navigation/LocationManager";
@@ -49,7 +48,6 @@ function Routes() {
           <Route exact path={ROUTE.Home} component={Home} />
           <Route path="/onboarding" component={OnboardingReset} />{" "}
           {/* delete on prod */}
-          <Route path={ROUTE.ConnectToMetamask} component={ConnectToMetamask} />
           <Route path={ROUTE.NewOffer} component={NewOffer} />
           <Route
             path={
