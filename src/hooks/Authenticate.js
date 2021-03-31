@@ -1,5 +1,5 @@
 import { splitSignature } from "ethers/lib/utils";
-import { generateNonce, verifySignature } from "./api";
+import { generateNonce, verifySignature } from "./Api";
 
 export const AUTH_ADDRESSES_KEY = "authAddresses";
 const ARGENT_PEER_NAME = "Argent";

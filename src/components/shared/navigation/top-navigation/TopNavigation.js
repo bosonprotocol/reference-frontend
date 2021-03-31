@@ -19,8 +19,8 @@ import { IconQR, Arrow } from "../../icons/Icons";
 import { useWeb3React } from "@web3-react/core";
 import { shortenAddress } from "../../../../utils/BlockchainUtils";
 import { injected, walletconnect } from "../../../../Connectors";
-import MetaMaskLogo from "../../../../images/wallets/metamask.png";
-import WalletConnectLogo from "../../../../images/wallets/walletconnect.svg";
+import MetaMaskLogo from "../../../../assets/wallets/metamask.png";
+import WalletConnectLogo from "../../../../assets/wallets/walletconnect.svg";
 
 import OfferFlowSet from "./offer-flow-set/OfferFlowSet";
 

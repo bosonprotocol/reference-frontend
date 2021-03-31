@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { getContract } from "../utils/BlockchainUtils";
-import { SMART_CONTRACTS } from "./configs";
+import { SMART_CONTRACTS } from "./Configs";
 import BOSON_TOKEN from "./ABIs/BosonToken.json";
 import BOSON_ROUTER from "./ABIs/BosonRouter.json";
 import VOUCHER_KERNEL from "./ABIs/VoucherKernel.json";

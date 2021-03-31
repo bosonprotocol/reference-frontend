@@ -8,9 +8,9 @@ import { GlobalContext, Action } from "../../../contexts/Global";
 import { useHistory } from "react-router-dom";
 import { MODAL_TYPES, ROUTE } from "../../../helpers/configs/Dictionary";
 import { ModalContext, ModalResolver } from "../../../contexts/Modal";
-import { getAccountStoredInLocalStorage } from "../../../hooks/authenticate";
+import { getAccountStoredInLocalStorage } from "../../../hooks/Authenticate";
 import { useWeb3React } from "@web3-react/core";
-import { getVoucherDetails } from "../../../hooks/api";
+import { getVoucherDetails } from "../../../hooks/Api";
 
 function QRCodeScanner() {
   const globalContext = useContext(GlobalContext);

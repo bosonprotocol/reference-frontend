@@ -22,12 +22,12 @@ import {
   MODAL_TYPES,
   ROUTE,
 } from "../../helpers/configs/Dictionary";
-import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { getAccountStoredInLocalStorage } from "../../hooks/Authenticate";
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
 import { checkForErrorsInNewOfferForm } from "../../helpers/validators/NewOfferFormValidator";
-import { useFundLimitsContract } from "../../hooks/useContract";
-import { SMART_CONTRACTS } from "../../hooks/configs";
+import { useFundLimitsContract } from "../../hooks/UseContract";
+import { SMART_CONTRACTS } from "../../hooks/Configs";
 
 // switch with 'change', if you want to trigger on completed input, instead on each change
 const depositsPriceLimits = {

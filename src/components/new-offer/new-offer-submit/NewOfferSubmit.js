@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
-import { createVoucherSet } from "../../../hooks/api";
+import { createVoucherSet } from "../../../hooks/Api";
 import {
   useBosonRouterContract,
   useBosonTokenContract,
-} from "../../../hooks/useContract";
+} from "../../../hooks/UseContract";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import { getAccountStoredInLocalStorage } from "../../../hooks/authenticate";
+import { getAccountStoredInLocalStorage } from "../../../hooks/Authenticate";
 import GenericMessage from "../../../views/generic-message/GenericMessage";
 
 import LoadingSpinner from "../../shared/loading-spinner/LoadingSpinner";
@@ -25,9 +25,9 @@ import {
   SMART_CONTRACTS,
   PAYMENT_METHODS_LABELS,
   PAYMENT_METHODS,
-} from "../../../hooks/configs";
+} from "../../../hooks/Configs";
 import { toFixed } from "../../../utils/FormatUtils";
-import { onAttemptToApprove } from "../../../hooks/approveWithPermit";
+import { onAttemptToApprove } from "../../../hooks/ApproveWithPermit";
 
 import {
   isCorrelationIdAlreadySent,
