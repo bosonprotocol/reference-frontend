@@ -25,7 +25,6 @@ export const WALLET_VIEWS = {
 
 export const CONNECTOR_TYPES = {
   METAMASK: "MetaMask",
-  INSTALL_METAMASK: "MetaMask ",
   WALLET_CONNECT: "WalletConnect",
 };
 
