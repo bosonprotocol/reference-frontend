@@ -24,6 +24,7 @@ export const WALLET_VIEWS = {
 
 export const CONNECTOR_TYPES = {
   METAMASK: "MetaMask",
+  INSTALL_METAMASK: "MetaMask ",
   WALLET_CONNECT: "WalletConnect",
 };
 
@@ -151,14 +152,25 @@ export function WalletConnect({
         />
       ) : null}
       <div className="wallets">
-        <WalletListItem
-          name={CONNECTOR_TYPES.METAMASK}
-          imageName={MetaMaskLogo}
-          isActive={connector === injected && active}
-          onClick={() => {
-            onConnectionClicked("MetaMask");
-          }}
-        />
+        {!(window.web3 || window.ethereum) ? (
+          <a href={"https://metamask.io/"} target={"_blank"}>
+            <WalletListItem
+              name={CONNECTOR_TYPES.METAMASK}
+              imageName={MetaMaskLogo}
+              isActive={false}
+              onClick={null}
+            />
+          </a>
+        ) : (
+          <WalletListItem
+            name={CONNECTOR_TYPES.METAMASK}
+            imageName={MetaMaskLogo}
+            isActive={connector === injected && active}
+            onClick={() => {
+              onConnectionClicked(CONNECTOR_TYPES.METAMASK);
+            }}
+          />
+        )}
         <WalletListItem
           name={CONNECTOR_TYPES.WALLET_CONNECT}
           imageName={WalletConnectLogo}
@@ -206,7 +218,10 @@ function WalletListItem({
           </div>
         ) : (
           <div className={`button gray`} role="button">
-            CONNECT
+            {!(window.web3 || window.ethereum) &&
+            name === CONNECTOR_TYPES.METAMASK
+              ? "INSTALL"
+              : "CONNECT"}
           </div>
         )}
       </div>
