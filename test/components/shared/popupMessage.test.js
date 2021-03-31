@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "@testing-library/react";
 
-import PopupMessage from "../../../src/components/shared/PopupMessage";
+import PopupMessage from "../../../src/components/shared/popup-message/PopupMessage";
 
 let container = null;
 beforeEach(() => {

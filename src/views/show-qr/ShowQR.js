@@ -5,15 +5,15 @@ import QRCode from "qrcode.react";
 import "../../styles/StaticPage.scss";
 
 import { MODAL_TYPES, ROUTE, MESSAGE } from "../../helpers/Dictionary";
-import ContractInteractionButton from "../../components/shared/ContractInteractionButton";
+import ContractInteractionButton from "../../components/shared/contract-interaction/contract-interaction-button/ContractInteractionButton";
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { getVoucherDetails } from "../../hooks/api";
 import { useBosonRouterContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from "react";
-import Loading from "../../components/offerFlow/Loading";
-import MessageScreen from "../../components/shared/MessageScreen";
+import LoadingSpinner from "../../components/shared/loading-spinner/LoadingSpinner";
+import GenericMessage from "../generic-message/GenericMessage";
 import { setTxHashToSupplyId } from "../../utils/tx-hash";
 import { useEffect } from "react";
 
@@ -86,7 +86,7 @@ function ShowQR({ voucherId, setShowQRCode }) {
 
   return (
     <>
-      {loading ? <Loading /> : null}
+      {loading ? <LoadingSpinner /> : null}
       {!messageType ? (
         <section className="show-qr-code static-page atomic-scoped flex ai-center">
           <div className="button-container">
@@ -118,7 +118,7 @@ function ShowQR({ voucherId, setShowQRCode }) {
           </div>
         </section>
       ) : (
-        <MessageScreen
+        <GenericMessage
           messageType={messageType}
           title={messageType === "success" ? successMessage : errorMessage}
           text={messageType === "success" ? false : messageText}

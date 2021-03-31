@@ -13,7 +13,7 @@ import {
   IconActivityMessage,
   IconEth,
   IconBsn,
-} from "../../components/shared/Icons";
+} from "../../components/shared/icons/Icons";
 
 import {
   getAccountVouchers,
@@ -33,7 +33,7 @@ import {
   ActiveTab,
 } from "../../helpers/ActivityHelper";
 
-import { WalletConnect } from "../../components/modals/WalletConnect";
+import { WalletConnect } from "../../components/wallet-connect/WalletConnect";
 import { formatDate } from "../../helpers/Format";
 
 export function ActivityAccountVouchers({ title, voucherSetId, block }) {

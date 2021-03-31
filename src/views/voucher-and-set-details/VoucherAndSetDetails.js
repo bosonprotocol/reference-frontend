@@ -43,16 +43,19 @@ import { ModalContext } from "../../contexts/Modal";
 import { GlobalContext } from "../../contexts/Global";
 import { NavigationContext, Action } from "../../contexts/Navigation";
 
-import ContractInteractionButton from "../../components/shared/ContractInteractionButton";
-import PopupMessage from "../../components/shared/PopupMessage";
+import ContractInteractionButton from "../../components/shared/contract-interaction/contract-interaction-button/ContractInteractionButton";
+import PopupMessage from "../../components/shared/popup-message/PopupMessage";
 import {
   DateTable,
   TableRow,
   PriceTable,
   DescriptionBlock,
-} from "../../components/shared/TableContent";
-import EscrowDiagram from "../../components/redemptionFlow/EscrowDiagram";
-import { IconQRScanner, IconWarning } from "../../components/shared/Icons";
+} from "../../components/shared/table-content/TableContent";
+import EscrowTable from "../../components/escrow-table/EscrowTable";
+import {
+  IconQRScanner,
+  IconWarning,
+} from "../../components/shared/icons/Icons";
 
 import { calculateDifferenceInPercentage } from "../../utils/math";
 import {
@@ -64,7 +67,7 @@ import {
   waitForRecentTransactionIfSuchExists,
 } from "../../utils/tx-hash";
 
-import MessageScreen from "../../components/shared/MessageScreen";
+import GenericMessage from "../generic-message/GenericMessage";
 
 const voucherPlaceholder = (
   <div className="details-loading">
@@ -1069,7 +1072,7 @@ function VoucherAndSetDetails(props) {
 
   return (
     <>
-      {cancelMessage ? <MessageScreen {...cancelMessage} /> : null}
+      {cancelMessage ? <GenericMessage {...cancelMessage} /> : null}
       {<PopupMessage {...popupMessage} />}
       {pageLoading ? pageLoadingPlaceholder : null}
       {!disablePage ? (
@@ -1111,9 +1114,7 @@ function VoucherAndSetDetails(props) {
               {!voucherSetDetails &&
               voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
                 <div className="section escrow">
-                  {escrowData ? (
-                    <EscrowDiagram escrowData={escrowData} />
-                  ) : null}
+                  {escrowData ? <EscrowTable escrowData={escrowData} /> : null}
                 </div>
               ) : null}
 
@@ -1161,7 +1162,7 @@ function VoucherAndSetDetails(props) {
           </div>
         </section>
       ) : (
-        <MessageScreen
+        <GenericMessage
           subprops={{ button: "HOME PAGE" }}
           messageType={MESSAGE.LOCKED}
           title="Invalid link"

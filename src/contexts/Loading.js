@@ -32,4 +32,4 @@ export const LoadingReducer = (state, action) => {
   return { ...state, ...actionList[action.type]() };
 };
 
-// loadingContext.dispatch(Toggle.Loading(el.wallet.network, 1))
+// loadingContext.dispatch(Toggle.LoadingSpinner(el.wallet.network, 1))

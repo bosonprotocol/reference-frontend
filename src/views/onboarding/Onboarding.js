@@ -5,7 +5,7 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 
 import "swiper/swiper.min.css";
 
-import EscrowDiagram from "../../components/shared/EscrowDiagram";
+import FakeEscrowTable from "../../components/onboarding/fake-escrow-table/FakeEscrowTable";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -55,7 +55,7 @@ function slide2() {
         <h2 className="ta-center">Welcome to Boson Protocol</h2>
       </div>
       <div className="slide-image center-flex">
-        <EscrowDiagram />
+        <FakeEscrowTable />
       </div>
       <div className="text flex column ai-center">
         <p className="number">2</p>

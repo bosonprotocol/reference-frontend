@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 
 import "./Home.scss";
 
-import ProductBlock from "../../components/home/ProductBlock";
-import CardBlock from "../../components/home/CardBlock";
-import CategoryMenu from "../../components/home/CategoryMenu";
+import ProductBlock from "../../components/home/product-block/ProductBlock";
+import CardBlock from "../../components/home/card-block/CardBlock";
+import CategoryMenu from "../../components/home/category-menu/CategoryMenu";
 // import ProductListing from "../components/home/ProductListing"
 import Onboarding from "../onboarding/Onboarding";
-import QRCodeScanner from "../../components/shared/QRCodeScanner";
+import QRCodeScanner from "../../components/shared/qr-code-scanner/QRCodeScanner";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
