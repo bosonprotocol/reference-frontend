@@ -149,7 +149,7 @@ function App() {
       );
     }
 
-    if (!onboardingCompleted || localStoredAccountData.activeToken) {
+    if (!!!+onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
 
@@ -164,7 +164,8 @@ function App() {
 
       localStorage.clear();
       localStorage["localstorage_v"] = localstorage_v;
-      localStorage["onboarding-completed"] = onboarding_completed;
+      localStorage["onboarding-completed"] =
+        onboarding_completed === undefined ? 0 : onboarding_completed;
     }
   }, []);
 
