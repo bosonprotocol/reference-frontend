@@ -7,7 +7,7 @@ import {
 } from "../../components/wallet-connect/WalletConnect";
 import { useEagerConnect } from "../../hooks";
 import { NetworkContextName } from "../../constants";
-import { network } from "../../connectors";
+import { network } from "../../Connectors";
 // import { shortenAddress } from "../utils";
 
 import "./Connect-Wallet.scss";

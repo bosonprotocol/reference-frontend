@@ -4,7 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
 import { NetworkContextName } from "../constants";
-import { injected, walletconnect } from "../connectors";
+import { injected, walletconnect } from "../Connectors";
 import { parseLocalStorage } from "../utils/FormatUtils";
 import {
   authenticateUser,

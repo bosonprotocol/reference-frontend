@@ -47,7 +47,7 @@ import {
 
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
-import { network } from "./connectors";
+import { network } from "./Connectors";
 
 import ContextModal from "./components/shared/modals/context-modal/ContextModal";
 import {
