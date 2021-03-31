@@ -2,7 +2,10 @@
 import { QRCodeScaner } from "../components/shared/Icons";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../helpers/Dictionary";
-import { SingleVoucherBlock, VoucherSetBlock } from "../views/Activity";
+import {
+  SingleVoucherBlock,
+  VoucherSetBlock,
+} from "../views/activity/Activity";
 
 export const VOUCHER_TYPE = {
   accountVoucher: 1,

@@ -1,28 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from "react";
-import "./VoucherDetails.scss";
+import "./VoucherAndSetDetails.scss";
 import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import * as humanizeDuration from "humanize-duration";
 import { HorizontalScrollView } from "rc-horizontal-scroll";
 
-import ShowQR from "./ShowQR";
-import "./VoucherDetails.scss";
+import ShowQR from "../show-qr/ShowQR";
+import "./VoucherAndSetDetails.scss";
 
 import {
   useVoucherKernalContract,
   useBosonRouterContract,
   useBosonTokenContract,
-} from "../hooks/useContract";
-import { PAYMENT_METHODS } from "../hooks/configs";
+} from "../../hooks/useContract";
+import { PAYMENT_METHODS } from "../../hooks/configs";
 import {
   getVoucherDetails,
   getPaymentsDetails,
   commitToBuy,
-} from "../hooks/api";
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { onAttemptToApprove } from "../hooks/approveWithPermit";
+} from "../../hooks/api";
+import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 import {
   ROLE,
@@ -31,40 +31,40 @@ import {
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
-} from "../helpers/Dictionary";
-import { formatDate } from "../helpers/Format";
+} from "../../helpers/Dictionary";
+import { formatDate } from "../../helpers/Format";
 import {
   determineCurrentStatusOfVoucher,
   initVoucherDetails,
-} from "../helpers/VoucherParsers";
+} from "../../helpers/VoucherParsers";
 
-import { ModalResolver } from "../contexts/Modal";
-import { ModalContext } from "../contexts/Modal";
-import { GlobalContext } from "../contexts/Global";
-import { NavigationContext, Action } from "../contexts/Navigation";
+import { ModalResolver } from "../../contexts/Modal";
+import { ModalContext } from "../../contexts/Modal";
+import { GlobalContext } from "../../contexts/Global";
+import { NavigationContext, Action } from "../../contexts/Navigation";
 
-import ContractInteractionButton from "../components/shared/ContractInteractionButton";
-import PopupMessage from "../components/shared/PopupMessage";
+import ContractInteractionButton from "../../components/shared/ContractInteractionButton";
+import PopupMessage from "../../components/shared/PopupMessage";
 import {
   DateTable,
   TableRow,
   PriceTable,
   DescriptionBlock,
-} from "../components/shared/TableContent";
-import EscrowDiagram from "../components/redemptionFlow/EscrowDiagram";
-import { IconQRScanner, IconWarning } from "../components/shared/Icons";
+} from "../../components/shared/TableContent";
+import EscrowDiagram from "../../components/redemptionFlow/EscrowDiagram";
+import { IconQRScanner, IconWarning } from "../../components/shared/Icons";
 
-import { calculateDifferenceInPercentage } from "../utils/math";
+import { calculateDifferenceInPercentage } from "../../utils/math";
 import {
   isCorrelationIdAlreadySent,
   setRecentlyUsedCorrelationId,
-} from "../utils/duplicateCorrelationIdGuard";
+} from "../../utils/duplicateCorrelationIdGuard";
 import {
   setTxHashToSupplyId,
   waitForRecentTransactionIfSuchExists,
-} from "../utils/tx-hash";
+} from "../../utils/tx-hash";
 
-import MessageScreen from "../components/shared/MessageScreen";
+import MessageScreen from "../../components/shared/MessageScreen";
 
 const voucherPlaceholder = (
   <div className="details-loading">
@@ -118,7 +118,7 @@ const voucherSetPlaceholder = (
   </div>
 );
 
-function VoucherDetails(props) {
+function VoucherAndSetDetails(props) {
   const [voucherDetails, setVoucherDetails] = useState(null);
   const [escrowData, setEscrowData] = useState(null);
   const [showQRCode, setShowQRCode] = useState(0);
@@ -1233,7 +1233,7 @@ function finalStatusComponent(
   return { jsx, date: expiredDate };
 }
 
-export default VoucherDetails;
+export default VoucherAndSetDetails;
 
 const commitToBuyTransactionCreator = async (
   bosonRouterContract,

@@ -3,29 +3,29 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 
 import "./Home.scss";
 
-import ProductBlock from "../components/home/ProductBlock";
-import CardBlock from "../components/home/CardBlock";
-import CategoryMenu from "../components/home/CategoryMenu";
+import ProductBlock from "../../components/home/ProductBlock";
+import CardBlock from "../../components/home/CardBlock";
+import CategoryMenu from "../../components/home/CategoryMenu";
 // import ProductListing from "../components/home/ProductListing"
-import Onboarding from "../views/Onboarding";
-import QRCodeScanner from "../components/shared/QRCodeScanner";
+import Onboarding from "../onboarding/Onboarding";
+import QRCodeScanner from "../../components/shared/QRCodeScanner";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
 
 import "swiper/swiper.min.css";
 
-import { productListSettings } from "../helpers/SliderSettings";
+import { productListSettings } from "../../helpers/SliderSettings";
 
-import { cardBlocks } from "../PlaceholderAPI";
+import { cardBlocks } from "../../PlaceholderAPI";
 
-import { GlobalContext, Action } from "../contexts/Global";
+import { GlobalContext, Action } from "../../contexts/Global";
 
 import { useWeb3React } from "@web3-react/core";
 import {
   authenticateUser,
   getAccountStoredInLocalStorage,
-} from "../hooks/authenticate";
+} from "../../hooks/authenticate";
 
 SwiperCore.use([Navigation]);
 

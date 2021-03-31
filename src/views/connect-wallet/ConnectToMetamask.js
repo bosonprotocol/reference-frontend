@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { BuyerContext, Buyer } from "../contexts/Buyer";
+import { BuyerContext, Buyer } from "../../contexts/Buyer";
 
-import { ROUTE } from "../helpers/Dictionary";
+import { ROUTE } from "../../helpers/Dictionary";
 
-import "./StaticPage.scss";
+import "../../styles/StaticPage.scss";
 
 function ConnectToMetamask() {
   const buyerContext = useContext(BuyerContext);

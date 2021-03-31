@@ -2,19 +2,19 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import QRCode from "qrcode.react";
 
-import "./StaticPage.scss";
+import "../../styles/StaticPage.scss";
 
-import { MODAL_TYPES, ROUTE, MESSAGE } from "../helpers/Dictionary";
-import ContractInteractionButton from "../components/shared/ContractInteractionButton";
-import { ModalContext, ModalResolver } from "../contexts/Modal";
-import { getAccountStoredInLocalStorage } from "../hooks/authenticate";
-import { getVoucherDetails } from "../hooks/api";
-import { useBosonRouterContract } from "../hooks/useContract";
+import { MODAL_TYPES, ROUTE, MESSAGE } from "../../helpers/Dictionary";
+import ContractInteractionButton from "../../components/shared/ContractInteractionButton";
+import { ModalContext, ModalResolver } from "../../contexts/Modal";
+import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { getVoucherDetails } from "../../hooks/api";
+import { useBosonRouterContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from "react";
-import Loading from "../components/offerFlow/Loading";
-import MessageScreen from "../components/shared/MessageScreen";
-import { setTxHashToSupplyId } from "../utils/tx-hash";
+import Loading from "../../components/offerFlow/Loading";
+import MessageScreen from "../../components/shared/MessageScreen";
+import { setTxHashToSupplyId } from "../../utils/tx-hash";
 import { useEffect } from "react";
 
 function ShowQR({ voucherId, setShowQRCode }) {
