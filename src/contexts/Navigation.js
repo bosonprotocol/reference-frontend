@@ -1,12 +1,12 @@
-import { createContext } from 'react'
-import { CONTROL, AFFMAP, BOTTOM_NAV_TYPE } from "../helpers/Dictionary"
-import { getData as getContextData } from "../helpers/Context"
+import { createContext } from "react";
+import { CONTROL, AFFMAP, BOTTOM_NAV_TYPE } from "../helpers/Dictionary";
+import { getData as getContextData } from "../helpers/Context";
 
-export const MAP = CONTROL
+export const MAP = CONTROL;
 
-export const getData = getContextData
+export const getData = getContextData;
 
-export const NavigationContext = createContext()
+export const NavigationContext = createContext();
 
 export const NavigationInitialState = {
   location: null,
@@ -29,89 +29,87 @@ export const NavigationInitialState = {
 export const Action = {
   updateLocation: (location) => ({
     type: CONTROL.UPDATE_LOCATION,
-    payload: location
+    payload: location,
   }),
   updateAffordances: (location) => ({
     type: CONTROL.UPDATE_AFFORDANCES,
-    payload: location
+    payload: location,
   }),
   bottomNavListSelectedItem: (item) => ({
     type: CONTROL.UPDATE_BOTTOM_NAV,
-    payload: item
+    payload: item,
   }),
   setFormNavigation: (object) => ({
     type: CONTROL.SET_FORM_NAVIGATION,
-    payload: object
+    payload: object,
   }),
   setRedemptionControl: (object) => ({
     type: CONTROL.SET_REDEMPTION_CONTROL,
-    payload: object
+    payload: object,
   }),
   setBottomNavType: (type) => ({
     type: CONTROL.SET_BOTTOM_NAV_TYPE,
-    payload: type
+    payload: type,
   }),
   displayNavigation: (type) => ({
     type: CONTROL.DISPLAY_NAVIGATION,
-    payload: type
+    payload: type,
   }),
   displayBottomNavigation: (type) => ({
     type: CONTROL.DISPLAY_BOTTOM_NAVIGATION,
-    payload: type
+    payload: type,
   }),
-}
+};
 
 export const NavigationReducer = (state, action) => {
   const actionList = {
     [CONTROL.UPDATE_LOCATION]: () => {
       return {
-        location: action.payload
-      }
+        location: action.payload,
+      };
     },
     [CONTROL.UPDATE_AFFORDANCES]: () => {
       return {
-        top: action.payload
-      }
+        top: action.payload,
+      };
     },
     [CONTROL.SET_BOTTOM_NAV_TYPE]: () => {
       return {
-        bottom: { 
+        bottom: {
           ...state.bottom,
-          type: action.payload
-        }
-      }
+          type: action.payload,
+        },
+      };
     },
     [CONTROL.UPDATE_BOTTOM_NAV]: () => {
       return {
-        bottom: { 
+        bottom: {
           ...state.bottom,
-          mainNavigationItem: action.payload
-        }
-      }
+          mainNavigationItem: action.payload,
+        },
+      };
     },
     [CONTROL.SET_FORM_NAVIGATION]: () => {
       return {
-        offerFlowControl: action.payload
-      }
+        offerFlowControl: action.payload,
+      };
     },
     [CONTROL.SET_REDEMPTION_CONTROL]: () => {
       return {
-        redemptionFlowControl: action.payload
-      }
+        redemptionFlowControl: action.payload,
+      };
     },
     [CONTROL.DISPLAY_NAVIGATION]: () => {
       return {
-        displayNavigation: action.payload
-      }
+        displayNavigation: action.payload,
+      };
     },
     [CONTROL.DISPLAY_BOTTOM_NAVIGATION]: () => {
       return {
-        displayBottomNavigation: action.payload
-      }
+        displayBottomNavigation: action.payload,
+      };
     },
-  }
+  };
 
-  return { ...state, ...actionList[action.type]() }
-}
-
-
+  return { ...state, ...actionList[action.type]() };
+};

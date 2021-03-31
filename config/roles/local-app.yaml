@@ -1,0 +1,4 @@
+environment:
+  PORT: "%{hiera('app_port')}"
+
+  REACT_APP_BACKEND_BASE_URL: "http://localhost:%{hiera('app_port')}"

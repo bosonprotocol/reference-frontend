@@ -10,7 +10,7 @@ const RPC_URLS = {
     42: "https://kovan.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
 };
 
-export const NEWTORK_ID = 5;
+export const NETWORK_ID = 5;
 
 // rinkeby
 export const network = new NetworkConnector({
@@ -18,7 +18,7 @@ export const network = new NetworkConnector({
 });
 
 export const injected = new InjectedConnector({
-    supportedChainIds: [1, 3, 4, 5, 42, 100],
+  supportedChainIds: [1, 3, 4, 5, 42, 100],
 });
 
 // rinkeby

@@ -7,33 +7,32 @@ export const SMART_CONTRACTS = {
 };
 
 export const SMART_CONTRACTS_EVENTS = {
-    VoucherSetCreated: "LogOrderCreated",
-    VoucherCreated: "LogVoucherDelivered",
-    VoucherRedeemed: "LogVoucherRedeemed",
-    VoucherSetCanceled: "LogVoucherSetFaultCancel"
+  VoucherSetCreated: "LogOrderCreated",
+  VoucherCreated: "LogVoucherDelivered",
+  VoucherRedeemed: "LogVoucherRedeemed",
+  VoucherSetCanceled: "LogVoucherSetFaultCancel",
 };
 
 export const VOUCHER_STATUSES = {
-    COMMITTED: "COMMITTED",
-    REDEEMED: "REDEEMED",
-    REFUNDED: "REFUNDED",
-    COMPLAINED: "COMPLAINED",
-    CANCELLED: "CANCELLED",
-    FINALIZED: "FINALIZED"
+  COMMITTED: "COMMITTED",
+  REDEEMED: "REDEEMED",
+  REFUNDED: "REFUNDED",
+  COMPLAINED: "COMPLAINED",
+  CANCELLED: "CANCELLED",
+  FINALIZED: "FINALIZED",
 };
-
 
 //ToDo: Make it more generic for the next phase, not coupled to BSN.
 export const PAYMENT_METHODS = {
-    ETHETH: 1,
-    ETHBSN: 2,
-    BSNETH: 3,
-    BSNBSN: 4
+  ETHETH: 1,
+  ETHBSN: 2,
+  BSNETH: 3,
+  BSNBSN: 4,
 };
 
 export const PAYMENT_METHODS_LABELS = {
-    ETHETH: "ETHETH",
-    ETHBSN: "ETHBSN",
-    BSNETH: "BSNETH",
-    BSNBSN: "BSNBSN"
+  ETHETH: "ETHETH",
+  ETHBSN: "ETHBSN",
+  BSNETH: "BSNETH",
+  BSNBSN: "BSNBSN",
 };
