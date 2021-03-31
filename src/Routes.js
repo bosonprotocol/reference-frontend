@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ROUTE } from "./helpers/configs/Dictionary";
 
-import OnboardingReset from "./hooks/OnboardingReset";
+import OnboardingReset from "./hooks/onboardingReset";
 import TopNavigation from "./components/shared/navigation/top-navigation/TopNavigation";
 import BottomNavigation from "./components/shared/navigation/bottom-navigation/BottomNavigation";
 import LocationManager from "./components/shared/navigation/location-manager/LocationManager";
@@ -21,7 +21,7 @@ import ShowQR from "./views/show-qr/ShowQR";
 import NewOffer from "./views/new-offer/NewOffer";
 
 import { NavigationContext } from "./contexts/Navigation";
-import GlobalListeners from "./hooks/GlobalListeners";
+import GlobalListeners from "./hooks/globalListeners";
 import { useExpiredTokenResponseInterceptor } from "./hooks/useExpiredTokenResponseInterceptor";
 
 function Routes() {

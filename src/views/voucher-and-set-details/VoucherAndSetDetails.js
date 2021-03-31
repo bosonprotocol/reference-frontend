@@ -14,15 +14,15 @@ import {
   useVoucherKernalContract,
   useBosonRouterContract,
   useBosonTokenContract,
-} from "../../hooks/UseContract";
-import { PAYMENT_METHODS } from "../../hooks/Configs";
+} from "../../hooks/useContract";
+import { PAYMENT_METHODS } from "../../hooks/configs";
 import {
   getVoucherDetails,
   getPaymentsDetails,
   commitToBuy,
-} from "../../hooks/Api";
-import { getAccountStoredInLocalStorage } from "../../hooks/Authenticate";
-import { onAttemptToApprove } from "../../hooks/ApproveWithPermit";
+} from "../../hooks/api";
+import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
+import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 import {
   ROLE,

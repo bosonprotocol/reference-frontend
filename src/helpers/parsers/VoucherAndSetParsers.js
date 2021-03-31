@@ -3,12 +3,12 @@ import {
   getVouchers,
   getAccountVoucherSets,
   getVouchersFromSupply,
-} from "../../hooks/Api";
+} from "../../hooks/api";
 import * as ethers from "ethers";
-import { getAccountStoredInLocalStorage } from "../../hooks/Authenticate";
+import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { MODAL_TYPES, STATUS } from "../configs/Dictionary";
 import { ModalResolver } from "../../contexts/Modal";
-import { PAYMENT_METHODS } from "../../hooks/Configs";
+import { PAYMENT_METHODS } from "../../hooks/configs";
 
 export async function fetchVoucherSets() {
   const allVoucherSets = await getAllVoucherSets();

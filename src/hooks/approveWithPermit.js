@@ -1,4 +1,4 @@
-import { SMART_CONTRACTS } from "./Configs";
+import { SMART_CONTRACTS } from "./configs";
 import { splitSignature } from "@ethersproject/bytes";
 
 export const onAttemptToApprove = async (

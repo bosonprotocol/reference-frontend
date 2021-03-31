@@ -25,7 +25,7 @@ import { useWeb3React } from "@web3-react/core";
 import {
   authenticateUser,
   getAccountStoredInLocalStorage,
-} from "../../hooks/Authenticate";
+} from "../../hooks/authenticate";
 
 SwiperCore.use([Navigation]);
 

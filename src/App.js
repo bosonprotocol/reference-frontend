@@ -53,7 +53,7 @@ import ContextModal from "./components/shared/modals/context-modal/ContextModal"
 import {
   authenticateUser,
   getAccountStoredInLocalStorage,
-} from "./hooks/Authenticate";
+} from "./hooks/authenticate";
 import { isTokenValid } from "./utils/Auth";
 
 function App() {

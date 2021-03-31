@@ -2,7 +2,7 @@ import jwt_decode from "jwt-decode";
 import {
   authenticateUser,
   getAccountStoredInLocalStorage,
-} from "../hooks/Authenticate";
+} from "../hooks/authenticate";
 import { ModalResolver } from "../contexts/Modal";
 import { MODAL_TYPES } from "../helpers/configs/Dictionary";
 
