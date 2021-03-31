@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
 import { ChainLabels, shortenAddress } from "../../utils";
 // import Modal from "../shared/Modal";
-import { injected, RINKEBY_ID, walletconnect } from "../../connectors";
+import { injected, NETWORK_ID, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";
 import MetaMaskLogo from "../../images/metamask.png";
 import WalletConnectLogo from "../../images/walletconnect.svg";
@@ -124,7 +124,7 @@ export function WalletConnect({
       const walletConnectDataObject = JSON.parse(walletConnectData);
       if (
         walletConnectDataObject &&
-        walletConnectDataObject.chainId !== RINKEBY_ID
+        walletConnectDataObject.chainId !== NETWORK_ID
       ) {
         // ToDo: Use Global notification
         console.error("Please use Rinkeby network.");
