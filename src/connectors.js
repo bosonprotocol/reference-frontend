@@ -6,14 +6,15 @@ const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
     1: "https://mainnet.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
     4: "https://rinkeby.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
+    5: "https://goerli.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
     42: "https://kovan.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
 };
 
-export const RINKEBY_ID = 4;
+export const NEWTORK_ID = 5;
 
 // rinkeby
 export const network = new NetworkConnector({
-    urls: { 4: RPC_URLS[4] },
+    urls: { 5: RPC_URLS[5] },
 });
 
 export const injected = new InjectedConnector({
@@ -22,7 +23,7 @@ export const injected = new InjectedConnector({
 
 // rinkeby
 export const walletconnect = new WalletConnectConnector({
-    rpc: { 4: RPC_URLS[4] },
+    rpc: { 5: RPC_URLS[5] },
     bridge: "https://bridge.walletconnect.org",
     qrcode: true,
     pollingInterval: POLLING_INTERVAL,
