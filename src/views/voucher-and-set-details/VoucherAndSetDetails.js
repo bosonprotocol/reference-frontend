@@ -31,12 +31,12 @@ import {
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
-} from "../../helpers/Dictionary";
-import { formatDate } from "../../helpers/Format";
+} from "../../helpers/configs/Dictionary";
+import { formatDate } from "../../utils/FormatUtils";
 import {
   determineCurrentStatusOfVoucher,
   initVoucherDetails,
-} from "../../helpers/VoucherParsers";
+} from "../../helpers/parsers/VoucherAndSetParsers";
 
 import { ModalResolver } from "../../contexts/Modal";
 import { ModalContext } from "../../contexts/Modal";
@@ -57,15 +57,15 @@ import {
   IconWarning,
 } from "../../components/shared/icons/Icons";
 
-import { calculateDifferenceInPercentage } from "../../utils/math";
+import { calculateDifferenceInPercentage } from "../../utils/MathUtils";
 import {
   isCorrelationIdAlreadySent,
   setRecentlyUsedCorrelationId,
-} from "../../utils/duplicateCorrelationIdGuard";
+} from "../../utils/DuplicateCorrelationIdGuard";
 import {
   setTxHashToSupplyId,
   waitForRecentTransactionIfSuchExists,
-} from "../../utils/tx-hash";
+} from "../../utils/BlockchainUtils";
 
 import GenericMessage from "../generic-message/GenericMessage";
 

@@ -1,4 +1,4 @@
-import { smartContractToUserFriendlyErrorMapping } from "../constants/ErrorMessages";
+import { smartContractToUserFriendlyErrorMapping } from "../../constants/ErrorMessages";
 
 export const validateContractInteraction = async (
   contract,

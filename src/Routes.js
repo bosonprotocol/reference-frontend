@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ROUTE } from "./helpers/Dictionary";
+import { ROUTE } from "./helpers/configs/Dictionary";
 
 import OnboardingReset from "./hooks/OnboardingReset";
 import TopNavigation from "./components/shared/navigation/top-navigation/TopNavigation";

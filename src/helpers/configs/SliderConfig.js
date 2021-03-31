@@ -1,7 +1,7 @@
 const isMobile = window.innerWidth <= 960;
 
 // home
-export const productListSettings = {
+export const productListConfig = {
   dots: false,
   arrows: isMobile ? false : true,
   infinite: true,
@@ -12,7 +12,7 @@ export const productListSettings = {
   autoplaySpeed: 5000,
 };
 
-export const cardListSettings = {
+export const cardListConfig = {
   dots: false,
   arrows: isMobile ? false : true,
   infinite: true,

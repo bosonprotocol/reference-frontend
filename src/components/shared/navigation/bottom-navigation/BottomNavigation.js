@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ROUTE, BOTTOM_NAV_TYPE } from "../../../../helpers/Dictionary";
+import { ROUTE, BOTTOM_NAV_TYPE } from "../../../../helpers/configs/Dictionary";
 import {
   IconHome,
   IconBuyer,

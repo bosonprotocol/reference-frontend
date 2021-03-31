@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
-import { toFixed } from "../utils/format-utils";
-import { NAME } from "./Dictionary";
-import { profanityCheck } from "./Profanity";
-import * as ValidationConfig from "./NewOfferFormValidationConfig";
+import { toFixed } from "../../utils/FormatUtils";
+import { NAME } from "../configs/Dictionary";
+import { profanityCheck } from "../../utils/Profanity";
+import * as ValidationConfig from "../configs/NewOfferFormValidatorConfig";
 
 const checkForErrorsInNewOfferForm = (
   errorMessages,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "./EscrowTable.scss";
 import PopupMessage from "../shared/popup-message/PopupMessage";
-import { exponentToDecimal } from "../../helpers/Format";
+import { exponentToDecimal } from "../../utils/FormatUtils";
 
 function EscrowTable(props) {
   const [escrowData, setEscrowData] = useState({});

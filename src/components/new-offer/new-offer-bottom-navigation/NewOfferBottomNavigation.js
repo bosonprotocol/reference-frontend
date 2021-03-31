@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 
 import { SellerContext, getData } from "../../../contexts/Seller";
-import { NAME } from "../../../helpers/Dictionary";
+import { NAME } from "../../../helpers/configs/Dictionary";
 
 import NewOfferSubmit from "../new-offer-submit/NewOfferSubmit";
 

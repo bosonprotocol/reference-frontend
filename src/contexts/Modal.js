@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { DIC } from "../helpers/Dictionary";
-import { getData as getContextData } from "../helpers/Context";
+import { DIC } from "../helpers/configs/Dictionary";
+import { getData as getContextData } from "../helpers/ContextHelper";
 
 export const getData = getContextData;
 

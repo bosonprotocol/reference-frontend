@@ -5,7 +5,7 @@ import {
   IconError,
   LockedIcon,
 } from "../../components/shared/icons/Icons";
-import { MESSAGE } from "../../helpers/Dictionary";
+import { MESSAGE } from "../../helpers/configs/Dictionary";
 
 import "./GenericMessage.scss";
 

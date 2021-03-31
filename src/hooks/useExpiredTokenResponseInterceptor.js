@@ -1,5 +1,5 @@
 import { ModalContext } from "../contexts/Modal";
-import { refreshTokenIfExpired } from "../utils/auth";
+import { refreshTokenIfExpired } from "../utils/Auth";
 import { axiosInstance } from "./api";
 import { useContext, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";

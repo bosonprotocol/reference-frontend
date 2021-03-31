@@ -54,7 +54,7 @@ import {
   authenticateUser,
   getAccountStoredInLocalStorage,
 } from "./hooks/authenticate";
-import { isTokenValid } from "./utils/auth";
+import { isTokenValid } from "./utils/Auth";
 
 function App() {
   const [walletState] = useReducer(WalletReducer, WalletInitialState);

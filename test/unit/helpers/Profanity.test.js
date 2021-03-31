@@ -1,4 +1,4 @@
-import { profanityCheck } from "../../../src/helpers/Profanity";
+import { profanityCheck } from "../../../src/utils/Profanity";
 
 describe("Profanity - Check input", () => {
   it("Expect no profanity error", async () => {

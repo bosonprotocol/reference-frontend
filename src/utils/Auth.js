@@ -4,7 +4,7 @@ import {
   getAccountStoredInLocalStorage,
 } from "../hooks/authenticate";
 import { ModalResolver } from "../contexts/Modal";
-import { MODAL_TYPES } from "../helpers/Dictionary";
+import { MODAL_TYPES } from "../helpers/configs/Dictionary";
 
 export const refreshTokenIfExpired = (
   rawToken,

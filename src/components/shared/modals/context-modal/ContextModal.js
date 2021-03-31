@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { ModalContext, ModalResolver } from "../../../../contexts/Modal";
 
 import "./ContextModal.scss";
-import { MODAL_TYPES } from "../../../../helpers/Dictionary";
+import { MODAL_TYPES } from "../../../../helpers/configs/Dictionary";
 
 const ContextModal = () => {
   const modalContext = useContext(ModalContext);

@@ -6,7 +6,7 @@ import { useState, useContext } from "react";
 import { GlobalContext, Action } from "../../../contexts/Global";
 
 import { useHistory } from "react-router-dom";
-import { MODAL_TYPES, ROUTE } from "../../../helpers/Dictionary";
+import { MODAL_TYPES, ROUTE } from "../../../helpers/configs/Dictionary";
 import { ModalContext, ModalResolver } from "../../../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../../../hooks/authenticate";
 import { useWeb3React } from "@web3-react/core";

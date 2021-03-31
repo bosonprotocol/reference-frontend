@@ -3,7 +3,7 @@ import QRCodeScanner from "../../components/shared/qr-code-scanner/QRCodeScanner
 
 import { Link } from "react-router-dom";
 
-import { ROUTE } from "../../helpers/Dictionary";
+import { ROUTE } from "../../helpers/configs/Dictionary";
 
 function QRScanner() {
   return (

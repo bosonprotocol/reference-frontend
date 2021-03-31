@@ -1,7 +1,7 @@
-import { CURRENCY } from "../../../src/helpers/Dictionary";
-import * as NewOfferFormValidator from "../../../src/helpers/NewOfferFormValidator";
-import * as ValidationConfig from "../../../src/helpers/NewOfferFormValidationConfig";
-import { NAME } from "../../../src/helpers/Dictionary";
+import { CURRENCY } from "../../../src/helpers/configs/Dictionary";
+import * as NewOfferFormValidator from "../../../src/helpers/validators/NewOfferFormValidator";
+import * as ValidationConfig from "../../../src/helpers/configs/NewOfferFormValidatorConfig";
+import { NAME } from "../../../src/helpers/configs/Dictionary";
 
 describe("NewOfferFormValidator - Image upload form validation", () => {
   it("Expect no validation error", () => {

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useContext } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
-import { ChainLabels, shortenAddress } from "../../utils";
+import { ChainLabels, shortenAddress } from "../../utils/BlockchainUtils";
 // import Modal from "../shared/Modal";
 import { injected, NETWORK_ID, walletconnect } from "../../connectors";
 import WalletConnectIcon from "../../images/walletconnect.svg";

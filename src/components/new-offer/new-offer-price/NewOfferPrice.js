@@ -4,13 +4,13 @@ import { SellerContext, getData } from "../../../contexts/Seller";
 
 import CurrencySelector from "./currency-selector/CurrencySelector";
 
-import { NAME } from "../../../helpers/Dictionary";
+import { NAME } from "../../../helpers/configs/Dictionary";
 import {
+  toFixed,
   totalDepositCalcEth,
   formatStringAsNumber,
-} from "../../../helpers/Format";
+} from "../../../utils/FormatUtils";
 import { ethers } from "ethers";
-import { toFixed } from "../../../utils/format-utils";
 
 function NewOfferPrice({
   depositsPriceLimits,

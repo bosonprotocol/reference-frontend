@@ -6,7 +6,7 @@ import "./Activity.scss";
 
 import { GlobalContext, Action } from "../../contexts/Global";
 
-import { ROUTE } from "../../helpers/Dictionary";
+import { ROUTE } from "../../helpers/configs/Dictionary";
 
 import {
   Quantity,
@@ -19,7 +19,7 @@ import {
   getAccountVouchers,
   getParsedAccountVoucherSets,
   getParsedVouchersFromSupply,
-} from "../../helpers/VoucherParsers";
+} from "../../helpers/parsers/VoucherAndSetParsers";
 
 import { ModalContext } from "../../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
@@ -34,7 +34,7 @@ import {
 } from "../../helpers/ActivityHelper";
 
 import { WalletConnect } from "../../components/wallet-connect/WalletConnect";
-import { formatDate } from "../../helpers/Format";
+import { formatDate } from "../../utils/FormatUtils";
 
 export function ActivityAccountVouchers({ title, voucherSetId, block }) {
   const [accountVouchers, setAccountVouchers] = useState([]);
