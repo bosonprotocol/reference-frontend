@@ -1,9 +1,9 @@
 import React from "react";
-import QRCodeScanner from "../components/shared/QRCodeScanner";
+import QRCodeScanner from "../../components/shared/QRCodeScanner";
 
 import { Link } from "react-router-dom";
 
-import { ROUTE } from "../helpers/Dictionary";
+import { ROUTE } from "../../helpers/Dictionary";
 
 function QRScanner() {
   return (

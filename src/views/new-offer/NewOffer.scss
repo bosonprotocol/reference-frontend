@@ -1,4 +1,4 @@
-@import "../styles/Settings.scss";
+@import "src/styles/Settings";
 
 .new-offer {
   height: 100%;
@@ -298,7 +298,7 @@
             content: '';
             width: 9.8px;
             height: 16.9px;
-            background-image: url('../images/icon-eth.png');
+            background-image: url('../../images/icon-eth.png');
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -352,10 +352,10 @@
                   left: 12px;
 
                   &.ETH {
-                    background-image: url('../images/icon-eth.png');
+                    background-image: url('../../images/icon-eth.png');
                   }
                   &.BSN {
-                    background-image: url('../images/icon-bsn.png');
+                    background-image: url('../../images/icon-bsn.png');
                     background-repeat: no-repeat;
                     width: 15px;
                     background-position: center;
@@ -383,7 +383,7 @@
                   position: absolute;
                   width: 14px;
                   height: 8px;
-                  background-image: url('../images/dropdown-office.png');
+                  background-image: url('../../images/dropdown-office.png');
                   transform: translateY(-50%);
                   top: 50%;
                   right: 17px;

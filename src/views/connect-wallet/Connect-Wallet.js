@@ -4,13 +4,13 @@ import { useWeb3React } from "@web3-react/core";
 import {
   WalletConnect,
   WALLET_VIEWS,
-} from "../components/modals/WalletConnect";
-import { useEagerConnect } from "../hooks";
-import { NetworkContextName } from "../constants";
-import { network } from "../connectors";
+} from "../../components/modals/WalletConnect";
+import { useEagerConnect } from "../../hooks";
+import { NetworkContextName } from "../../constants";
+import { network } from "../../connectors";
 // import { shortenAddress } from "../utils";
 
-import "./Connect.scss";
+import "./Connect-Wallet.scss";
 
 const ACTION = {
   GET_DATA: {
@@ -18,7 +18,7 @@ const ACTION = {
   },
 };
 
-export default function Connect() {
+export default function ConnectWallet() {
   const [walletView, setWalletView] = useState(WALLET_VIEWS.OPTIONS);
   const context = useWeb3React();
 

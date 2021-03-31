@@ -4,33 +4,37 @@ import { Link, useHistory } from "react-router-dom";
 
 import "./Activity.scss";
 
-import { GlobalContext, Action } from "../contexts/Global";
+import { GlobalContext, Action } from "../../contexts/Global";
 
-import { ROUTE } from "../helpers/Dictionary";
+import { ROUTE } from "../../helpers/Dictionary";
 
 import {
   Quantity,
   IconActivityMessage,
   IconEth,
   IconBsn,
-} from "../components/shared/Icons";
+} from "../../components/shared/Icons";
 
 import {
   getAccountVouchers,
   getParsedAccountVoucherSets,
   getParsedVouchersFromSupply,
-} from "../helpers/VoucherParsers";
+} from "../../helpers/VoucherParsers";
 
-import { ModalContext } from "../contexts/Modal";
+import { ModalContext } from "../../contexts/Modal";
 import { useWeb3React } from "@web3-react/core";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
-import { VOUCHER_TYPE, sortBlocks, ActiveTab } from "../helpers/ActivityHelper";
+import {
+  VOUCHER_TYPE,
+  sortBlocks,
+  ActiveTab,
+} from "../../helpers/ActivityHelper";
 
-import { WalletConnect } from "../components/modals/WalletConnect";
-import { formatDate } from "../helpers/Format";
+import { WalletConnect } from "../../components/modals/WalletConnect";
+import { formatDate } from "../../helpers/Format";
 
 export function ActivityAccountVouchers({ title, voucherSetId, block }) {
   const [accountVouchers, setAccountVouchers] = useState([]);

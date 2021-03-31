@@ -5,7 +5,7 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 
 import "swiper/swiper.min.css";
 
-import EscrowDiagram from "../components/shared/EscrowDiagram";
+import EscrowDiagram from "../../components/shared/EscrowDiagram";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -87,11 +87,17 @@ function slide3(completeOnboarding) {
           <div className="scan">
             <div className="phone-bg flex center">
               <p>Scan the QR code</p>
-              <img src="images/onboarding/onboarding-slide-3-qr.svg" alt="QR Code Read" />
+              <img
+                src="images/onboarding/onboarding-slide-3-qr.svg"
+                alt="QR Code Read"
+              />
             </div>
           </div>
           <div className="show">
-            <img src="images/onboarding/onboarding-slide-3-show.svg" alt="Show QR Code" />
+            <img
+              src="images/onboarding/onboarding-slide-3-show.svg"
+              alt="Show QR Code"
+            />
           </div>
           <div className="background">
             <img src="images/onboarding/onboarding-slide-3-net.svg" alt="Net" />

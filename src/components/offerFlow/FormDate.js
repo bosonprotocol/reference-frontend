@@ -128,7 +128,7 @@ function FormDate({
               onCalendarClose={(e) => startDateCalendarClosed(e)}
             />
             <div className="icon">
-              <img src="images/calendar-icon.png" alt="" />
+              <img src="images/icons/calendar-icon.png" alt="" />
             </div>
           </div>
         </div>
@@ -160,7 +160,7 @@ function FormDate({
               onCalendarClose={(e) => endDateCalendarClosed(e)}
             />
             <div className="icon">
-              <img src="images/calendar-icon.png" alt="" />
+              <img src="images/icons/calendar-icon.png" alt="" />
             </div>
             <div
               className="container calendar-controls"
