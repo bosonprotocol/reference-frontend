@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ROUTE } from "./helpers/Dictionary";
 
 import OnboardingReset from "./hooks/OnboardingReset";
-import TopNavigation from "./components/shared/navigation/TopNavigation";
-import BottomNavigation from "./components/shared/navigation/BottomNavigation";
-import LocationManager from "./components/shared/navigation/LocationManager";
+import TopNavigation from "./components/shared/navigation/top-navigation/TopNavigation";
+import BottomNavigation from "./components/shared/navigation/bottom-navigation/BottomNavigation";
+import LocationManager from "./components/shared/navigation/location-manager/LocationManager";
 import NotFound from "./views/not-found/NotFound";
 import {
   ActivityVoucherSets,

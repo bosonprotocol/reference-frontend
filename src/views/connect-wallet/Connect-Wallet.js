@@ -4,7 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import {
   WalletConnect,
   WALLET_VIEWS,
-} from "../../components/modals/WalletConnect";
+} from "../../components/wallet-connect/WalletConnect";
 import { useEagerConnect } from "../../hooks";
 import { NetworkContextName } from "../../constants";
 import { network } from "../../connectors";

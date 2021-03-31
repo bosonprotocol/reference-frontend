@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
-import "../../components/shared/ProductView.scss";
+import "../../styles/ProductView.scss";
 
 import { useHistory } from "react-router";
 
 import "./NewOffer.scss";
 
-import Categories from "../../components/offerFlow/Categories";
-import FormUploadPhoto from "../../components/offerFlow/FormUploadPhoto";
-import FormGeneral from "../../components/offerFlow/FormGeneral";
-import FormPrice from "../../components/offerFlow/FormPrice";
-import FormDate from "../../components/offerFlow/FormDate";
-import FormSummary from "../../components/offerFlow/FormSummary";
+import NewOfferCategory from "../../components/new-offer/new-offer-category/NewOfferCategory";
+import FormUploadPhoto from "../../components/new-offer/new-offer-photo/NewOfferPhoto";
+import NewOfferGeneral from "../../components/new-offer/new-offer-general/NewOfferGeneral";
+import NewOfferPrice from "../../components/new-offer/new-offer-price/NewOfferPrice";
+import NewOfferDates from "../../components/new-offer/new-offer-dates/NewOfferDates";
+import NewOfferSummary from "../../components/new-offer/new-offer-summary/NewOfferSummary";
 
 import { SellerContext, Seller } from "../../contexts/Seller";
 import { NavigationContext, Action } from "../../contexts/Navigation";
@@ -123,19 +123,21 @@ function NewOffer() {
     }
   };
   const screens = [
-    <Categories inputValueReceiver={createInputValueReceiver(NAME.CATEGORY)} />,
+    <NewOfferCategory
+      inputValueReceiver={createInputValueReceiver(NAME.CATEGORY)}
+    />,
     <FormUploadPhoto
       inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
       uploadImageErrorMessage={errorMessages[NAME.IMAGE]}
     />,
-    <FormGeneral
+    <NewOfferGeneral
       titleValueReceiver={createInputValueReceiver(NAME.TITLE)}
       titleErrorMessage={errorMessages[NAME.TITLE]}
       conditionValueReceiver={createInputValueReceiver(NAME.CONDITION)}
       descriptionValueReceiver={createInputValueReceiver(NAME.DESCRIPTION)}
       descriptionErrorMessage={errorMessages[NAME.DESCRIPTION]}
     />,
-    <FormPrice
+    <NewOfferPrice
       depositsPriceLimits={depositsPriceLimits}
       priceValueReceiver={createInputValueReceiver(NAME.PRICE)}
       priceCurrencyReceiver={createInputValueReceiver(NAME.PRICE_C)}
@@ -153,13 +155,13 @@ function NewOffer() {
       sellerDepositErrorMessage={errorMessages[NAME.SELLER_DEPOSIT]}
       buyerDepositErrorMessage={errorMessages[NAME.BUYER_DEPOSIT]}
     />,
-    <FormDate
+    <NewOfferDates
       startDateValueReceiver={createInputValueReceiver(NAME.DATE_START)}
       startDateErrorMessage={errorMessages[NAME.DATE_START]}
       endDateValueReceiver={createInputValueReceiver(NAME.DATE_END)}
       endDateErrorMessage={errorMessages[NAME.DATE_END]}
     />,
-    <FormSummary />,
+    <NewOfferSummary />,
   ];
 
   const lastScreenBoolean = activeScreen === screens.length - 1;

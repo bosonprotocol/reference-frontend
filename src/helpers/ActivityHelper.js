@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { QRCodeScaner } from "../components/shared/Icons";
+import { QRCodeScaner } from "../components/shared/icons/Icons";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../helpers/Dictionary";
 import {
