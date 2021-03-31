@@ -8,7 +8,7 @@ import {
 } from "../contexts/Loading";
 import { useWeb3React } from "@web3-react/core";
 import { fetchVoucherSets } from "../helpers/parsers/VoucherAndSetParsers";
-import { getAccountStoredInLocalStorage } from "./authenticate";
+import { getAccountStoredInLocalStorage } from "./Authenticate";
 
 function PopulateVouchers() {
   const globalContext = useContext(GlobalContext);

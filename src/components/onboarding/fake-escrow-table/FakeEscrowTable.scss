@@ -96,7 +96,7 @@
       .block {
         &::after {
           content: '';
-          background-image: url('../../../images/icons/diagram-arrow.svg');
+          background-image: url('../../../assets/icons/diagram-arrow.svg');
           display: slot;
           position: absolute;
           top: calc(50% - 9px);
@@ -121,7 +121,7 @@
       .block {
         &::before {
           content: '';
-          background-image: url('../../../images/icons/diagram-arrow-2.svg');
+          background-image: url('../../../assets/icons/diagram-arrow-2.svg');
           display: slot;
           position: absolute;
           top: calc(50% - 9px);
