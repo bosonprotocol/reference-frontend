@@ -121,17 +121,15 @@ export function WalletConnect({
     if (name === CONNECTOR_TYPES.WALLET_CONNECT) {
       const walletConnectData = localStorage.getItem("walletconnect");
 
-            const walletConnectDataObject = JSON.parse(walletConnectData);
-            if (walletConnectDataObject && walletConnectDataObject.chainId !== NETWORK_ID) {
-                // ToDo: Use Global notification
-                console.error("Please use Rinkeby network.");
-                return
-            }
-        }
-
-        const current = connectorsByName[name];
-        localStorage.setItem('previous-connector', name)
-        activate(current);
+      const walletConnectDataObject = JSON.parse(walletConnectData);
+      if (
+        walletConnectDataObject &&
+        walletConnectDataObject.chainId !== NETWORK_ID
+      ) {
+        // ToDo: Use Global notification
+        console.error("Please use Rinkeby network.");
+        return;
+      }
     }
 
     const current = connectorsByName[name];
