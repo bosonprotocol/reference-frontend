@@ -1,6 +1,6 @@
 import React from "react";
 import { CheckCircle, Copy } from "react-feather";
-import { useCopyClipboard } from "./hooks";
+import { useCopyClipboard } from "../hooks";
 
 const TransactionStatusText = ({ children }) => (
   <span className="ml1 f6 flex flex-nowrap items-center">{children}</span>
