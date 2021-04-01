@@ -43,19 +43,19 @@ import { ModalContext } from "../../contexts/Modal";
 import { GlobalContext } from "../../contexts/Global";
 import { NavigationContext, Action } from "../../contexts/Navigation";
 
-import ContractInteractionButton from "../../components/shared/contract-interaction/contract-interaction-button/ContractInteractionButton";
-import PopupMessage from "../../components/shared/popup-message/PopupMessage";
+import ContractInteractionButton from "../../shared-components/contract-interaction/contract-interaction-button/ContractInteractionButton";
+import PopupMessage from "../../shared-components/popup-message/PopupMessage";
 import {
   DateTable,
   TableRow,
   PriceTable,
   DescriptionBlock,
-} from "../../components/shared/table-content/TableContent";
-import EscrowTable from "../../components/escrow-table/EscrowTable";
+} from "../../shared-components/table-content/TableContent";
+import EscrowTable from "./components/escrow-table/EscrowTable";
 import {
   IconQRScanner,
   IconWarning,
-} from "../../components/shared/icons/Icons";
+} from "../../shared-components/icons/Icons";
 
 import { calculateDifferenceInPercentage } from "../../utils/MathUtils";
 import {

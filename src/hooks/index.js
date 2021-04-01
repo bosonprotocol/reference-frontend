@@ -11,7 +11,7 @@ import {
   createUnauthenticatedLocalStorageRecord,
   getAccountStoredInLocalStorage,
 } from "./authenticate";
-import { CONNECTOR_TYPES } from "../components/wallet-connect/WalletConnect";
+import { CONNECTOR_TYPES } from "../shared-components/wallet-connect/WalletConnect";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "@testing-library/react";
 
-import CardBlock from "../../../src/components/home/card-block/CardBlock";
+import CardBlock from "../../../src/views/home/components/card-block/CardBlock";
 
 let container = null;
 beforeEach(() => {

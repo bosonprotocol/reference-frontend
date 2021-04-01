@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
 
-import ProductBlock from "../../../src/components/home/product-block/ProductBlock";
+import ProductBlock from "../../../src/views/home/components/product-block/ProductBlock";
 
 /**
  * Required to wrap element due to HREF link.

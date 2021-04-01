@@ -6,12 +6,12 @@ import { useHistory } from "react-router";
 
 import "./NewOffer.scss";
 
-import NewOfferCategory from "../../components/new-offer/new-offer-category/NewOfferCategory";
-import FormUploadPhoto from "../../components/new-offer/new-offer-photo/NewOfferPhoto";
-import NewOfferGeneral from "../../components/new-offer/new-offer-general/NewOfferGeneral";
-import NewOfferPrice from "../../components/new-offer/new-offer-price/NewOfferPrice";
-import NewOfferDates from "../../components/new-offer/new-offer-dates/NewOfferDates";
-import NewOfferSummary from "../../components/new-offer/new-offer-summary/NewOfferSummary";
+import NewOfferCategory from "./components/new-offer-category/NewOfferCategory";
+import FormUploadPhoto from "./components/new-offer-photo/NewOfferPhoto";
+import NewOfferGeneral from "./components/new-offer-general/NewOfferGeneral";
+import NewOfferPrice from "./components/new-offer-price/NewOfferPrice";
+import NewOfferDates from "./components/new-offer-dates/NewOfferDates";
+import NewOfferSummary from "./components/new-offer-summary/NewOfferSummary";
 
 import { SellerContext, Seller } from "../../contexts/Seller";
 import { NavigationContext, Action } from "../../contexts/Navigation";

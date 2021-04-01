@@ -5,7 +5,7 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 
 import "swiper/swiper.min.css";
 
-import FakeEscrowTable from "../../components/onboarding/fake-escrow-table/FakeEscrowTable";
+import FakeEscrowTable from "./components/fake-escrow-table/FakeEscrowTable";
 
 SwiperCore.use([Navigation, Pagination]);
 

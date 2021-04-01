@@ -1,5 +1,5 @@
 import React from "react";
-import QRCodeScanner from "../../components/shared/qr-code-scanner/QRCodeScanner";
+import QRCodeScanner from "../../shared-components/qr-code-scanner/QRCodeScanner";
 
 import { Link } from "react-router-dom";
 
