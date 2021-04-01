@@ -47,14 +47,14 @@ import {
 
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
-import { network } from "./connectors";
+import { network } from "./Connectors";
 
-import ContextModal from "./components/shared/ContextModal";
+import ContextModal from "./shared-components/modals/context-modal/ContextModal";
 import {
   authenticateUser,
   getAccountStoredInLocalStorage,
 } from "./hooks/authenticate";
-import { isTokenValid } from "./utils/auth";
+import { isTokenValid } from "./utils/Auth";
 
 function App() {
   const [walletState] = useReducer(WalletReducer, WalletInitialState);
