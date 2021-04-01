@@ -1,6 +1,7 @@
 import { getAddress } from "@ethersproject/address";
 import { Contract } from "@ethersproject/contracts";
 import { AddressZero } from "@ethersproject/constants";
+import { isMobile } from "@walletconnect/utils";
 
 export const ChainId = {
   MAINNET: 1,
@@ -107,4 +108,21 @@ export const setTxHashToSupplyId = (txHash, supplyId) => {
     "recentlySignedTxIdToSupplyIdList",
     JSON.stringify(newList)
   );
+};
+
+export const handleAccountChangedMetaMaskBrowser = (
+  previousAccount,
+  account
+) => {
+  const { ethereum } = window;
+  const isMetaMask = !!(ethereum && ethereum.isMetaMask);
+
+  if (
+    isMetaMask &&
+    isMobile() &&
+    previousAccount &&
+    previousAccount !== account
+  ) {
+    window.location.reload();
+  }
 };
