@@ -7,108 +7,108 @@ import { NetworkContextName } from "../constants";
 import { injected, walletconnect } from "../connectors";
 import { parseLocalStorage } from "../utils";
 import {
-    authenticateUser,
-    createUnauthenticatedLocalStorageRecord,
-    getAccountStoredInLocalStorage
+  authenticateUser,
+  createUnauthenticatedLocalStorageRecord,
+  getAccountStoredInLocalStorage,
 } from "./authenticate";
 import { CONNECTOR_TYPES } from "../components/modals/WalletConnect";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
 export function useLocalStorage(key, defaultValue, didChange = []) {
-    const [value, setStateValue] = useState(
-        parseLocalStorage(localStorage[key], key)
-    );
+  const [value, setStateValue] = useState(
+    parseLocalStorage(localStorage[key], key)
+  );
 
-    useEffect(() => {
-        let initialValue = parseLocalStorage(localStorage[key], key);
-        if (initialValue === null) {
-            initialValue = defaultValue;
-        }
-        setStateValue(initialValue);
-        // eslint-disable-next-line
-    }, [didChange]);
-    useEffect(() => {
-        function onStorageUpdate(e) {
-            if (e.detail.key !== key) return;
-            setStateValue(parseLocalStorage(e.detail.value, e.detail.key));
-        }
-
-        window.addEventListener("newStorageValue", onStorageUpdate);
-        return () => {
-            window.removeEventListener("newStorageValue", onStorageUpdate);
-        };
-    }, [key, setStateValue]);
-
-    function setValue(newValue) {
-        newValue = JSON.stringify(newValue);
-        localStorage[key] = newValue;
-        setStateValue(newValue);
-        const e = new CustomEvent("newStorageValue", {
-            detail: { key, value: newValue },
-        });
-        window.dispatchEvent(e);
+  useEffect(() => {
+    let initialValue = parseLocalStorage(localStorage[key], key);
+    if (initialValue === null) {
+      initialValue = defaultValue;
+    }
+    setStateValue(initialValue);
+    // eslint-disable-next-line
+  }, [didChange]);
+  useEffect(() => {
+    function onStorageUpdate(e) {
+      if (e.detail.key !== key) return;
+      setStateValue(parseLocalStorage(e.detail.value, e.detail.key));
     }
 
-    return [value, setValue];
+    window.addEventListener("newStorageValue", onStorageUpdate);
+    return () => {
+      window.removeEventListener("newStorageValue", onStorageUpdate);
+    };
+  }, [key, setStateValue]);
+
+  function setValue(newValue) {
+    newValue = JSON.stringify(newValue);
+    localStorage[key] = newValue;
+    setStateValue(newValue);
+    const e = new CustomEvent("newStorageValue", {
+      detail: { key, value: newValue },
+    });
+    window.dispatchEvent(e);
+  }
+
+  return [value, setValue];
 }
 
 export function usePrevious(value) {
-    // The ref object is a generic container whose current property is mutable ...
-    // ... and can hold any value, similar to an instance property on a class
-    const ref = useRef();
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = useRef();
 
-    // Store current value in ref
-    useEffect(() => {
-        ref.current = value;
-    }, [value]); // Only re-run if value changes
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value;
+  }, [value]); // Only re-run if value changes
 
-    // Return previous value (happens before update in useEffect above)
-    return ref.current;
+  // Return previous value (happens before update in useEffect above)
+  return ref.current;
 }
 
 export function useEagerConnect() {
-    const { activate, active } = useWeb3React(); // specifically using useWeb3ReactCore because of what this hook does
-    const [tried, setTried] = useState(false);
+  const { activate, active } = useWeb3React(); // specifically using useWeb3ReactCore because of what this hook does
+  const [tried, setTried] = useState(false);
 
-    useEffect(() => {
-        const lastActiveConnectorType = localStorage.getItem('previous-connector');
+  useEffect(() => {
+    const lastActiveConnectorType = localStorage.getItem("previous-connector");
 
-        if (lastActiveConnectorType === CONNECTOR_TYPES.WALLET_CONNECT) {
-            const walletConnectData = localStorage.getItem('walletconnect');
-            const walletConnectDataObject = JSON.parse(walletConnectData);
+    if (lastActiveConnectorType === CONNECTOR_TYPES.WALLET_CONNECT) {
+      const walletConnectData = localStorage.getItem("walletconnect");
+      const walletConnectDataObject = JSON.parse(walletConnectData);
 
-            if (walletConnectDataObject) {
-                activate(walletconnect);
-                return
-            }
-        }
+      if (walletConnectDataObject) {
+        activate(walletconnect);
+        return;
+      }
+    }
 
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).catch(() => {
-                    setTried(true);
-                });
-            } else {
-                if (isMobile && window.ethereum) {
-                    activate(injected, undefined, true).catch(() => {
-                        setTried(true);
-                    });
-                } else {
-                    setTried(true);
-                }
-            }
+    injected.isAuthorized().then((isAuthorized) => {
+      if (isAuthorized) {
+        activate(injected, undefined, true).catch(() => {
+          setTried(true);
         });
-    }, [activate]); // intentionally only running on mount (make sure it's only mounted once :))
-
-    // if the connection worked, wait until we get confirmation of that to flip the flag
-    useEffect(() => {
-        if (active) {
+      } else {
+        if (isMobile && window.ethereum) {
+          activate(injected, undefined, true).catch(() => {
             setTried(true);
+          });
+        } else {
+          setTried(true);
         }
-    }, [active]);
+      }
+    });
+  }, [activate]); // intentionally only running on mount (make sure it's only mounted once :))
 
-    return tried;
+  // if the connection worked, wait until we get confirmation of that to flip the flag
+  useEffect(() => {
+    if (active) {
+      setTried(true);
+    }
+  }, [active]);
+
+  return tried;
 }
 
 /**
@@ -116,80 +116,82 @@ export function useEagerConnect() {
  * and out after checking what network they are on
  */
 export function useInactiveListener(suppress = false) {
-    const { library, account, active, error, activate, chainId } = useWeb3React();
+  const { library, account, active, error, activate, chainId } = useWeb3React();
 
-    useEffect(() => {
-        const { ethereum } = window;
+  useEffect(() => {
+    const { ethereum } = window;
 
-        if (ethereum && ethereum.on && account) {
-            const handleChainChanged = () => {
-                // ToDo: Add global notification for network changing
+    if (ethereum && ethereum.on && account) {
+      const handleChainChanged = () => {
+        // ToDo: Add global notification for network changing
 
-                // eat errors
-                activate(injected, undefined, true).catch((error) => {
-                    console.error("Failed to activate after chain changed", error);
-                });
-            };
+        // eat errors
+        activate(injected, undefined, true).catch((error) => {
+          console.error("Failed to activate after chain changed", error);
+        });
+      };
 
-            const handleAccountsChanged = async (accounts) => {
-                if (accounts.length > 0) {
-                    const newAccount = accounts[0];
-                    createUnauthenticatedLocalStorageRecord(newAccount);
+      const handleAccountsChanged = async (accounts) => {
+        if (accounts.length > 0) {
+          const newAccount = accounts[0];
+          createUnauthenticatedLocalStorageRecord(newAccount);
 
-                    const localStoredAccountData = getAccountStoredInLocalStorage(account);
-                    if (!localStoredAccountData.activeToken) {
-                        await authenticateUser(library, newAccount, chainId)
-                    }
+          const localStoredAccountData = getAccountStoredInLocalStorage(
+            account
+          );
+          if (!localStoredAccountData.activeToken) {
+            await authenticateUser(library, newAccount, chainId);
+          }
 
-                    // eat errors
-                    activate(injected, undefined, true).catch((error) => {
-                        console.error("Failed to activate after accounts changed", error);
-                    });
-                }
-            };
-
-            ethereum.on("chainChanged", handleChainChanged);
-            ethereum.on("accountsChanged", handleAccountsChanged);
-
-            return () => {
-                if (ethereum.removeListener) {
-                    ethereum.removeListener("chainChanged", handleChainChanged);
-                    ethereum.removeListener("accountsChanged", handleAccountsChanged);
-                }
-            };
+          // eat errors
+          activate(injected, undefined, true).catch((error) => {
+            console.error("Failed to activate after accounts changed", error);
+          });
         }
-        return;
-    }, [active, error, suppress, activate, account, chainId, library]);
+      };
+
+      ethereum.on("chainChanged", handleChainChanged);
+      ethereum.on("accountsChanged", handleAccountsChanged);
+
+      return () => {
+        if (ethereum.removeListener) {
+          ethereum.removeListener("chainChanged", handleChainChanged);
+          ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        }
+      };
+    }
+    return;
+  }, [active, error, suppress, activate, account, chainId, library]);
 }
 
 export function useCopyClipboard(timeout = 500) {
-    const [isCopied, setIsCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
-    const staticCopy = useCallback((text) => {
-        const didCopy = copy(text);
-        setIsCopied(didCopy);
-    }, []);
+  const staticCopy = useCallback((text) => {
+    const didCopy = copy(text);
+    setIsCopied(didCopy);
+  }, []);
 
-    useEffect(() => {
-        if (isCopied) {
-            const hide = setTimeout(() => {
-                setIsCopied(false);
-            }, timeout);
+  useEffect(() => {
+    if (isCopied) {
+      const hide = setTimeout(() => {
+        setIsCopied(false);
+      }, timeout);
 
-            return () => {
-                clearTimeout(hide);
-            };
-        }
-        return;
-    }, [isCopied, setIsCopied, timeout]);
+      return () => {
+        clearTimeout(hide);
+      };
+    }
+    return;
+  }, [isCopied, setIsCopied, timeout]);
 
-    return [isCopied, staticCopy];
+  return [isCopied, staticCopy];
 }
 
 export function useActiveWeb3React() {
-    const context = useWeb3React();
-    const contextNetwork = useWeb3React(NetworkContextName);
-    return context.active ? context : contextNetwork;
+  const context = useWeb3React();
+  const contextNetwork = useWeb3React(NetworkContextName);
+  return context.active ? context : contextNetwork;
 }
 
 // export function useAllTokens() {
@@ -313,48 +315,48 @@ export function useActiveWeb3React() {
 
 // modified from https://usehooks.com/useDebounce/
 export function useDebounce(value, delay) {
-    const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
-    useEffect(() => {
-        // Update debounced value after delay
-        const handler = setTimeout(() => {
-            setDebouncedValue(value);
-        }, delay);
+  useEffect(() => {
+    // Update debounced value after delay
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-        // Cancel the timeout if value changes (also on delay change or unmount)
-        // This is how we prevent debounced value from updating if value is changed ...
-        // .. within the delay period. Timeout gets cleared and restarted.
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [value, delay]);
+    // Cancel the timeout if value changes (also on delay change or unmount)
+    // This is how we prevent debounced value from updating if value is changed ...
+    // .. within the delay period. Timeout gets cleared and restarted.
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
 
-    return debouncedValue;
+  return debouncedValue;
 }
 
 const VISIBILITY_STATE_SUPPORTED = "visibilityState" in document;
 
 function isWindowVisible() {
-    return !VISIBILITY_STATE_SUPPORTED || document.visibilityState !== "hidden";
+  return !VISIBILITY_STATE_SUPPORTED || document.visibilityState !== "hidden";
 }
 
 /**
  * Returns whether the window is currently visible to the user.
  */
 export function useIsWindowVisible() {
-    const [focused, setFocused] = useState(isWindowVisible());
-    const listener = useCallback(() => {
-        setFocused(isWindowVisible());
-    }, [setFocused]);
+  const [focused, setFocused] = useState(isWindowVisible());
+  const listener = useCallback(() => {
+    setFocused(isWindowVisible());
+  }, [setFocused]);
 
-    useEffect(() => {
-        if (!VISIBILITY_STATE_SUPPORTED) return;
+  useEffect(() => {
+    if (!VISIBILITY_STATE_SUPPORTED) return;
 
-        document.addEventListener("visibilitychange", listener);
-        return () => {
-            document.removeEventListener("visibilitychange", listener);
-        };
-    }, [listener]);
+    document.addEventListener("visibilitychange", listener);
+    return () => {
+      document.removeEventListener("visibilitychange", listener);
+    };
+  }, [listener]);
 
-    return focused;
+  return focused;
 }

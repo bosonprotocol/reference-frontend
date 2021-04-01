@@ -1,29 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import { CURRENCY } from "../../helpers/Dictionary"
+import { CURRENCY } from "../../helpers/Dictionary";
 
 function Currencies(props) {
-  const { name, inputValueHandler } = props
-  const [chosenCurrencyName, setChosenCurrencyName] = useState('ETH')
+  const { name, inputValueHandler } = props;
+  const [chosenCurrencyName, setChosenCurrencyName] = useState("ETH");
   const handleInputChange = (e) => {
-    if(e?.target) {
+    if (e?.target) {
       setChosenCurrencyName(e.target.value);
-      inputValueHandler(e.target.value)
+      inputValueHandler(e.target.value);
     }
-  }
-  
+  };
+
   return (
     <span className="currencies-container">
-      <span className={"icons " + (chosenCurrencyName ? chosenCurrencyName : '')}>
+      <span
+        className={"icons " + (chosenCurrencyName ? chosenCurrencyName : "")}
+      >
         <div className={CURRENCY.ETH}></div>
         <div className={CURRENCY.BSN}></div>
       </span>
-      <select className="currencies" name={name} id={name} onChange={(e) => handleInputChange(e)}>
+      <select
+        className="currencies"
+        name={name}
+        id={name}
+        onChange={(e) => handleInputChange(e)}
+      >
         <option value={CURRENCY.ETH}>{CURRENCY.ETH}</option>
         <option value={CURRENCY.BSN}>{CURRENCY.BSN}</option>
       </select>
     </span>
-  )
+  );
 }
 
-export default Currencies
+export default Currencies;

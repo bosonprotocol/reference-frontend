@@ -1,0 +1,15 @@
+---
+:backends:
+  - "overrides"
+  - "env"
+  - "yaml"
+:logger: "noop"
+:yaml:
+  :datadir: "config"
+:hierarchy:
+  - "roles/%{role}"
+  - "deployments/%{deployment_type}-%{deployment_label}"
+  - "pipelines/defaults"
+  - "ci/%{ci_deployment_type}-%{ci_deployment_label}"
+  - "secrets/pipeline/%{ci_deployment_type}-%{ci_deployment_label}"
+  - "defaults"
