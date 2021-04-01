@@ -6,28 +6,28 @@ import CardBlock from "../../../components/home/CardBlock";
 
 let container = null;
 beforeEach(() => {
-    // setup a DOM element as a render target
-    container = document.createElement("div");
-    document.body.appendChild(container);
+  // setup a DOM element as a render target
+  container = document.createElement("div");
+  document.body.appendChild(container);
 });
 
 afterEach(() => {
-    // cleanup on exiting
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
+  // cleanup on exiting
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
 });
 
 describe("Component - Card Block", () => {
-    it("Expect pass - renders with correct category", () => {
-        const category = "New";
-        const categoryWrong = "Old";
+  it("Expect pass - renders with correct category", () => {
+    const category = "New";
+    const categoryWrong = "Old";
 
-        act(() => {
-            render(<CardBlock category={category}/>, container);
-        });
-
-        expect(container.textContent).toBe(category);
-        expect(container.textContent).not.toBe(categoryWrong);
+    act(() => {
+      render(<CardBlock category={category} />, container);
     });
+
+    expect(container.textContent).toBe(category);
+    expect(container.textContent).not.toBe(categoryWrong);
+  });
 });

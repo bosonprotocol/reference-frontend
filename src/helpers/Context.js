@@ -1,1 +1,1 @@
-export const getData = context => (name) => context[name]
+export const getData = (context) => (name) => context[name];
