@@ -7,28 +7,25 @@ export default function Modal({
   children,
   size = "24rem",
   canClose = true,
-}) 
-{
+}) {
   function onClose() {
     if (canClose) setModal(null);
   }
 
   return (
     <div>
-      <div onClick={ onClose }/>
-      <div
-        style={ { width: size } }
-      >
+      <div onClick={onClose} />
+      <div style={{ width: size }}>
         <div>
-          { title ? (
+          {title ? (
             <div>
-              <div>{ title }</div>
-              <a href="onClose" onClick={ onClose }>
-                <Icon name="x"/>
+              <div>{title}</div>
+              <a href="onClose" onClick={onClose}>
+                <Icon name="x" />
               </a>
             </div>
-          ) : null }
-          { children }
+          ) : null}
+          {children}
         </div>
       </div>
     </div>

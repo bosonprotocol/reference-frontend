@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# Build
+/vendor
+
 # Testing
 /coverage
 /.nyc_output

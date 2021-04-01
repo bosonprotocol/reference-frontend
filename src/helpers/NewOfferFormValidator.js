@@ -1,10 +1,15 @@
-import { ethers } from "ethers"
-import { toFixed } from "../utils/format-utils"
-import { NAME } from "./Dictionary"
-import { profanityCheck } from "./Profanity"
+import { ethers } from "ethers";
+import { toFixed } from "../utils/format-utils";
+import { NAME } from "./Dictionary";
+import { profanityCheck } from "./Profanity";
 import * as ValidationConfig from "./NewOfferFormValidationConfig";
 
-const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeName, priceSettings) => {
+const checkForErrorsInNewOfferForm = (
+  errorMessages,
+  getData,
+  lastInputChangeName,
+  priceSettings
+) => {
   let newErrorMessages = { ...errorMessages };
 
   newErrorMessages = imageValidation(newErrorMessages, getData);
@@ -15,13 +20,32 @@ const checkForErrorsInNewOfferForm = (errorMessages, getData, lastInputChangeNam
   newErrorMessages = quantityValidationCheck[0];
   const currentQuantityValue = quantityValidationCheck[1];
 
-  newErrorMessages = priceValidation(newErrorMessages, getData, priceSettings, currentQuantityValue);
-  newErrorMessages = sellerDepositValidation(newErrorMessages, getData, priceSettings, currentQuantityValue);
-  newErrorMessages = buyerDepositValidation(newErrorMessages, getData, priceSettings, currentQuantityValue);
-  newErrorMessages = datesValidation(newErrorMessages, getData, lastInputChangeName);
+  newErrorMessages = priceValidation(
+    newErrorMessages,
+    getData,
+    priceSettings,
+    currentQuantityValue
+  );
+  newErrorMessages = sellerDepositValidation(
+    newErrorMessages,
+    getData,
+    priceSettings,
+    currentQuantityValue
+  );
+  newErrorMessages = buyerDepositValidation(
+    newErrorMessages,
+    getData,
+    priceSettings,
+    currentQuantityValue
+  );
+  newErrorMessages = datesValidation(
+    newErrorMessages,
+    getData,
+    lastInputChangeName
+  );
 
   return newErrorMessages;
-}
+};
 
 const imageValidation = (errorMessages, getData) => {
   let imageErrorMessage = null;
@@ -76,7 +100,9 @@ const descriptionValidation = (errorMessages, getData) => {
   const currentDescriptionValue = getData(NAME.DESCRIPTION);
 
   if (currentDescriptionValue) {
-    if (currentDescriptionValue.length < ValidationConfig.descriptionSettings.min) {
+    if (
+      currentDescriptionValue.length < ValidationConfig.descriptionSettings.min
+    ) {
       descriptionErrorMessage = ValidationConfig.minDescriptionLengthError;
     }
 
@@ -86,7 +112,10 @@ const descriptionValidation = (errorMessages, getData) => {
       descriptionErrorMessage = profanityResult;
     }
 
-    errorMessages = { ...errorMessages, [NAME.DESCRIPTION]: descriptionErrorMessage }
+    errorMessages = {
+      ...errorMessages,
+      [NAME.DESCRIPTION]: descriptionErrorMessage,
+    };
   }
 
   return errorMessages;
@@ -96,10 +125,10 @@ const quantityValidation = (errorMessages, getData) => {
   let quantityErrorMessage = null;
   const currentQuantityValue = getData(NAME.QUANTITY);
 
-  if (currentQuantityValue === '') {
-    quantityErrorMessage = null
+  if (currentQuantityValue === "") {
+    quantityErrorMessage = null;
   }
-  
+
   if (currentQuantityValue || currentQuantityValue === 0) {
     if (isNaN(parseInt(currentQuantityValue))) {
       quantityErrorMessage = ValidationConfig.invalidQuantityError;
@@ -123,7 +152,12 @@ const quantityValidation = (errorMessages, getData) => {
   return [errorMessages, currentQuantityValue];
 };
 
-const priceValidation = (errorMessages, getData, priceSettings, currentQuantityValue) => {
+const priceValidation = (
+  errorMessages,
+  getData,
+  priceSettings,
+  currentQuantityValue
+) => {
   let priceErrorMessage = null;
   const currentPriceValue = getData(NAME.PRICE);
 
@@ -135,8 +169,17 @@ const priceValidation = (errorMessages, getData, priceSettings, currentQuantityV
     }
 
     if (currentQuantityValue && priceSettings[priceCurrency].max) {
-      if (currentPriceValue.mul(currentQuantityValue).gt(priceSettings[priceCurrency].max)) {
-        priceErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[priceCurrency].max.div(currentQuantityValue)), 2)}`;
+      if (
+        currentPriceValue
+          .mul(currentQuantityValue)
+          .gt(priceSettings[priceCurrency].max)
+      ) {
+        priceErrorMessage = `The maximum value is ${toFixed(
+          +ethers.utils.formatEther(
+            priceSettings[priceCurrency].max.div(currentQuantityValue)
+          ),
+          2
+        )}`;
       }
     }
 
@@ -146,30 +189,56 @@ const priceValidation = (errorMessages, getData, priceSettings, currentQuantityV
   return errorMessages;
 };
 
-const sellerDepositValidation = (errorMessages, getData, priceSettings, currentQuantityValue) => {
+const sellerDepositValidation = (
+  errorMessages,
+  getData,
+  priceSettings,
+  currentQuantityValue
+) => {
   let sellerDepositErrorMessage = null;
   const currentSellerDepositValue = getData(NAME.SELLER_DEPOSIT);
   const currentSellerDepositCurrency = getData(NAME.DEPOSITS_C);
 
   if (currentSellerDepositCurrency && currentSellerDepositValue) {
-
     if (currentSellerDepositValue <= 0) {
       sellerDepositErrorMessage = ValidationConfig.minSellerDepositError;
     }
 
-    if (currentQuantityValue && priceSettings[currentSellerDepositCurrency].max) {
-      if (currentSellerDepositValue.mul(currentQuantityValue).gt(priceSettings[currentSellerDepositCurrency].max)) {
-        sellerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[currentSellerDepositCurrency].max.div(currentQuantityValue)), 2)}`;
+    if (
+      currentQuantityValue &&
+      priceSettings[currentSellerDepositCurrency].max
+    ) {
+      if (
+        currentSellerDepositValue
+          .mul(currentQuantityValue)
+          .gt(priceSettings[currentSellerDepositCurrency].max)
+      ) {
+        sellerDepositErrorMessage = `The maximum value is ${toFixed(
+          +ethers.utils.formatEther(
+            priceSettings[currentSellerDepositCurrency].max.div(
+              currentQuantityValue
+            )
+          ),
+          2
+        )}`;
       }
     }
 
-    errorMessages = { ...errorMessages, [NAME.SELLER_DEPOSIT]: sellerDepositErrorMessage };
+    errorMessages = {
+      ...errorMessages,
+      [NAME.SELLER_DEPOSIT]: sellerDepositErrorMessage,
+    };
   }
 
   return errorMessages;
 };
 
-const buyerDepositValidation = (errorMessages, getData, priceSettings, currentQuantityValue) => {
+const buyerDepositValidation = (
+  errorMessages,
+  getData,
+  priceSettings,
+  currentQuantityValue
+) => {
   let buyerDepositErrorMessage = null;
   const currentBuyerDepositValue = getData(NAME.BUYER_DEPOSIT);
 
@@ -181,12 +250,24 @@ const buyerDepositValidation = (errorMessages, getData, priceSettings, currentQu
     }
 
     if (currentQuantityValue && priceSettings[priceCurrency].max) {
-      if (currentBuyerDepositValue.mul(currentQuantityValue).gt(priceSettings[priceCurrency].max)) {
-        buyerDepositErrorMessage = `The maximum value is ${toFixed(+ethers.utils.formatEther(priceSettings[priceCurrency].max.div(currentQuantityValue)), 2)}`;
+      if (
+        currentBuyerDepositValue
+          .mul(currentQuantityValue)
+          .gt(priceSettings[priceCurrency].max)
+      ) {
+        buyerDepositErrorMessage = `The maximum value is ${toFixed(
+          +ethers.utils.formatEther(
+            priceSettings[priceCurrency].max.div(currentQuantityValue)
+          ),
+          2
+        )}`;
       }
     }
 
-    errorMessages = { ...errorMessages, [NAME.BUYER_DEPOSIT]: buyerDepositErrorMessage };
+    errorMessages = {
+      ...errorMessages,
+      [NAME.BUYER_DEPOSIT]: buyerDepositErrorMessage,
+    };
   }
 
   return errorMessages;
@@ -201,17 +282,28 @@ const datesValidation = (errorMessages, getData, lastInputChangeName) => {
 
   if (currentDateStartValue && lastInputChangeName === NAME.DATE_START) {
     const yesterday = new Date().setDate(new Date().getDate() - 1);
-    dateStartErrorMessage = new Date(currentDateStartValue).getTime() <= yesterday ? ValidationConfig.startDateInPastError :
-        new Date(currentDateStartValue).getTime() >= new Date(currentDateEndValue).getTime() ? ValidationConfig.startDateAfterExpiryError :
-            null;
+    dateStartErrorMessage =
+      new Date(currentDateStartValue).getTime() <= yesterday
+        ? ValidationConfig.startDateInPastError
+        : new Date(currentDateStartValue).getTime() >=
+          new Date(currentDateEndValue).getTime()
+        ? ValidationConfig.startDateAfterExpiryError
+        : null;
   }
 
   if (currentDateEndValue && lastInputChangeName === NAME.DATE_END) {
-    dateEndErrorMessage = new Date(currentDateEndValue).getTime() <= new Date(currentDateStartValue).getTime() ?
-        ValidationConfig.expiryDateBeforeStartDateError : null;
+    dateEndErrorMessage =
+      new Date(currentDateEndValue).getTime() <=
+      new Date(currentDateStartValue).getTime()
+        ? ValidationConfig.expiryDateBeforeStartDateError
+        : null;
   }
 
-  return { ...errorMessages, [NAME.DATE_END]: dateEndErrorMessage, [NAME.DATE_START]: dateStartErrorMessage };
+  return {
+    ...errorMessages,
+    [NAME.DATE_END]: dateEndErrorMessage,
+    [NAME.DATE_START]: dateStartErrorMessage,
+  };
 };
 
-export { checkForErrorsInNewOfferForm }
+export { checkForErrorsInNewOfferForm };

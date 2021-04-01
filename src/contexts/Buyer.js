@@ -1,13 +1,13 @@
-import { createContext } from 'react'
-import { DIC } from "../helpers/Dictionary"
-import { getData as getContextData } from "../helpers/Context"
+import { createContext } from "react";
+import { DIC } from "../helpers/Dictionary";
+import { getData as getContextData } from "../helpers/Context";
 
-export const getData = getContextData
+export const getData = getContextData;
 
-export const BuyerContext = createContext()
+export const BuyerContext = createContext();
 
 export const BuyerInitialState = {
-  buyerStep: 0
+  buyerStep: 0,
 };
 
 // payload resolver
@@ -17,20 +17,18 @@ export const Buyer = {
   }),
   connectToMetamask: () => ({
     type: DIC.CONNECTED,
-  })
-}
+  }),
+};
 
 export const BuyerReducer = (state, action) => {
   const actionList = {
-
     [DIC.COMMITED]: () => ({
-      buyerStep: DIC.COMMITED
+      buyerStep: DIC.COMMITED,
     }),
     [DIC.CONNECTED]: () => ({
-      buyerStep: DIC.CONNECTED
+      buyerStep: DIC.CONNECTED,
     }),
-
   };
 
-  return {...state, ...actionList[action.type]()};
-}
+  return { ...state, ...actionList[action.type]() };
+};
