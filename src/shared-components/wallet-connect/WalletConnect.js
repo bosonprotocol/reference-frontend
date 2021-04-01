@@ -84,6 +84,9 @@ export function WalletConnect({
 
   const previousAccount = usePrevious(account);
 
+  const { ethereum } = window;
+  const isMetaMask = !!(ethereum && ethereum.isMetaMask);
+
   // close on connection, when logged out before
   useEffect(() => {
     if (isMounted.current && account && !previousAccount) {
@@ -177,18 +180,20 @@ export function WalletConnect({
             />
           )
         ) : null}
-        <WalletListItem
-          name={CONNECTOR_TYPES.WALLET_CONNECT}
-          imageName={WalletConnectLogo}
-          isActive={connector === walletconnect && active}
-          onClick={() => {
-            // if the user has already tried to connect, manually reset the connector
-            if (connector?.walletConnectProvider?.wc?.uri) {
-              connector.walletConnectProvider = undefined;
-            }
-            onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT);
-          }}
-        />
+        {isMetaMask && isMobile() ? null : (
+          <WalletListItem
+            name={CONNECTOR_TYPES.WALLET_CONNECT}
+            imageName={WalletConnectLogo}
+            isActive={connector === walletconnect && active}
+            onClick={() => {
+              // if the user has already tried to connect, manually reset the connector
+              if (connector?.walletConnectProvider?.wc?.uri) {
+                connector.walletConnectProvider = undefined;
+              }
+              onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT);
+            }}
+          />
+        )}
       </div>
     </>
   );
