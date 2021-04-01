@@ -30,7 +30,7 @@ const ContextModal = () => {
                 <div className="contextModalFooter">
                   <div className="closeContext" onClick={hideModal}>
                     <img
-                      src="images/icons/close-context-modal.png"
+                      src="/images/icons/close-context-modal.png"
                       alt="Close"
                     />
                   </div>
