@@ -21,7 +21,7 @@ export const smartContractToUserFriendlyErrorMapping = new Map([
   ],
   [
     "Pausable: not paused",
-    () => "The smart contracts have been paused. Please try again later.",
+    () => "The smart contracts have not been paused. Please try again later.",
   ],
   [
     "IN_FU",
