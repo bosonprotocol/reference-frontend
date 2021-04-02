@@ -3,7 +3,7 @@ import "./styles/Global.scss";
 
 import React, { useEffect, useReducer } from "react";
 
-import { useEagerConnect, useInactiveListener } from "./hooks";
+import { useEagerConnect, useInactiveListener, usePrevious } from "./hooks";
 
 import "./styles/Animations.scss";
 
@@ -55,6 +55,8 @@ import {
   getAccountStoredInLocalStorage,
 } from "./hooks/authenticate";
 import { isTokenValid } from "./utils/Auth";
+import { isMobile } from "@walletconnect/utils";
+import { handleAccountChangedMetaMaskBrowser } from "./utils/BlockchainUtils";
 
 function App() {
   const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -135,10 +137,14 @@ function App() {
 
   useInactiveListener(true);
 
+  const previousAccount = usePrevious(account);
+
   useEffect(() => {
     if (!account) {
       return;
     }
+
+    handleAccountChangedMetaMaskBrowser(previousAccount, account);
 
     const localStoredAccountData = getAccountStoredInLocalStorage(account);
     const onboardingCompleted = localStorage.getItem("onboarding-completed");
