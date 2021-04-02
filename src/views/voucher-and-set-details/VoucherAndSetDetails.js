@@ -345,15 +345,17 @@ function VoucherAndSetDetails(props) {
       OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]
     ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => {
       setTransactionProccessing(transactionProccessing * -1);
-      return <div
-        className="button cancelVoucherSet"
-        role="button"
-        style={{ border: "none" }}
-        disabled
-        onClick={(e) => e.preventDefault()}
-      >
-        DRAFT: TRANSACTION IS BEING PROCESSED
-      </div>
+      return (
+        <div
+          className="button cancelVoucherSet"
+          role="button"
+          style={{ border: "none" }}
+          disabled
+          onClick={(e) => e.preventDefault()}
+        >
+          DRAFT: TRANSACTION IS BEING PROCESSED
+        </div>
+      );
     };
 
     CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]] = () => {
@@ -365,7 +367,7 @@ function VoucherAndSetDetails(props) {
     return CASE;
   };
 
-  const determineStatus = ({checkAuthentication}) => {
+  const determineStatus = ({ checkAuthentication }) => {
     const voucherResource = voucherDetails
       ? voucherDetails
       : voucherSetDetails
@@ -374,8 +376,11 @@ function VoucherAndSetDetails(props) {
 
     const voucherRoles = {
       owner:
-        voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase() && account,
-      holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase() && account,
+        voucherResource?.voucherOwner?.toLowerCase() ===
+          account?.toLowerCase() && account,
+      holder:
+        voucherResource?.holder?.toLowerCase() === account?.toLowerCase() &&
+        account,
     };
 
     const draftStatusCheck = !(
@@ -421,7 +426,12 @@ function VoucherAndSetDetails(props) {
       hideControlButtonsWaitPeriodExpired,
     ];
 
-    if(role === ROLE.NON_BUYER_SELLER && checkAuthentication && !voucherSetDetails) return OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]
+    if (
+      role === ROLE.NON_BUYER_SELLER &&
+      checkAuthentication &&
+      !voucherSetDetails
+    )
+      return OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED];
 
     // status: undefined - user that has not logged in
     return !blockActionConditions.includes(true)
@@ -614,12 +624,12 @@ function VoucherAndSetDetails(props) {
 
     let depositsDistributed;
 
-    if(payments?.distributedAmounts) {
+    if (payments?.distributedAmounts) {
       depositsDistributed =
-      [
-        ...Object.values(payments?.distributedAmounts.buyerDeposit),
-        ...Object.values(payments?.distributedAmounts.sellerDeposit),
-      ].filter((x) => x.hex !== "0x00").length > 0;
+        [
+          ...Object.values(payments?.distributedAmounts.buyerDeposit),
+          ...Object.values(payments?.distributedAmounts.sellerDeposit),
+        ].filter((x) => x.hex !== "0x00").length > 0;
     }
 
     if (!depositsDistributed && voucherDetails.FINALIZED) {
@@ -921,11 +931,11 @@ function VoucherAndSetDetails(props) {
   }
 
   useEffect(() => {
-    setVoucherStatus(determineStatus({checkAuthentication: false}));
+    setVoucherStatus(determineStatus({ checkAuthentication: false }));
 
     const authentication = setTimeout(() => {
-      setVoucherStatus(determineStatus({checkAuthentication: true}))
-      setAuthenticationCompleted(1)
+      setVoucherStatus(determineStatus({ checkAuthentication: true }));
+      setAuthenticationCompleted(1);
     }, 500);
 
     return () => clearTimeout(authentication);
@@ -989,7 +999,7 @@ function VoucherAndSetDetails(props) {
   }, [controls, account, library]);
 
   useEffect(() => {
-    const statusChildren = document.getElementById("horizontal-view-container")
+    const statusChildren = document.getElementById("horizontal-view-container");
     if (
       voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
       statusBlocks &&
@@ -1060,7 +1070,7 @@ function VoucherAndSetDetails(props) {
     voucherSetDetails,
     voucherDetails,
     authenticationCompleted,
-    transactionProccessing
+    transactionProccessing,
   ]);
 
   useEffect(() => {
