@@ -68,6 +68,7 @@ import {
 } from "../../utils/BlockchainUtils";
 
 import GenericMessage from "../generic-message/GenericMessage";
+import { validateContractInteraction } from "../../helpers/validators/ContractInteractionValidator";
 
 const voucherPlaceholder = (
   <div className="details-loading">
@@ -273,7 +274,7 @@ function VoucherAndSetDetails(props) {
         }
         role="button"
       >
-        Cancel or fault
+        Cancel or Fault
       </div>
     );
 
@@ -316,7 +317,9 @@ function VoucherAndSetDetails(props) {
       <ContractInteractionButton
         className="action button commit"
         handleClick={() => onCommitToBuy()}
-        label={`COMMIT TO BUY ${voucherSetDetails?.price}`}
+        label={`COMMIT TO BUY ${voucherSetDetails?.price} ${
+          currencyResolver(voucherSetDetails?.paymentType)[0]
+        }`}
       />
     );
 
@@ -772,8 +775,12 @@ function VoucherAndSetDetails(props) {
         bosonTokenContract,
         library,
         account,
-        chainId
+        chainId,
+        modalContext
       );
+      if (!tx) {
+        return;
+      }
 
       setRecentlyUsedCorrelationId(correlationId, account);
       setRecentlySignedTxHash(tx.hash, supplyId);
@@ -825,6 +832,31 @@ function VoucherAndSetDetails(props) {
     }
 
     try {
+      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+        bosonRouterContract,
+        "complain",
+        [voucherDetails._tokenIdVoucher]
+      );
+
+      if (
+        contractInteractionDryRunErrorMessageMaker({
+          action: "Complain",
+          account,
+        })
+      ) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: contractInteractionDryRunErrorMessageMaker({
+              action: "Complain",
+              account,
+            }),
+          })
+        );
+        return;
+      }
+
       const tx = await bosonRouterContract.complain(
         voucherDetails._tokenIdVoucher
       );
@@ -858,6 +890,31 @@ function VoucherAndSetDetails(props) {
     }
 
     try {
+      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+        bosonRouterContract,
+        "refund",
+        [voucherDetails._tokenIdVoucher]
+      );
+
+      if (
+        contractInteractionDryRunErrorMessageMaker({
+          action: "Refund",
+          account,
+        })
+      ) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: contractInteractionDryRunErrorMessageMaker({
+              action: "Refund",
+              account,
+            }),
+          })
+        );
+        return;
+      }
+
       const tx = await bosonRouterContract.refund(
         voucherDetails._tokenIdVoucher
       );
@@ -890,6 +947,31 @@ function VoucherAndSetDetails(props) {
     }
 
     try {
+      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+        bosonRouterContract,
+        "cancelOrFault",
+        [voucherDetails._tokenIdVoucher]
+      );
+
+      if (
+        contractInteractionDryRunErrorMessageMaker({
+          action: "Cancel or Fault",
+          account,
+        })
+      ) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: contractInteractionDryRunErrorMessageMaker({
+              action: "Cancel or Fault",
+              account,
+            }),
+          })
+        );
+        return;
+      }
+
       const tx = await bosonRouterContract.cancelOrFault(
         voucherDetails._tokenIdVoucher
       );
@@ -914,7 +996,7 @@ function VoucherAndSetDetails(props) {
       setCancelMessage({
         messageType: MESSAGE.ERROR,
         title: "Error cancelation",
-        text: "The voucher has not been canceled, please try again",
+        text: "The voucher has not been cancelled, please try again",
         link: ROUTE.Activity + "/" + voucherDetails.id + "/details",
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: false },
@@ -1009,6 +1091,31 @@ function VoucherAndSetDetails(props) {
 
   const onCancelOrFaultVoucherSet = async () => {
     try {
+      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+        bosonRouterContract,
+        "requestCancelOrFaultVoucherSet",
+        [voucherSetDetails._tokenIdSupply]
+      );
+
+      if (
+        contractInteractionDryRunErrorMessageMaker({
+          action: "Cancel or Fault",
+          account,
+        })
+      ) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: contractInteractionDryRunErrorMessageMaker({
+              action: "Cancel or Fault",
+              account,
+            }),
+          })
+        );
+        return;
+      }
+
       const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(
         voucherSetDetails._tokenIdSupply
       );
@@ -1018,7 +1125,7 @@ function VoucherAndSetDetails(props) {
         messageType: MESSAGE.SUCCESS,
         title: "The voucher set was cancelled",
         text:
-          "The vouchers have been canceled, except the ones that were committed",
+          "The vouchers have been cancelled, except the ones that were committed.",
         link: ROUTE.Activity + "/" + voucherSetDetails.id + "/details",
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: true },
@@ -1035,7 +1142,7 @@ function VoucherAndSetDetails(props) {
       setCancelMessage({
         messageType: MESSAGE.ERROR,
         title: "Error cancelation",
-        text: "The set of vouchers has not been canceled, please try again",
+        text: "The set of vouchers has not been cancelled, please try again.",
         link: ROUTE.Activity + "/" + voucherSetDetails.id + "/details",
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: false },
@@ -1245,12 +1352,55 @@ const commitToBuyTransactionCreator = async (
   tokenContract,
   library,
   account,
-  chainId
+  chainId,
+  modalContext
 ) => {
   const paymentType = voucherSetInfo.paymentType;
 
+  const tokensBalance = await tokenContract.balanceOf(account);
+  const ethBalance = await tokenContract.provider.getBalance(account);
+
   if (paymentType === PAYMENT_METHODS.ETHETH) {
     const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+
+    if (ethBalance.lt(txValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough ETH to execute this transaction.",
+        })
+      );
+      return;
+    }
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestVoucherETHETH",
+      [
+        supplyId,
+        voucherSetInfo.voucherOwner,
+        {
+          value: txValue.toString(),
+        },
+      ]
+    );
+
+    if (
+      contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Commit",
+            account,
+          }),
+        })
+      );
+      return;
+    }
 
     return bosonRouterContract.requestVoucherETHETH(
       supplyId,
@@ -1263,6 +1413,28 @@ const commitToBuyTransactionCreator = async (
     const txValue = ethers.BigNumber.from(price);
     const tokensDeposit = ethers.BigNumber.from(buyerDeposit);
 
+    if (ethBalance.lt(txValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough ETH to execute this transaction.",
+        })
+      );
+      return;
+    }
+
+    if (tokensBalance.lt(tokensDeposit)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough BSN to execute this transaction.",
+        })
+      );
+      return;
+    }
+
     //ToDo: Split functionality in two step, first sign, then send tx
     const signature = await onAttemptToApprove(
       tokenContract,
@@ -1271,6 +1443,37 @@ const commitToBuyTransactionCreator = async (
       chainId,
       tokensDeposit
     );
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestVoucherETHTKNWithPermit",
+      [
+        supplyId,
+        voucherSetInfo.voucherOwner,
+        tokensDeposit.toString(),
+        signature.deadline,
+        signature.v,
+        signature.r,
+        signature.s,
+        { value: txValue },
+      ]
+    );
+
+    if (
+      contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Commit",
+            account,
+          }),
+        })
+      );
+      return;
+    }
 
     return bosonRouterContract.requestVoucherETHTKNWithPermit(
       supplyId,
@@ -1283,7 +1486,18 @@ const commitToBuyTransactionCreator = async (
       { value: txValue.toString() }
     );
   } else if (paymentType === PAYMENT_METHODS.BSNBSN) {
-    const txValue = ethers.BigNumber.from(price).add(buyerDeposit);
+    const tokensTxValue = ethers.BigNumber.from(price).add(buyerDeposit);
+
+    if (tokensBalance.lt(tokensTxValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough BSN to execute this transaction.",
+        })
+      );
+      return;
+    }
 
     //ToDo: Split functionality in two step, first sign, then send tx
     const signature = await onAttemptToApprove(
@@ -1291,13 +1505,43 @@ const commitToBuyTransactionCreator = async (
       library,
       account,
       chainId,
-      txValue
+      tokensTxValue
     );
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestVoucherTKNTKNSameWithPermit",
+      [
+        supplyId,
+        voucherSetInfo.voucherOwner,
+        tokensTxValue.toString(),
+        signature.deadline,
+        signature.v,
+        signature.r,
+        signature.s,
+      ]
+    );
+
+    if (
+      contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Commit",
+            account,
+          }),
+        })
+      );
+      return;
+    }
 
     return bosonRouterContract.requestVoucherTKNTKNSameWithPermit(
       supplyId,
       voucherSetInfo.voucherOwner,
-      txValue.toString(),
+      tokensTxValue.toString(),
       signature.deadline,
       signature.v,
       signature.r,
@@ -1307,6 +1551,28 @@ const commitToBuyTransactionCreator = async (
     const txValue = ethers.BigNumber.from(buyerDeposit);
     const tokensDeposit = ethers.BigNumber.from(price);
 
+    if (ethBalance.lt(txValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough ETH to execute this transaction.",
+        })
+      );
+      return;
+    }
+
+    if (tokensBalance.lt(tokensDeposit)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough BSN to execute this transaction.",
+        })
+      );
+      return;
+    }
+
     //ToDo: Split functionality in two step, first sign, then send tx
     const signature = await onAttemptToApprove(
       tokenContract,
@@ -1315,6 +1581,37 @@ const commitToBuyTransactionCreator = async (
       chainId,
       tokensDeposit
     );
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestVoucherTKNETHWithPermit",
+      [
+        supplyId,
+        voucherSetInfo.voucherOwner,
+        tokensDeposit.toString(),
+        signature.deadline,
+        signature.v,
+        signature.r,
+        signature.s,
+        { value: txValue.toString() },
+      ]
+    );
+
+    if (
+      contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Commit",
+            account,
+          }),
+        })
+      );
+      return;
+    }
 
     return bosonRouterContract.requestVoucherTKNETHWithPermit(
       supplyId,
