@@ -33,6 +33,7 @@ import {
   isCorrelationIdAlreadySent,
   setRecentlyUsedCorrelationId,
 } from "../../../../utils/DuplicateCorrelationIdGuard";
+import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -130,7 +131,7 @@ export default function NewOfferSubmit() {
         return;
       }
 
-      await createNewVoucherSet(
+      const created = await createNewVoucherSet(
         dataArr,
         bosonRouterContract,
         bosonTokenContract,
@@ -138,8 +139,16 @@ export default function NewOfferSubmit() {
         chainId,
         library,
         price_currency,
-        deposits_currency
+        deposits_currency,
+        modalContext,
+        seller_deposit.add(buyer_deposit)
       );
+
+      if (!created) {
+        setLoading(0);
+        return;
+      }
+
       setRecentlyUsedCorrelationId(correlationId, account);
 
       const paymentType = paymentTypeResolver(
@@ -217,6 +226,7 @@ export default function NewOfferSubmit() {
     </>
   );
 }
+
 const createNewVoucherSet = async (
   dataArr,
   bosonRouterContract,
@@ -225,16 +235,93 @@ const createNewVoucherSet = async (
   chainId,
   library,
   priceCurrency,
-  depositsCurrency
+  depositsCurrency,
+  modalContext,
+  depositsValue
 ) => {
   const currencyCombination = `${priceCurrency}${depositsCurrency}`;
   const txValue = ethers.BigNumber.from(dataArr[3]).mul(dataArr[5]);
 
+  const tokensBalance = await tokenContract.balanceOf(account);
+  const ethBalance = await tokenContract.provider.getBalance(account);
+
   if (currencyCombination === PAYMENT_METHODS_LABELS.ETHETH) {
+    if (ethBalance.lt(depositsValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough ETH to create the voucher set.",
+        })
+      );
+      return;
+    }
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestCreateOrderETHETH",
+      [dataArr, { value: txValue }]
+    );
+
+    if (
+      contractInteractionDryRunErrorMessageMaker({
+        action: "Create a new Voucher Set",
+        account,
+      })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Create a new Voucher Set",
+            account,
+          }),
+        })
+      );
+      return;
+    }
+
     return bosonRouterContract.requestCreateOrderETHETH(dataArr, {
       value: txValue,
     });
   } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNETH) {
+    if (ethBalance.lt(depositsValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough ETH to create the voucher set.",
+        })
+      );
+      return;
+    }
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestCreateOrderTKNETH",
+      [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
+    );
+
+    if (
+      contractInteractionDryRunErrorMessageMaker({
+        action: "Create a new Voucher Set",
+        account,
+      })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Create a new Voucher Set",
+            account,
+          }),
+        })
+      );
+      return;
+    }
+
     return bosonRouterContract.requestCreateOrderTKNETH(
       SMART_CONTRACTS.BosonTokenContractAddress,
       dataArr,
@@ -242,6 +329,18 @@ const createNewVoucherSet = async (
     );
   } else if (currencyCombination === PAYMENT_METHODS_LABELS.BSNBSN) {
     //ToDo: Split functionality in two step, first sign, then send tx
+
+    if (tokensBalance.lt(depositsValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough BSN to create the voucher set.",
+        })
+      );
+      return;
+    }
+
     const signature = await onAttemptToApprove(
       tokenContract,
       library,
@@ -249,6 +348,39 @@ const createNewVoucherSet = async (
       chainId,
       txValue
     );
+
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestCreateOrderTKNTKNWithPermit",
+      [
+        SMART_CONTRACTS.BosonTokenContractAddress,
+        SMART_CONTRACTS.BosonTokenContractAddress,
+        txValue.toString(),
+        signature.deadline,
+        signature.v,
+        signature.r,
+        signature.s,
+        dataArr,
+      ]
+    );
+    if (
+      contractInteractionDryRunErrorMessageMaker({
+        action: "Create a new Voucher Set",
+        account,
+      })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Create a new Voucher Set",
+            account,
+          }),
+        })
+      );
+      return;
+    }
 
     return bosonRouterContract.requestCreateOrderTKNTKNWithPermit(
       SMART_CONTRACTS.BosonTokenContractAddress,
@@ -262,6 +394,18 @@ const createNewVoucherSet = async (
     );
   } else if (currencyCombination === PAYMENT_METHODS_LABELS.ETHBSN) {
     //ToDo: Split functionality in two step, first sign, then send tx
+
+    if (tokensBalance.lt(depositsValue)) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: "You do not have enough BSN to create the voucher set.",
+        })
+      );
+      return;
+    }
+
     const signature = await onAttemptToApprove(
       tokenContract,
       library,
@@ -269,6 +413,37 @@ const createNewVoucherSet = async (
       chainId,
       txValue
     );
+    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
+      bosonRouterContract,
+      "requestCreateOrderETHTKNWithPermit",
+      [
+        SMART_CONTRACTS.BosonTokenContractAddress,
+        txValue.toString(),
+        signature.deadline,
+        signature.v,
+        signature.r,
+        signature.s,
+        dataArr,
+      ]
+    );
+    if (
+      contractInteractionDryRunErrorMessageMaker({
+        action: "Create a new Voucher Set",
+        account,
+      })
+    ) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content: contractInteractionDryRunErrorMessageMaker({
+            action: "Create a new Voucher Set",
+            account,
+          }),
+        })
+      );
+      return;
+    }
 
     return bosonRouterContract.requestCreateOrderETHTKNWithPermit(
       SMART_CONTRACTS.BosonTokenContractAddress,
