@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { CONTROL } from "../helpers/Dictionary";
-import { getData as getContextData } from "../helpers/Context";
+import { CONTROL } from "../helpers/configs/Dictionary";
+import { getData as getContextData } from "../helpers/ContextHelper";
 
 export const getData = getContextData;
 
@@ -32,4 +32,4 @@ export const LoadingReducer = (state, action) => {
   return { ...state, ...actionList[action.type]() };
 };
 
-// loadingContext.dispatch(Toggle.Loading(el.wallet.network, 1))
+// loadingContext.dispatch(Toggle.LoadingSpinner(el.wallet.network, 1))
