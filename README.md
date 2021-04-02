@@ -14,9 +14,9 @@ This is a reference app meant to show how to integrate Boson into a React front-
 - [Code Linting](#code-linting)
 - [Front-end Doc](#front-end-doc)
   - [Offer Flow](#offer-flow)
-    - [`components/NewOffer.js`](#componentsnewofferjs)
+    - [`src/views/new-offer/NewOffer.js`](#componentsnewofferjs)
     - [Configuring input fields](#configuring-input-fields)
-    - [`helpers/Dictionary.js`](#helpersdictionaryjs)
+    - [`src/helpers/configs/Dictionary.js`](#helpersdictionaryjs)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -130,8 +130,8 @@ Similarly, for the tests, to perform the same tasks:
 
 The flow is using context (and will use localstorage) for state management.
 
-#### `components/NewOffer.js`
-This is where the the form is registered and its' data is navigated.
+#### `src/views/new-offer/NewOffer.js`
+This is where the form is registered, and it's data is navigated.
 
 'screens' defines the order of the screens
 
@@ -144,12 +144,12 @@ The component returns TOP NAVIGATION, SCREEN, and BOTTOM NAVIGATION. SCREEN is d
 #### Configuring input fields
 To change, add, or remove an input field:
 1. Refer to desired screen (defined in 'screens' constant)
-2. When making changes - make sure the field has a 'name' attribute. Assign a corresponding property in the 'NAME' object in 'helpers/Dictionary.js'.
+2. When making changes - make sure the field has a 'name' attribute. Assign a corresponding property in the 'NAME' object in 'src/helpers/configs/Dictionary.js'.
 -If you are removing a field - remove its' property from 'NAME'
 -If you want to store the field's value in the context - assign a new property in 'NAME' and bind it to the field's name attribute.
 
 
-#### `helpers/Dictionary.js`
+#### `src/helpers/configs/Dictionary.js`
 'NAME' object is assigned to context and used to store data from the form. If you modify the fields here, there is no need to update any other logic, for the submission to work fine.
 
 ## Contributing

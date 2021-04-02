@@ -1,8 +1,11 @@
 /* eslint-disable array-callback-return */
-import { QRCodeScaner } from "../components/shared/Icons";
+import { QRCodeScaner } from "../shared-components/icons/Icons";
 import { Link } from "react-router-dom";
-import { ROUTE } from "../helpers/Dictionary";
-import { SingleVoucherBlock, VoucherSetBlock } from "../views/Activity";
+import { ROUTE } from "./configs/Dictionary";
+import {
+  SingleVoucherBlock,
+  VoucherSetBlock,
+} from "../views/activity/Activity";
 
 export const VOUCHER_TYPE = {
   accountVoucher: 1,

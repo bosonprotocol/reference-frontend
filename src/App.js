@@ -3,7 +3,7 @@ import "./styles/Global.scss";
 
 import React, { useEffect, useReducer } from "react";
 
-import { useEagerConnect, useInactiveListener } from "./hooks";
+import { useEagerConnect, useInactiveListener, usePrevious } from "./hooks";
 
 import "./styles/Animations.scss";
 
@@ -47,14 +47,16 @@ import {
 
 import { useWeb3React } from "@web3-react/core";
 import { NetworkContextName } from "./constants";
-import { network } from "./connectors";
+import { network } from "./Connectors";
 
-import ContextModal from "./components/shared/ContextModal";
+import ContextModal from "./shared-components/modals/context-modal/ContextModal";
 import {
   authenticateUser,
   getAccountStoredInLocalStorage,
 } from "./hooks/authenticate";
-import { isTokenValid } from "./utils/auth";
+import { isTokenValid } from "./utils/Auth";
+import { isMobile } from "@walletconnect/utils";
+import { handleAccountChangedMetaMaskBrowser } from "./utils/BlockchainUtils";
 
 function App() {
   const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -135,10 +137,14 @@ function App() {
 
   useInactiveListener(true);
 
+  const previousAccount = usePrevious(account);
+
   useEffect(() => {
     if (!account) {
       return;
     }
+
+    handleAccountChangedMetaMaskBrowser(previousAccount, account);
 
     const localStoredAccountData = getAccountStoredInLocalStorage(account);
     const onboardingCompleted = localStorage.getItem("onboarding-completed");
@@ -149,7 +155,7 @@ function App() {
       );
     }
 
-    if (!onboardingCompleted || localStoredAccountData.activeToken) {
+    if (!!!+onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
 
@@ -164,7 +170,8 @@ function App() {
 
       localStorage.clear();
       localStorage["localstorage_v"] = localstorage_v;
-      localStorage["onboarding-completed"] = onboarding_completed;
+      localStorage["onboarding-completed"] =
+        onboarding_completed === undefined ? 0 : onboarding_completed;
     }
   }, []);
 
