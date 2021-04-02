@@ -113,6 +113,7 @@ export const STATUS = {
   CANCELLED: "voucher_status_cancelled",
   FINALIZED: "voucher_status_finalized",
   COMPLANED_CANCELED: "voucher_status_complained_and_canceled",
+  DISABLED: 'voucher_status_disabled',
 };
 
 export const ROLE = {
