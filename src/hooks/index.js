@@ -4,14 +4,14 @@ import { useWeb3React } from "@web3-react/core";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
 import { NetworkContextName } from "../constants";
-import { injected, walletconnect } from "../connectors";
-import { parseLocalStorage } from "../utils";
+import { injected, walletconnect } from "../Connectors";
+import { parseLocalStorage } from "../utils/FormatUtils";
 import {
   authenticateUser,
   createUnauthenticatedLocalStorageRecord,
   getAccountStoredInLocalStorage,
 } from "./authenticate";
-import { CONNECTOR_TYPES } from "../components/modals/WalletConnect";
+import { CONNECTOR_TYPES } from "../shared-components/wallet-connect/WalletConnect";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 

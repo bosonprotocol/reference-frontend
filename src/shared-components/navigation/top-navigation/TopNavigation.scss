@@ -1,0 +1,28 @@
+@import "src/styles/Settings";
+
+.top-navigation {
+
+  nav {
+    width: 100%;
+
+    & > * + * {
+      margin-left: 45px;
+    }
+
+    a {
+      text-decoration: none;
+
+    }
+
+    .search {
+      svg {
+        margin-right: 15px;
+      }
+
+      p {
+        font-family: $font-third;
+        font-size: 13px;
+      }
+    }
+  }
+}

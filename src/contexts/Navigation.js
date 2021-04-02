@@ -1,6 +1,10 @@
 import { createContext } from "react";
-import { CONTROL, AFFMAP, BOTTOM_NAV_TYPE } from "../helpers/Dictionary";
-import { getData as getContextData } from "../helpers/Context";
+import {
+  CONTROL,
+  AFFMAP,
+  BOTTOM_NAV_TYPE,
+} from "../helpers/configs/Dictionary";
+import { getData as getContextData } from "../helpers/ContextHelper";
 
 export const MAP = CONTROL;
 
