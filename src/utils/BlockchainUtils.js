@@ -123,16 +123,8 @@ export const handleAccountChangedMetaMaskBrowser = (
     previousAccount &&
     previousAccount !== account
   ) {
-    window.location.reload();
-  }
-
-  if (isMetaMask && isMobile() && !account) {
-    window.location.reload();
-  }
-
-  if (isMetaMask && isMobile() && !account) {
-    window.location.reload();
-    // eslint-disable-next-line no-self-assign
-    window.location = window.location;
+      window.location.reload();
+      // eslint-disable-next-line no-self-assign
+      window.location = window.location;
   }
 };
