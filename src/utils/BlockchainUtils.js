@@ -124,7 +124,9 @@ export const handleAccountChangedMetaMaskBrowser = (
     previousAccount !== account
   ) {
     window.location.reload();
-    // eslint-disable-next-line no-self-assign
-    window.location = window.location;
+  }
+
+  if (isMetaMask && isMobile() && !account) {
+    window.location.reload();
   }
 };
