@@ -91,6 +91,15 @@
   }
 }
 
+@media (max-width: 374px) {
+  .container.erase-right {
+    padding-right: 22px;
+    .swiper-slide {
+      width: 100%;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .container.erase-right {
     .swiper-button-prev{
@@ -98,6 +107,17 @@
     }
     .swiper-button-next{
       right: 22px;
+    }
+  }
+}
+
+@media (max-width: 374px) {
+  .container.erase-right {
+    .swiper-button-prev{
+      right: 30px;
+    }
+    .swiper-button-next{
+      right: 0;
     }
   }
 }

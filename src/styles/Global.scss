@@ -255,6 +255,7 @@ header.top-navigation {
     .nav-container {
       $nav-width: 375px;
       width: $nav-width;
+      max-width: 100%;
 
       .link > a {
         display: flex;
@@ -262,6 +263,10 @@ header.top-navigation {
         align-items: center;
         width: calc(#{$nav-width} / 5);
         padding: 3px;
+
+        @media (max-width: 374px) {
+          width: calc(320px / 5);
+        }
 
         &:hover {
           .set {
