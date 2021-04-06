@@ -35,7 +35,7 @@ function BottomNavigation() {
       <div
         className={`set flex column ai-center ${selected[1] ? "selected" : ""}`}
       >
-        <IconBuyer color={selected[1] && selectedColor} /> My Vouchers
+        <IconBuyer color={selected[1] && selectedColor} /> Purchased
       </div>
     ),
     NewOffer: (
@@ -49,7 +49,7 @@ function BottomNavigation() {
       <div
         className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
       >
-        <IconSeller color={selected[3] && selectedColor} /> My Offers
+        <IconSeller color={selected[3] && selectedColor} /> Offered
       </div>
     ),
     Connect: (

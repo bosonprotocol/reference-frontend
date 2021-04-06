@@ -340,7 +340,7 @@ function VoucherAndSetDetails(props) {
           }
           role="button"
         >
-          CANCEL VOUCHER SET
+          Void Voucher Set
         </div>
       ) : null;
 
