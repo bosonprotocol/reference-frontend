@@ -122,6 +122,9 @@
       }
     }
     .row {
+      & > p {
+        color: #4c5f6f;
+      }
       .field {
         display: flex;
         flex-direction: column;
@@ -339,6 +342,10 @@
                 left: 0;
                 pointer-events: none;
 
+                @media (max-width: 374px) {
+                  left: -4px;
+                }
+
                 & > div {
                   opacity: 0;
                   transition: 0.1s ease-in-out;
@@ -387,6 +394,10 @@
                   transform: translateY(-50%);
                   top: 50%;
                   right: 17px;
+
+                  @media (max-width: 374px) {
+                    right: 13px;
+                  }
                 }
               }
 

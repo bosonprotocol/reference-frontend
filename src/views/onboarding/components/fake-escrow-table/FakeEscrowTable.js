@@ -24,13 +24,15 @@ function FakeEscrowTable(props) {
         </div>
       </div>
       <div className="main col-2 reduce-1 flex column">
-        <div className="title flex ai-center jc-center pad-last">
-          <img
-            src="images/boson/boson-logo-small.png"
-            alt="Boson Logo"
-            className="pe-none"
-          />
-          <p>Boson Escrow</p>
+        <div className="title flex ai-center jc-center">
+          <p>
+            <img
+              src="images/boson/boson-logo-small.png"
+              alt="Boson Logo"
+              className="pe-none boson-logo"
+            />
+            Boson Escrow
+          </p>
         </div>
         <div className="field flex wrap jc-sb exists">
           <div className="slot empty seller"></div>

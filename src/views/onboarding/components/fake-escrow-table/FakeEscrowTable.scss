@@ -48,6 +48,10 @@
   }
   .title {
     margin-bottom: 8px;
+
+    @media (max-width: 374px) {
+      height: 44px;
+    }
     p {
       text-align: center;
     }
@@ -59,6 +63,10 @@
     position: relative;
     padding: 7px 11px;
     height: 54px;
+
+    @media (max-width: 374px) {
+      height: 46px;
+    }
 
     .block {
       position: absolute;
@@ -80,9 +88,17 @@
       text-align: center;
       &.name {
         font-size: 12px;
+
+        @media (max-width: 374px) {
+          font-size: 11px;
+        }
       }
       &.value {
         font-size: 14px;
+
+        @media (max-width: 374px) {
+          font-size: 11px;
+        }
       }
     }
     &.non {
@@ -153,12 +169,20 @@
       width: calc(50% - 3px);
       height: calc(50% - 3px);
 
+      @media (max-width: 374px) {
+        height: 46px;
+      }
+
       background: rgba($white, 0.02);
       border: 1px dashed rgba($white, 0.08);
 
       &:nth-child(3),
       &:nth-child(4) {
         align-self: flex-end;
+
+        @media (max-width: 374px) {
+          margin-top: 6px;
+        }
       }
     }
   }
