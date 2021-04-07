@@ -43,7 +43,7 @@ callLocationAttributes[ROUTE.Home] = () => {
   bottomNavActiveLink = bottomLinksMap[ROUTE.Home];
 };
 callLocationAttributes[ROUTE.Connect] = () => {
-  enableControl(controlset_1);
+  // enableControl(controlset_1);
   updateBackgroundColor(bgColorBlack);
   bottomNavActiveLink = bottomLinksMap[ROUTE.Connect];
 };
@@ -56,7 +56,7 @@ callLocationAttributes[ROUTE.Activity] = (nested, param) => {
     updateBackgroundColor(bgColorSecondary);
     bottomNavActiveLink = bottomLinksMap.customControls;
   } else {
-    enableControl(controlset_2);
+    // enableControl(controlset_2);
     updateBackgroundColor(bgColorBlack);
     bottomNavActiveLink = bottomLinksMap[ROUTE.Activity];
   }
@@ -67,7 +67,7 @@ callLocationAttributes[ROUTE.ActivityVouchers] = (nested) => {
     updateBackgroundColor(bgColorSecondary);
     bottomNavActiveLink = bottomLinksMap.customControls;
   } else {
-    enableControl(controlset_2);
+    // enableControl(controlset_2);
     updateBackgroundColor(bgColorBlack);
     bottomNavActiveLink = bottomLinksMap[ROUTE.ActivityVouchers];
   }

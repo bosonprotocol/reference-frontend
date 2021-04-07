@@ -283,8 +283,8 @@ function ActivityView(props) {
               {title
                 ? title
                 : voucherType === VOUCHER_TYPE.accountVoucher
-                ? "My Vouchers"
-                : "Voucher Sets"}
+                ? "Purchased"
+                : "Offered"}
             </h1>
           </div>
           {
