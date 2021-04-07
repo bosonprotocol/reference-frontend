@@ -55,7 +55,6 @@ import {
   getAccountStoredInLocalStorage,
 } from "./hooks/authenticate";
 import { isTokenValid } from "./utils/Auth";
-import { isMobile } from "@walletconnect/utils";
 import { handleAccountChangedMetaMaskBrowser } from "./utils/BlockchainUtils";
 
 function App() {
