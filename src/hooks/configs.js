@@ -1,9 +1,9 @@
 export const SMART_CONTRACTS = {
-  CashierContractAddress: "0x804bD23de6337d32b55F6eB711A69F9Ff3929544",
-  VoucherKernelContractAddress: "0x4321300118BB6Bb42c1025F84c5FbD0Ba818A932",
-  BosonRouterContractAddress: "0x055fe7ad69F3e37bca2Cced75879b975484cDFA9",
+  CashierContractAddress: "0xC69cEE198054F67794D08163fD1bDD9BDABd5C09",
+  VoucherKernelContractAddress: "0x0AC643622800ebC588d038104919485b39F741d6",
+  BosonRouterContractAddress: "0xec84DED4cFddbcf344a1F21Eb5dd45fb92597326",
   BosonTokenContractAddress: "0x5c70A0c47440128eAAA66801B0ec04E9d8C3a570",
-  FundLimitsContractAddress: "0x50F0c315D460F1ce3708b008A6B7327F8Fd0EA49",
+  FundLimitsContractAddress: "0xdeC1c58D4fac6c479F2c65Caf482d51384C934cA",
 };
 
 export const SMART_CONTRACTS_EVENTS = {

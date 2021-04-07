@@ -148,7 +148,10 @@ function Home() {
                     observeParents={true}
                     freeModeMomentumVelocityRatio={0.01}
                     breakpoints={{
-                      320: {
+                      319: {
+                        slidesPerView: 1,
+                      },
+                      375: {
                         slidesPerView: 2,
                       },
                       769: {
@@ -185,6 +188,9 @@ function Home() {
                   freeModeMomentumVelocityRatio={0.05}
                   breakpoints={{
                     320: {
+                      slidesPerView: 1,
+                    },
+                    375: {
                       slidesPerView: "auto",
                     },
                     769: {

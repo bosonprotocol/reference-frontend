@@ -1,6 +1,10 @@
 .react-datepicker {
     background-color: black;
     border: none;
+
+    @media (max-width: 374px) {
+        transform: scale(0.75);
+    }
 }
 .calendar-controls {
     position: fixed;

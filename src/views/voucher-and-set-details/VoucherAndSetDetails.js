@@ -155,6 +155,8 @@ function VoucherAndSetDetails(props) {
   ] = useState(false);
   const [disablePage, setDisablePage] = useState(0);
   const [cancelMessage, setCancelMessage] = useState(false);
+  const [authenticationCompleted, setAuthenticationCompleted] = useState(false);
+  const [transactionProccessing, setTransactionProccessing] = useState(1);
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets.find((set) => set.id === voucherId);
@@ -338,49 +340,37 @@ function VoucherAndSetDetails(props) {
           }
           role="button"
         >
-          CANCEL VOUCHER SET
+          Void Voucher Set
         </div>
       ) : null;
 
     CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] = CASE[
       OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => (
-      <div
-        className="button cancelVoucherSet"
-        role="button"
-        style={{ border: "none" }}
-        disabled
-        onClick={(e) => e.preventDefault()}
-      >
-        DRAFT: TRANSACTION IS BEING PROCESSED
-      </div>
-    );
+    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => {
+      setTransactionProccessing(transactionProccessing * -1);
+      return (
+        <div
+          className="button cancelVoucherSet"
+          role="button"
+          style={{ border: "none" }}
+          disabled
+          onClick={(e) => e.preventDefault()}
+        >
+          DRAFT: TRANSACTION IS BEING PROCESSED
+        </div>
+      );
+    };
 
-    CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMMITED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.EXPIRED]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REFUNDED]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.CANCELLED]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.FINALIZED]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLANED_CANCELED]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.VIEW_ONLY]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.COMPLAINED]
-    ] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.REDEEMED]
-    ] = () => {
+    CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]] = () => {
       setDisablePage(1);
+      setPageLoading(0);
       return null;
     };
 
     return CASE;
   };
 
-  const determineStatus = () => {
+  const determineStatus = ({ checkAuthentication }) => {
     const voucherResource = voucherDetails
       ? voucherDetails
       : voucherSetDetails
@@ -389,8 +379,11 @@ function VoucherAndSetDetails(props) {
 
     const voucherRoles = {
       owner:
-        voucherResource?.voucherOwner?.toLowerCase() === account?.toLowerCase(),
-      holder: voucherResource?.holder?.toLowerCase() === account?.toLowerCase(),
+        voucherResource?.voucherOwner?.toLowerCase() ===
+          account?.toLowerCase() && account,
+      holder:
+        voucherResource?.holder?.toLowerCase() === account?.toLowerCase() &&
+        account,
     };
 
     const draftStatusCheck = !(
@@ -435,6 +428,13 @@ function VoucherAndSetDetails(props) {
       recentlySignedTxHash !== "",
       hideControlButtonsWaitPeriodExpired,
     ];
+
+    if (
+      role === ROLE.NON_BUYER_SELLER &&
+      checkAuthentication &&
+      !voucherSetDetails
+    )
+      return OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED];
 
     // status: undefined - user that has not logged in
     return !blockActionConditions.includes(true)
@@ -624,18 +624,23 @@ function VoucherAndSetDetails(props) {
 
   const prepareEscrowData = async () => {
     const payments = await getPayments(voucherDetails, account, modalContext);
-    const depositsDistributed =
-      [
-        ...Object.values(payments.distributedAmounts.buyerDeposit),
-        ...Object.values(payments.distributedAmounts.sellerDeposit),
-      ].filter((x) => x.hex !== "0x00").length > 0;
+
+    let depositsDistributed;
+
+    if (payments?.distributedAmounts) {
+      depositsDistributed =
+        [
+          ...Object.values(payments?.distributedAmounts.buyerDeposit),
+          ...Object.values(payments?.distributedAmounts.sellerDeposit),
+        ].filter((x) => x.hex !== "0x00").length > 0;
+    }
 
     if (!depositsDistributed && voucherDetails.FINALIZED) {
       setShowDepositsDistributionWarningMessage(true);
     }
 
     const getPaymentMatrixSet = (row, column) =>
-      ethers.utils.formatEther(payments.distributedAmounts[row][column]);
+      ethers.utils.formatEther(payments?.distributedAmounts[row][column]);
 
     const tableMatrixSet = (row) => {
       const positionArray = [];
@@ -1008,7 +1013,14 @@ function VoucherAndSetDetails(props) {
   }
 
   useEffect(() => {
-    setVoucherStatus(determineStatus());
+    setVoucherStatus(determineStatus({ checkAuthentication: false }));
+
+    const authentication = setTimeout(() => {
+      setVoucherStatus(determineStatus({ checkAuthentication: true }));
+      setAuthenticationCompleted(1);
+    }, 500);
+
+    return () => clearTimeout(authentication);
   }, [
     voucherDetails,
     voucherSetDetails,
@@ -1045,6 +1057,7 @@ function VoucherAndSetDetails(props) {
   }, [account, actionPerformed, globalContext.state.allVoucherSets]);
 
   useEffect(() => {
+    setTransactionProccessing(transactionProccessing * -1);
     navigationContext.dispatch(
       Action.setRedemptionControl({
         controls: controls
@@ -1068,11 +1081,12 @@ function VoucherAndSetDetails(props) {
   }, [controls, account, library]);
 
   useEffect(() => {
+    const statusChildren = document.getElementById("horizontal-view-container");
     if (
       voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
       statusBlocks &&
-      statusBlocks.length &&
-      document.getElementById("horizontal-view-container").children[1]
+      statusBlocks?.length &&
+      statusChildren?.children[1]
     ) {
       const updateScrollerToBeOnTheRightMostStatus = () => {
         document.getElementById(
@@ -1154,7 +1168,7 @@ function VoucherAndSetDetails(props) {
     if (voucherSetDetails) setPageLoading(0);
     escrowData &&
       escrowData.then((res) => {
-        if (res && voucherStatus && statusBlocks) setPageLoading(0);
+        if (res && statusBlocks && authenticationCompleted) setPageLoading(0);
       });
   }, [
     voucherStatus,
@@ -1162,6 +1176,8 @@ function VoucherAndSetDetails(props) {
     escrowData,
     voucherSetDetails,
     voucherDetails,
+    authenticationCompleted,
+    transactionProccessing,
   ]);
 
   useEffect(() => {

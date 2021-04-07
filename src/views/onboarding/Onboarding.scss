@@ -58,6 +58,10 @@
 
     .button {
       margin-top: 20px;
+
+      @media (max-width: 374px) {
+        margin-top: 9px;
+      }
     }
     .top {
       min-height: 125px;
@@ -129,6 +133,7 @@
 
   .top {
     margin-top: #{'min(5vh, 86px)'};
+
     h2 {
       margin-top: 33px;
     }
@@ -248,8 +253,10 @@
   }
 
   @media (max-width: 768px) {
-    .slide-image {
-      margin-top: -50px !important;
+    .swiper-slide:last-of-type {
+      .slide-image {
+        margin-top: -50px !important;
+      }
     }
   }
 
@@ -315,17 +322,34 @@
         height: clamp(700px, 64vh, 100vh);
         max-height: calc(100vh - 110px);
 
+        @media (max-width: 374px) {
+          height: 440px;
+          max-height: 100%;
+        }
+
         .top {
           margin-top: #{'min(4vh, 86px)'};
           min-height: auto;
           margin-bottom: 15px;
 
+          @media (max-width: 374px) {
+            margin-top: 0;
+          }
+
           .logo {
             height: clamp(55px, 21vw, 80px);
+
+            @media (max-width: 374px) {
+              height: 57px;
+            }
           }
 
           h2 {
             margin-top: clamp(10px, 2vh, 30px);
+
+            @media (max-width: 374px) {
+              font-size: 16px;
+            }
           }
         }
 
@@ -338,6 +362,9 @@
 
         .text {
           min-height: auto;
+          @media (max-width: 374px) {
+            transform: scale(0.85);
+          }
         }
 
         .button {
@@ -346,6 +373,10 @@
           left: 50%;
           transform: translate(-50%, 100%);
           z-index: 20;
+          
+          @media (max-width: 374px) {
+            bottom: 5px;
+          }
         }
       }
     }
@@ -379,6 +410,10 @@
         margin-left: 10px;
       }
     }
+  }
+
+  .boson-logo {
+    margin-right: 7px;
   }
 }
 

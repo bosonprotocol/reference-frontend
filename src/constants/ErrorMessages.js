@@ -24,7 +24,17 @@ export const smartContractToUserFriendlyErrorMapping = new Map([
     () => "The smart contracts have not been paused. Please try again later.",
   ],
   [
-    "IN_FU",
+    "Pausable: paused",
+    () => "The smart contracts have been paused. Please try again later.",
+  ],
+  [
+    "AL",
+    () =>
+      "Value you are trying to send exceeds the contract's limit. Please file a bug report",
+  ],
+  ["0A", () => "ZERO address is not supported for that operation!"],
+  [
+    "IF",
     () =>
       "Invalid funds sent to the contract. Please try again and if the problem persist, file a bug report.",
   ],
@@ -63,19 +73,19 @@ export const smartContractToUserFriendlyErrorMapping = new Map([
       "Voucher set already exist. Please check your offers. If the problem persist, file a bug report.",
   ],
   [
-    "IN_C",
+    "IC",
     () =>
       "Wrong currency combination contract function called. Please file a bug report.",
   ],
   [
-    "IN_D",
+    "ID",
     () =>
       "Invalid deposit sent to the contract. Please try again and if the problem persist, file a bug report.",
   ],
   [
-    "IN_DE",
+    "IP",
     () =>
-      "Invalid deposit sent to the contract. Please try again and if the problem persist, file a bug report.",
+      "Invalid price sent to the contract. Please try again and if the problem persist, file a bug report.",
   ],
   [
     "ALREADY_COMPLAINED",

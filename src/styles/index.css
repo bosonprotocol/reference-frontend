@@ -96,6 +96,15 @@ code {
   }
 }
 
+@media (max-width: 374px) {
+  .slider .block {
+    width: 100%;
+  }
+  .slider .block:nth-child(2) {
+    display: none;
+  }
+}
+
 .placeholder-parent {
   margin-top: 40px;
 }
