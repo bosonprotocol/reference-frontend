@@ -29,12 +29,10 @@ export const smartContractToUserFriendlyErrorMapping = new Map([
   ],
   [
     "AL",
-    () => "Value you are trying to send exceeds the contract's limit. Please file a bug report",
+    () =>
+      "Value you are trying to send exceeds the contract's limit. Please file a bug report",
   ],
-  [
-    "0A",
-    () => "ZERO address is not supported for that operation!"
-  ],
+  ["0A", () => "ZERO address is not supported for that operation!"],
   [
     "IF",
     () =>
