@@ -122,6 +122,11 @@
       }
     }
     .row {
+      &.display {
+        p {
+          color: #ACB9C8;
+        }
+      }
       & > p {
         color: #4c5f6f;
       }
@@ -472,7 +477,7 @@
         }
       }
 
-      & + .row {
+      & + .row:not(.display) {
         margin-top: 30px;
       }
     }

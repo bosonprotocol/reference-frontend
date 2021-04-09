@@ -43,6 +43,7 @@ function NewOfferPrice({
   const sellersDepositInputRef = useRef(null);
 
   const calculateMaxForCurrency = (currency) => {
+    console.log(currency);
     if (currency) {
       const maxFromContract = depositsPriceLimits[currency].max;
       if (quantity && quantity > 0) {
@@ -266,13 +267,12 @@ export default NewOfferPrice;
 
 const getLimitCalculationsBar = (amount, quantity, currency, errorMessage) => (
   <div
-    className="row flex split"
-    style={{ background: "#151A1F", height: "50px", marginTop: "20px" }}
+    className="row display flex split"
   >
     <p className="flex" style={{ padding: "15px 13px" }}>
       <span
         className="field dual"
-        style={errorMessage ? { color: "#FA5B66" } : {}}
+        style={errorMessage ? { color: "#ACB9C8" } : {}}
       >
         {`${ethers.utils.formatEther(amount)} ${currency} `}
       </span>
