@@ -173,7 +173,7 @@ function NewOfferPrice({
             priceErrorMessage
           )
         : null}
-        <div className="row">
+      <div className="row">
         <div className="field">
           <label htmlFor="offer-buyer-deposit">
             Buyer’s Deposit Per Voucher
@@ -183,9 +183,7 @@ function NewOfferPrice({
             data-error={buyerDepositErrorMessage ? "" : null}
           >
             <div className="currency-icon">
-              <span
-                className={"icons " + priceCurrency}
-              >
+              <span className={"icons " + priceCurrency}>
                 <div className={CURRENCY.ETH}></div>
                 <div className={CURRENCY.BSN}></div>
               </span>
@@ -274,9 +272,7 @@ function NewOfferPrice({
 export default NewOfferPrice;
 
 const getLimitCalculationsBar = (amount, quantity, currency, errorMessage) => (
-  <div
-    className="row display flex split"
-  >
+  <div className="row display flex split">
     <p className="flex" style={{ padding: "15px 13px" }}>
       <span
         className="field dual"
