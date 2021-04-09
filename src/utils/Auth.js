@@ -15,8 +15,7 @@ export const refreshTokenIfExpired = (
 ) => {
   if (!isTokenValid(rawToken)) {
     const token = getDecodedAccessToken(rawToken);
-    const localStoredAccountData = getAccountStoredInLocalStorage(token.user);
-    localStoredAccountData.active = false;
+    getAccountStoredInLocalStorage(token?.user);
 
     modalContext.dispatch(
       ModalResolver.showModal({
