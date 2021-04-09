@@ -4,7 +4,7 @@ import { SellerContext, getData } from "../../../../contexts/Seller";
 
 import CurrencySelector from "./currency-selector/CurrencySelector";
 
-import { NAME } from "../../../../helpers/configs/Dictionary";
+import { NAME, CURRENCY } from "../../../../helpers/configs/Dictionary";
 import {
   toFixed,
   totalDepositCalcEth,
@@ -43,7 +43,6 @@ function NewOfferPrice({
   const sellersDepositInputRef = useRef(null);
 
   const calculateMaxForCurrency = (currency) => {
-    console.log(currency);
     if (currency) {
       const maxFromContract = depositsPriceLimits[currency].max;
       if (quantity && quantity > 0) {
@@ -125,6 +124,7 @@ function NewOfferPrice({
       e.target.value = e.target.value.substr(0, e.target.value.length - 1);
     }
   };
+
   return (
     <div className="price">
       <div className="row">
@@ -173,6 +173,56 @@ function NewOfferPrice({
             priceErrorMessage
           )
         : null}
+        <div className="row">
+        <div className="field">
+          <label htmlFor="offer-buyer-deposit">
+            Buyer’s Deposit Per Voucher
+          </label>
+          <div
+            className="input display-icon relative focus"
+            data-error={buyerDepositErrorMessage ? "" : null}
+          >
+            <div className="currency-icon">
+              <span
+                className={"icons " + priceCurrency}
+              >
+                <div className={CURRENCY.ETH}></div>
+                <div className={CURRENCY.BSN}></div>
+              </span>
+            </div>
+            <div
+              name={NAME.PRICE_SUFFIX}
+              className="pseudo"
+            >{`${buyer} ${depositsCurrency}`}</div>
+            <input
+              id="offer-buyer-deposit"
+              ref={buyersDepositInputRef}
+              style={buyerDepositErrorMessage ? { color: "#FA5B66" } : {}}
+              onWheel={() => buyersDepositInputRef.current.blur()}
+              name={NAME.BUYER_DEPOSIT}
+              onBlur={(e) => removePointOnLoseFocus(e)}
+              onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)}
+            />
+            {depositsPriceLimits[depositsCurrency].max ? (
+              <div className="max">
+                max{" "}
+                {depositsPriceLimits[depositsCurrency]
+                  ? calculateMaxForCurrency(depositsCurrency)
+                  : null}{" "}
+                {depositsCurrency}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      {quantity > 1 && buyerDeposit
+        ? getLimitCalculationsBar(
+            buyerDeposit,
+            quantity,
+            depositsCurrency,
+            buyerDepositErrorMessage
+          )
+        : null}
       <div className="row">
         <div className="field dual">
           <label htmlFor="offer-seller-deposit">
@@ -215,48 +265,6 @@ function NewOfferPrice({
             quantity,
             depositsCurrency,
             sellerDepositErrorMessage
-          )
-        : null}
-      <div className="row">
-        <div className="field">
-          <label htmlFor="offer-buyer-deposit">
-            Buyer’s Deposit Per Voucher
-          </label>
-          <div
-            className="input relative focus"
-            data-error={buyerDepositErrorMessage ? "" : null}
-          >
-            <div
-              name={NAME.PRICE_SUFFIX}
-              className="pseudo"
-            >{`${buyer} ${depositsCurrency}`}</div>
-            <input
-              id="offer-buyer-deposit"
-              ref={buyersDepositInputRef}
-              style={buyerDepositErrorMessage ? { color: "#FA5B66" } : {}}
-              onWheel={() => buyersDepositInputRef.current.blur()}
-              name={NAME.BUYER_DEPOSIT}
-              onBlur={(e) => removePointOnLoseFocus(e)}
-              onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)}
-            />
-            {depositsPriceLimits[depositsCurrency].max ? (
-              <div className="max">
-                max{" "}
-                {depositsPriceLimits[depositsCurrency]
-                  ? calculateMaxForCurrency(depositsCurrency)
-                  : null}{" "}
-                {depositsCurrency}
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
-      {quantity > 1 && buyerDeposit
-        ? getLimitCalculationsBar(
-            buyerDeposit,
-            quantity,
-            depositsCurrency,
-            buyerDepositErrorMessage
           )
         : null}
     </div>
