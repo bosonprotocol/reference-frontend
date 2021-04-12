@@ -122,6 +122,11 @@
       }
     }
     .row {
+      &.display {
+        p {
+          color: #ACB9C8;
+        }
+      }
       & > p {
         color: #4c5f6f;
       }
@@ -472,7 +477,7 @@
         }
       }
 
-      & + .row {
+      & + .row:not(.display) {
         margin-top: 30px;
       }
     }
@@ -493,6 +498,60 @@
         text-align: right;
 
         color: #5D6F84;
+      }
+    }
+    .display-icon {
+      position: relative;
+      padding-left: 35px;
+      background: #151A1F;
+      .icons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+  
+        @media (max-width: 374px) {
+          left: -4px;
+        }
+  
+        & > div {
+          opacity: 0;
+          transition: 0.1s ease-in-out;
+  
+          display: block;
+          position: absolute;
+          width: 10px;
+          height: 17px;
+          transform: translateY(0);
+          top: 50%;
+          left: 12px;
+  
+          &.ETH {
+            background-image: url('../../assets/ethereum/icon-eth.png');
+          }
+          &.BSN {
+            background-image: url('../../assets/boson/icon-bsn.png');
+            background-repeat: no-repeat;
+            width: 15px;
+            background-position: center;
+          }
+        }
+  
+        &.ETH {
+          .ETH {
+            opacity: 1;
+            transform: translateY(-50%);
+          }
+        }
+  
+        &.BSN {
+          .BSN {
+            opacity: 1;
+            transform: translateY(-50%);
+          }
+        }
       }
     }
   }
