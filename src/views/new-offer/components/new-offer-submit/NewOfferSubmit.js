@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { createVoucherSet } from "../../../../hooks/api";
+import { createVoucherSet, createEvent } from "../../../../hooks/api";
 import {
   useBosonRouterContract,
   useBosonTokenContract,
@@ -23,6 +23,7 @@ import {
 } from "../../../../helpers/configs/Dictionary";
 import {
   SMART_CONTRACTS,
+  SMART_CONTRACTS_EVENTS,
   PAYMENT_METHODS_LABELS,
   PAYMENT_METHODS,
 } from "../../../../hooks/configs";
@@ -159,6 +160,15 @@ export default function NewOfferSubmit() {
       prepareVoucherFormData(correlationId, dataArr, paymentType);
 
       await createVoucherSet(formData, authData.authToken);
+
+      //TODO Hris
+
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_ORDER_CREATED,
+        _correlationId: correlationId
+      }
+
+      await createEvent(eventData, authData.authToken);
 
       globalContext.dispatch(Action.fetchVoucherSets());
 

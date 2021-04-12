@@ -100,3 +100,15 @@ export const getVouchersFromSupply = async (address, token) => {
 
   return vouchersFromSupply.data;
 };
+
+export const createEvent = async (data, token) => {
+  const expectedEvent = await axiosInstance.post(
+    `/events/create`,
+    data,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  return expectedEvent.data.eventId
+}
