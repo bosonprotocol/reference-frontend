@@ -20,7 +20,7 @@ import {
   getVoucherDetails,
   getPaymentsDetails,
   commitToBuy,
-  createEvent
+  createEvent,
 } from "../../hooks/api";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
@@ -821,22 +821,21 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
-    //TODO Hris
     try {
       const eventData = {
         name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_DELIVERED,
-        _correlationId: correlationId
-      }
-      await createEvent(eventData, authData.authToken)
+        _correlationId: correlationId,
+      };
+      await createEvent(eventData, authData.authToken);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message,
+          content:
+            "Event Creation Failed. This does not affect committing your voucher.",
         })
       );
-      return;
     }
 
     setActionPerformed(actionPerformed * -1);
@@ -850,6 +849,20 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: "Please connect your wallet account",
+        })
+      );
+      return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -881,20 +894,10 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
-      const authData = getAccountStoredInLocalStorage(account);
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_COMPLAIN,
-        _tokenId: voucherDetails._tokenIdVoucher
-      }
-      await createEvent(eventData, authData.authToken)
-
-
       const tx = await bosonRouterContract.complain(
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-
-      history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -906,7 +909,25 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_COMPLAIN,
+        _tokenId: voucherDetails._tokenIdVoucher,
+      };
+      await createEvent(eventData, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Event Creation Failed. This does not affect compliant of your voucher-set.",
+        })
+      );
+    }
+
     setActionPerformed(actionPerformed * -1);
+    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onRefund() {
@@ -916,6 +937,20 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: "Please connect your wallet account",
+        })
+      );
+      return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -947,20 +982,10 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
-      //TODO Hris
-      const authData = getAccountStoredInLocalStorage(account);
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_REFUNDED,
-        _tokenId: voucherDetails._tokenIdVoucher
-      }
-
-      await createEvent(eventData, authData.authToken)
-
       const tx = await bosonRouterContract.refund(
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-      history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -972,7 +997,26 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_REFUNDED,
+        _tokenId: voucherDetails._tokenIdVoucher,
+      };
+
+      await createEvent(eventData, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Event Creation Failed. This does not affect refunding of your voucher.",
+        })
+      );
+    }
+
     setActionPerformed(actionPerformed * -1);
+    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onCoF() {
@@ -982,6 +1026,20 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: "Please connect your wallet account",
+        })
+      );
+      return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -1013,14 +1071,6 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
-      //TODO Hris
-      const authData = getAccountStoredInLocalStorage(account);
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_CANCEL_FAULT,
-        _tokenId: voucherDetails._tokenIdVoucher
-      }
-      await createEvent(eventData, authData.authToken)
-
       const tx = await bosonRouterContract.cancelOrFault(
         voucherDetails._tokenIdVoucher
       );
@@ -1051,6 +1101,23 @@ function VoucherAndSetDetails(props) {
         subprops: { refresh: false },
       });
       return;
+    }
+
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_CANCEL_FAULT,
+        _tokenId: voucherDetails._tokenIdVoucher,
+      };
+      await createEvent(eventData, authData.authToken);
+    } catch (error) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Event Creation Failed. This does not affect cancelling of your voucher.",
+        })
+      );
     }
 
     setActionPerformed(actionPerformed * -1);
@@ -1148,7 +1215,20 @@ function VoucherAndSetDetails(props) {
   };
 
   const onCancelOrFaultVoucherSet = async () => {
-    //TODO Hris
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
+        })
+      );
+      return;
+    }
+
     try {
       const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
         bosonRouterContract,
@@ -1179,7 +1259,7 @@ function VoucherAndSetDetails(props) {
         show: true,
         type: MODAL_TYPES.GENERIC_ERROR,
         content: e.message,
-      })
+      });
 
       setCancelMessage({
         messageType: MESSAGE.ERROR,
@@ -1190,23 +1270,7 @@ function VoucherAndSetDetails(props) {
         subprops: { refresh: false },
       });
 
-      return
-    }
-
-    try {
-      const authData = getAccountStoredInLocalStorage(account);
-
-      const metadata = {
-        name: SMART_CONTRACTS_EVENTS.LOG_CANCEL_FAULT_VOUCHER_SET,
-        _tokenId: voucherSetDetails._tokenIdSupply
-      }
-      await createEvent(metadata, authData.authToken)
-    } catch (e) {
-      ModalResolver.showModal({
-        show: true,
-        type: MODAL_TYPES.GENERIC_ERROR,
-        content: e.message,
-      })
+      return;
     }
 
     try {
@@ -1230,6 +1294,23 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: e.message,
+        })
+      );
+    }
+
+    try {
+      const metadata = {
+        name: SMART_CONTRACTS_EVENTS.LOG_CANCEL_FAULT_VOUCHER_SET,
+        _tokenId: voucherSetDetails._tokenIdSupply,
+      };
+      await createEvent(metadata, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Event Creation Failed. This does not affect voiding of your voucher-set.",
         })
       );
     }

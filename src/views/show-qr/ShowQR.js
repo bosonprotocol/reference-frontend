@@ -65,8 +65,7 @@ function ShowQR({ voucherId, setShowQRCode }) {
       );
       return;
     }
-    
-    //TODO Hris
+
     const authData = getAccountStoredInLocalStorage(account);
 
     if (!authData.activeToken) {
@@ -84,12 +83,12 @@ function ShowQR({ voucherId, setShowQRCode }) {
     setLoading(1);
 
     try {
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_REDEEMED,
-        _tokenId: voucherDetails.voucher._tokenIdVoucher
-      }
-
-      await createEvent(eventData, authData.authToken)
+      const tx = await bosonRouterContract.redeem(
+        voucherDetails.voucher._tokenIdVoucher
+      );
+      setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
+      setLink(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
+      setMessageType(MESSAGE.SUCCESS);
     } catch (e) {
       console.log(e);
       setLoading(0);
@@ -99,17 +98,18 @@ function ShowQR({ voucherId, setShowQRCode }) {
     }
 
     try {
-      const tx = await bosonRouterContract.redeem(
-        voucherDetails.voucher._tokenIdVoucher
-      );
-      setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
-      setLink(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
-      setMessageType(MESSAGE.SUCCESS);
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_REDEEMED,
+        _tokenId: voucherDetails.voucher._tokenIdVoucher,
+      };
+
+      await createEvent(eventData, authData.authToken);
     } catch (e) {
       setLoading(0);
       setMessageType(MESSAGE.ERROR);
-      setMessageText(e.message);
-      return;
+      setMessageText(
+        "Event Creation Failed. This does not affect redeeming your voucher."
+      );
     }
 
     setLoading(0);

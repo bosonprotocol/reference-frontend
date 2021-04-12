@@ -161,14 +161,23 @@ export default function NewOfferSubmit() {
 
       await createVoucherSet(formData, authData.authToken);
 
-      //TODO Hris
+      try {
+        const eventData = {
+          name: SMART_CONTRACTS_EVENTS.LOG_ORDER_CREATED,
+          _correlationId: correlationId,
+        };
 
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_ORDER_CREATED,
-        _correlationId: correlationId
+        await createEvent(eventData, authData.authToken);
+      } catch (e) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content:
+              "Event Creation Failed. This does not affect creation of your voucher-set.",
+          })
+        ); //just for statistics purposes. Don't need to do anything if it fails. Just inform the user
       }
-
-      await createEvent(eventData, authData.authToken);
 
       globalContext.dispatch(Action.fetchVoucherSets());
 
