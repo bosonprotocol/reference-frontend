@@ -108,7 +108,7 @@ function ShowQR({ voucherId, setShowQRCode }) {
       setLoading(0);
       setMessageType(MESSAGE.ERROR);
       setMessageText(
-        "Event Creation Failed. This does not affect redeeming your voucher."
+        "Logging of the smart contract event failed. This does not affect redeeming your voucher."
       );
     }
 

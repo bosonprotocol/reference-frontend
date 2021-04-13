@@ -833,7 +833,7 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content:
-            "Event Creation Failed. This does not affect committing your voucher.",
+            "Logging of the smart contract event failed. This does not affect committing your voucher.",
         })
       );
     }
@@ -921,7 +921,7 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content:
-            "Event Creation Failed. This does not affect compliant of your voucher-set.",
+            "Logging of the smart contract event failed. This does not affect compliant of your voucher.",
         })
       );
     }
@@ -1010,7 +1010,7 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content:
-            "Event Creation Failed. This does not affect refunding of your voucher.",
+            "Logging of the smart contract event failed. This does not affect refunding of your voucher.",
         })
       );
     }
@@ -1115,7 +1115,7 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content:
-            "Event Creation Failed. This does not affect cancelling of your voucher.",
+            "Logging of the smart contract event failed. This does not affect cancelling of your voucher.",
         })
       );
     }
@@ -1310,7 +1310,7 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content:
-            "Event Creation Failed. This does not affect voiding of your voucher-set.",
+            "Logging of the smart contract event failed. This does not affect voiding of your voucher-set.",
         })
       );
     }

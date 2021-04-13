@@ -174,7 +174,7 @@ export default function NewOfferSubmit() {
             show: true,
             type: MODAL_TYPES.GENERIC_ERROR,
             content:
-              "Event Creation Failed. This does not affect creation of your voucher-set.",
+              "Logging of the smart contract event failed. This does not affect creation of your voucher-set.",
           })
         ); //just for statistics purposes. Don't need to do anything if it fails. Just inform the user
       }
