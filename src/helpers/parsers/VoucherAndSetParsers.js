@@ -20,7 +20,7 @@ export async function fetchVoucherSets() {
 export const prepareVoucherSetData = (rawVoucherSets) => {
   let parsedVoucherSets = [];
 
-  if (!rawVoucherSets) return;
+  if (!rawVoucherSets) return [];
 
   for (const voucherSet of rawVoucherSets.voucherSupplies) {
     let parsedVoucherSet = {
