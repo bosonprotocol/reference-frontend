@@ -56,7 +56,7 @@ import EscrowTable from "./components/escrow-table/EscrowTable";
 import {
   IconQRScanner,
   IconWarning,
-  IconClock
+  IconClock,
 } from "../../shared-components/icons/Icons";
 
 import { calculateDifferenceInPercentage } from "../../utils/MathUtils";
@@ -1184,10 +1184,20 @@ function VoucherAndSetDetails(props) {
                 onClick={(e) => e.preventDefault()}
               >
                 <div>
-                  <span style={{verticalAlign: "middle", display: "inline-block"}}>
-                    <IconClock color={"#E49043"}/>
+                  <span
+                    style={{ verticalAlign: "middle", display: "inline-block" }}
+                  >
+                    <IconClock color={"#E49043"} />
                   </span>
-                  <span style={{verticalAlign: "middle", display: "inline-block", fontSize: "1.1em"}}>&nbsp;PENDING</span>
+                  <span
+                    style={{
+                      verticalAlign: "middle",
+                      display: "inline-block",
+                      fontSize: "1.1em",
+                    }}
+                  >
+                    &nbsp;PENDING
+                  </span>
                 </div>
               </div>,
             ]
