@@ -161,7 +161,7 @@ function VoucherAndSetDetails(props) {
   const [transactionProccessing, setTransactionProccessing] = useState(1);
 
   const voucherSets = globalContext.state.allVoucherSets;
-  const voucherSetDetails = voucherSets.find((set) => set.id === voucherId);
+  const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
 
   const getProp = (prop) =>
     voucherSetDetails

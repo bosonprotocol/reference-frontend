@@ -283,8 +283,8 @@ function ActivityView(props) {
               {title
                 ? title
                 : voucherType === VOUCHER_TYPE.accountVoucher
-                ? "My Vouchers"
-                : "Voucher Sets"}
+                ? "Purchased"
+                : "Offered"}
             </h1>
           </div>
           {
@@ -426,12 +426,16 @@ export const SingleVoucherBlock = (props) => {
   const currencyIcon =
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
 
+  const refVoucherSetIdParam = voucherSetId
+    ? `?voucherSetId=${voucherSetId}`
+    : "";
+
   return (
     <div className={`voucher-block flex ${voucherSetId ? "supply" : ""}`}>
       <Link
         to={`${ROUTE.ActivityVouchers}/${voucherSetId ? _id : id}${
           ROUTE.Details
-        }`}
+        }${refVoucherSetIdParam}`}
       >
         {!voucherSetId ? (
           <div className="thumb no-shrink">

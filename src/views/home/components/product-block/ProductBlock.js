@@ -21,7 +21,7 @@ function ProductBlock(props) {
     paymentType === 1 || paymentType === 3 ? "ETH" : "BSN";
 
   return (
-    <Link to={`${ROUTE.Activity}/${id}${ROUTE.Details}`}>
+    <Link to={`${ROUTE.Activity}/${id}${ROUTE.Details}?direct=1`}>
       <div
         // onClick={ openProduct }
         className={`product-block ${productType} `} //${ animate ? 'animate' : '' }
