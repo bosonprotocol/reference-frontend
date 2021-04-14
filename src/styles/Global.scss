@@ -79,9 +79,11 @@ input[type="submit"] {
       background: #358EF5;
       color: #FFFFFF;
     }
+
     &.-green {
       background: #80F0BE;
       color: #1C2835;
+
       &:hover {
         color: $white;
         background-color: #50e5a2;
@@ -108,6 +110,7 @@ h2:not(.def) {
     padding-top: 100px;
     padding-bottom: 81px;
   }
+
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
@@ -127,6 +130,10 @@ h2:not(.def) {
     .bottom-navigation {
       display: none;
     }
+  }
+
+  &.hideTopNavigation {
+    padding-top: 26px;
   }
 }
 
@@ -179,6 +186,7 @@ body {
   @media (min-width: 961px) {
     overflow-y: scroll
   }
+
   a,
   a:focus,
   a:active {
@@ -251,7 +259,7 @@ header.top-navigation {
     }
   }
 
-  .default-nav  {
+  .default-nav {
     .nav-container {
       $nav-width: 375px;
       width: $nav-width;
@@ -278,12 +286,13 @@ header.top-navigation {
                   &[stroke] {
                     stroke: #ACC5E1 !important;
                   }
+
                   &[fill] {
                     fill: #ACC5E1 !important;
                   }
                 }
               }
-              
+
             }
           }
         }
@@ -317,15 +326,18 @@ header.top-navigation {
     justify-content: center;
     flex-direction: column;
   }
+
   h1 {
     color: #80F0BE;
     font-size: clamp(110px, 15vw, 200px);
   }
+
   p {
     color: #C1C7CE;
     font-size: clamp(20px, 4vw, 50px);
     font-weight: 300;
   }
+
   .button {
     margin-top: 3vh;
   }
