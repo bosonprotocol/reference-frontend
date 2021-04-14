@@ -11,7 +11,7 @@ export const GlobalInitialState = {
   qrReaderActivated: 0,
   onboardingCompleted: localStorage["onboarding-completed"],
   allVouchers: [],
-  allVoucherSets: [],
+  allVoucherSets: undefined,
   fetchVoucherSets: 1,
   account: null,
   checkDataUpdate: 1,
