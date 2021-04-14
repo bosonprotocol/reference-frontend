@@ -426,9 +426,11 @@ export const SingleVoucherBlock = (props) => {
   const currencyIcon =
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
 
-    const refVoucherSetIdParam = voucherSetId ? `?voucherSetId=${voucherSetId}` : '';
+  const refVoucherSetIdParam = voucherSetId
+    ? `?voucherSetId=${voucherSetId}`
+    : "";
 
-    return (
+  return (
     <div className={`voucher-block flex ${voucherSetId ? "supply" : ""}`}>
       <Link
         to={`${ROUTE.ActivityVouchers}/${voucherSetId ? _id : id}${
