@@ -173,7 +173,7 @@ function NewOffer() {
 
   const setActiveScreen = (target, backToHome) => {
     return backToHome
-      ? history.goBack()
+      ? history.push(ROUTE.Home)
       : inScreenRange(target) &&
           sellerContext.dispatch(Seller.setOfferingProgress(target));
   };

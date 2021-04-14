@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ROUTE } from "./helpers/configs/Dictionary";
+import { AFFMAP, ROUTE } from "./helpers/configs/Dictionary";
 
 import OnboardingReset from "./hooks/onboardingReset";
 import TopNavigation from "./shared-components/navigation/top-navigation/TopNavigation";
@@ -28,6 +28,10 @@ function Routes() {
   const navigationContext = useContext(NavigationContext);
   const displayNav = navigationContext.state.displayNavigation;
   const displayBottomNav = navigationContext.state.displayBottomNavigation;
+  const displayBackButton =
+    navigationContext.state.top[AFFMAP.BACK_BUTTON] ||
+    navigationContext.state.top[AFFMAP.OFFER_FLOW_SET];
+  const isHomePage = navigationContext.state.bottom.mainNavigationItem === 0;
 
   useExpiredTokenResponseInterceptor();
 
@@ -36,7 +40,9 @@ function Routes() {
     <div
       className={`emulate-mobile theme ${
         !displayBottomNav ? "no-bottom" : ""
-      } ${!displayNav ? "disabled" : ""}`}
+      } ${!displayNav ? "disabled" : ""} ${
+        displayBackButton || isHomePage ? "" : "hideTopNavigation"
+      }`}
     >
       <Router>
         <LocationManager />

@@ -30,6 +30,7 @@ function TopNavigation() {
   const history = useHistory();
   const location = useLocation();
   const { account, connector } = useWeb3React();
+  const query = new URLSearchParams(location.search);
 
   const navigate = () => {
     if (
@@ -40,49 +41,95 @@ function TopNavigation() {
       history.push(ROUTE.Home);
       return;
     }
+
+    if (location.pathname.startsWith(ROUTE.Activity)) {
+      const visitedDirectly = query.get("direct");
+
+      if (visitedDirectly) {
+        history.push(ROUTE.Home);
+        return;
+      }
+
+      if (location.pathname.endsWith(ROUTE.Details)) {
+        const supplyRoute = location.pathname.replace(
+          ROUTE.Details,
+          ROUTE.VoucherSetView
+        );
+        history.push(supplyRoute);
+        return;
+      }
+
+      if (location.pathname.endsWith(ROUTE.VoucherSetView)) {
+        history.push(ROUTE.Activity);
+        return;
+      }
+    }
+
+    if (location.pathname.startsWith(ROUTE.ActivityVouchers)) {
+      const voucherSetId = query.get("voucherSetId");
+
+      if (voucherSetId) {
+        const voucherSetRoute = `${ROUTE.Activity}/${voucherSetId}${ROUTE.VoucherSetView}`;
+        history.push(voucherSetRoute);
+        return;
+      }
+
+      history.push(ROUTE.ActivityVouchers);
+      return;
+    }
+
     history.goBack();
   };
 
+  const hideTopNavigation =
+    location.pathname === ROUTE.Connect ||
+    location.pathname === ROUTE.Activity ||
+    location.pathname === ROUTE.ActivityVouchers;
+
   return (
-    <header
-      className={`top-navigation ${
-        !globalContext.state.onboardingCompleted ? "d-none" : ""
-      }`}
-    >
-      <div className="container">
-        <nav className="flex split">
-          {/* Wallet Connection Button */}
-          {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-            <WalletConnection account={account} connector={connector} />
-          ) : null}
+    <div>
+      {hideTopNavigation ? null : (
+        <header
+          className={`top-navigation ${
+            !globalContext.state.onboardingCompleted ? "d-none" : ""
+          }`}
+        >
+          <div className="container">
+            <nav className="flex split">
+              {/* Wallet Connection Button */}
+              {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
+                <WalletConnection account={account} connector={connector} />
+              ) : null}
 
-          {/* Back button */}
-          {navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
-            <div
-              className="button square new"
-              role="button"
-              onClick={() => navigate()}
-            >
-              <Arrow color="#80F0BE" />
-            </div>
-          ) : null}
+              {/* Back button */}
+              {navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
+                <div
+                  className="button square new"
+                  role="button"
+                  onClick={() => navigate()}
+                >
+                  <Arrow color="#80F0BE" />
+                </div>
+              ) : null}
 
-          {/* QR Reader button */}
-          {navigationContext.state.top[AFFMAP.QR_CODE_READER] ? (
-            <Link to={ROUTE.CodeScanner}>
-              <div className="qr-icon" role="button">
-                <IconQR color="#8393A6" noBorder />
-              </div>
-            </Link>
-          ) : null}
+              {/* QR Reader button */}
+              {navigationContext.state.top[AFFMAP.QR_CODE_READER] ? (
+                <Link to={ROUTE.CodeScanner}>
+                  <div className="qr-icon" role="button">
+                    <IconQR color="#8393A6" noBorder />
+                  </div>
+                </Link>
+              ) : null}
 
-          {/* NewOffer Set */}
-          {navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ? (
-            <OfferFlowSet />
-          ) : null}
-        </nav>
-      </div>
-    </header>
+              {/* NewOffer Set */}
+              {navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ? (
+                <OfferFlowSet />
+              ) : null}
+            </nav>
+          </div>
+        </header>
+      )}
+    </div>
   );
 }
 
