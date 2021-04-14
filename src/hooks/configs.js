@@ -7,10 +7,13 @@ export const SMART_CONTRACTS = {
 };
 
 export const SMART_CONTRACTS_EVENTS = {
-  VoucherSetCreated: "LogOrderCreated",
-  VoucherCreated: "LogVoucherDelivered",
-  VoucherRedeemed: "LogVoucherRedeemed",
-  VoucherSetCanceled: "LogVoucherSetFaultCancel",
+  LOG_VOUCHER_DELIVERED: "LogVoucherDelivered",
+  LOG_CANCEL_FAULT_VOUCHER_SET: "LogVoucherSetFaultCancel",
+  LOG_ORDER_CREATED: "LogOrderCreated",
+  LOG_VOUCHER_CANCEL_FAULT: "LogVoucherFaultCancel",
+  LOG_VOUCHER_COMPLAIN: "LogVoucherComplain",
+  LOG_VOUCHER_REDEEMED: "LogVoucherRedeemed",
+  LOG_VOUCHER_REFUNDED: "LogVoucherRefunded",
 };
 
 export const VOUCHER_STATUSES = {

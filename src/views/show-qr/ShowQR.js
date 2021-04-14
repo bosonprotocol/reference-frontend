@@ -8,7 +8,7 @@ import { MODAL_TYPES, ROUTE, MESSAGE } from "../../helpers/configs/Dictionary";
 import ContractInteractionButton from "../../shared-components/contract-interaction/contract-interaction-button/ContractInteractionButton";
 import { ModalContext, ModalResolver } from "../../contexts/Modal";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
-import { getVoucherDetails } from "../../hooks/api";
+import { getVoucherDetails, createEvent } from "../../hooks/api";
 import { useBosonRouterContract } from "../../hooks/useContract";
 import { useWeb3React } from "@web3-react/core";
 import { useContext, useState } from "react";
@@ -16,6 +16,7 @@ import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinn
 import GenericMessage from "../generic-message/GenericMessage";
 import { setTxHashToSupplyId } from "../../utils/BlockchainUtils";
 import { useEffect } from "react";
+import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 
 function ShowQR({ voucherId, setShowQRCode }) {
   const { library, account } = useWeb3React();
@@ -65,6 +66,20 @@ function ShowQR({ voucherId, setShowQRCode }) {
       return;
     }
 
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
+        })
+      );
+      return;
+    }
+
     setLoading(1);
 
     try {
@@ -75,10 +90,26 @@ function ShowQR({ voucherId, setShowQRCode }) {
       setLink(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
       setMessageType(MESSAGE.SUCCESS);
     } catch (e) {
+      console.log(e);
       setLoading(0);
       setMessageType(MESSAGE.ERROR);
       setMessageText(e.message);
       return;
+    }
+
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_REDEEMED,
+        _tokenId: voucherDetails.voucher._tokenIdVoucher,
+      };
+
+      await createEvent(eventData, authData.authToken);
+    } catch (e) {
+      setLoading(0);
+      setMessageType(MESSAGE.ERROR);
+      setMessageText(
+        "Logging of the smart contract event failed. This does not affect redeeming your voucher."
+      );
     }
 
     setLoading(0);

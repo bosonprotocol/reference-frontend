@@ -31,7 +31,6 @@ SwiperCore.use([Navigation]);
 
 function Home() {
   const [productBlocks, setProductBlocks] = useState([]);
-  const [productBlocksFiltered, setProductBlocksFiltered] = useState(false);
   const homepage = useRef();
   const [newUser, setNewUser] = useState(
     !localStorage.getItem("onboarding-completed")
@@ -73,10 +72,12 @@ function Home() {
         voucherSets.filter(
           (x) =>
             new Date(x?.expiryDate) > new Date() &&
-            x.voucherOwner !== account?.toLowerCase()
+            x.voucherOwner !== account?.toLowerCase() &&
+            x.qty > 0
         )
       );
       productListConfig.infinite = voucherSets.length > 4;
+      setPageLoading(0);
     } else {
       setProductBlocks([]);
     }
@@ -107,17 +108,6 @@ function Home() {
     authenticateUser(library, account, chainId);
   };
 
-  useEffect(() => {
-    if (productBlocks?.length)
-      setProductBlocksFiltered(
-        productBlocks?.filter((block) => block?.qty > 0)
-      );
-  }, [productBlocks]);
-
-  useEffect(() => {
-    if (productBlocksFiltered !== false) setPageLoading(0);
-  }, [productBlocksFiltered]);
-
   return (
     <>
       {globalContext.state.qrReaderActivated ? <QRCodeScanner /> : null}
@@ -134,7 +124,7 @@ function Home() {
           <section className="product-list">
             <div className="container">
               {!pageLoading ? (
-                productBlocksFiltered?.length ? (
+                productBlocks?.length ? (
                   <Swiper
                     spaceBetween={7}
                     navigation
@@ -159,7 +149,7 @@ function Home() {
                       },
                     }}
                   >
-                    {productBlocksFiltered.map((block, id) => (
+                    {productBlocks.map((block, id) => (
                       <SwiperSlide key={id}>
                         <ProductBlock {...block} />
                       </SwiperSlide>
