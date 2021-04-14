@@ -15,11 +15,12 @@ import {
   useBosonRouterContract,
   useBosonTokenContract,
 } from "../../hooks/useContract";
-import { PAYMENT_METHODS } from "../../hooks/configs";
+import { PAYMENT_METHODS, SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 import {
   getVoucherDetails,
   getPaymentsDetails,
   commitToBuy,
+  createEvent,
 } from "../../hooks/api";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
@@ -820,6 +821,23 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_DELIVERED,
+        _correlationId: correlationId,
+      };
+      await createEvent(eventData, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Logging of the smart contract event failed. This does not affect committing your voucher.",
+        })
+      );
+    }
+
     setActionPerformed(actionPerformed * -1);
     history.push(ROUTE.ActivityVouchers);
   }
@@ -831,6 +849,20 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: "Please connect your wallet account",
+        })
+      );
+      return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -866,8 +898,6 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-
-      history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -879,7 +909,25 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_COMPLAIN,
+        _tokenId: voucherDetails._tokenIdVoucher,
+      };
+      await createEvent(eventData, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Logging of the smart contract event failed. This does not affect compliant of your voucher.",
+        })
+      );
+    }
+
     setActionPerformed(actionPerformed * -1);
+    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onRefund() {
@@ -889,6 +937,20 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: "Please connect your wallet account",
+        })
+      );
+      return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -924,7 +986,6 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-      history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -936,7 +997,26 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_REFUNDED,
+        _tokenId: voucherDetails._tokenIdVoucher,
+      };
+
+      await createEvent(eventData, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Logging of the smart contract event failed. This does not affect refunding of your voucher.",
+        })
+      );
+    }
+
     setActionPerformed(actionPerformed * -1);
+    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onCoF() {
@@ -946,6 +1026,20 @@ function VoucherAndSetDetails(props) {
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
           content: "Please connect your wallet account",
+        })
+      );
+      return;
+    }
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
         })
       );
       return;
@@ -1007,6 +1101,23 @@ function VoucherAndSetDetails(props) {
         subprops: { refresh: false },
       });
       return;
+    }
+
+    try {
+      const eventData = {
+        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_CANCEL_FAULT,
+        _tokenId: voucherDetails._tokenIdVoucher,
+      };
+      await createEvent(eventData, authData.authToken);
+    } catch (error) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Logging of the smart contract event failed. This does not affect cancelling of your voucher.",
+        })
+      );
     }
 
     setActionPerformed(actionPerformed * -1);
@@ -1104,6 +1215,20 @@ function VoucherAndSetDetails(props) {
   };
 
   const onCancelOrFaultVoucherSet = async () => {
+    const authData = getAccountStoredInLocalStorage(account);
+
+    if (!authData.activeToken) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Please check your wallet for Signature Request. Once the authentication message is signed you can proceed.",
+        })
+      );
+      return;
+    }
+
     try {
       const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
         bosonRouterContract,
@@ -1129,7 +1254,26 @@ function VoucherAndSetDetails(props) {
         );
         return;
       }
+    } catch (e) {
+      ModalResolver.showModal({
+        show: true,
+        type: MODAL_TYPES.GENERIC_ERROR,
+        content: e.message,
+      });
 
+      setCancelMessage({
+        messageType: MESSAGE.ERROR,
+        title: "Error cancelation",
+        text: "The set of vouchers has not been cancelled, please try again.",
+        link: ROUTE.Activity + "/" + voucherSetDetails.id + "/details",
+        setMessageType: cancelMessageCloseButton,
+        subprops: { refresh: false },
+      });
+
+      return;
+    }
+
+    try {
       const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(
         voucherSetDetails._tokenIdSupply
       );
@@ -1152,15 +1296,23 @@ function VoucherAndSetDetails(props) {
           content: e.message,
         })
       );
+    }
 
-      setCancelMessage({
-        messageType: MESSAGE.ERROR,
-        title: "Error cancelation",
-        text: "The set of vouchers has not been cancelled, please try again.",
-        link: ROUTE.Activity + "/" + voucherSetDetails.id + "/details",
-        setMessageType: cancelMessageCloseButton,
-        subprops: { refresh: false },
-      });
+    try {
+      const metadata = {
+        name: SMART_CONTRACTS_EVENTS.LOG_CANCEL_FAULT_VOUCHER_SET,
+        _tokenId: voucherSetDetails._tokenIdSupply,
+      };
+      await createEvent(metadata, authData.authToken);
+    } catch (e) {
+      modalContext.dispatch(
+        ModalResolver.showModal({
+          show: true,
+          type: MODAL_TYPES.GENERIC_ERROR,
+          content:
+            "Logging of the smart contract event failed. This does not affect voiding of your voucher-set.",
+        })
+      );
     }
   };
 
