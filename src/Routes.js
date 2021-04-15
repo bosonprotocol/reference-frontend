@@ -23,6 +23,7 @@ import NewOffer from "./views/new-offer/NewOffer";
 import { NavigationContext } from "./contexts/Navigation";
 import GlobalListeners from "./hooks/globalListeners";
 import { useExpiredTokenResponseInterceptor } from "./hooks/useExpiredTokenResponseInterceptor";
+import Search from "./views/search/Search";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
@@ -82,6 +83,7 @@ function Routes() {
             path={ROUTE.ActivityVouchers}
             component={ActivityAccountVouchers}
           />
+          <Route path={ROUTE.Search} component={Search} />
           <Route component={NotFound} />
         </Switch>
         <BottomNavigation />

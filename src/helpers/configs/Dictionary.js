@@ -54,6 +54,7 @@ export const ROUTE = {
   VoucherQRCode: "/qr",
   VoucherSetView: "/supply",
   Details: "/details",
+  Search: "/search",
 };
 
 export const BOTTOM_NAV_TYPE = {
