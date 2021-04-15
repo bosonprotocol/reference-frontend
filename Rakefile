@@ -1,10 +1,26 @@
 require 'git'
 require 'confidante'
 require 'rake_fly'
+require 'rake_terraform'
+require 'ruby_terraform/output'
+require 'aws-sdk'
+require 'securerandom'
+require 'mime/types'
+
+require_relative 'lib/s3_website'
 
 configuration = Confidante.configuration
 
+configuration.non_standard_mime_types.each do |mime_type, extensions|
+  MIME::Types.add(MIME::Type.new(mime_type.to_s) { |m|
+    m.extensions = extensions
+  })
+end
+
 RakeFly.define_installation_tasks(version: '6.7.2')
+RakeTerraform.define_installation_tasks(
+  path: File.join(Dir.pwd, 'vendor', 'terraform'),
+  version: '0.14.7')
 
 task :default => [
   :build_fix,
@@ -52,6 +68,29 @@ namespace :dependencies do
   desc 'Fetch dependencies'
   task :install do
     sh('npm', 'install')
+  end
+end
+
+namespace :bootstrap do
+  RakeTerraform.define_command_tasks(
+    configuration_name: 'bootstrap',
+    argument_names: [
+      :deployment_type,
+      :deployment_label
+    ]
+  ) do |t, args|
+    configuration = configuration
+      .for_scope(args.to_h.merge(role: 'bootstrap'))
+
+    vars = configuration.vars
+    deployment_identifier = configuration.deployment_identifier
+
+    t.source_directory = 'infra/bootstrap'
+    t.work_directory = 'build'
+
+    t.state_file = File.join(
+      Dir.pwd, "state/bootstrap/#{deployment_identifier}.tfstate")
+    t.vars = vars
   end
 end
 
