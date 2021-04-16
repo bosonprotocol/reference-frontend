@@ -164,8 +164,11 @@ export function uriToHttp(uri) {
   }
 }
 export function capitalize(word) {
-  const loweredCase = word.toLowerCase();
-  return word[0].toUpperCase() + loweredCase.slice(1);
+  if (word) {
+    const loweredCase = word.toLowerCase();
+    return word[0].toUpperCase() + loweredCase.slice(1);
+  }
+  return null;
 }
 export const parseLocalStorage = (raw, key) => {
   let parsed = null;
@@ -177,4 +180,3 @@ export const parseLocalStorage = (raw, key) => {
   }
   return parsed;
 };
-
