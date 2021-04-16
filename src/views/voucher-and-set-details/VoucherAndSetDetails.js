@@ -200,7 +200,7 @@ function VoucherAndSetDetails(props) {
   const tableCategory = [["Category", getProp("category")]];
 
   const tableCondition = [["Condition", capitalize(getProp("condition"))]];
-
+  
   const confirmAction = (action, text) => {
     const callAction = () => {
       action();
@@ -273,7 +273,7 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button cof"
         onClick={() =>
-          confirmAction(onCoF, "Are you sure you want to cancel this voucher?")
+          confirmAction(onCoF, "Are you sure you want to cancel/fault?")
         }
         role="button"
       >
@@ -286,7 +286,7 @@ function VoucherAndSetDetails(props) {
         <div
           className="action button refund"
           role="button"
-          onClick={() => onRefund()}
+          onClick={() => confirmAction(onRefund, "Are you sure you want to refund?" )}
         >
           REFUND
         </div>
@@ -309,7 +309,7 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button complain"
         role="button"
-        onClick={() => onComplain()}
+        onClick={() => confirmAction(onComplain(), "Are you sure you want to complain?")}
       >
         COMPLAIN
       </div>
@@ -1431,9 +1431,11 @@ function VoucherAndSetDetails(props) {
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}
-                  {getProp("condition") ? (
-                    <TableRow data={tableCondition} />
-                  ) : null}
+                  {
+                    getProp('condition') ? (
+                      <TableRow data={tableCondition}/>
+                     ) : null
+                  }
                 </div>
                 {voucherSetDetails ? (
                   <div className="section price">
