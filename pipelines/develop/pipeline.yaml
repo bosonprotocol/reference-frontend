@@ -41,6 +41,7 @@ groups:
   - name: development-hassium
     jobs:
       - build
+      - test
       - provision-development-hassium-website
 
 jobs:
@@ -107,7 +108,7 @@ jobs:
           - get: source
             trigger: true
             passed:
-              - build
+              - test
           - get: node-builder-image
       - task: provision-website
         image: node-builder-image
