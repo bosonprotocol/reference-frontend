@@ -33,7 +33,7 @@ import {
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
-import { formatDate } from "../../utils/FormatUtils";
+import { capitalize, formatDate } from "../../utils/FormatUtils";
 import {
   determineCurrentStatusOfVoucher,
   initVoucherDetails,
@@ -199,7 +199,10 @@ function VoucherAndSetDetails(props) {
 
   const tableCategory = [
     ["Category", getProp("category")],
-    // ['Remaining Quantity', selectedProduct?.qty],
+  ];
+
+  const tableCondition = [
+    ["Condition", capitalize(getProp("condition"))],
   ];
 
   const confirmAction = (action, text) => {
@@ -1432,6 +1435,11 @@ function VoucherAndSetDetails(props) {
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}
+                  {
+                    getProp('condition') ? (
+                      <TableRow data={tableCondition}/>
+                     ) : null
+                  }
                 </div>
                 {voucherSetDetails ? (
                   <div className="section price">

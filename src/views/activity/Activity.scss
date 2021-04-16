@@ -88,7 +88,8 @@ section.activity {
           flex-shrink: 1;
 
           .title-container .title {
-            word-break: break-all;
+            text-overflow: ellipsis;
+            // overflow: hidden;
           }
 
           .expires {
@@ -196,7 +197,6 @@ section.activity {
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        padding: 10px;
         flex: 0 1 185px;
         min-width: 80px;
       }
@@ -207,7 +207,6 @@ section.activity {
         font-weight: 500;
         position: relative;
         padding: 10px 0;
-
         flex: 8 0 auto;
 
         & > div + div {
