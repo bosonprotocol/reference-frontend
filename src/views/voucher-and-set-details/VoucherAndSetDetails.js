@@ -197,13 +197,9 @@ function VoucherAndSetDetails(props) {
     formatDate(getProp("expiryDate")),
   ];
 
-  const tableCategory = [
-    ["Category", getProp("category")],
-  ];
+  const tableCategory = [["Category", getProp("category")]];
 
-  const tableCondition = [
-    ["Condition", capitalize(getProp("condition"))],
-  ];
+  const tableCondition = [["Condition", capitalize(getProp("condition"))]];
 
   const confirmAction = (action, text) => {
     const callAction = () => {
@@ -1435,11 +1431,9 @@ function VoucherAndSetDetails(props) {
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}
-                  {
-                    getProp('condition') ? (
-                      <TableRow data={tableCondition}/>
-                     ) : null
-                  }
+                  {getProp("condition") ? (
+                    <TableRow data={tableCondition} />
+                  ) : null}
                 </div>
                 {voucherSetDetails ? (
                   <div className="section price">

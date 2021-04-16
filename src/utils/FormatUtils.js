@@ -180,4 +180,3 @@ export const parseLocalStorage = (raw, key) => {
   }
   return parsed;
 };
-

@@ -7,7 +7,7 @@ import {
 } from "../../../../shared-components/table-content/TableContent";
 import { SellerContext } from "../../../../contexts/Seller";
 import { formatDate, totalDepositCalcEth } from "../../../../utils/FormatUtils";
-import {capitalize} from './../../../../utils/FormatUtils';
+import { capitalize } from "./../../../../utils/FormatUtils";
 
 function NewOfferSummary() {
   const sellerContext = useContext(SellerContext);
@@ -26,13 +26,13 @@ function NewOfferSummary() {
     image,
     condition,
   } = sellerContext.state.offeringData;
-  const tableContent = [category && ["Category", category], condition && ["Condition", capitalize(condition)]];
+  const tableContent = [
+    category && ["Category", category],
+    condition && ["Condition", capitalize(condition)],
+  ];
 
   const tablePrices = [
-    quantity && [
-     "Quantity",
-      quantity
-    ],
+    quantity && ["Quantity", quantity],
     price &&
       price_currency && [
         "Payment Price",
