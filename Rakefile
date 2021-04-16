@@ -64,13 +64,6 @@ namespace :secrets do
   end
 end
 
-namespace :dependencies do
-  desc 'Fetch dependencies'
-  task :install do
-    sh('npm', 'install')
-  end
-end
-
 namespace :bootstrap do
   RakeTerraform.define_command_tasks(
     configuration_name: 'bootstrap',
@@ -91,6 +84,32 @@ namespace :bootstrap do
     t.state_file = File.join(
       Dir.pwd, "state/bootstrap/#{deployment_identifier}.tfstate")
     t.vars = vars
+  end
+end
+
+namespace :website do
+  RakeTerraform.define_command_tasks(
+    configuration_name: 'website',
+    argument_names: [
+      :deployment_type,
+      :deployment_label
+    ]
+  ) do |t, args|
+    configuration = configuration
+      .for_scope(args.to_h.merge(role: 'website'))
+
+    t.source_directory = 'infra/website'
+    t.work_directory = 'build'
+
+    t.backend_config = configuration.backend_config
+    t.vars = configuration.vars
+  end
+end
+
+namespace :dependencies do
+  desc 'Fetch dependencies'
+  task :install do
+    sh('npm', 'install')
   end
 end
 
@@ -322,10 +341,12 @@ def pr_metadata_state
   pr_metadata_value("state")
 end
 
-def current_branch
-  Git.open(File.dirname(__FILE__)).current_branch
-end
-
 def to_pipeline_name(string)
   string.gsub(/[^a-zA-Z0-9_-]/, "_")
+end
+
+def default_deployment_identifier(args)
+  args.with_defaults(
+    deployment_type: "bsn-local",
+    deployment_label: "default")
 end

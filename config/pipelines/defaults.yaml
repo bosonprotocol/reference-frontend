@@ -1,4 +1,10 @@
 ---
+concourse_team: "bosonprotocol"
+
 ci_provisioning_role_arn: "arn:aws:iam::%{hiera('rdm_management_account_id')}:role/cross-account-admin-role"
 ci_deployment_type: "%{ci_deployment_type}"
 ci_deployment_label: "%{ci_deployment_label}"
+
+development_hassium_provisioning_role_arn: "arn:aws:iam::%{hiera('bsn_development_potassium_account_id')}:role/cross-account-admin-role"
+development_hassium_deployment_type: "bsn-development"
+development_hassium_deployment_label: "hassium"
