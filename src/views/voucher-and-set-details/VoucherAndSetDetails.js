@@ -160,8 +160,13 @@ function VoucherAndSetDetails(props) {
   const [authenticationCompleted, setAuthenticationCompleted] = useState(false);
   const [transactionProccessing, setTransactionProccessing] = useState(1);
 
+  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessageType, setSuccessMessageType] = useState('');
+
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
+
+  const resetSuccessMessage = () => {setSuccessMessage('');setSuccessMessageType};
 
   const getProp = (prop) =>
     voucherSetDetails
@@ -170,6 +175,15 @@ function VoucherAndSetDetails(props) {
       ? voucherDetails[prop]
       : null;
 
+      useEffect(() => {
+        if(recentlySignedTxHash) {
+          const backButton = document.getElementById('topNavBackButton');
+          console.log(backButton)
+          if(backButton) {
+            backButton.disabled = true;
+          }
+        }    
+      },[recentlySignedTxHash])
   const paymentType = getProp("paymentType");
   const currencyResolver = (paymentType) => {
     if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -212,8 +226,8 @@ function VoucherAndSetDetails(props) {
   
   const confirmAction = (action, text) => {
     const callAction = () => {
-      action();
       setPopupMessage(false);
+      action();
     };
     setPopupMessage({
       text,
@@ -318,7 +332,7 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button complain"
         role="button"
-        onClick={() => confirmAction(onComplain(), "Are you sure you want to complain?")}
+        onClick={() => confirmAction(onComplain, "Are you sure you want to complain?")}
       >
         COMPLAIN
       </div>
@@ -929,6 +943,9 @@ function VoucherAndSetDetails(props) {
       const tx = await bosonRouterContract.complain(
         voucherDetails._tokenIdVoucher
       );
+
+      setSuccessMessage('Complain triggered');
+      setSuccessMessageType(MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1022,6 +1039,9 @@ function VoucherAndSetDetails(props) {
       const tx = await bosonRouterContract.refund(
         voucherDetails._tokenIdVoucher
       );
+
+      setSuccessMessage('Refund triggered');
+      setSuccessMessageType(MESSAGE.REFUND_SUCCESS)
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1117,13 +1137,8 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      setCancelMessage({
-        messageType: MESSAGE.SUCCESS,
-        title: "The voucher was cancelled",
-        link: ROUTE.Activity + "/" + voucherDetails.id + "/details",
-        setMessageType: cancelMessageCloseButton,
-        subprops: { refresh: true },
-      });
+      setSuccessMessage('Cancel/fault triggered');
+      setSuccessMessageType(MESSAGE.COF_SUCCESS);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -1518,7 +1533,19 @@ function VoucherAndSetDetails(props) {
           title="Invalid link"
           link={ROUTE.Home}
         />
+
+
       )}
+      {
+        successMessage ?
+         <GenericMessage
+          messageType={successMessageType}
+          title={successMessage}
+          // text={successMessageType}
+          link={window.location}
+          setMessageType={resetSuccessMessage}
+        /> : null
+      }
     </>
   );
 }
