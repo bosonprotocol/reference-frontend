@@ -848,12 +848,12 @@ export const IconQRScanner = ({ color }) => (
   </svg>
 );
 
-export const IconClock = ({ color }) => (
+export const IconClock = ({ color, length }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    height="18px"
+    height={length ? length : '18px'}
     viewBox="0 0 24 24"
-    width="18px"
+    width={length ? length : '18px'}
     fill={color ? color : "#FFFFFF"}
   >
     <path d="M0 0h24v24H0V0z" fill="none" />

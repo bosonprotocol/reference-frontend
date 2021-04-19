@@ -125,7 +125,7 @@ function ShowQR({ voucherId, setShowQRCode }) {
               <div className="cancel new" onClick={() => setShowQRCode(0)}>
                 <span className="icon"></span>
               </div>
-            </div>
+            </div> 
           </div>
           <div className="container l infinite">
             <div className="wrapper w100 relative flex column center">
