@@ -343,7 +343,16 @@ function ActivityView(props) {
 
 export const VoucherSetBlock = (props) => {
   const [expand] = useState(1);
-  const { title, image, price, qty, _id, openDetails, paymentType } = props;
+  const {
+    title,
+    image,
+    price,
+    qty,
+    _id,
+    openDetails,
+    paymentType,
+    searchCriteria,
+  } = props;
   const currency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
   const currencyIcon =
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
@@ -352,8 +361,10 @@ export const VoucherSetBlock = (props) => {
     <Link
       to={
         !openDetails
-          ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView
-          : ROUTE.Activity + `/${_id}` + ROUTE.Details
+          ? `${ROUTE.Activity}/${_id}${ROUTE.VoucherSetView}`
+          : searchCriteria
+          ? `${ROUTE.Activity}/${_id}${ROUTE.Details}?searchCriteria=${searchCriteria}`
+          : `${ROUTE.Activity}/${_id}${ROUTE.Details}`
       }
     >
       <div

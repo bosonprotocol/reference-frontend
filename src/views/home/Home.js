@@ -65,19 +65,6 @@ function Home() {
   );
 
   const voucherSets = globalContext.state.allVoucherSets;
-
-  console.log(voucherSets);
-
-  const filterVoucherSets = (arr, query) => {
-    return arr.filter(function (voucherSet) {
-      return voucherSet.title.toLowerCase().includes(query.toLowerCase());
-    });
-  };
-
-  if (voucherSets) {
-    console.log(filterVoucherSets(voucherSets, "private"));
-  }
-
   const modalCloseTimeout = 900;
 
   useEffect(() => {

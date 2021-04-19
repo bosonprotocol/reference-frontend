@@ -51,6 +51,13 @@ function TopNavigation() {
         return;
       }
 
+      const searchCriteria = query.get("searchCriteria");
+
+      if (searchCriteria) {
+        history.push(`${ROUTE.Search}?searchCriteria=${searchCriteria}`);
+        return;
+      }
+
       if (location.pathname.endsWith(ROUTE.Details)) {
         const supplyRoute = location.pathname.replace(
           ROUTE.Details,

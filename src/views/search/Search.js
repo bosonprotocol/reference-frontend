@@ -3,6 +3,8 @@ import "./Seacrh.scss";
 import { GlobalContext } from "../../contexts/Global";
 import { VoucherSetBlock } from "../activity/Activity";
 import { IconHome } from "../../shared-components/icons/Icons";
+import { useLocation } from "react-router";
+import { ROUTE } from "../../helpers/configs/Dictionary";
 
 function Search() {
   const searchInput = useRef();
@@ -10,6 +12,8 @@ function Search() {
   const [voucherSets, setVoucherSets] = useState([]);
 
   const allVoucherSets = globalContext.state.allVoucherSets;
+  const location = useLocation();
+  const queryParam = new URLSearchParams(location.search);
 
   const filterVoucherSets = (arr, query) => {
     return arr.filter(function (voucherSet) {
@@ -33,6 +37,13 @@ function Search() {
 
   useEffect(() => {
     searchInput?.current?.focus();
+
+    const searchCriteria = queryParam.get("searchCriteria");
+
+    if (searchCriteria && searchCriteria !== "null") {
+      searchInput.current.value = searchCriteria;
+      handleSearchCriteria(searchCriteria);
+    }
   }, [allVoucherSets]);
 
   return (
@@ -72,6 +83,11 @@ function Search() {
                     <VoucherSetBlock
                       {...voucherSet}
                       openDetails={true}
+                      searchCriteria={
+                        searchInput.current.value
+                          ? searchInput.current.value
+                          : "null"
+                      }
                       key={id}
                     />
                   ))
@@ -80,6 +96,11 @@ function Search() {
                     <VoucherSetBlock
                       {...voucherSet}
                       openDetails={true}
+                      searchCriteria={
+                        searchInput.current.value
+                          ? searchInput.current.value
+                          : "null"
+                      }
                       key={id}
                     />
                   ))
