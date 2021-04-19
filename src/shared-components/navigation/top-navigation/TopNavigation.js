@@ -107,6 +107,7 @@ function TopNavigation() {
                   className="button square new"
                   role="button"
                   onClick={() => navigate()}
+                  id="topNavBackButton"
                 >
                   <Arrow color="#80F0BE" />
                 </div>
