@@ -26,6 +26,9 @@ import {
   authenticateUser,
   getAccountStoredInLocalStorage,
 } from "../../hooks/authenticate";
+import { IconHome } from "../../shared-components/icons/Icons";
+import { ROUTE } from "../../helpers/configs/Dictionary";
+import { Link } from "react-router-dom";
 
 SwiperCore.use([Navigation]);
 
@@ -130,6 +133,14 @@ function Home() {
       )}
       <div className={`screens ${newUser ? "new-user" : ""}`} ref={screensRef}>
         <div ref={homepage} className="home relative atomic-scoped">
+          <div className="container o-hidden">
+            <Link className="def" to={ROUTE.Search}>
+              <div className={`search-icon flex`}>
+                <IconHome />
+                <div className="search-label">Search</div>
+              </div>
+            </Link>
+          </div>
           <div className="container o-hidden">
             <CategoryMenu />
           </div>
