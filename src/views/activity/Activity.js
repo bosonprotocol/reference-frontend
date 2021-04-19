@@ -78,7 +78,7 @@ export function ActivityVoucherSetView() {
   }, []);
 
   useEffect(() => {
-    const getVoucherSet = globalContext.state.allVoucherSets.find(
+    const getVoucherSet = globalContext.state.allVoucherSets?.find(
       (voucher) => voucher.id === voucherSetId
     );
 
