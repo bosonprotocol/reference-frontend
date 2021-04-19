@@ -158,4 +158,7 @@ export const QUERY_PARAMS = {
   SEARCH_CRITERIA: "searchCriteria",
   VOUCHER_SET_ID: "voucherSetId",
   EMPTY: "null",
+  COF_SUCCESS: 'cof',
+  REFUND_SUCCESS: 'refund',
+  COMPLAIN_SUCCESS: 'complain'
 };

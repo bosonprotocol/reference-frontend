@@ -160,16 +160,25 @@ function VoucherAndSetDetails(props) {
   const [authenticationCompleted, setAuthenticationCompleted] = useState(false);
   const [transactionProccessing, setTransactionProccessing] = useState(1);
 
+<<<<<<< HEAD
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
+=======
+  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessageType, setSuccessMessageType] = useState('');
+>>>>>>> success messages done
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
 
+<<<<<<< HEAD
   const resetSuccessMessage = () => {
     setSuccessMessage("");
     setSuccessMessageType("");
   };
+=======
+  const resetSuccessMessage = () => {setSuccessMessage('');setSuccessMessageType};
+>>>>>>> success messages done
 
   const getProp = (prop) =>
     voucherSetDetails
@@ -178,6 +187,7 @@ function VoucherAndSetDetails(props) {
       ? voucherDetails[prop]
       : null;
 
+<<<<<<< HEAD
   useEffect(() => {
     if (recentlySignedTxHash) {
       const backButton = document.getElementById("topNavBackButton");
@@ -186,6 +196,17 @@ function VoucherAndSetDetails(props) {
       }
     }
   }, [recentlySignedTxHash]);
+=======
+      useEffect(() => {
+        if(recentlySignedTxHash) {
+          const backButton = document.getElementById('topNavBackButton');
+          console.log(backButton)
+          if(backButton) {
+            backButton.disabled = true;
+          }
+        }    
+      },[recentlySignedTxHash])
+>>>>>>> success messages done
   const paymentType = getProp("paymentType");
   const currencyResolver = (paymentType) => {
     if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -334,7 +355,7 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button complain"
         role="button"
-        onClick={() => confirmAction(onComplain(), "Are you sure you want to complain?")}
+        onClick={() => confirmAction(onComplain, "Are you sure you want to complain?")}
       >
         COMPLAIN
       </div>
@@ -946,7 +967,11 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
+<<<<<<< HEAD
       setSuccessMessage("Complain triggered");
+=======
+      setSuccessMessage('Complain triggered');
+>>>>>>> success messages done
       setSuccessMessageType(MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
@@ -1139,7 +1164,7 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      setSuccessMessage("Cancel/fault triggered");
+      setSuccessMessage('Cancel/fault triggered');
       setSuccessMessageType(MESSAGE.COF_SUCCESS);
     } catch (e) {
       modalContext.dispatch(
@@ -1535,7 +1560,10 @@ function VoucherAndSetDetails(props) {
           title="Invalid link"
           link={ROUTE.Home}
         />
+
+
       )}
+
       {successMessage ? (
         <GenericMessage
           messageType={successMessageType}
