@@ -33,12 +33,13 @@ import {
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
-import { formatDate } from "../../utils/FormatUtils";
+import { capitalize, formatDate } from "../../utils/FormatUtils";
 import {
   determineCurrentStatusOfVoucher,
   initVoucherDetails,
 } from "../../helpers/parsers/VoucherAndSetParsers";
 
+import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
 import { ModalResolver } from "../../contexts/Modal";
 import { ModalContext } from "../../contexts/Modal";
 import { GlobalContext } from "../../contexts/Global";
@@ -125,6 +126,7 @@ const voucherSetPlaceholder = (
 );
 
 function VoucherAndSetDetails(props) {
+  const [loading, setLoading] = useState(0);
   const [voucherDetails, setVoucherDetails] = useState(null);
   const [escrowData, setEscrowData] = useState(null);
   const [showQRCode, setShowQRCode] = useState(0);
@@ -197,10 +199,9 @@ function VoucherAndSetDetails(props) {
     formatDate(getProp("expiryDate")),
   ];
 
-  const tableCategory = [
-    ["Category", getProp("category")],
-    // ['Remaining Quantity', selectedProduct?.qty],
-  ];
+  const tableCategory = [["Category", getProp("category")]];
+
+  const tableCondition = [["Condition", capitalize(getProp("condition"))]];
 
   const confirmAction = (action, text) => {
     const callAction = () => {
@@ -751,6 +752,8 @@ function VoucherAndSetDetails(props) {
     const authData = getAccountStoredInLocalStorage(account);
     let correlationId;
 
+    setLoading(1);
+
     try {
       correlationId = (
         await bosonRouterContract.correlationIds(account)
@@ -770,6 +773,7 @@ function VoucherAndSetDetails(props) {
               "Please wait for your recent transaction to be minted before sending another one.",
           })
         );
+        setLoading(0);
         return;
       }
 
@@ -786,6 +790,7 @@ function VoucherAndSetDetails(props) {
         modalContext
       );
       if (!tx) {
+        setLoading(0);
         return;
       }
 
@@ -799,6 +804,7 @@ function VoucherAndSetDetails(props) {
           content: e.message,
         })
       );
+      setLoading(0);
       return;
     }
 
@@ -819,6 +825,7 @@ function VoucherAndSetDetails(props) {
           content: e.message,
         })
       );
+      setLoading(0);
       return;
     }
 
@@ -839,6 +846,7 @@ function VoucherAndSetDetails(props) {
       );
     }
 
+    setLoading(0);
     setActionPerformed(actionPerformed * -1);
     history.push(ROUTE.ActivityVouchers);
   }
@@ -869,6 +877,8 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    setLoading(1);
+
     try {
       const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
         bosonRouterContract,
@@ -892,6 +902,7 @@ function VoucherAndSetDetails(props) {
             }),
           })
         );
+        setLoading(0);
         return;
       }
 
@@ -907,6 +918,7 @@ function VoucherAndSetDetails(props) {
           content: e.message + " :233",
         })
       );
+      setLoading(0);
       return;
     }
 
@@ -927,6 +939,7 @@ function VoucherAndSetDetails(props) {
       );
     }
 
+    setLoading(0);
     setActionPerformed(actionPerformed * -1);
     history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
@@ -957,6 +970,8 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    setLoading(1);
+
     try {
       const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
         bosonRouterContract,
@@ -980,6 +995,7 @@ function VoucherAndSetDetails(props) {
             }),
           })
         );
+        setLoading(0);
         return;
       }
 
@@ -995,6 +1011,7 @@ function VoucherAndSetDetails(props) {
           content: e.message + " :233",
         })
       );
+      setLoading(0);
       return;
     }
 
@@ -1015,7 +1032,7 @@ function VoucherAndSetDetails(props) {
         })
       );
     }
-
+    setLoading(0);
     setActionPerformed(actionPerformed * -1);
     history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
@@ -1046,6 +1063,8 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    setLoading(1);
+
     try {
       const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
         bosonRouterContract,
@@ -1069,6 +1088,7 @@ function VoucherAndSetDetails(props) {
             }),
           })
         );
+        setLoading(0);
         return;
       }
 
@@ -1101,6 +1121,8 @@ function VoucherAndSetDetails(props) {
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: false },
       });
+
+      setLoading(0);
       return;
     }
 
@@ -1121,6 +1143,7 @@ function VoucherAndSetDetails(props) {
       );
     }
 
+    setLoading(0);
     setActionPerformed(actionPerformed * -1);
   }
 
@@ -1245,6 +1268,8 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
+    setLoading(1);
+
     try {
       const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
         bosonRouterContract,
@@ -1268,6 +1293,7 @@ function VoucherAndSetDetails(props) {
             }),
           })
         );
+        setLoading(0);
         return;
       }
     } catch (e) {
@@ -1285,7 +1311,7 @@ function VoucherAndSetDetails(props) {
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: false },
       });
-
+      setLoading(0);
       return;
     }
 
@@ -1312,6 +1338,8 @@ function VoucherAndSetDetails(props) {
           content: e.message,
         })
       );
+      setLoading(0);
+      return;
     }
 
     try {
@@ -1330,6 +1358,7 @@ function VoucherAndSetDetails(props) {
         })
       );
     }
+    setLoading(0);
   };
 
   useEffect(() => {
@@ -1363,6 +1392,7 @@ function VoucherAndSetDetails(props) {
 
   return (
     <>
+      {loading ? <LoadingSpinner /> : null}
       {cancelMessage ? <GenericMessage {...cancelMessage} /> : null}
       {<PopupMessage {...popupMessage} />}
       {pageLoading ? pageLoadingPlaceholder : null}
@@ -1431,6 +1461,9 @@ function VoucherAndSetDetails(props) {
                   {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */}
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
+                  ) : null}
+                  {getProp("condition") ? (
+                    <TableRow data={tableCondition} />
                   ) : null}
                 </div>
                 {voucherSetDetails ? (

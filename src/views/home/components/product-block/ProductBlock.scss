@@ -22,10 +22,10 @@
     }
   }
   .product-image {
-    background-size: contain;
+    background-size: auto 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #1C2835;
+    background-color: #1c2835;
     border-radius: 12px;
 
     &:not(.col) {
