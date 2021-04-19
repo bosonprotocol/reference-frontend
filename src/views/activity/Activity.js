@@ -37,7 +37,7 @@ import { WalletConnect } from "../../shared-components/wallet-connect/WalletConn
 import { formatDate } from "../../utils/FormatUtils";
 
 export function ActivityAccountVouchers({ title, voucherSetId, block }) {
-  const [accountVouchers, setAccountVouchers] = useState([]);
+  const [accountVouchers, setAccountVouchers] = useState(undefined);
   const { account } = useWeb3React();
   const modalContext = useContext(ModalContext);
   const [loading, setLoading] = useState(0);
@@ -101,7 +101,7 @@ export function ActivityVoucherSetView() {
 }
 
 export function ActivityVoucherSets() {
-  const [voucherBlocks, setVoucherBlocks] = useState([]);
+  const [voucherBlocks, setVoucherBlocks] = useState(undefined);
   const { account } = useWeb3React();
 
   useEffect(() => {
@@ -130,7 +130,7 @@ function ActivityView(props) {
   } = props;
   const globalContext = useContext(GlobalContext);
 
-  const [resultVouchers, setResultVouchers] = useState([]);
+  const [resultVouchers, setResultVouchers] = useState(undefined);
   const [activeVouchers, setActiveVouchers] = useState([]);
   const [inactiveVouchers, setInactiveVouchers] = useState([]);
   const [pageLoading, setPageLoading] = useState(0);
@@ -225,14 +225,13 @@ function ActivityView(props) {
           getLastAction(a) > getLastAction(b) ? -1 : 1
         )
       );
-
-      if (account && isAuthenticated) {
+      if (account && isAuthenticated && Array.isArray(voucherBlocks)) {
         setPageLoading(0);
       }
     };
 
     sortVouchersToActiveAndInactive();
-  }, [resultVouchers]);
+  }, [resultVouchers, voucherBlocks]);
 
   const activityMessageType = {
     [VOUCHER_TYPE.accountVoucher]: {
