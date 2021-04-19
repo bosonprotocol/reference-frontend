@@ -1,0 +1,33 @@
+---
+vars:
+  region: "%{hiera('region')}"
+
+  deployment_identifier: "%{hiera('deployment_identifier')}"
+
+  bucket_name: "%{hiera('website_bucket_name')}"
+  bucket_secret: "%{hiera('website_bucket_secret')}"
+
+  parent_role_arn: "%{hiera('parent_role_arn')}"
+
+  parent_domain_name: "%{hiera('parent_domain_name')}"
+  primary_domain_name: "%{hiera('primary_domain_name')}"
+  certificate_domain_name: "%{hiera('certificate_domain_name')}"
+
+  primary_address: "%{hiera('primary_address')}"
+  other_addresses: "%{hiera('other_addresses')}"
+
+  common_state_bucket_name: "%{hiera('common_state_bucket_name')}"
+  common_state_key: "%{hiera('common_state_key')}"
+  common_state_bucket_region: "%{hiera('common_state_bucket_region')}"
+  common_state_bucket_is_encrypted: "%{hiera('common_state_bucket_is_encrypted')}"
+
+  parent_common_state_bucket_name: "%{hiera('parent_common_state_bucket_name')}"
+  parent_common_state_key: "%{hiera('parent_common_state_key')}"
+  parent_common_state_bucket_region: "%{hiera('parent_common_state_bucket_region')}"
+  parent_common_state_bucket_is_encrypted: "%{hiera('parent_common_state_bucket_is_encrypted')}"
+
+backend_config:
+  bucket: "%{hiera('website_state_bucket_name')}"
+  key: "%{hiera('website_state_key')}"
+  region: "%{hiera('website_state_bucket_region')}"
+  encrypt: "%{hiera('website_state_bucket_is_encrypted')}"
