@@ -2,6 +2,7 @@
 
 .new-offer {
   height: 100%;
+
   .top-navigation {
     margin-top: 48px;
   }
@@ -21,6 +22,7 @@
         position: absolute;
         left: 0;
       }
+
       &:last-child {
         position: absolute;
         right: 0;
@@ -31,6 +33,7 @@
       .button:not(.offer) {
         display: none;
       }
+
       .button.offer {
         width: 100%;
         position: absolute;
@@ -43,17 +46,21 @@
       }
     }
   }
+
   .screen {
     .step-title {
       display: flex;
       align-items: flex-end;
     }
   }
+
   .screen-controller {
     padding-top: 42px;
+
     .date {
       .field[role="button"].await {
         position: relative;
+
         &::after {
           content: 'Select';
           position: absolute;
@@ -75,6 +82,7 @@
         }
       }
     }
+
     .input {
       position: relative;
 
@@ -114,22 +122,25 @@
         &:not(.no-border) {
           border-bottom: 1px solid rgba(#FF4E63, 1);
         }
-  
+
         &::after {
           content: attr(data-error);
           opacity: 1;
         }
       }
     }
+
     .row {
       &.display {
         p {
           color: #ACB9C8;
         }
       }
+
       & > p {
         color: #4c5f6f;
       }
+
       .field {
         display: flex;
         flex-direction: column;
@@ -152,7 +163,7 @@
         input,
         textarea,
         .field {
-          background:#151A1F;
+          background: #151A1F;
           border-radius: 2px;
           height: 50px;
           border: none;
@@ -206,7 +217,7 @@
           .react-datepicker-wrapper {
             width: 100%;
           }
-          
+
           .react-datepicker__input-container {
             .field {
               padding-left: 38px;
@@ -251,6 +262,7 @@
               transform: rotate(-45deg);
               border-radius: 20px;
             }
+
             &::after {
               transform: rotate(45deg);
             }
@@ -264,6 +276,7 @@
             .pseudo {
               opacity: 0;
             }
+
             input {
               color: #fff;
               padding: 15px 13px;
@@ -320,7 +333,7 @@
 
             .currencies-container {
               margin-right: 8px;
-              margin-top: 14px; 
+              margin-top: 14px;
               width: 72px;
               height: 50px;
               position: relative;
@@ -328,10 +341,11 @@
 
               &.select-disabled {
                 width: 55px;
-                
+
                 .icons > div {
                   left: 19px;
                 }
+
                 .icons {
                   &::after {
                     display: none;
@@ -366,6 +380,7 @@
                   &.ETH {
                     background-image: url('../../assets/ethereum/icon-eth.png');
                   }
+
                   &.BSN {
                     background-image: url('../../assets/boson/icon-bsn.png');
                     background-repeat: no-repeat;
@@ -462,7 +477,7 @@
 
             &:hover {
               background: rgba(255, 255, 255, 0.02);
-              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);            
+              box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.05);
             }
 
             &.active,
@@ -481,6 +496,7 @@
         margin-top: 30px;
       }
     }
+
     .general {
       .limit {
         pointer-events: none;
@@ -500,10 +516,12 @@
         color: #5D6F84;
       }
     }
+
     .display-icon {
       position: relative;
       padding-left: 35px;
       background: #151A1F;
+
       .icons {
         position: absolute;
         top: 0;
@@ -511,15 +529,15 @@
         bottom: 0;
         left: 0;
         pointer-events: none;
-  
+
         @media (max-width: 374px) {
           left: -4px;
         }
-  
+
         & > div {
           opacity: 0;
           transition: 0.1s ease-in-out;
-  
+
           display: block;
           position: absolute;
           width: 10px;
@@ -527,10 +545,11 @@
           transform: translateY(0);
           top: 50%;
           left: 12px;
-  
+
           &.ETH {
             background-image: url('../../assets/ethereum/icon-eth.png');
           }
+
           &.BSN {
             background-image: url('../../assets/boson/icon-bsn.png');
             background-repeat: no-repeat;
@@ -538,14 +557,14 @@
             background-position: center;
           }
         }
-  
+
         &.ETH {
           .ETH {
             opacity: 1;
             transform: translateY(-50%);
           }
         }
-  
+
         &.BSN {
           .BSN {
             opacity: 1;
@@ -564,6 +583,22 @@
 .top-navigation-offer {
   .button {
     background-color: #192028;
+  }
+
+  .progress-bar {
+    justify-content: flex-end;
+    .bar {
+      width: 310px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .progress-bar {
+      justify-content: flex-start;
+      .bar {
+        width: 80px;
+      }
+    }
   }
 }
 
@@ -584,6 +619,7 @@
       transition: 0.3s ease-in-out;
       transform: translateX(7px);
     }
+
     &.message {
       &::before {
         opacity: 1;

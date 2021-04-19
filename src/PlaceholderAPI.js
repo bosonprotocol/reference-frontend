@@ -198,7 +198,7 @@ export const productAPI = [
 
 export const categories = [
   {
-    image: "images/temp/category-item-1.png",
+    image: "images/categories/accessories.png",
     title: "Accessories",
   },
   {
