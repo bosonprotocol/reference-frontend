@@ -24,6 +24,8 @@ resources:
     type: docker-image
     source:
       repository: ((node_builder_image_repository_url))
+      aws_access_key_id: ((aws_access_key_id))
+      aws_secret_access_key: ((aws_secret_access_key))
 
   - name: notify-success
     type: slack-notification
@@ -34,6 +36,13 @@ resources:
     type: slack-notification
     source:
       url: ((slack_engineering_webhook_url))
+
+groups:
+  - name: development-hassium
+    jobs:
+      - build
+      - test
+      - provision-development-hassium-website
 
 jobs:
   - name: build
@@ -91,3 +100,27 @@ jobs:
     on_failure: *on_failure
     on_error: *on_error
     on_abort: *on_abort
+
+  - name: provision-development-hassium-website
+    serial: true
+    plan:
+      - in_parallel:
+          - get: source
+            trigger: true
+            passed:
+              - test
+          - get: node-builder-image
+      - task: provision-website
+        image: node-builder-image
+        file: source/pipelines/develop/provision-website/task.yaml
+        params:
+          GPG_KEY: ((gpg_key))
+          PROVISIONING_ROLE_ARN: ((development_hassium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((development_hassium_deployment_type))
+          DEPLOYMENT_LABEL: ((development_hassium_deployment_label))
+
+    on_success: *on_success
+    on_failure: *on_failure
+    on_error: *on_error
+    on_abort: *on_abort
+
