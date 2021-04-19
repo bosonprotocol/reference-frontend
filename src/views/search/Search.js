@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import "./Seacrh.scss";
 import { GlobalContext } from "../../contexts/Global";
 import { VoucherSetBlock } from "../activity/Activity";
@@ -30,6 +30,10 @@ function Search() {
     searchInput.current.value = "";
     setVoucherSets([]);
   };
+
+  useEffect(() => {
+    searchInput?.current?.focus();
+  }, [allVoucherSets]);
 
   return (
     <>
