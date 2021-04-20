@@ -36,7 +36,7 @@ $cell-width: 87px;
     }
 
     .semi-container {
-      width: 331px;
+      width: 100%;
       margin-top: 27px;
     }
     .cell, .set {
@@ -94,6 +94,9 @@ $cell-width: 87px;
     }
 
     .top-row {
+      width: calc(100% - 87px);
+      margin-left: auto;
+
       .cell {
         font-family: 'Barlow', sans-serif;
         font-style: normal;
@@ -106,6 +109,7 @@ $cell-width: 87px;
         color: #A1BBD9;
 
         padding: 0;
+        width: calc(100% / 3);
       }
     }
 
@@ -118,6 +122,23 @@ $cell-width: 87px;
         .cell {
           &:nth-child(3) {
             border: 1px dashed #25303D;
+          }
+        }
+
+        &.flex {
+          width: 100%;
+
+          .cell {
+            width: calc(100% / 3);
+
+            &.position {      
+              &_2 {
+                transform: translateX(100%);
+              }
+              &_3 {
+                transform: translateX(200%);
+              }
+            }
           }
         }
       }
