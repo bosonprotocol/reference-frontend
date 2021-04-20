@@ -121,10 +121,16 @@
   }
 
   .content {
+    max-width: 592px;
     @include product-info;
     @include table;
 
     .section {
+
+      .price, .date {
+        max-width: 350px;
+      }
+
       .table {
         & > .row {
           .block:nth-child(even) {
