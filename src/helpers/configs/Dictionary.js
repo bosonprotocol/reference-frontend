@@ -148,9 +148,9 @@ export const MESSAGE = {
   SUCCESS: "success",
   ERROR: "error",
   LOCKED: "locked",
-  COF_SUCCESS: 'cof',
-  REFUND_SUCCESS: 'refund',
-  COMPLAIN_SUCCESS: 'complain'
+  COF_SUCCESS: "cof",
+  REFUND_SUCCESS: "refund",
+  COMPLAIN_SUCCESS: "complain",
 };
 
 export const QUERY_PARAMS = {
