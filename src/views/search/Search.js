@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useState, useEffect } from "react";
-import "./Seacrh.scss";
+import "./Search.scss";
 import { GlobalContext } from "../../contexts/Global";
 import { VoucherSetBlock } from "../activity/Activity";
 import { IconHome } from "../../shared-components/icons/Icons";
