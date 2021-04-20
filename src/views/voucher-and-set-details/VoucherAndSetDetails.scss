@@ -122,11 +122,11 @@
 
   .content {
     max-width: 592px;
+    margin: 0 auto;
     @include product-info;
     @include table;
 
     .section {
-
       .price, .date {
         max-width: 350px;
       }
