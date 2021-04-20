@@ -51,7 +51,11 @@
   }
   .screen-controller {
     padding-top: 42px;
+    max-width: 592px;
+    margin: 0 auto;
+
     .date {
+      max-width: 350px;
       .field[role="button"].await {
         position: relative;
         &::after {
@@ -591,4 +595,9 @@
       }
     }
   }
+}
+
+.offer-nav {
+  max-width: 592px;
+  margin: 0 auto;
 }
