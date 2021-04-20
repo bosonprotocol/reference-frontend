@@ -10,7 +10,7 @@ export const GlobalContext = createContext();
 export const GlobalInitialState = {
   qrReaderActivated: 0,
   onboardingCompleted: localStorage["onboarding-completed"],
-  allVouchers: [],
+  allVouchers: undefined,
   allVoucherSets: undefined,
   fetchVoucherSets: 1,
   account: null,
