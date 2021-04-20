@@ -202,39 +202,47 @@ export const categories = [
     title: "Accessories",
   },
   {
-    image: "images/temp/category-item-2.png",
+    image: "images/categories/auto-moto.png",
     title: "Automobiles & Motorcycles",
   },
   {
-    image: "images/temp/category-item-3.png",
+    image: "images/categories/beauty-health.png",
     title: "Beauty & Health",
   },
   {
-    image: "images/temp/category-item-4.png",
+    image: "images/categories/books.png",
     title: "Books",
   },
   {
-    image: "images/temp/category-item-5.png",
+    image: "images/categories/clothes.png",
     title: "Clothes",
   },
   {
-    image: "images/temp/category-item-6.png",
+    image: "images/categories/electronics.png",
     title: "Electronics",
   },
   {
-    image: "images/temp/category-item-7.png",
+    image: "images/categories/furniture.png",
     title: "Furniture",
   },
   {
-    image: "images/temp/category-item-8.png",
+    image: "images/categories/home-garden.png",
     title: "Home & Garden",
   },
   {
-    image: "images/temp/category-item-9.png",
+    image: "images/categories/jewelry.png",
     title: "Jewelry",
   },
   {
-    image: "images/temp/category-item-10.png",
+    image: "images/categories/kids.png",
     title: "Kids",
+  },
+  {
+    image: "images/categories/shoes.png",
+    title: "Shoes",
+  },
+  {
+    image: "images/categories/toys-hobbies.png",
+    title: "Toys & Hobbies",
   },
 ];
