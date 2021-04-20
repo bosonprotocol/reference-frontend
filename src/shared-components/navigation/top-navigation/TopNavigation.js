@@ -11,7 +11,11 @@ import {
   account as loadingAccount,
 } from "../../../contexts/Loading";
 
-import { AFFMAP, ROUTE } from "../../../helpers/configs/Dictionary";
+import {
+  AFFMAP,
+  QUERY_PARAMS,
+  ROUTE,
+} from "../../../helpers/configs/Dictionary";
 
 import "./TopNavigation.scss";
 
@@ -44,17 +48,19 @@ function TopNavigation() {
     }
 
     if (location.pathname.startsWith(ROUTE.Activity)) {
-      const visitedDirectly = query.get("direct");
+      const visitedDirectly = query.get(QUERY_PARAMS.DIRECT);
 
       if (visitedDirectly) {
         history.push(ROUTE.Home);
         return;
       }
 
-      const searchCriteria = query.get("searchCriteria");
+      const searchCriteria = query.get(QUERY_PARAMS.SEARCH_CRITERIA);
 
       if (searchCriteria) {
-        history.push(`${ROUTE.Search}?searchCriteria=${searchCriteria}`);
+        history.push(
+          `${ROUTE.Search}?${QUERY_PARAMS.SEARCH_CRITERIA}=${searchCriteria}`
+        );
         return;
       }
 
@@ -74,7 +80,7 @@ function TopNavigation() {
     }
 
     if (location.pathname.startsWith(ROUTE.ActivityVouchers)) {
-      const voucherSetId = query.get("voucherSetId");
+      const voucherSetId = query.get(QUERY_PARAMS.VOUCHER_SET_ID);
 
       if (voucherSetId) {
         const voucherSetRoute = `${ROUTE.Activity}/${voucherSetId}${ROUTE.VoucherSetView}`;

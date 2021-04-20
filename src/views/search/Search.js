@@ -4,7 +4,7 @@ import { GlobalContext } from "../../contexts/Global";
 import { VoucherSetBlock } from "../activity/Activity";
 import { IconHome } from "../../shared-components/icons/Icons";
 import { useLocation } from "react-router";
-import { ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
 
 function Search() {
   const searchInput = useRef();
@@ -38,9 +38,9 @@ function Search() {
   useEffect(() => {
     searchInput?.current?.focus();
 
-    const searchCriteria = queryParam.get("searchCriteria");
+    const searchCriteria = queryParam.get(QUERY_PARAMS.SEARCH_CRITERIA);
 
-    if (searchCriteria && searchCriteria !== "null") {
+    if (searchCriteria && searchCriteria !== QUERY_PARAMS.EMPTY) {
       searchInput.current.value = searchCriteria;
       handleSearchCriteria(searchCriteria);
     }

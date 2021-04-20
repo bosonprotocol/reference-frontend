@@ -10,7 +10,7 @@ import {
   IconBsn,
 } from "../../../../shared-components/icons/Icons";
 
-import { ROUTE } from "../../../../helpers/configs/Dictionary";
+import { QUERY_PARAMS, ROUTE } from "../../../../helpers/configs/Dictionary";
 
 function ProductBlock(props) {
   const { id, title, image, price, deposit, col, paymentType } = props;
@@ -21,7 +21,9 @@ function ProductBlock(props) {
     paymentType === 1 || paymentType === 3 ? "ETH" : "BSN";
 
   return (
-    <Link to={`${ROUTE.Activity}/${id}${ROUTE.Details}?direct=1`}>
+    <Link
+      to={`${ROUTE.Activity}/${id}${ROUTE.Details}?${QUERY_PARAMS.DIRECT}=1`}
+    >
       <div
         // onClick={ openProduct }
         className={`product-block ${productType} `} //${ animate ? 'animate' : '' }

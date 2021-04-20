@@ -6,7 +6,7 @@ import "./Activity.scss";
 
 import { GlobalContext, Action } from "../../contexts/Global";
 
-import { ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
 
 import {
   Quantity,
@@ -438,7 +438,7 @@ export const SingleVoucherBlock = (props) => {
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
 
   const refVoucherSetIdParam = voucherSetId
-    ? `?voucherSetId=${voucherSetId}`
+    ? `?${QUERY_PARAMS.VOUCHER_SET_ID}=${voucherSetId}`
     : "";
 
   return (

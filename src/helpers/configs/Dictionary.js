@@ -144,3 +144,10 @@ export const MESSAGE = {
   ERROR: "error",
   LOCKED: "locked",
 };
+
+export const QUERY_PARAMS = {
+  DIRECT: "direct",
+  SEARCH_CRITERIA: "searchCriteria",
+  VOUCHER_SET_ID: "voucherSetId",
+  EMPTY: "null",
+};
