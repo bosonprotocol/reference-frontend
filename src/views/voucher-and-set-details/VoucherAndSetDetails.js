@@ -161,24 +161,35 @@ function VoucherAndSetDetails(props) {
   const [transactionProccessing, setTransactionProccessing] = useState(1);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
 =======
   const [successMessage, setSuccessMessage] = useState('');
   const [successMessageType, setSuccessMessageType] = useState('');
 >>>>>>> success messages done
+=======
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageType, setSuccessMessageType] = useState("");
+>>>>>>> Disable back button while pending
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Disable back button while pending
   const resetSuccessMessage = () => {
     setSuccessMessage("");
     setSuccessMessageType("");
   };
+<<<<<<< HEAD
 =======
   const resetSuccessMessage = () => {setSuccessMessage('');setSuccessMessageType};
 >>>>>>> success messages done
+=======
+>>>>>>> Disable back button while pending
 
   const getProp = (prop) =>
     voucherSetDetails
@@ -188,6 +199,9 @@ function VoucherAndSetDetails(props) {
       : null;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Disable back button while pending
   useEffect(() => {
     if (recentlySignedTxHash) {
       const backButton = document.getElementById("topNavBackButton");
@@ -196,6 +210,7 @@ function VoucherAndSetDetails(props) {
       }
     }
   }, [recentlySignedTxHash]);
+<<<<<<< HEAD
 =======
       useEffect(() => {
         if(recentlySignedTxHash) {
@@ -207,6 +222,8 @@ function VoucherAndSetDetails(props) {
         }    
       },[recentlySignedTxHash])
 >>>>>>> success messages done
+=======
+>>>>>>> Disable back button while pending
   const paymentType = getProp("paymentType");
   const currencyResolver = (paymentType) => {
     if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -246,7 +263,7 @@ function VoucherAndSetDetails(props) {
   const tableCategory = [["Category", getProp("category")]];
 
   const tableCondition = [["Condition", capitalize(getProp("condition"))]];
-  
+
   const confirmAction = (action, text) => {
     const callAction = () => {
       setPopupMessage(false);
@@ -332,7 +349,9 @@ function VoucherAndSetDetails(props) {
         <div
           className="action button refund"
           role="button"
-          onClick={() => confirmAction(onRefund, "Are you sure you want to refund?" )}
+          onClick={() =>
+            confirmAction(onRefund, "Are you sure you want to refund?")
+          }
         >
           REFUND
         </div>
@@ -355,7 +374,9 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button complain"
         role="button"
-        onClick={() => confirmAction(onComplain, "Are you sure you want to complain?")}
+        onClick={() =>
+          confirmAction(onComplain, "Are you sure you want to complain?")
+        }
       >
         COMPLAIN
       </div>
@@ -968,10 +989,14 @@ function VoucherAndSetDetails(props) {
       );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       setSuccessMessage("Complain triggered");
 =======
       setSuccessMessage('Complain triggered');
 >>>>>>> success messages done
+=======
+      setSuccessMessage("Complain triggered");
+>>>>>>> Disable back button while pending
       setSuccessMessageType(MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
@@ -1164,7 +1189,7 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      setSuccessMessage('Cancel/fault triggered');
+      setSuccessMessage("Cancel/fault triggered");
       setSuccessMessageType(MESSAGE.COF_SUCCESS);
     } catch (e) {
       modalContext.dispatch(
@@ -1528,11 +1553,9 @@ function VoucherAndSetDetails(props) {
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}
-                  {
-                    getProp('condition') ? (
-                      <TableRow data={tableCondition}/>
-                     ) : null
-                  }
+                  {getProp("condition") ? (
+                    <TableRow data={tableCondition} />
+                  ) : null}
                 </div>
                 {voucherSetDetails ? (
                   <div className="section price">
@@ -1560,8 +1583,6 @@ function VoucherAndSetDetails(props) {
           title="Invalid link"
           link={ROUTE.Home}
         />
-
-
       )}
 
       {successMessage ? (

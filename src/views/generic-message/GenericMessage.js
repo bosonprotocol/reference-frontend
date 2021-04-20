@@ -25,23 +25,21 @@ function GenericMessage({
       <div className="container flex column split">
         <div className="top-side flex column center">
           <div className="status-icon">
-            {
-              messageType === MESSAGE.SUCCESS ? (
+
+            {messageType === MESSAGE.SUCCESS ? (
               <IconSuccess />
             ) : messageType === MESSAGE.ERROR ? (
               <IconError />
             ) : messageType === MESSAGE.LOCKED ? (
               <LockedIcon />
             ) : messageType === MESSAGE.COF_SUCCESS ? (
-              <IconClock color={'#A1B2C5'} length={'68px'}/>
+              <IconClock color={"#A1B2C5"} length={"68px"} />
             ) : messageType === MESSAGE.REFUND_SUCCESS ? (
-              <IconClock color={'#E49043'} length={'68px'}/>
+              <IconClock color={"#E49043"} length={"68px"} />
             ) : messageType === MESSAGE.COMPLAIN_SUCCESS ? (
-              <IconClock color={'#FA5B66'} length={'68px'}/>
-            ) 
-            : null
-            }
-
+              <IconClock color={"#FA5B66"} length={"68px"} />
+            ) : null}
+              
           </div>
           <p className="title">{title}</p>
           <p className="description">{text}</p>
