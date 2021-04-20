@@ -162,13 +162,16 @@ function VoucherAndSetDetails(props) {
   const [authenticationCompleted, setAuthenticationCompleted] = useState(false);
   const [transactionProccessing, setTransactionProccessing] = useState(1);
 
-  const [successMessage, setSuccessMessage] = useState('');
-  const [successMessageType, setSuccessMessageType] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageType, setSuccessMessageType] = useState("");
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
 
-  const resetSuccessMessage = () => {setSuccessMessage('');setSuccessMessageType};
+  const resetSuccessMessage = () => {
+    setSuccessMessage("");
+    setSuccessMessageType("");
+  };
 
   const getProp = (prop) =>
     voucherSetDetails
@@ -177,15 +180,14 @@ function VoucherAndSetDetails(props) {
       ? voucherDetails[prop]
       : null;
 
-      useEffect(() => {
-        if(recentlySignedTxHash) {
-          const backButton = document.getElementById('topNavBackButton');
-          console.log(backButton)
-          if(backButton) {
-            backButton.disabled = true;
-          }
-        }    
-      },[recentlySignedTxHash])
+  useEffect(() => {
+    if (recentlySignedTxHash) {
+      const backButton = document.getElementById("topNavBackButton");
+      if (backButton) {
+        backButton.style.cssText += "pointer-events: none; opacity: 0.2";
+      }
+    }
+  }, [recentlySignedTxHash]);
   const paymentType = getProp("paymentType");
   const currencyResolver = (paymentType) => {
     if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -216,7 +218,7 @@ function VoucherAndSetDetails(props) {
   const tableCategory = [["Category", getProp("category")]];
 
   const tableCondition = [["Condition", capitalize(getProp("condition"))]];
-  
+
   const confirmAction = (action, text) => {
     const callAction = () => {
       setPopupMessage(false);
@@ -302,7 +304,9 @@ function VoucherAndSetDetails(props) {
         <div
           className="action button refund"
           role="button"
-          onClick={() => confirmAction(onRefund, "Are you sure you want to refund?" )}
+          onClick={() =>
+            confirmAction(onRefund, "Are you sure you want to refund?")
+          }
         >
           REFUND
         </div>
@@ -325,7 +329,9 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button complain"
         role="button"
-        onClick={() => confirmAction(onComplain, "Are you sure you want to complain?")}
+        onClick={() =>
+          confirmAction(onComplain, "Are you sure you want to complain?")
+        }
       >
         COMPLAIN
       </div>
@@ -924,7 +930,7 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
-      setSuccessMessage('Complain triggered');
+      setSuccessMessage("Complain triggered");
       setSuccessMessageType(MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
@@ -1020,8 +1026,8 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
-      setSuccessMessage('Refund triggered');
-      setSuccessMessageType(MESSAGE.REFUND_SUCCESS)
+      setSuccessMessage("Refund triggered");
+      setSuccessMessageType(MESSAGE.REFUND_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1117,7 +1123,7 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      setSuccessMessage('Cancel/fault triggered');
+      setSuccessMessage("Cancel/fault triggered");
       setSuccessMessageType(MESSAGE.COF_SUCCESS);
     } catch (e) {
       modalContext.dispatch(
@@ -1477,11 +1483,9 @@ function VoucherAndSetDetails(props) {
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}
-                  {
-                    getProp('condition') ? (
-                      <TableRow data={tableCondition}/>
-                     ) : null
-                  }
+                  {getProp("condition") ? (
+                    <TableRow data={tableCondition} />
+                  ) : null}
                 </div>
                 {voucherSetDetails ? (
                   <div className="section price">
@@ -1509,19 +1513,16 @@ function VoucherAndSetDetails(props) {
           title="Invalid link"
           link={ROUTE.Home}
         />
-
-
       )}
-      {
-        successMessage ?
-         <GenericMessage
+      {successMessage ? (
+        <GenericMessage
           messageType={successMessageType}
           title={successMessage}
           // text={successMessageType}
           link={window.location}
           setMessageType={resetSuccessMessage}
-        /> : null
-      }
+        />
+      ) : null}
     </>
   );
 }
