@@ -303,6 +303,15 @@ section.activity {
           }
         }
       }
+
+      @media (max-width: 769px) {
+        .title-container {
+          .title {
+            white-space: nowrap;
+            width: 180px;
+          }
+        }
+      }
     }
   }
 
