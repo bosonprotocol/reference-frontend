@@ -29,6 +29,7 @@ function NewOfferBottomNavigation(props) {
       [NAME.BUYER_DEPOSIT],
     ],
     4: [[NAME.DATE_START], [NAME.DATE_END]],
+    5: [[NAME.COUNTRY], [NAME.CITY], [NAME.ADDRESS_LINE_ONE], [NAME.ADDRESS_LINE_TWO], [NAME.POSTCODE] ],
   };
   // check if all fields are filled with no errors
   useEffect(() => {
