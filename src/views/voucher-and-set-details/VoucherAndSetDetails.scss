@@ -121,10 +121,16 @@
   }
 
   .content {
+    max-width: 592px;
+    margin: 0 auto;
     @include product-info;
     @include table;
 
     .section {
+      .price, .date {
+        max-width: 350px;
+      }
+
       .table {
         & > .row {
           .block:nth-child(even) {
@@ -330,7 +336,7 @@
         border-top: 1px solid rgba(255, 255, 255, 0.06);
 
         .section + .section {
-          margin-top: 30px;
+          margin-top: 18px;
         }
         .description {
           
@@ -372,9 +378,7 @@
         .general {
           margin-top: 42px;
         }
-        .date {
-          margin-top: 42px;
-        }
+
         .seller {
           margin-top: 30px;
           padding-top: 27px;
