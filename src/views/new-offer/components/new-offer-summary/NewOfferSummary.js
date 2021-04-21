@@ -9,8 +9,6 @@ import { SellerContext } from "../../../../contexts/Seller";
 import { formatDate, totalDepositCalcEth } from "../../../../utils/FormatUtils";
 import { capitalize } from "./../../../../utils/FormatUtils";
 
-//todo location display location on summary page
-
 function NewOfferSummary() {
   const sellerContext = useContext(SellerContext);
   const {
@@ -27,11 +25,6 @@ function NewOfferSummary() {
     buyer_deposit,
     image,
     condition,
-    address_line_one, 
-    address_line_two,
-    city,
-    country,
-    postcode,
   } = sellerContext.state.offeringData;
   const tableContent = [
     category && ["Category", category],
