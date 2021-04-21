@@ -6,7 +6,7 @@ import "./Activity.scss";
 
 import { GlobalContext, Action } from "../../contexts/Global";
 
-import { ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
 
 import {
   Quantity,
@@ -342,7 +342,16 @@ function ActivityView(props) {
 
 export const VoucherSetBlock = (props) => {
   const [expand] = useState(1);
-  const { title, image, price, qty, _id, openDetails, paymentType } = props;
+  const {
+    title,
+    image,
+    price,
+    qty,
+    _id,
+    openDetails,
+    paymentType,
+    searchCriteria,
+  } = props;
   const currency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
   const currencyIcon =
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
@@ -351,8 +360,10 @@ export const VoucherSetBlock = (props) => {
     <Link
       to={
         !openDetails
-          ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView
-          : ROUTE.Activity + `/${_id}` + ROUTE.Details
+          ? `${ROUTE.Activity}/${_id}${ROUTE.VoucherSetView}`
+          : searchCriteria
+          ? `${ROUTE.Activity}/${_id}${ROUTE.Details}?searchCriteria=${searchCriteria}`
+          : `${ROUTE.Activity}/${_id}${ROUTE.Details}`
       }
     >
       <div
@@ -426,7 +437,7 @@ export const SingleVoucherBlock = (props) => {
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
 
   const refVoucherSetIdParam = voucherSetId
-    ? `?voucherSetId=${voucherSetId}`
+    ? `?${QUERY_PARAMS.VOUCHER_SET_ID}=${voucherSetId}`
     : "";
 
   return (

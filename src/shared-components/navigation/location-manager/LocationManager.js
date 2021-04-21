@@ -79,6 +79,11 @@ callLocationAttributes[ROUTE.NewOffer] = () => {
   updateBackgroundColor(bgColorBlack);
 };
 
+callLocationAttributes[ROUTE.Search] = () => {
+  enableControl([AFFMAP.BACK_BUTTON]);
+  updateBackgroundColor(bgColorBlack);
+};
+
 function LocationManager() {
   const navigationContext = useContext(NavigationContext);
 

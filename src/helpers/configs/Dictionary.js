@@ -54,6 +54,7 @@ export const ROUTE = {
   VoucherQRCode: "/qr",
   VoucherSetView: "/supply",
   Details: "/details",
+  Search: "/search",
 };
 
 export const BOTTOM_NAV_TYPE = {
@@ -142,4 +143,11 @@ export const MESSAGE = {
   SUCCESS: "success",
   ERROR: "error",
   LOCKED: "locked",
+};
+
+export const QUERY_PARAMS = {
+  DIRECT: "direct",
+  SEARCH_CRITERIA: "searchCriteria",
+  VOUCHER_SET_ID: "voucherSetId",
+  EMPTY: "null",
 };

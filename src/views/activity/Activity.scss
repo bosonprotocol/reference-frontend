@@ -1,6 +1,6 @@
 @import "src/styles/Settings";
 
-section.activity {  
+section.activity {
   .page-title {
     margin-top: 21px;
     margin-bottom: 28px;
@@ -17,9 +17,11 @@ section.activity {
       color: #FFFFFF;
     }
   }
+
   .react-tabs {
     ul[role="tablist"] {
       border-bottom: 1px solid #212C36;
+
       li {
         width: 50%;
         font-family: 'Exo', sans-serif;
@@ -32,6 +34,7 @@ section.activity {
         padding: 12px;
 
         text-align: center;
+
         &.react-tabs__tab--selected {
           background: none;
           border: none;
@@ -42,13 +45,23 @@ section.activity {
       }
     }
   }
+
   .vouchers-container {
     margin-top: 40px;
 
     .collapsible {
       .voucher-block {
         margin-top: 10px;
+        @media (max-width: 769px) {
+          .title-container {
+            .title {
+              white-space: nowrap;
+              width: 180px;
+            }
+          }
+        }
       }
+
       &.state {
         &_collapsed {
           .child-vouchers {
@@ -61,6 +74,7 @@ section.activity {
         margin-top: 20px;
       }
     }
+
     .voucher-block {
       a,
       &.solo {
@@ -109,7 +123,7 @@ section.activity {
         position: relative
       }
 
-      & + .voucher-block  {
+      & + .voucher-block {
         margin-top: 20px;
       }
 
@@ -131,6 +145,7 @@ section.activity {
         display: flex;
         flex-direction: column;
         justify-content: center;
+
         .label {
           background: #358EF5;
           border-radius: 4px;
@@ -149,25 +164,32 @@ section.activity {
             &_CANCELLED {
               background: #69819B;
             }
+
             &_COMMITED {
               background: #358EF5;
             }
+
             &_COMPLAINED {
               background: #F35D7C;
             }
+
             &_FINALIZED {
               background: #358EF5;
             }
+
             &_REDEEMED {
               background: #15BB9D;
             }
+
             &_REFUNDED {
               background: #E7B85E;
             }
+
             &_EXPIRED {
               background: #8E80D1;
             }
           }
+
           & + .label {
             margin-top: 5px;
           }
@@ -187,7 +209,7 @@ section.activity {
       }
 
       .thumb {
-        background:linear-gradient(210.91deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 102.42%), #1C2835;;
+        background: linear-gradient(210.91deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 102.42%), #1C2835;;
         border-radius: 4.6623px;
         box-shadow: 5.12853px 6.99345px 20.5141px rgba(0, 0, 0, 0.2);
 
@@ -223,6 +245,7 @@ section.activity {
           padding: 3px 12px 5px 12px;
           text-transform: uppercase;
         }
+
         .date {
           font-size: 13px;
           line-height: 16px;
@@ -231,6 +254,7 @@ section.activity {
 
           color: #4C6581;
         }
+
         .title {
           font-weight: 500;
           font-size: 16px;
@@ -243,6 +267,7 @@ section.activity {
             font-size: 20px;
           }
         }
+
         .value {
           text-transform: uppercase;
           font-size: 14px;
@@ -254,6 +279,7 @@ section.activity {
             margin-right: 9px;
           }
         }
+
         .quantity {
           text-transform: uppercase;
           font-size: 12px;
@@ -277,8 +303,18 @@ section.activity {
           }
         }
       }
+
+      @media (max-width: 769px) {
+        .title-container {
+          .title {
+            white-space: nowrap;
+            width: 120px;
+          }
+        }
+      }
     }
   }
+
   .no-vouchers {
     p {
       font-family: 'Exo', sans-serif;
@@ -291,12 +327,15 @@ section.activity {
       color: #A1BBD9;
       margin-top: 90px;
     }
+
     svg {
       margin-top: 80px;
     }
+
     .wallets {
       border-top: 0;
     }
+
     .wallet-list-item .wallet-list-item-image-holder {
       padding: 0;
     }

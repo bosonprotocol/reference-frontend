@@ -8,7 +8,7 @@
   header {
     margin-top: 60px;
   }
-  
+
   .product-list {
     margin-top: 20px;
 
@@ -18,6 +18,7 @@
       margin-top: 45px;
     }
   }
+
   .card-list {
     margin-top: 35px;
 
@@ -33,6 +34,7 @@
       }
     }
   }
+
   .home-products {
     margin-top: 25px;
 
@@ -40,6 +42,13 @@
       padding-top: 45px;
       padding-bottom: 45px;
       margin-top: 0;
+    }
+  }
+
+  .search-icon {
+    .search-label {
+      margin-left: 15px;
+      color: white;
     }
   }
 }
@@ -85,6 +94,7 @@
 @media (min-width: 769px) {
   .container.erase-right {
     padding-right: 22px;
+
     .swiper-slide {
       width: 100%;
     }
@@ -94,6 +104,7 @@
 @media (max-width: 374px) {
   .container.erase-right {
     padding-right: 22px;
+
     .swiper-slide {
       width: 100%;
     }
@@ -102,10 +113,11 @@
 
 @media (max-width: 768px) {
   .container.erase-right {
-    .swiper-button-prev{
+    .swiper-button-prev {
       right: 52px;
     }
-    .swiper-button-next{
+
+    .swiper-button-next {
       right: 22px;
     }
   }
@@ -113,10 +125,11 @@
 
 @media (max-width: 374px) {
   .container.erase-right {
-    .swiper-button-prev{
+    .swiper-button-prev {
       right: 30px;
     }
-    .swiper-button-next{
+
+    .swiper-button-next {
       right: 0;
     }
   }
