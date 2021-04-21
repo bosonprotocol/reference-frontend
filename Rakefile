@@ -170,7 +170,7 @@ namespace :app do
       content_work_directory = configuration.content_work_directory
 
       sh({
-           "NODE_ENV" => environment
+           "NODE_ENV" => environment,
            "CONTENT_WORK_DIRECTORY" => content_work_directory
          }, "npm", "run",
          "build:dev")
