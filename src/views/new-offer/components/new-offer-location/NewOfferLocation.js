@@ -17,9 +17,6 @@ function NewOfferLocation({
   postcodeValueReceiver,
   postcodeErrorMessage
 }) {
-  const conditionTarget = useRef();
-  const titleInput = useRef();
-  const titleClear = useRef();
 
   const countryInput = useRef()
   const countryClear = useRef()
