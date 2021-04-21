@@ -114,6 +114,12 @@ namespace :dependencies do
 end
 
 namespace :app do
+  desc 'Clean built content'
+  task :clean do
+    rm_rf 'src/dist'
+    rm_rf 'build/content'
+  end
+
   desc "Lint all app sources"
   task :lint => [:'dependencies:install'] do
     sh('npm', 'run', 'app:lint')
@@ -149,6 +155,86 @@ namespace :app do
       .to_h
 
     sh(environment, 'npm', 'run', 'start')
+  end
+
+  desc 'Build content for deployment identifier'
+  task :build, [
+      :deployment_type,
+      :deployment_label
+    ] => [:'dependencies:install'] do |_, args|
+      default_deployment_identifier(args)
+
+      configuration = configuration.for_scope(args.to_h)
+
+      environment = configuration.environment
+      content_work_directory = configuration.content_work_directory
+
+      sh({
+           "NODE_ENV" => environment
+         }, "npm", "run",
+         "build:dev")
+  end
+
+  desc 'Publish content for deployment identifier'
+  task :publish, [
+    :deployment_type,
+    :deployment_label
+  ] do |_, args|
+    configuration = configuration
+      .for_scope(args.to_h.merge(role: 'website'))
+
+    region = configuration.region
+    max_ages = configuration.max_ages
+    content_work_directory = configuration.content_work_directory
+    bucket = configuration.website_bucket_name
+
+    s3sync = S3Website.new(
+      region: region,
+      bucket: bucket,
+      max_ages: max_ages)
+
+    s3sync.publish_from(content_work_directory)
+  end
+
+  desc 'Invalidate content caches for deployment identifier'
+  task :invalidate, [
+    :deployment_type,
+    :deployment_label
+  ] => [:'terraform:ensure'] do |_, args|
+    configuration = configuration
+      .for_scope(args.to_h.merge(role: 'website'))
+
+    region = configuration.region
+    backend_config = configuration.backend_config
+
+    distribution_id = JSON.parse(
+      RubyTerraform::Output.for(
+        name: 'cdn_id',
+        source_directory: 'infra/website',
+        work_directory: 'build',
+        backend_config: backend_config))
+
+    cloudfront = Aws::CloudFront::Client.new(region: region)
+
+    cloudfront.create_invalidation(
+      distribution_id: distribution_id,
+      invalidation_batch: {
+        caller_reference: SecureRandom.uuid,
+        paths: {
+          quantity: 1,
+          items: ['/*'],
+        }
+      })
+  end
+
+  desc 'Deploy content'
+  task :deploy, [
+    :deployment_type,
+    :deployment_label
+  ] => [:'terraform:ensure'] do |_, args|
+    Rake::Task['app:build'].invoke(*args)
+    Rake::Task['app:publish'].invoke(*args)
+    Rake::Task['app:invalidate'].invoke(*args)
   end
 end
 
