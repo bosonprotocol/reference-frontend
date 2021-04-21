@@ -135,7 +135,7 @@ jobs:
           - get: node-builder-image
       - task: provision-content
         image: node-builder-image
-        file: source/pipelines/main/provision-content/task.yaml
+        file: source/pipelines/develop/provision-content/task.yaml
         params:
           GPG_KEY: ((gpg_key))
           PROVISIONING_ROLE_ARN: ((development_hassium_provisioning_role_arn))
