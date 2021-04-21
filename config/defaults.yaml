@@ -15,8 +15,6 @@ website_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hier
 
 storage_bucket_encryption: "AES256"
 
-content_work_directory: "build/content"
-
 admin_role_name: "cross-account-admin-role"
 
 rdm_management_account_id: "031036423983"
