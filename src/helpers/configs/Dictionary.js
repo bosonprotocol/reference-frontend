@@ -90,11 +90,6 @@ export const NAME = {
   BUYER_SUFFIX: "buyer_suffix",
   DATE_START: "start_date",
   DATE_END: "end_date",
-  COUNTRY: "country",
-  CITY: "city",
-  ADDRESS_LINE_ONE: "address_line_one",
-  ADDRESS_LINE_TWO: "address_line_two",
-  POSTCODE: "postcode",
 };
 
 export const MODAL_TYPES = {
