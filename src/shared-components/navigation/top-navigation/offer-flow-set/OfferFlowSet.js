@@ -19,7 +19,7 @@ function OfferFlowSet() {
   }, [activeScreen]);
 
   return (
-    <div className="top-navigation-offer flex ai-center">
+    <div className="top-navigation-offer flex ai-center offer-flow w100">
       <div
         className="button square"
         role="button"
@@ -27,7 +27,7 @@ function OfferFlowSet() {
       >
         <Arrow color={"#80F0BE"} />
       </div>
-      <div className="progress-bar flex center">
+      <div className="progress-bar flex w100">
         <div className="bar">
           <div style={{ width: progressBarWidth }} className="fill"></div>
         </div>
