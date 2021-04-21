@@ -6,7 +6,7 @@ import "./Activity.scss";
 
 import { GlobalContext, Action } from "../../contexts/Global";
 
-import { ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
 
 import {
   Quantity,
@@ -37,7 +37,7 @@ import { WalletConnect } from "../../shared-components/wallet-connect/WalletConn
 import { formatDate } from "../../utils/FormatUtils";
 
 export function ActivityAccountVouchers({ title, voucherSetId, block }) {
-  const [accountVouchers, setAccountVouchers] = useState([]);
+  const [accountVouchers, setAccountVouchers] = useState(undefined);
   const { account } = useWeb3React();
   const modalContext = useContext(ModalContext);
   const [loading, setLoading] = useState(0);
@@ -78,7 +78,7 @@ export function ActivityVoucherSetView() {
   }, []);
 
   useEffect(() => {
-    const getVoucherSet = globalContext.state.allVoucherSets.find(
+    const getVoucherSet = globalContext.state.allVoucherSets?.find(
       (voucher) => voucher.id === voucherSetId
     );
 
@@ -101,7 +101,7 @@ export function ActivityVoucherSetView() {
 }
 
 export function ActivityVoucherSets() {
-  const [voucherBlocks, setVoucherBlocks] = useState([]);
+  const [voucherBlocks, setVoucherBlocks] = useState(undefined);
   const { account } = useWeb3React();
 
   useEffect(() => {
@@ -130,7 +130,7 @@ function ActivityView(props) {
   } = props;
   const globalContext = useContext(GlobalContext);
 
-  const [resultVouchers, setResultVouchers] = useState([]);
+  const [resultVouchers, setResultVouchers] = useState(undefined);
   const [activeVouchers, setActiveVouchers] = useState([]);
   const [inactiveVouchers, setInactiveVouchers] = useState([]);
   const [pageLoading, setPageLoading] = useState(0);
@@ -225,14 +225,13 @@ function ActivityView(props) {
           getLastAction(a) > getLastAction(b) ? -1 : 1
         )
       );
-
-      if (account && isAuthenticated) {
+      if (account && isAuthenticated && Array.isArray(voucherBlocks)) {
         setPageLoading(0);
       }
     };
 
     sortVouchersToActiveAndInactive();
-  }, [resultVouchers]);
+  }, [resultVouchers, voucherBlocks]);
 
   const activityMessageType = {
     [VOUCHER_TYPE.accountVoucher]: {
@@ -343,7 +342,16 @@ function ActivityView(props) {
 
 export const VoucherSetBlock = (props) => {
   const [expand] = useState(1);
-  const { title, image, price, qty, _id, openDetails, paymentType } = props;
+  const {
+    title,
+    image,
+    price,
+    qty,
+    _id,
+    openDetails,
+    paymentType,
+    searchCriteria,
+  } = props;
   const currency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
   const currencyIcon =
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
@@ -352,8 +360,10 @@ export const VoucherSetBlock = (props) => {
     <Link
       to={
         !openDetails
-          ? ROUTE.Activity + `/${_id}` + ROUTE.VoucherSetView
-          : ROUTE.Activity + `/${_id}` + ROUTE.Details
+          ? `${ROUTE.Activity}/${_id}${ROUTE.VoucherSetView}`
+          : searchCriteria
+          ? `${ROUTE.Activity}/${_id}${ROUTE.Details}?searchCriteria=${searchCriteria}`
+          : `${ROUTE.Activity}/${_id}${ROUTE.Details}`
       }
     >
       <div
@@ -427,7 +437,7 @@ export const SingleVoucherBlock = (props) => {
     paymentType === 1 || paymentType === 2 ? <IconEth /> : <IconBsn />;
 
   const refVoucherSetIdParam = voucherSetId
-    ? `?voucherSetId=${voucherSetId}`
+    ? `?${QUERY_PARAMS.VOUCHER_SET_ID}=${voucherSetId}`
     : "";
 
   return (

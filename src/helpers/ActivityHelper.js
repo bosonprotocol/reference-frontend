@@ -19,7 +19,7 @@ export const sortBlocks = (blocksArray, voucherType) => {
   };
 
   if (voucherType === VOUCHER_TYPE.voucherSet) {
-    blocksArray.forEach((voucherSet) => {
+    blocksArray?.forEach((voucherSet) => {
       let quantity = voucherSet.qty > 0;
       let activeVouchers = voucherSet.hasActiveVouchers;
       let expired =
