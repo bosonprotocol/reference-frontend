@@ -142,7 +142,7 @@ export async function getAccountVouchers(account, modalContext) {
     allAccountVouchers.voucherData &&
     prepareVoucherData(allAccountVouchers.voucherData);
 
-  return vouchersParsed ? vouchersParsed : undefined;
+  return vouchersParsed ? vouchersParsed : [];
 }
 
 export async function getParsedAccountVoucherSets(account) {
@@ -155,7 +155,7 @@ export async function getParsedAccountVoucherSets(account) {
 
   const parsedData = prepareAccountVoucherSetData(accountVoucherSets);
 
-  return parsedData ? parsedData : undefined;
+  return parsedData ? parsedData : [];
 }
 
 export async function getParsedVouchersFromSupply(voucherSetId, account) {
