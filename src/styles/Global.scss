@@ -245,6 +245,9 @@ header.top-navigation {
   z-index: 10;
 
   .control-wrap {
+    max-width: 592px;
+    margin: 0 auto;
+    
     .dual.split {
       & > .button, a {
         width: calc(50% - 8px);

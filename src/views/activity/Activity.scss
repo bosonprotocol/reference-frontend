@@ -100,7 +100,7 @@ section.activity {
       &.supply {
         .info {
           flex-shrink: 1;
-
+          width: 58%;
           .title-container .title {
             text-overflow: ellipsis;
           }
