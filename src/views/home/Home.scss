@@ -10,27 +10,15 @@
   }
 
   .product-list {
-    margin-top: 20px;
+    margin-top: 30px;
 
-    @media (min-width: 961px) {
-      padding-top: 45px;
-      padding-bottom: 45px;
-      margin-top: 45px;
-    }
-  }
+    .container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
 
-  .card-list {
-    margin-top: 35px;
-
-    @media (min-width: 961px) {
-      padding-top: 45px;
-      padding-bottom: 45px;
-      margin-top: 0;
-    }
-
-    .slick-track {
-      @media (max-width: 960px) {
-        margin-left: -25px;
+      a {
+        min-width: 33.3%;
       }
     }
   }

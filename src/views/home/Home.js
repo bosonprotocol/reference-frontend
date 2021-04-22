@@ -135,83 +135,15 @@ function Home() {
             <div className="container">
               {!pageLoading ? (
                 productBlocks?.length ? (
-                  <Swiper
-                    spaceBetween={7}
-                    navigation
-                    slidesPerView={3}
-                    loop={true}
-                    shortSwipes={false}
-                    threshold={5}
-                    freeMode={true}
-                    freeModeSticky={true}
-                    observer={true}
-                    observeParents={true}
-                    freeModeMomentumVelocityRatio={0.01}
-                    breakpoints={{
-                      319: {
-                        slidesPerView: 1,
-                      },
-                      375: {
-                        slidesPerView: 2,
-                      },
-                      769: {
-                        slidesPerView: 3,
-                      },
-                    }}
-                  >
-                    {productBlocks.map((block, id) => (
-                      <SwiperSlide key={id}>
-                        <ProductBlock {...block} />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                    productBlocks.map((block, id) => (
+                        <ProductBlock key={id} {...block} />
+                    ))
                 ) : null
               ) : (
                 loadingPlaceholder
               )}
             </div>
           </section>
-          <section className="card-list">
-            <div className="container erase-right">
-              {cardBlocks?.length ? (
-                <Swiper
-                  spaceBetween={8}
-                  slidesPerView={"auto"}
-                  loop={true}
-                  navigation
-                  shortSwipes={false}
-                  threshold={5}
-                  freeMode={true}
-                  freeModeSticky={true}
-                  observer={true}
-                  observeParents={true}
-                  freeModeMomentumVelocityRatio={0.05}
-                  breakpoints={{
-                    320: {
-                      slidesPerView: 1,
-                    },
-                    375: {
-                      slidesPerView: "auto",
-                    },
-                    769: {
-                      slidesPerView: 2,
-                    },
-                  }}
-                >
-                  {cardBlocks.map((block, id) => (
-                    <SwiperSlide key={id}>
-                      <CardBlock {...block} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              ) : null}
-            </div>
-          </section>
-          {/* <section className="home-products">
-                       <div className="container">
-                           <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>
-                       </div>
-                    </section> */}
         </div>
       </div>
     </>
