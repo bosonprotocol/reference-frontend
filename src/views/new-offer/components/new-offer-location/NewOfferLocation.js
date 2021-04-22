@@ -2,12 +2,11 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 
 import { NAME } from "../../../../helpers/configs/Dictionary";
 import { SellerContext, getData } from "../../../../contexts/Seller";
+import {DropDownContainer} from './DropDown'
 
 function NewOfferLocation({
   countryValueReceiver,
-  countryErrorMessage,
   cityValueReceiver,
-  cityErrorMessage,
   addressLineOneValueReceiver,
   addressLineOneErrorMessage,
 
@@ -19,10 +18,8 @@ function NewOfferLocation({
 }) {
 
   const countryInput = useRef()
-  const countryClear = useRef()
 
   const cityInput = useRef()
-  const cityClear = useRef()
 
   const addressLineOneInput = useRef()
   const addressLineOneClear = useRef()
@@ -44,89 +41,69 @@ function NewOfferLocation({
 
   const sellerContext = useContext(SellerContext);
   const getOfferingData = getData(sellerContext.state.offeringData);
-  const selectedCategory = getOfferingData(NAME.CONDITION);
 
-  const description = getOfferingData(NAME.DESCRIPTION);
-  const maxSymbols = 160;
-
-  const selectLabel = (el) => {
-    Array.from(
-      el.parentElement.parentElement.querySelectorAll("label")
-    ).forEach((label) => {
-      label.classList.remove("active");
-    });
-    el.parentElement.querySelector("label").classList.add("active");
-    conditionValueReceiver(el.value);
-  };
+  const selectedCountry = getOfferingData(NAME.COUNTRY)
+  const selectedCity = getOfferingData(NAME.CITY)
 
   const handleClearField = (e, callback) => {
     e.target.parentElement.getElementsByTagName("input")[0].value = "";
     callback("");
   };
 
+  const renderCountries = () => {
+    let options = []
+
+    for (let i = 0; i < 10; i++) {
+      options.push(<option key={i} value={`country${i}`}>Country {i}</option>)
+    }
+
+    console.log(options);
+
+    return options
+  }
+
+  const renderCities = () => {
+    let options = []
+
+    for (let i = 0; i < 10; i++) {
+      options.push(<option key={i} value={`city${i}`}>City {i}</option>)
+    }
+
+    console.log(options);
+
+    return options
+  }
+
   return (
     <div className="general">
-      <div>
+      <div className="step-title">
         <h1>Pick-up location</h1>
       </div>
 
       <div className="row">
         <div className="field">
-          <label htmlFor="offer-country">Country</label>
-          <div
-            className="input focus"
-            data-error={countryHasBeenBlurred ? countryErrorMessage : null}
-          >
-            <input
-              ref={countryInput}
+          <label htmlFor="countries">Country</label>
+            <DropDownContainer
               id="offer-country"
-              type="text"
-              onBlur={() => setCountryHasBeenBlurred(true)}
-              onChange={(e) =>
-                countryValueReceiver(e.target ? e.target.value : null)
-              }
+              refInput={countryInput}
+              selected={selectedCountry}
+              receiver={countryValueReceiver}
+              renderValues={renderCountries}
             />
-            <div
-              ref={countryClear}
-              className={`clear-field ${
-                countryInput.current &&
-                (countryInput.current.value !== "" ? "active" : "hidden")
-              }`}
-              onClick={(e) => handleClearField(e, countryValueReceiver)}
-            ></div>
-          </div>
         </div>
       </div>
-
       <div className="row">
         <div className="field">
           <label htmlFor="offer-city">City</label>
-          <div
-            className="input focus"
-            data-error={cityHasBeenBlurred ? cityErrorMessage : null}
-          >
-            <input
-              ref={cityInput}
+            <DropDownContainer
               id="offer-city"
-              type="text"
-              onBlur={() => setCityHasBeenBlurred(true)}
-              onChange={(e) =>
-                cityValueReceiver(e.target ? e.target.value : null)
-              }
+              refInput={cityInput}
+              selected={selectedCity}
+              receiver={cityValueReceiver}
+              renderValues={renderCities}
             />
-            <div
-              ref={cityClear}
-              className={`clear-field ${
-                cityInput.current &&
-                (cityInput.current.value !== "" ? "active" : "hidden")
-              }`}
-              onClick={(e) => handleClearField(e, cityValueReceiver)}
-            ></div>
-          </div>
         </div>
       </div>
-
-
       <div className="row">
         <div className="field">
           <label htmlFor="offer-address-line-one">Address line 1</label>

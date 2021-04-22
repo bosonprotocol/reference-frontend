@@ -67,9 +67,10 @@ export const expiryDateBeforeStartDateError =
 // END DATES CONFIG
 
 // LOCATION CONFIG
+//TODO Country / City settings not required? 
 // COUNTRY CONFIG
 export const countrySettings = {
-  min: 4,
+  min: 1,
   max: 20
 }
 
@@ -80,7 +81,7 @@ export const maxCountryLengthError = maxLentError("Country", countrySettings.max
 
 // CITY CONFIG
 export const citySettings = {
-  min: 4,
+  min: 1,
   max: 20
 } 
 

@@ -55,6 +55,8 @@ function NewOffer() {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.DEPOSITS_C]: CURRENCY.ETH,
     [NAME.DATE_START]: new Date().setHours(0, 0, 0, 0),
+    [NAME.COUNTRY]: 'country4',
+    [NAME.CITY]: 'city4',
   };
   const fundLimitsContract = useFundLimitsContract();
 
