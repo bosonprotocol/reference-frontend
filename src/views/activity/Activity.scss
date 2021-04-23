@@ -145,6 +145,10 @@ section.activity {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        
+        @media (max-width: 320px) {
+          max-width: 30%;
+        }
 
         .label {
           background: #358EF5;
@@ -220,6 +224,10 @@ section.activity {
         overflow: hidden;
         flex: 0 1 185px;
         min-width: 80px;
+
+        @media (max-width: 320px) {
+          max-width: calc(20% - 15px);
+        }
       }
 
       .info {
@@ -229,6 +237,10 @@ section.activity {
         position: relative;
         padding: 10px 0;
         flex: 8 0 auto;
+
+        @media (max-width: 320px) {
+          max-width: 34%;
+        }
 
         & > div + div {
           margin-top: 9px;
@@ -293,7 +305,12 @@ section.activity {
           justify-content: center;
           align-items: center;
           padding: 5px 13px 5px 8px;
-
+          
+          @media (max-width: 320px) {
+            margin-top: 10px;
+            background: no-repeat;
+            padding-left: 0;
+          }
           .icon {
             margin-right: 6px;
 
