@@ -5,60 +5,60 @@ import { Link } from "react-router-dom";
 import "./ProductBlock.scss";
 
 import {
-    IconEth,
-    IconDeposit,
-    IconBsn,
+  IconEth,
+  IconDeposit,
+  IconBsn,
 } from "../../../../shared-components/icons/Icons";
 
 import { QUERY_PARAMS, ROUTE } from "../../../../helpers/configs/Dictionary";
 
 function ProductBlock(props) {
-    const { id, title, image, price, deposit, col, paymentType, keyId } = props;
-    const productType = col ? "col" : "";
+  const { id, title, image, price, deposit, col, paymentType, keyId } = props;
+  const productType = col ? "col" : "";
 
-    const priceCurrency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
-    const depositsCurrency =
-        paymentType === 1 || paymentType === 3 ? "ETH" : "BSN";
+  const priceCurrency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
+  const depositsCurrency =
+    paymentType === 1 || paymentType === 3 ? "ETH" : "BSN";
 
-    return (
-        <Link
-            to={ `${ ROUTE.Activity }/${ id }${ ROUTE.Details }?${ QUERY_PARAMS.DIRECT }=1` }
-        >
-            <div
-                // onClick={ openProduct }
-                className={ `product-block ${ productType } ` } //${ animate ? 'animate' : '' }
-                key={ keyId }
-            >
-                <div
-                    className={ `product-image flex center ${ productType }` }
-                    style={ { backgroundImage: `url('${ image }')` } }
-                ></div>
-                <h3>{ title }</h3>
-                <div className="price flex ai-center">
-                    { priceCurrency === "ETH" ? (
-                        <span>
-              <IconEth/>
-                            { price } ETH
+  return (
+    <Link
+      to={`${ROUTE.Activity}/${id}${ROUTE.Details}?${QUERY_PARAMS.DIRECT}=1`}
+    >
+      <div
+        // onClick={ openProduct }
+        className={`product-block ${productType} `} //${ animate ? 'animate' : '' }
+        key={keyId}
+      >
+        <div
+          className={`product-image flex center ${productType}`}
+          style={{ backgroundImage: `url('${image}')` }}
+        ></div>
+        <h3>{title}</h3>
+        <div className="price flex ai-center">
+          {priceCurrency === "ETH" ? (
+            <span>
+              <IconEth />
+              {price} ETH
             </span>
-                    ) : (
-                        <span>
-              <IconBsn/>
-                            { price } BSN{ " " }
+          ) : (
+            <span>
+              <IconBsn />
+              {price} BSN{" "}
             </span>
-                    ) }
-                    { depositsCurrency === "ETH" ? (
-                        <span>
-              <IconDeposit/> { deposit } ETH
+          )}
+          {depositsCurrency === "ETH" ? (
+            <span>
+              <IconDeposit /> {deposit} ETH
             </span>
-                    ) : (
-                        <span>
-              <IconDeposit/> { deposit } BSN{ " " }
+          ) : (
+            <span>
+              <IconDeposit /> {deposit} BSN{" "}
             </span>
-                    ) }
-                </div>
-            </div>
-        </Link>
-    );
+          )}
+        </div>
+      </div>
+    </Link>
+  );
 }
 
 export default ProductBlock;
