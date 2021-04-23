@@ -88,7 +88,7 @@ export function ActivityVoucherSetView() {
 
   return (
     <section className="activity atomic-scoped">
-      <div className="vouchers-container container">
+      <div className="voucher-set-container container">
         <VoucherSetBlock {...block} key={voucherSetId} openDetails />
         <ActivityAccountVouchers
           block={block}
@@ -276,7 +276,7 @@ function ActivityView(props) {
   return (
     <>
       <section className="activity atomic-scoped">
-        <div className="container">
+        <div className="container voucher-container">
           <div className="page-title">
             <h1>
               {title
