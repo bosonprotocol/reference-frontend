@@ -126,10 +126,11 @@ export const TableRow = (props) => {
 };
 
 export const TableLocation = (props) => {
-  const { data } = props;
+  const { data, hasBiggerTitle } = props;
+  
   return (
     <div className="table location ai-center ">
-      <h1>Pick-up Location</h1>
+      {hasBiggerTitle ? <h1>Pick-up Location</h1> : <h2>Pick-up Location</h2>}
     <div>
       <p className="flex">
         <IconLocation />

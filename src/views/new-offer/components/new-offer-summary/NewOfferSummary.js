@@ -84,7 +84,7 @@ function NewOfferSummary() {
           <TableRow data={tableContent} />
         ) : null}
         {tableLocation.some((item) => item) ? (
-          <TableLocation data={tableLocation} />
+          <TableLocation data={tableLocation} hasBiggerTitle={true}/>
         ) : null}
         {tableDate.some((item) => item) ? <DateTable data={tableDate} /> : null}
         {tablePrices.some((item) => item) ? (
