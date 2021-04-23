@@ -4,12 +4,11 @@ import { ethers } from "ethers";
 import {
   TableRow,
   DateTable,
+  TableLocation,
 } from "../../../../shared-components/table-content/TableContent";
 import { SellerContext } from "../../../../contexts/Seller";
 import { formatDate, totalDepositCalcEth } from "../../../../utils/FormatUtils";
 import { capitalize } from "./../../../../utils/FormatUtils";
-
-//todo location display location on summary page
 
 function NewOfferSummary() {
   const sellerContext = useContext(SellerContext);
@@ -57,6 +56,14 @@ function NewOfferSummary() {
       ],
   ];
 
+  const tableLocation = [
+    address_line_one && [address_line_one],
+    address_line_two && [address_line_two],
+    city && [city],
+    postcode && [postcode],
+    country && [country],
+  ]
+
   const tableDate = [
     start_date && formatDate(start_date),
     end_date && formatDate(end_date),
@@ -75,6 +82,9 @@ function NewOfferSummary() {
         </div>
         {tableContent.some((item) => item) ? (
           <TableRow data={tableContent} />
+        ) : null}
+        {tableLocation.some((item) => item) ? (
+          <TableLocation data={tableLocation} />
         ) : null}
         {tableDate.some((item) => item) ? <DateTable data={tableDate} /> : null}
         {tablePrices.some((item) => item) ? (

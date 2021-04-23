@@ -128,12 +128,15 @@ export const TableRow = (props) => {
 export const TableLocation = (props) => {
   const { data } = props;
   return (
-    <div className="table location flex ai-center jc-sb">
-      <p className="flex center">
+    <div className="table location ai-center ">
+      <h1>Pick-up Location</h1>
+    <div>
+      <p className="flex">
         <IconLocation />
-        {data}
+        {data?.filter(e => e !== undefined).join(", ")}
       </p>
       <div className="arrow expand"></div>
+    </div>
     </div>
   );
 };
