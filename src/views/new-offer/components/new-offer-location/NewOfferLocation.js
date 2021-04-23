@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 
 import { NAME } from "../../../../helpers/configs/Dictionary";
 import { SellerContext, getData } from "../../../../contexts/Seller";
+import {getSortedCountryNames, getSortedCityNamesByCountryCode, getDefaultCityForCountry, DEFAULT_COUNTRY_IS_CODE, getISOCodeByName} from '../../../../utils/location/location'
+
 import {DropDownContainer} from './DropDown'
 
 function NewOfferLocation({
@@ -30,15 +32,13 @@ function NewOfferLocation({
   const postcodeInput = useRef()
   const postcodeClear = useRef()
 
-  const [titleHasBeenBlurred, setTitleHasBeenBlurred] = useState(false);
-  const [countryHasBeenBlurred, setCountryHasBeenBlurred] = useState(false)
-  const [cityHasBeenBlurred, setCityHasBeenBlurred] = useState(false)
   const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] = useState(false)
   const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] = useState(false)
   const [postcodeHasBeenBlurred, setPostcodeHasBeenBlurred] = useState(
     false
   );
 
+  const [iSOCode, setISOCode] = useState(DEFAULT_COUNTRY_IS_CODE)
   const sellerContext = useContext(SellerContext);
   const getOfferingData = getData(sellerContext.state.offeringData);
 
@@ -50,28 +50,31 @@ function NewOfferLocation({
     callback("");
   };
 
-  const renderCountries = () => {
+  useEffect(() => {
+    const countryISOCOde = getISOCodeByName(selectedCountry)
+    setISOCode(countryISOCOde)
+    const defaultCityName = getDefaultCityForCountry(selectedCountry)
+    cityValueReceiver(defaultCityName)
+  }, [selectedCountry])
+
+  const renderOptions = (arr)  => {
     let options = []
 
-    for (let i = 0; i < 10; i++) {
-      options.push(<option key={i} value={`country${i}`}>Country {i}</option>)
+    for (let i = 0; i < arr.length; i++) {
+      options.push(<option key={i} value={arr[i]}>{arr[i]}</option>)
     }
-
-    console.log(options);
 
     return options
   }
 
+  const renderCountries = () => {
+    const countries = getSortedCountryNames()
+    return renderOptions(countries)
+  }
+
   const renderCities = () => {
-    let options = []
-
-    for (let i = 0; i < 10; i++) {
-      options.push(<option key={i} value={`city${i}`}>City {i}</option>)
-    }
-
-    console.log(options);
-
-    return options
+    const cities = getSortedCityNamesByCountryCode(iSOCode)
+    return renderOptions(cities)
   }
 
   return (
