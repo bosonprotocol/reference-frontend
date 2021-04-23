@@ -1,7 +1,9 @@
 import cities from "./city.json"
 import countries from "./country.json"
 
-export const DEFAULT_COUNTRY_IS_CODE = countries[0].isoCode
+export const DEFAULT_COUNTRY_ISO_CODE = countries[0].isoCode
+export const DEFAULT_COUNTRY_NAME = countries[0].name
+export const DEFAULT_CITY_NAME = "Andkhoy"
 
 const compare = (a, b) => {
     if (a.name < b.name)
@@ -10,10 +12,6 @@ const compare = (a, b) => {
         return 1;
     return 0;
 }; 
-
-export const defaultCountyName = () => {
-    return countries[0].name
-}
 
 export const getISOCodeByName = (name) => {
     if (!name) {
@@ -38,20 +36,15 @@ export const getSortedCountryNames = () => {
 }
 
 export const getSortedCityNamesByCountryCode = (code) => {
+    if (!code) {
+        return ''
+    }
     return cities.filter(e => e.countryCode == code).sort(compare).map(e => e.name)
 }
-
-export const defaultCityName = () => {
-    return getSortedCityNamesByCountryCode(DEFAULT_COUNTRY_IS_CODE)[0]
-}
-
-export const getDefaultCityForCountry = (name) => {
-    if (!name) {
+export const getDefaultCityForCountry = (isoCode) => {
+    if (!isoCode) {
         return ''
     }
 
-    const isoCode = getCodeByCountryName(name)
-    const cities = getSortedCityNamesByCountryCode(isoCode)[0]
-
-    return cities
+    return getSortedCityNamesByCountryCode(isoCode)[0]
 }

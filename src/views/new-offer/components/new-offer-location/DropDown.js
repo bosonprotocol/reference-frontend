@@ -1,5 +1,15 @@
 export const DropDownContainer = (props) => {
-    const {id, refInput, selected, receiver, renderValues} = props;
+    const {id, refInput, selected, receiver, arr} = props;
+
+    const renderOptions = (arr)  => {
+        let options = []
+    
+        for (let i = 0; i < arr?.length; i++) {
+          options.push(<option key={i} value={arr[i]}>{arr[i]}</option>)
+        }
+    
+        return options
+      }
 
     return (
         <div className="dropdown-container">
@@ -11,7 +21,7 @@ export const DropDownContainer = (props) => {
                     receiver(e.target ? e.target.value : null)
                 }
                 >
-                    {renderValues()}
+                {renderOptions(arr)}
             </select>
         </div>
     )

@@ -18,24 +18,6 @@
         ]
     },
     {
-        "isoCode": "AX",
-        "name": "Aland Islands",
-        "phonecode": "+358-18",
-        "flag": "🇦🇽",
-        "currency": "EUR",
-        "latitude": "60.11666700",
-        "longitude": "19.90000000",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Mariehamn",
-                "gmtOffset": 7200,
-                "gmtOffsetName": "UTC+02:00",
-                "abbreviation": "EET",
-                "tzName": "Eastern European Time"
-            }
-        ]
-    },
-    {
         "isoCode": "AL",
         "name": "Albania",
         "phonecode": "355",
@@ -72,24 +54,6 @@
         ]
     },
     {
-        "isoCode": "AS",
-        "name": "American Samoa",
-        "phonecode": "+1-684",
-        "flag": "🇦🇸",
-        "currency": "USD",
-        "latitude": "-14.33333333",
-        "longitude": "-170.00000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Pago_Pago",
-                "gmtOffset": -39600,
-                "gmtOffsetName": "UTC-11:00",
-                "abbreviation": "SST",
-                "tzName": "Samoa Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "AD",
         "name": "Andorra",
         "phonecode": "376",
@@ -122,105 +86,6 @@
                 "gmtOffsetName": "UTC+01:00",
                 "abbreviation": "WAT",
                 "tzName": "West Africa Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "AI",
-        "name": "Anguilla",
-        "phonecode": "+1-264",
-        "flag": "🇦🇮",
-        "currency": "XCD",
-        "latitude": "18.25000000",
-        "longitude": "-63.16666666",
-        "timezones": [
-            {
-                "zoneName": "America\/Anguilla",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "AQ",
-        "name": "Antarctica",
-        "phonecode": "",
-        "flag": "🇦🇶",
-        "currency": "",
-        "latitude": "-74.65000000",
-        "longitude": "4.48000000",
-        "timezones": [
-            {
-                "zoneName": "Antarctica\/Casey",
-                "gmtOffset": 39600,
-                "gmtOffsetName": "UTC+11:00",
-                "abbreviation": "AWST",
-                "tzName": "Australian Western Standard Time"
-            },
-            {
-                "zoneName": "Antarctica\/Davis",
-                "gmtOffset": 25200,
-                "gmtOffsetName": "UTC+07:00",
-                "abbreviation": "DAVT",
-                "tzName": "Davis Time"
-            },
-            {
-                "zoneName": "Antarctica\/DumontDUrville",
-                "gmtOffset": 36000,
-                "gmtOffsetName": "UTC+10:00",
-                "abbreviation": "DDUT",
-                "tzName": "Dumont d'Urville Time"
-            },
-            {
-                "zoneName": "Antarctica\/Mawson",
-                "gmtOffset": 18000,
-                "gmtOffsetName": "UTC+05:00",
-                "abbreviation": "MAWT",
-                "tzName": "Mawson Station Time"
-            },
-            {
-                "zoneName": "Antarctica\/McMurdo",
-                "gmtOffset": 46800,
-                "gmtOffsetName": "UTC+13:00",
-                "abbreviation": "NZDT",
-                "tzName": "New Zealand Daylight Time"
-            },
-            {
-                "zoneName": "Antarctica\/Palmer",
-                "gmtOffset": -10800,
-                "gmtOffsetName": "UTC-03:00",
-                "abbreviation": "CLST",
-                "tzName": "Chile Summer Time"
-            },
-            {
-                "zoneName": "Antarctica\/Rothera",
-                "gmtOffset": -10800,
-                "gmtOffsetName": "UTC-03:00",
-                "abbreviation": "ROTT",
-                "tzName": "Rothera Research Station Time"
-            },
-            {
-                "zoneName": "Antarctica\/Syowa",
-                "gmtOffset": 10800,
-                "gmtOffsetName": "UTC+03:00",
-                "abbreviation": "SYOT",
-                "tzName": "Showa Station Time"
-            },
-            {
-                "zoneName": "Antarctica\/Troll",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "GMT",
-                "tzName": "Greenwich Mean Time"
-            },
-            {
-                "zoneName": "Antarctica\/Vostok",
-                "gmtOffset": 21600,
-                "gmtOffsetName": "UTC+06:00",
-                "abbreviation": "VOST",
-                "tzName": "Vostok Station Time"
             }
         ]
     },
@@ -355,24 +220,7 @@
             }
         ]
     },
-    {
-        "isoCode": "AW",
-        "name": "Aruba",
-        "phonecode": "297",
-        "flag": "🇦🇼",
-        "currency": "AWG",
-        "latitude": "12.50000000",
-        "longitude": "-69.96666666",
-        "timezones": [
-            {
-                "zoneName": "America\/Aruba",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
+ 
     {
         "isoCode": "AU",
         "name": "Australia",
@@ -656,24 +504,6 @@
         ]
     },
     {
-        "isoCode": "BM",
-        "name": "Bermuda",
-        "phonecode": "+1-441",
-        "flag": "🇧🇲",
-        "currency": "BMD",
-        "latitude": "32.33333333",
-        "longitude": "-64.75000000",
-        "timezones": [
-            {
-                "zoneName": "Atlantic\/Bermuda",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "BT",
         "name": "Bhutan",
         "phonecode": "975",
@@ -742,24 +572,6 @@
                 "gmtOffsetName": "UTC+02:00",
                 "abbreviation": "CAT",
                 "tzName": "Central Africa Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "BV",
-        "name": "Bouvet Island",
-        "phonecode": "0055",
-        "flag": "🇧🇻",
-        "currency": "NOK",
-        "latitude": "-54.43333333",
-        "longitude": "3.40000000",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Oslo",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "CET",
-                "tzName": "Central European Time"
             }
         ]
     },
@@ -883,24 +695,6 @@
                 "gmtOffsetName": "UTC-03:00",
                 "abbreviation": "BRT",
                 "tzName": "Brasília Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "IO",
-        "name": "British Indian Ocean Territory",
-        "phonecode": "246",
-        "flag": "🇮🇴",
-        "currency": "USD",
-        "latitude": "-6.00000000",
-        "longitude": "71.50000000",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Chagos",
-                "gmtOffset": 21600,
-                "gmtOffsetName": "UTC+06:00",
-                "abbreviation": "IOT",
-                "tzName": "Indian Ocean Time"
             }
         ]
     },
@@ -1238,24 +1032,6 @@
         ]
     },
     {
-        "isoCode": "KY",
-        "name": "Cayman Islands",
-        "phonecode": "+1-345",
-        "flag": "🇰🇾",
-        "currency": "KYD",
-        "latitude": "19.50000000",
-        "longitude": "-80.50000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Cayman",
-                "gmtOffset": -18000,
-                "gmtOffsetName": "UTC-05:00",
-                "abbreviation": "EST",
-                "tzName": "Eastern Standard Time (North America"
-            }
-        ]
-    },
-    {
         "isoCode": "CF",
         "name": "Central African Republic",
         "phonecode": "236",
@@ -1349,42 +1125,6 @@
         ]
     },
     {
-        "isoCode": "CX",
-        "name": "Christmas Island",
-        "phonecode": "61",
-        "flag": "🇨🇽",
-        "currency": "AUD",
-        "latitude": "-10.50000000",
-        "longitude": "105.66666666",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Christmas",
-                "gmtOffset": 25200,
-                "gmtOffsetName": "UTC+07:00",
-                "abbreviation": "CXT",
-                "tzName": "Christmas Island Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "CC",
-        "name": "Cocos (Keeling) Islands",
-        "phonecode": "61",
-        "flag": "🇨🇨",
-        "currency": "AUD",
-        "latitude": "-12.50000000",
-        "longitude": "96.83333333",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Cocos",
-                "gmtOffset": 23400,
-                "gmtOffsetName": "UTC+06:30",
-                "abbreviation": "CCT",
-                "tzName": "Cocos Islands Time"
-            }
-        ]
-    },
-    {
         "isoCode": "CO",
         "name": "Colombia",
         "phonecode": "57",
@@ -1460,24 +1200,6 @@
                 "gmtOffsetName": "UTC+02:00",
                 "abbreviation": "CAT",
                 "tzName": "Central Africa Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "CK",
-        "name": "Cook Islands",
-        "phonecode": "682",
-        "flag": "🇨🇰",
-        "currency": "NZD",
-        "latitude": "-21.23333333",
-        "longitude": "-159.76666666",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Rarotonga",
-                "gmtOffset": -36000,
-                "gmtOffsetName": "UTC-10:00",
-                "abbreviation": "CKT",
-                "tzName": "Cook Island Time"
             }
         ]
     },
@@ -1820,42 +1542,6 @@
         ]
     },
     {
-        "isoCode": "FK",
-        "name": "Falkland Islands",
-        "phonecode": "500",
-        "flag": "🇫🇰",
-        "currency": "FKP",
-        "latitude": "-51.75000000",
-        "longitude": "-59.00000000",
-        "timezones": [
-            {
-                "zoneName": "Atlantic\/Stanley",
-                "gmtOffset": -10800,
-                "gmtOffsetName": "UTC-03:00",
-                "abbreviation": "FKST",
-                "tzName": "Falkland Islands Summer Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "FO",
-        "name": "Faroe Islands",
-        "phonecode": "298",
-        "flag": "🇫🇴",
-        "currency": "DKK",
-        "latitude": "62.00000000",
-        "longitude": "-7.00000000",
-        "timezones": [
-            {
-                "zoneName": "Atlantic\/Faroe",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "WET",
-                "tzName": "Western European Time"
-            }
-        ]
-    },
-    {
         "isoCode": "FJ",
         "name": "Fiji Islands",
         "phonecode": "679",
@@ -1906,74 +1592,6 @@
                 "gmtOffsetName": "UTC+01:00",
                 "abbreviation": "CET",
                 "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "GF",
-        "name": "French Guiana",
-        "phonecode": "594",
-        "flag": "🇬🇫",
-        "currency": "EUR",
-        "latitude": "4.00000000",
-        "longitude": "-53.00000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Cayenne",
-                "gmtOffset": -10800,
-                "gmtOffsetName": "UTC-03:00",
-                "abbreviation": "GFT",
-                "tzName": "French Guiana Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "PF",
-        "name": "French Polynesia",
-        "phonecode": "689",
-        "flag": "🇵🇫",
-        "currency": "XPF",
-        "latitude": "-15.00000000",
-        "longitude": "-140.00000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Gambier",
-                "gmtOffset": -32400,
-                "gmtOffsetName": "UTC-09:00",
-                "abbreviation": "GAMT",
-                "tzName": "Gambier Islands Time"
-            },
-            {
-                "zoneName": "Pacific\/Marquesas",
-                "gmtOffset": -34200,
-                "gmtOffsetName": "UTC-09:30",
-                "abbreviation": "MART",
-                "tzName": "Marquesas Islands Time"
-            },
-            {
-                "zoneName": "Pacific\/Tahiti",
-                "gmtOffset": -36000,
-                "gmtOffsetName": "UTC-10:00",
-                "abbreviation": "TAHT",
-                "tzName": "Tahiti Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "TF",
-        "name": "French Southern Territories",
-        "phonecode": "",
-        "flag": "🇹🇫",
-        "currency": "EUR",
-        "latitude": "-49.25000000",
-        "longitude": "69.16700000",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Kerguelen",
-                "gmtOffset": 18000,
-                "gmtOffsetName": "UTC+05:00",
-                "abbreviation": "TFT",
-                "tzName": "French Southern and Antarctic Time"
             }
         ]
     },
@@ -2075,24 +1693,6 @@
         ]
     },
     {
-        "isoCode": "GI",
-        "name": "Gibraltar",
-        "phonecode": "350",
-        "flag": "🇬🇮",
-        "currency": "GIP",
-        "latitude": "36.13333333",
-        "longitude": "-5.35000000",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Gibraltar",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "CET",
-                "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
         "isoCode": "GR",
         "name": "Greece",
         "phonecode": "30",
@@ -2107,45 +1707,6 @@
                 "gmtOffsetName": "UTC+02:00",
                 "abbreviation": "EET",
                 "tzName": "Eastern European Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "GL",
-        "name": "Greenland",
-        "phonecode": "299",
-        "flag": "🇬🇱",
-        "currency": "DKK",
-        "latitude": "72.00000000",
-        "longitude": "-40.00000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Danmarkshavn",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "GMT",
-                "tzName": "Greenwich Mean Time"
-            },
-            {
-                "zoneName": "America\/Nuuk",
-                "gmtOffset": -10800,
-                "gmtOffsetName": "UTC-03:00",
-                "abbreviation": "WGT",
-                "tzName": "West Greenland Time"
-            },
-            {
-                "zoneName": "America\/Scoresbysund",
-                "gmtOffset": -3600,
-                "gmtOffsetName": "UTC-01:00",
-                "abbreviation": "EGT",
-                "tzName": "Eastern Greenland Time"
-            },
-            {
-                "zoneName": "America\/Thule",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
             }
         ]
     },
@@ -2168,42 +1729,6 @@
         ]
     },
     {
-        "isoCode": "GP",
-        "name": "Guadeloupe",
-        "phonecode": "590",
-        "flag": "🇬🇵",
-        "currency": "EUR",
-        "latitude": "16.25000000",
-        "longitude": "-61.58333300",
-        "timezones": [
-            {
-                "zoneName": "America\/Guadeloupe",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "GU",
-        "name": "Guam",
-        "phonecode": "+1-671",
-        "flag": "🇬🇺",
-        "currency": "USD",
-        "latitude": "13.46666666",
-        "longitude": "144.78333333",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Guam",
-                "gmtOffset": 36000,
-                "gmtOffsetName": "UTC+10:00",
-                "abbreviation": "CHST",
-                "tzName": "Chamorro Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "GT",
         "name": "Guatemala",
         "phonecode": "502",
@@ -2218,24 +1743,6 @@
                 "gmtOffsetName": "UTC-06:00",
                 "abbreviation": "CST",
                 "tzName": "Central Standard Time (North America"
-            }
-        ]
-    },
-    {
-        "isoCode": "GG",
-        "name": "Guernsey and Alderney",
-        "phonecode": "+44-1481",
-        "flag": "🇬🇬",
-        "currency": "GBP",
-        "latitude": "49.46666666",
-        "longitude": "-2.58333333",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Guernsey",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "GMT",
-                "tzName": "Greenwich Mean Time"
             }
         ]
     },
@@ -2312,24 +1819,6 @@
         ]
     },
     {
-        "isoCode": "HM",
-        "name": "Heard Island and McDonald Islands",
-        "phonecode": "",
-        "flag": "🇭🇲",
-        "currency": "AUD",
-        "latitude": "-53.10000000",
-        "longitude": "72.51666666",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Kerguelen",
-                "gmtOffset": 18000,
-                "gmtOffsetName": "UTC+05:00",
-                "abbreviation": "TFT",
-                "tzName": "French Southern and Antarctic Time"
-            }
-        ]
-    },
-    {
         "isoCode": "HN",
         "name": "Honduras",
         "phonecode": "504",
@@ -2344,24 +1833,6 @@
                 "gmtOffsetName": "UTC-06:00",
                 "abbreviation": "CST",
                 "tzName": "Central Standard Time (North America"
-            }
-        ]
-    },
-    {
-        "isoCode": "HK",
-        "name": "Hong Kong S.A.R.",
-        "phonecode": "852",
-        "flag": "🇭🇰",
-        "currency": "HKD",
-        "latitude": "22.25000000",
-        "longitude": "114.16666666",
-        "timezones": [
-            {
-                "zoneName": "Asia\/Hong_Kong",
-                "gmtOffset": 28800,
-                "gmtOffsetName": "UTC+08:00",
-                "abbreviation": "HKT",
-                "tzName": "Hong Kong Time"
             }
         ]
     },
@@ -2581,24 +2052,6 @@
                 "gmtOffsetName": "UTC+09:00",
                 "abbreviation": "JST",
                 "tzName": "Japan Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "JE",
-        "name": "Jersey",
-        "phonecode": "+44-1534",
-        "flag": "🇯🇪",
-        "currency": "GBP",
-        "latitude": "49.25000000",
-        "longitude": "-2.16666666",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Jersey",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "GMT",
-                "tzName": "Greenwich Mean Time"
             }
         ]
     },
@@ -2965,24 +2418,6 @@
         ]
     },
     {
-        "isoCode": "MO",
-        "name": "Macau S.A.R.",
-        "phonecode": "853",
-        "flag": "🇲🇴",
-        "currency": "MOP",
-        "latitude": "22.16666666",
-        "longitude": "113.55000000",
-        "timezones": [
-            {
-                "zoneName": "Asia\/Macau",
-                "gmtOffset": 28800,
-                "gmtOffsetName": "UTC+08:00",
-                "abbreviation": "CST",
-                "tzName": "China Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "MK",
         "name": "Macedonia",
         "phonecode": "389",
@@ -3116,67 +2551,6 @@
         ]
     },
     {
-        "isoCode": "IM",
-        "name": "Man (Isle of)",
-        "phonecode": "+44-1624",
-        "flag": "🇮🇲",
-        "currency": "GBP",
-        "latitude": "54.25000000",
-        "longitude": "-4.50000000",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Isle_of_Man",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "GMT",
-                "tzName": "Greenwich Mean Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "MH",
-        "name": "Marshall Islands",
-        "phonecode": "692",
-        "flag": "🇲🇭",
-        "currency": "USD",
-        "latitude": "9.00000000",
-        "longitude": "168.00000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Kwajalein",
-                "gmtOffset": 43200,
-                "gmtOffsetName": "UTC+12:00",
-                "abbreviation": "MHT",
-                "tzName": "Marshall Islands Time"
-            },
-            {
-                "zoneName": "Pacific\/Majuro",
-                "gmtOffset": 43200,
-                "gmtOffsetName": "UTC+12:00",
-                "abbreviation": "MHT",
-                "tzName": "Marshall Islands Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "MQ",
-        "name": "Martinique",
-        "phonecode": "596",
-        "flag": "🇲🇶",
-        "currency": "EUR",
-        "latitude": "14.66666700",
-        "longitude": "-61.00000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Martinique",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "MR",
         "name": "Mauritania",
         "phonecode": "222",
@@ -3209,24 +2583,6 @@
                 "gmtOffsetName": "UTC+04:00",
                 "abbreviation": "MUT",
                 "tzName": "Mauritius Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "YT",
-        "name": "Mayotte",
-        "phonecode": "262",
-        "flag": "🇾🇹",
-        "currency": "EUR",
-        "latitude": "-12.83333333",
-        "longitude": "45.16666666",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Mayotte",
-                "gmtOffset": 10800,
-                "gmtOffsetName": "UTC+03:00",
-                "abbreviation": "EAT",
-                "tzName": "East Africa Time"
             }
         ]
     },
@@ -3369,24 +2725,6 @@
         ]
     },
     {
-        "isoCode": "MC",
-        "name": "Monaco",
-        "phonecode": "377",
-        "flag": "🇲🇨",
-        "currency": "EUR",
-        "latitude": "43.73333333",
-        "longitude": "7.40000000",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Monaco",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "CET",
-                "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
         "isoCode": "MN",
         "name": "Mongolia",
         "phonecode": "976",
@@ -3433,24 +2771,6 @@
                 "gmtOffsetName": "UTC+01:00",
                 "abbreviation": "CET",
                 "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "MS",
-        "name": "Montserrat",
-        "phonecode": "+1-664",
-        "flag": "🇲🇸",
-        "currency": "XCD",
-        "latitude": "16.75000000",
-        "longitude": "-62.20000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Montserrat",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
             }
         ]
     },
@@ -3563,24 +2883,6 @@
         ]
     },
     {
-        "isoCode": "BQ",
-        "name": "Bonaire, Sint Eustatius and Saba",
-        "phonecode": "599",
-        "flag": "🇧🇶",
-        "currency": "USD",
-        "latitude": "12.15000000",
-        "longitude": "-68.26666700",
-        "timezones": [
-            {
-                "zoneName": "America\/Anguilla",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "NL",
         "name": "Netherlands The",
         "phonecode": "31",
@@ -3595,24 +2897,6 @@
                 "gmtOffsetName": "UTC+01:00",
                 "abbreviation": "CET",
                 "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "NC",
-        "name": "New Caledonia",
-        "phonecode": "687",
-        "flag": "🇳🇨",
-        "currency": "XPF",
-        "latitude": "-21.50000000",
-        "longitude": "165.50000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Noumea",
-                "gmtOffset": 39600,
-                "gmtOffsetName": "UTC+11:00",
-                "abbreviation": "NCT",
-                "tzName": "New Caledonia Time"
             }
         ]
     },
@@ -3696,60 +2980,6 @@
         ]
     },
     {
-        "isoCode": "NU",
-        "name": "Niue",
-        "phonecode": "683",
-        "flag": "🇳🇺",
-        "currency": "NZD",
-        "latitude": "-19.03333333",
-        "longitude": "-169.86666666",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Niue",
-                "gmtOffset": -39600,
-                "gmtOffsetName": "UTC-11:00",
-                "abbreviation": "NUT",
-                "tzName": "Niue Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "NF",
-        "name": "Norfolk Island",
-        "phonecode": "672",
-        "flag": "🇳🇫",
-        "currency": "AUD",
-        "latitude": "-29.03333333",
-        "longitude": "167.95000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Norfolk",
-                "gmtOffset": 43200,
-                "gmtOffsetName": "UTC+12:00",
-                "abbreviation": "NFT",
-                "tzName": "Norfolk Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "MP",
-        "name": "Northern Mariana Islands",
-        "phonecode": "+1-670",
-        "flag": "🇲🇵",
-        "currency": "USD",
-        "latitude": "15.20000000",
-        "longitude": "145.75000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Saipan",
-                "gmtOffset": 36000,
-                "gmtOffsetName": "UTC+10:00",
-                "abbreviation": "ChST",
-                "tzName": "Chamorro Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "NO",
         "name": "Norway",
         "phonecode": "47",
@@ -3818,31 +3048,6 @@
                 "gmtOffsetName": "UTC+09:00",
                 "abbreviation": "PWT",
                 "tzName": "Palau Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "PS",
-        "name": "Palestinian Territory Occupied",
-        "phonecode": "970",
-        "flag": "🇵🇸",
-        "currency": "ILS",
-        "latitude": "31.90000000",
-        "longitude": "35.20000000",
-        "timezones": [
-            {
-                "zoneName": "Asia\/Gaza",
-                "gmtOffset": 7200,
-                "gmtOffsetName": "UTC+02:00",
-                "abbreviation": "EET",
-                "tzName": "Eastern European Time"
-            },
-            {
-                "zoneName": "Asia\/Hebron",
-                "gmtOffset": 7200,
-                "gmtOffsetName": "UTC+02:00",
-                "abbreviation": "EET",
-                "tzName": "Eastern European Time"
             }
         ]
     },
@@ -3944,24 +3149,6 @@
         ]
     },
     {
-        "isoCode": "PN",
-        "name": "Pitcairn Island",
-        "phonecode": "870",
-        "flag": "🇵🇳",
-        "currency": "NZD",
-        "latitude": "-25.06666666",
-        "longitude": "-130.10000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Pitcairn",
-                "gmtOffset": -28800,
-                "gmtOffsetName": "UTC-08:00",
-                "abbreviation": "PST",
-                "tzName": "Pacific Standard Time (North America"
-            }
-        ]
-    },
-    {
         "isoCode": "PL",
         "name": "Poland",
         "phonecode": "48",
@@ -4012,24 +3199,6 @@
         ]
     },
     {
-        "isoCode": "PR",
-        "name": "Puerto Rico",
-        "phonecode": "+1-787 and 1-939",
-        "flag": "🇵🇷",
-        "currency": "USD",
-        "latitude": "18.25000000",
-        "longitude": "-66.50000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Puerto_Rico",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
         "isoCode": "QA",
         "name": "Qatar",
         "phonecode": "974",
@@ -4044,24 +3213,6 @@
                 "gmtOffsetName": "UTC+03:00",
                 "abbreviation": "AST",
                 "tzName": "Arabia Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "RE",
-        "name": "Reunion",
-        "phonecode": "262",
-        "flag": "🇷🇪",
-        "currency": "EUR",
-        "latitude": "-21.15000000",
-        "longitude": "55.50000000",
-        "timezones": [
-            {
-                "zoneName": "Indian\/Reunion",
-                "gmtOffset": 14400,
-                "gmtOffsetName": "UTC+04:00",
-                "abbreviation": "RET",
-                "tzName": "Réunion Time"
             }
         ]
     },
@@ -4295,24 +3446,6 @@
         ]
     },
     {
-        "isoCode": "SH",
-        "name": "Saint Helena",
-        "phonecode": "290",
-        "flag": "🇸🇭",
-        "currency": "SHP",
-        "latitude": "-15.95000000",
-        "longitude": "-5.70000000",
-        "timezones": [
-            {
-                "zoneName": "Atlantic\/St_Helena",
-                "gmtOffset": 0,
-                "gmtOffsetName": "UTC±00",
-                "abbreviation": "GMT",
-                "tzName": "Greenwich Mean Time"
-            }
-        ]
-    },
-    {
         "isoCode": "KN",
         "name": "Saint Kitts And Nevis",
         "phonecode": "+1-869",
@@ -4349,24 +3482,6 @@
         ]
     },
     {
-        "isoCode": "PM",
-        "name": "Saint Pierre and Miquelon",
-        "phonecode": "508",
-        "flag": "🇵🇲",
-        "currency": "EUR",
-        "latitude": "46.83333333",
-        "longitude": "-56.33333333",
-        "timezones": [
-            {
-                "zoneName": "America\/Miquelon",
-                "gmtOffset": -10800,
-                "gmtOffsetName": "UTC-03:00",
-                "abbreviation": "PMDT",
-                "tzName": "Pierre & Miquelon Daylight Time"
-            }
-        ]
-    },
-    {
         "isoCode": "VC",
         "name": "Saint Vincent And The Grenadines",
         "phonecode": "+1-784",
@@ -4377,42 +3492,6 @@
         "timezones": [
             {
                 "zoneName": "America\/St_Vincent",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "BL",
-        "name": "Saint-Barthelemy",
-        "phonecode": "590",
-        "flag": "🇧🇱",
-        "currency": "EUR",
-        "latitude": "18.50000000",
-        "longitude": "-63.41666666",
-        "timezones": [
-            {
-                "zoneName": "America\/St_Barthelemy",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "MF",
-        "name": "Saint-Martin (French part)",
-        "phonecode": "590",
-        "flag": "🇲🇫",
-        "currency": "EUR",
-        "latitude": "18.08333333",
-        "longitude": "-63.95000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Marigot",
                 "gmtOffset": -14400,
                 "gmtOffsetName": "UTC-04:00",
                 "abbreviation": "AST",
@@ -4673,24 +3752,6 @@
         ]
     },
     {
-        "isoCode": "GS",
-        "name": "South Georgia",
-        "phonecode": "",
-        "flag": "🇬🇸",
-        "currency": "GBP",
-        "latitude": "-54.50000000",
-        "longitude": "-37.00000000",
-        "timezones": [
-            {
-                "zoneName": "Atlantic\/South_Georgia",
-                "gmtOffset": -7200,
-                "gmtOffsetName": "UTC-02:00",
-                "abbreviation": "GST",
-                "tzName": "South Georgia and the South Sandwich Islands Time"
-            }
-        ]
-    },
-    {
         "isoCode": "SS",
         "name": "South Sudan",
         "phonecode": "211",
@@ -4791,24 +3852,6 @@
                 "gmtOffsetName": "UTC-03:00",
                 "abbreviation": "SRT",
                 "tzName": "Suriname Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "SJ",
-        "name": "Svalbard And Jan Mayen Islands",
-        "phonecode": "47",
-        "flag": "🇸🇯",
-        "currency": "NOK",
-        "latitude": "78.00000000",
-        "longitude": "20.00000000",
-        "timezones": [
-            {
-                "zoneName": "Arctic\/Longyearbyen",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "CET",
-                "tzName": "Central European Time"
             }
         ]
     },
@@ -4975,24 +4018,6 @@
         ]
     },
     {
-        "isoCode": "TK",
-        "name": "Tokelau",
-        "phonecode": "690",
-        "flag": "🇹🇰",
-        "currency": "NZD",
-        "latitude": "-9.00000000",
-        "longitude": "-172.00000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Fakaofo",
-                "gmtOffset": 46800,
-                "gmtOffsetName": "UTC+13:00",
-                "abbreviation": "TKT",
-                "tzName": "Tokelau Time"
-            }
-        ]
-    },
-    {
         "isoCode": "TO",
         "name": "Tonga",
         "phonecode": "676",
@@ -5079,24 +4104,6 @@
                 "gmtOffsetName": "UTC+05:00",
                 "abbreviation": "TMT",
                 "tzName": "Turkmenistan Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "TC",
-        "name": "Turks And Caicos Islands",
-        "phonecode": "+1-649",
-        "flag": "🇹🇨",
-        "currency": "USD",
-        "latitude": "21.75000000",
-        "longitude": "-71.58333333",
-        "timezones": [
-            {
-                "zoneName": "America\/Grand_Turk",
-                "gmtOffset": -18000,
-                "gmtOffsetName": "UTC-05:00",
-                "abbreviation": "EST",
-                "tzName": "Eastern Standard Time (North America"
             }
         ]
     },
@@ -5426,31 +4433,6 @@
         ]
     },
     {
-        "isoCode": "UM",
-        "name": "United States Minor Outlying Islands",
-        "phonecode": "1",
-        "flag": "🇺🇲",
-        "currency": "USD",
-        "latitude": "0.00000000",
-        "longitude": "0.00000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Midway",
-                "gmtOffset": -39600,
-                "gmtOffsetName": "UTC-11:00",
-                "abbreviation": "SST",
-                "tzName": "Samoa Standard Time"
-            },
-            {
-                "zoneName": "Pacific\/Wake",
-                "gmtOffset": 43200,
-                "gmtOffsetName": "UTC+12:00",
-                "abbreviation": "WAKT",
-                "tzName": "Wake Island Time"
-            }
-        ]
-    },
-    {
         "isoCode": "UY",
         "name": "Uruguay",
         "phonecode": "598",
@@ -5512,24 +4494,6 @@
         ]
     },
     {
-        "isoCode": "VA",
-        "name": "Vatican City State (Holy See)",
-        "phonecode": "379",
-        "flag": "🇻🇦",
-        "currency": "EUR",
-        "latitude": "41.90000000",
-        "longitude": "12.45000000",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Vatican",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "CET",
-                "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
         "isoCode": "VE",
         "name": "Venezuela",
         "phonecode": "58",
@@ -5562,78 +4526,6 @@
                 "gmtOffsetName": "UTC+07:00",
                 "abbreviation": "ICT",
                 "tzName": "Indochina Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "VG",
-        "name": "Virgin Islands (British)",
-        "phonecode": "+1-284",
-        "flag": "🇻🇬",
-        "currency": "USD",
-        "latitude": "18.43138300",
-        "longitude": "-64.62305000",
-        "timezones": [
-            {
-                "zoneName": "America\/Tortola",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "VI",
-        "name": "Virgin Islands (US)",
-        "phonecode": "+1-340",
-        "flag": "🇻🇮",
-        "currency": "USD",
-        "latitude": "18.34000000",
-        "longitude": "-64.93000000",
-        "timezones": [
-            {
-                "zoneName": "America\/St_Thomas",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "WF",
-        "name": "Wallis And Futuna Islands",
-        "phonecode": "681",
-        "flag": "🇼🇫",
-        "currency": "XPF",
-        "latitude": "-13.30000000",
-        "longitude": "-176.20000000",
-        "timezones": [
-            {
-                "zoneName": "Pacific\/Wallis",
-                "gmtOffset": 43200,
-                "gmtOffsetName": "UTC+12:00",
-                "abbreviation": "WFT",
-                "tzName": "Wallis & Futuna Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "EH",
-        "name": "Western Sahara",
-        "phonecode": "212",
-        "flag": "🇪🇭",
-        "currency": "MAD",
-        "latitude": "24.50000000",
-        "longitude": "-13.00000000",
-        "timezones": [
-            {
-                "zoneName": "Africa\/El_Aaiun",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "WEST",
-                "tzName": "Western European Summer Time"
             }
         ]
     },
@@ -5688,60 +4580,6 @@
                 "gmtOffsetName": "UTC+02:00",
                 "abbreviation": "CAT",
                 "tzName": "Central Africa Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "XK",
-        "name": "Kosovo",
-        "phonecode": "383",
-        "flag": "🇽🇰",
-        "currency": "EUR",
-        "latitude": "42.56129090",
-        "longitude": "20.34030350",
-        "timezones": [
-            {
-                "zoneName": "Europe\/Belgrade",
-                "gmtOffset": 3600,
-                "gmtOffsetName": "UTC+01:00",
-                "abbreviation": "CET",
-                "tzName": "Central European Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "CW",
-        "name": "Curaçao",
-        "phonecode": "599",
-        "flag": "🇨🇼",
-        "currency": "ANG",
-        "latitude": "12.11666700",
-        "longitude": "-68.93333300",
-        "timezones": [
-            {
-                "zoneName": "America\/Curacao",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
-            }
-        ]
-    },
-    {
-        "isoCode": "SX",
-        "name": "Sint Maarten (Dutch part)",
-        "phonecode": "1721",
-        "flag": "🇸🇽",
-        "currency": "ANG",
-        "latitude": "18.03333300",
-        "longitude": "-63.05000000",
-        "timezones": [
-            {
-                "zoneName": "America\/Anguilla",
-                "gmtOffset": -14400,
-                "gmtOffsetName": "UTC-04:00",
-                "abbreviation": "AST",
-                "tzName": "Atlantic Standard Time"
             }
         ]
     }

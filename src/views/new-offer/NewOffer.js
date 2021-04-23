@@ -17,7 +17,7 @@ import NewOfferSummary from "./components/new-offer-summary/NewOfferSummary";
 import { SellerContext, Seller } from "../../contexts/Seller";
 import { NavigationContext, Action } from "../../contexts/Navigation";
 
-import {defaultCountyName, defaultCityName} from '../../utils/location/location'
+import {DEFAULT_COUNTRY_NAME, DEFAULT_CITY_NAME} from '../../utils/location/location'
 
 import {
   NAME,
@@ -57,8 +57,8 @@ function NewOffer() {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.DEPOSITS_C]: CURRENCY.ETH,
     [NAME.DATE_START]: new Date().setHours(0, 0, 0, 0),
-    [NAME.COUNTRY]: defaultCountyName(),
-    [NAME.CITY]: defaultCityName(),
+    [NAME.COUNTRY]: DEFAULT_COUNTRY_NAME,
+    [NAME.CITY]: DEFAULT_CITY_NAME,
   };
   const fundLimitsContract = useFundLimitsContract();
 

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 
 import { NAME } from "../../../../helpers/configs/Dictionary";
 import { SellerContext, getData } from "../../../../contexts/Seller";
-import {getSortedCountryNames, getSortedCityNamesByCountryCode, getDefaultCityForCountry, DEFAULT_COUNTRY_IS_CODE, getISOCodeByName} from '../../../../utils/location/location'
+import {getSortedCountryNames, getSortedCityNamesByCountryCode, getDefaultCityForCountry, DEFAULT_COUNTRY_ISO_CODE, getISOCodeByName, DEFAULT_COUNTRY_NAME, DEFAULT_CITY_NAME} from '../../../../utils/location/location'
 
 import {DropDownContainer} from './DropDown'
 
@@ -18,9 +18,10 @@ function NewOfferLocation({
   postcodeValueReceiver,
   postcodeErrorMessage
 }) {
+  const [cities, setCities] = useState([])
+  const [countries, setCountries] = useState([])
 
   const countryInput = useRef()
-
   const cityInput = useRef()
 
   const addressLineOneInput = useRef()
@@ -38,7 +39,6 @@ function NewOfferLocation({
     false
   );
 
-  const [iSOCode, setISOCode] = useState(DEFAULT_COUNTRY_IS_CODE)
   const sellerContext = useContext(SellerContext);
   const getOfferingData = getData(sellerContext.state.offeringData);
 
@@ -52,29 +52,21 @@ function NewOfferLocation({
 
   useEffect(() => {
     const countryISOCOde = getISOCodeByName(selectedCountry)
-    setISOCode(countryISOCOde)
-    const defaultCityName = getDefaultCityForCountry(selectedCountry)
+    setDropDownCountries()
+    setDropDownCities(countryISOCOde)
+
+    const defaultCityName = getDefaultCityForCountry(countryISOCOde)
     cityValueReceiver(defaultCityName)
   }, [selectedCountry])
 
-  const renderOptions = (arr)  => {
-    let options = []
-
-    for (let i = 0; i < arr.length; i++) {
-      options.push(<option key={i} value={arr[i]}>{arr[i]}</option>)
-    }
-
-    return options
-  }
-
-  const renderCountries = () => {
+  const setDropDownCountries = () => {
     const countries = getSortedCountryNames()
-    return renderOptions(countries)
+    setCountries(countries)
   }
 
-  const renderCities = () => {
+  const setDropDownCities = (iSOCode) => {
     const cities = getSortedCityNamesByCountryCode(iSOCode)
-    return renderOptions(cities)
+    setCities(cities)
   }
 
   return (
@@ -87,11 +79,11 @@ function NewOfferLocation({
         <div className="field">
           <label htmlFor="countries">Country</label>
             <DropDownContainer
+              arr={countries}
               id="offer-country"
               refInput={countryInput}
               selected={selectedCountry}
               receiver={countryValueReceiver}
-              renderValues={renderCountries}
             />
         </div>
       </div>
@@ -99,11 +91,11 @@ function NewOfferLocation({
         <div className="field">
           <label htmlFor="offer-city">City</label>
             <DropDownContainer
+              arr={cities}
               id="offer-city"
               refInput={cityInput}
               selected={selectedCity}
               receiver={cityValueReceiver}
-              renderValues={renderCities}
             />
         </div>
       </div>
