@@ -19,6 +19,9 @@
 
       a {
         min-width: 33.3%;
+        @media (max-width: 768px) {
+          min-width: 100%;
+        }
       }
     }
   }
