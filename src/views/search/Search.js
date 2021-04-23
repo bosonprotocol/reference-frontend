@@ -77,7 +77,7 @@ function Search() {
                 </div>
               </div>
             </div>
-            <div className="vouchers-container">
+            <div className="voucher-set-container">
               {voucherSets.length > 0
                 ? voucherSets.map((voucherSet, id) => (
                     <VoucherSetBlock
