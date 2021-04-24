@@ -174,7 +174,7 @@ jobs:
     on_error: *on_error
     on_abort: *on_abort
 
-  - name: provision-development-hassium-content
+  - name: provision-production-vanadium-content
     plan:
       - in_parallel:
           - get: source
