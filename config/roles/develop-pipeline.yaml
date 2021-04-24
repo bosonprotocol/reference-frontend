@@ -17,6 +17,10 @@ vars:
   development_hassium_deployment_type: "%{hiera('development_hassium_deployment_type')}"
   development_hassium_deployment_label: "%{hiera('development_hassium_deployment_label')}"
 
+  production_vanadium_provisioning_role_arn: "%{hiera('production_vanadium_provisioning_role_arn')}"
+  production_vanadium_deployment_type: "%{hiera('production_vanadium_deployment_type')}"
+  production_vanadium_deployment_label: "%{hiera('production_vanadium_deployment_label')}"
+
   slack_success_channel: "#builds"
   slack_success_message: "<%{hiera('concourse_url')}/builds/$BUILD_ID|$BUILD_TEAM_NAME:$BUILD_PIPELINE_NAME:$BUILD_JOB_NAME [$BUILD_NAME]> _successful_! :clap:."
   slack_error_channel: "#engineering"
