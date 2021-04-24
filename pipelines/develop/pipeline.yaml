@@ -44,6 +44,10 @@ groups:
       - test
       - provision-development-hassium-website
       - provision-development-hassium-content
+  - name: production-vanadium
+    jobs:
+      - provision-production-vanadium-website
+      - provision-production-vanadium-content
 
 jobs:
   - name: build
@@ -147,3 +151,47 @@ jobs:
     on_error: *on_error
     on_abort: *on_abort
 
+  - name: provision-production-vanadium-website
+    serial: true
+    plan:
+      - in_parallel:
+          - get: source
+            trigger: true
+            passed:
+              - provision-development-hassium-content
+          - get: node-builder-image
+      - task: provision-website
+        image: node-builder-image
+        file: source/pipelines/develop/provision-website/task.yaml
+        params:
+          GPG_KEY: ((gpg_key))
+          PROVISIONING_ROLE_ARN: ((development_hassium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((development_hassium_deployment_type))
+          DEPLOYMENT_LABEL: ((development_hassium_deployment_label))
+
+    on_success: *on_success
+    on_failure: *on_failure
+    on_error: *on_error
+    on_abort: *on_abort
+
+  - name: provision-development-hassium-content
+    plan:
+      - in_parallel:
+          - get: source
+            trigger: true
+            passed:
+              - provision-production-vanadium-website
+          - get: node-builder-image
+      - task: provision-content
+        image: node-builder-image
+        file: source/pipelines/develop/provision-content/task.yaml
+        params:
+          GPG_KEY: ((gpg_key))
+          PROVISIONING_ROLE_ARN: ((development_hassium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((development_hassium_deployment_type))
+          DEPLOYMENT_LABEL: ((development_hassium_deployment_label))
+
+    on_success: *on_success
+    on_failure: *on_failure
+    on_error: *on_error
+    on_abort: *on_abort
