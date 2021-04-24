@@ -51,8 +51,10 @@
         }
       }
     }
+
     &.price,
     &.date {
+
       .block {
         .icon {
           margin-right: 10px;
@@ -66,5 +68,11 @@
         }
       }
     }
+  }
+}
+.price {
+  @media (max-width: 320px) {
+    flex-direction: column;
+    align-items: flex-start !important;
   }
 }
