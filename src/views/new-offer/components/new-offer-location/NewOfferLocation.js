@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 
 import { NAME } from "../../../../helpers/configs/Dictionary";
 import { SellerContext, getData } from "../../../../contexts/Seller";
-import {getSortedCountryNames, getSortedCityNamesByCountryCode, getDefaultCityForCountry, DEFAULT_COUNTRY_ISO_CODE, getISOCodeByName, DEFAULT_COUNTRY_NAME, DEFAULT_CITY_NAME} from '../../../../utils/location/location'
+import {getSortedCountryNames, getSortedCityNamesByCountryCode, getDefaultCityForCountry, getISOCodeByName} from '../../../../utils/location/location'
 
 import {DropDownContainer} from './DropDown'
 
