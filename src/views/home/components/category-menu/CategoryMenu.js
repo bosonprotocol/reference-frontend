@@ -4,13 +4,14 @@ import "./CategoryMenu.scss";
 
 import { categoryMenu } from "../../../../PlaceholderAPI";
 
-function CategoryMenu() {
+function CategoryMenu({ handleCategory }) {
   const [selected, setSelected] = useState(0);
   const categoryList = useRef();
   const selectedRef = useRef();
 
-  const switchSelected = (el) => {
+  const switchSelected = (el, item) => {
     setSelected(parseInt(el.target.dataset.key));
+    handleCategory(item);
   };
 
   useEffect(() => {
@@ -35,7 +36,7 @@ function CategoryMenu() {
                   role="button"
                   data-key={id}
                   key={id}
-                  onClick={(el) => switchSelected(el)}
+                  onClick={(el) => switchSelected(el, item)}
                 >
                   {item}
                 </li>
