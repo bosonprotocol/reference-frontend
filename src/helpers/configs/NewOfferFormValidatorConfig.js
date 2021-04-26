@@ -16,8 +16,10 @@ export const minSizeExceededError = `Image is too small! Minimum file size is ${
 export const notAllowedMimeTypeError = `This file type is not allowed. Must be one of: ${acceptedImageExtensions}.`;
 // END IMAGE CONFIG
 
-const maxLengthError = (field, max) => `${field} can't be more than ${max} characters long`
-const minLengthError = (field, min) => `${field} must be at least ${min} characters long`
+const maxLengthError = (field, max) =>
+  `${field} can't be more than ${max} characters long`;
+const minLengthError = (field, min) =>
+  `${field} must be at least ${min} characters long`;
 
 // START TITLE CONFIG
 export const titleSettings = {
@@ -71,18 +73,30 @@ export const expiryDateBeforeStartDateError =
 // ADDRESS LINE CONFIG
 export const addressLineSettings = {
   min: 4,
-  max: 20
-} 
+  max: 20,
+};
 
-export const minAddressLengthError = minLengthError("Address", addressLineSettings.min);
-export const maxAddressLengthError = maxLengthError("Address", addressLineSettings.max);
+export const minAddressLengthError = minLengthError(
+  "Address",
+  addressLineSettings.min
+);
+export const maxAddressLengthError = maxLengthError(
+  "Address",
+  addressLineSettings.max
+);
 // END ADDRESS LINE CONFIG
 
 // POSTCODE CONFIG
 export const postcodeSettings = {
   min: 4,
-  max: 10
-} 
-export const minPostcodeLengthError =  minLengthError("Postcode", postcodeSettings.min);
-export const maxPostcodeLengthError =  maxLengthError("Postcode", postcodeSettings.max);
+  max: 10,
+};
+export const minPostcodeLengthError = minLengthError(
+  "Postcode",
+  postcodeSettings.min
+);
+export const maxPostcodeLengthError = maxLengthError(
+  "Postcode",
+  postcodeSettings.max
+);
 // END POSTCODE CONFIG

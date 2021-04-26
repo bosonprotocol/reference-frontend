@@ -11,13 +11,16 @@ import FormUploadPhoto from "./components/new-offer-photo/NewOfferPhoto";
 import NewOfferGeneral from "./components/new-offer-general/NewOfferGeneral";
 import NewOfferPrice from "./components/new-offer-price/NewOfferPrice";
 import NewOfferDates from "./components/new-offer-dates/NewOfferDates";
-import NewOfferLocation from "./components/new-offer-location/NewOfferLocation";
 import NewOfferSummary from "./components/new-offer-summary/NewOfferSummary";
+import NewOfferLocation from "./components/new-offer-location/NewOfferLocation";
 
 import { SellerContext, Seller } from "../../contexts/Seller";
 import { NavigationContext, Action } from "../../contexts/Navigation";
 
-import {DEFAULT_COUNTRY_NAME, DEFAULT_CITY_NAME} from '../../utils/location/location'
+import {
+  DEFAULT_COUNTRY_NAME,
+  DEFAULT_CITY_NAME,
+} from "../../utils/location/location";
 
 import {
   NAME,
@@ -173,15 +176,15 @@ function NewOffer() {
     />,
     <NewOfferLocation
       countryValueReceiver={createInputValueReceiver(NAME.COUNTRY)}
-
       cityValueReceiver={createInputValueReceiver(NAME.CITY)}
-
-      addressLineOneValueReceiver={createInputValueReceiver(NAME.ADDRESS_LINE_ONE)}
+      addressLineOneValueReceiver={createInputValueReceiver(
+        NAME.ADDRESS_LINE_ONE
+      )}
       addressLineOneErrorMessage={errorMessages[NAME.ADDRESS_LINE_ONE]}
-
-      addressLineTwoValueReceiver={createInputValueReceiver(NAME.ADDRESS_LINE_TWO)}
+      addressLineTwoValueReceiver={createInputValueReceiver(
+        NAME.ADDRESS_LINE_TWO
+      )}
       addressLineTwoErrorMessage={errorMessages[NAME.ADDRESS_LINE_TWO]}
-
       postcodeValueReceiver={createInputValueReceiver(NAME.POSTCODE)}
       postcodeErrorMessage={errorMessages[NAME.POSTCODE]}
     />,

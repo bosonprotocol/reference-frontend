@@ -26,7 +26,7 @@ function NewOfferSummary() {
     buyer_deposit,
     image,
     condition,
-    address_line_one, 
+    address_line_one,
     address_line_two,
     city,
     country,
@@ -62,7 +62,7 @@ function NewOfferSummary() {
     city && [city],
     postcode && [postcode],
     country && [country],
-  ]
+  ];
 
   const tableDate = [
     start_date && formatDate(start_date),
@@ -84,7 +84,7 @@ function NewOfferSummary() {
           <TableRow data={tableContent} />
         ) : null}
         {tableLocation.some((item) => item) ? (
-          <TableLocation data={tableLocation} hasBiggerTitle={true}/>
+          <TableLocation data={tableLocation} hasBiggerTitle={true} />
         ) : null}
         {tableDate.some((item) => item) ? <DateTable data={tableDate} /> : null}
         {tablePrices.some((item) => item) ? (

@@ -127,17 +127,17 @@ export const TableRow = (props) => {
 
 export const TableLocation = (props) => {
   const { data, hasBiggerTitle } = props;
-  
+
   return (
     <div className="table location ai-center ">
       {hasBiggerTitle ? <h1>Pick-up Location</h1> : <h2>Pick-up Location</h2>}
-    <div>
-      <p className="flex">
-        <IconLocation />
-        {data?.filter(e => e !== undefined).join(", ")}
-      </p>
-      <div className="arrow expand"></div>
-    </div>
+      <div>
+        <p className="flex">
+          <IconLocation />
+          {data?.filter((e) => e !== undefined).join(", ")}
+        </p>
+        <div className="arrow expand"></div>
+      </div>
     </div>
   );
 };

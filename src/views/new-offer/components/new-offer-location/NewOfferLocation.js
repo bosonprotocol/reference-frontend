@@ -2,9 +2,14 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 
 import { NAME } from "../../../../helpers/configs/Dictionary";
 import { SellerContext, getData } from "../../../../contexts/Seller";
-import {getSortedCountryNames, getSortedCityNamesByCountryCode, getDefaultCityForCountry, getISOCodeByName} from '../../../../utils/location/location'
+import {
+  getSortedCountryNames,
+  getSortedCityNamesByCountryCode,
+  getDefaultCityForCountry,
+  getISOCodeByName,
+} from "../../../../utils/location/location";
 
-import {DropDownContainer} from './DropDown'
+import { DropDownContainer } from "../../../../shared-components/dropdown-container/DropDown";
 
 function NewOfferLocation({
   countryValueReceiver,
@@ -16,34 +21,36 @@ function NewOfferLocation({
   addressLineTwoErrorMessage,
 
   postcodeValueReceiver,
-  postcodeErrorMessage
+  postcodeErrorMessage,
 }) {
-  const [cities, setCities] = useState([])
-  const [countries, setCountries] = useState([])
+  const [cities, setCities] = useState([]);
+  const [countries, setCountries] = useState([]);
 
-  const countryInput = useRef()
-  const cityInput = useRef()
+  const countryInput = useRef();
+  const cityInput = useRef();
 
-  const addressLineOneInput = useRef()
-  const addressLineOneClear = useRef()
+  const addressLineOneInput = useRef();
+  const addressLineOneClear = useRef();
 
-  const addressLineTwoInput = useRef()
-  const addressLineTwoClear = useRef()
+  const addressLineTwoInput = useRef();
+  const addressLineTwoClear = useRef();
 
-  const postcodeInput = useRef()
-  const postcodeClear = useRef()
+  const postcodeInput = useRef();
+  const postcodeClear = useRef();
 
-  const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] = useState(false)
-  const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] = useState(false)
-  const [postcodeHasBeenBlurred, setPostcodeHasBeenBlurred] = useState(
+  const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] = useState(
     false
   );
+  const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] = useState(
+    false
+  );
+  const [postcodeHasBeenBlurred, setPostcodeHasBeenBlurred] = useState(false);
 
   const sellerContext = useContext(SellerContext);
   const getOfferingData = getData(sellerContext.state.offeringData);
 
-  const selectedCountry = getOfferingData(NAME.COUNTRY)
-  const selectedCity = getOfferingData(NAME.CITY)
+  const selectedCountry = getOfferingData(NAME.COUNTRY);
+  const selectedCity = getOfferingData(NAME.CITY);
 
   const handleClearField = (e, callback) => {
     e.target.parentElement.getElementsByTagName("input")[0].value = "";
@@ -51,23 +58,23 @@ function NewOfferLocation({
   };
 
   useEffect(() => {
-    const countryISOCOde = getISOCodeByName(selectedCountry)
-    setDropDownCountries()
-    setDropDownCities(countryISOCOde)
+    const countryISOCOde = getISOCodeByName(selectedCountry);
+    setDropDownCountries();
+    setDropDownCities(countryISOCOde);
 
-    const defaultCityName = getDefaultCityForCountry(countryISOCOde)
-    cityValueReceiver(defaultCityName)
-  }, [selectedCountry])
+    const defaultCityName = getDefaultCityForCountry(countryISOCOde);
+    cityValueReceiver(defaultCityName);
+  }, [selectedCountry]);
 
   const setDropDownCountries = () => {
-    const countries = getSortedCountryNames()
-    setCountries(countries)
-  }
+    const countries = getSortedCountryNames();
+    setCountries(countries);
+  };
 
   const setDropDownCities = (iSOCode) => {
-    const cities = getSortedCityNamesByCountryCode(iSOCode)
-    setCities(cities)
-  }
+    const cities = getSortedCityNamesByCountryCode(iSOCode);
+    setCities(cities);
+  };
 
   return (
     <div className="general">
@@ -78,25 +85,25 @@ function NewOfferLocation({
       <div className="row">
         <div className="field">
           <label htmlFor="countries">Country</label>
-            <DropDownContainer
-              arr={countries}
-              id="offer-country"
-              refInput={countryInput}
-              selected={selectedCountry}
-              receiver={countryValueReceiver}
-            />
+          <DropDownContainer
+            arr={countries}
+            id="offer-country"
+            refInput={countryInput}
+            selected={selectedCountry}
+            receiver={countryValueReceiver}
+          />
         </div>
       </div>
       <div className="row">
         <div className="field">
           <label htmlFor="offer-city">City</label>
-            <DropDownContainer
-              arr={cities}
-              id="offer-city"
-              refInput={cityInput}
-              selected={selectedCity}
-              receiver={cityValueReceiver}
-            />
+          <DropDownContainer
+            arr={cities}
+            id="offer-city"
+            refInput={cityInput}
+            selected={selectedCity}
+            receiver={cityValueReceiver}
+          />
         </div>
       </div>
       <div className="row">
@@ -104,7 +111,9 @@ function NewOfferLocation({
           <label htmlFor="offer-address-line-one">Address line 1</label>
           <div
             className="input focus"
-            data-error={addressOneHasBeenBlurred ? addressLineOneErrorMessage : null}
+            data-error={
+              addressOneHasBeenBlurred ? addressLineOneErrorMessage : null
+            }
           >
             <input
               ref={addressLineOneInput}
@@ -127,13 +136,14 @@ function NewOfferLocation({
         </div>
       </div>
 
-
       <div className="row">
         <div className="field">
           <label htmlFor="offer-address-line-two">Address line 2</label>
           <div
             className="input focus"
-            data-error={addressTwoHasBeenBlurred ? addressLineTwoErrorMessage : null}
+            data-error={
+              addressTwoHasBeenBlurred ? addressLineTwoErrorMessage : null
+            }
           >
             <input
               ref={addressLineTwoInput}
@@ -183,7 +193,6 @@ function NewOfferLocation({
           </div>
         </div>
       </div>
-     
     </div>
   );
 }

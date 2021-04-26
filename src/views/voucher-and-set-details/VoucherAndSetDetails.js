@@ -200,14 +200,14 @@ function VoucherAndSetDetails(props) {
     formatDate(getProp("expiryDate")),
   ];
 
-  const location = getProp("location")
+  const location = getProp("location");
   const tableLocation = [
     location?.addressLineOne,
     location?.addressLineTwo,
     location?.city,
     location?.postcode,
     location?.country,
-  ]
+  ];
 
   const tableCategory = [["Category", getProp("category")]];
 
@@ -1468,7 +1468,12 @@ function VoucherAndSetDetails(props) {
                 </div>
                 <div className="section category"></div>
                 <div className="section general">
-                  { tableLocation ? <TableLocation data={ tableLocation } hasBiggerTitle={false}/> : null }
+                  {tableLocation ? (
+                    <TableLocation
+                      data={tableLocation}
+                      hasBiggerTitle={false}
+                    />
+                  ) : null}
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}

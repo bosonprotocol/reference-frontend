@@ -144,11 +144,17 @@ const addressLineOneValidation = (errorMessages, getData) => {
   const currentAddressLineOneValue = getData(NAME.ADDRESS_LINE_ONE);
 
   if (currentAddressLineOneValue) {
-    if (currentAddressLineOneValue.length < ValidationConfig.addressLineSettings.min) {
+    if (
+      currentAddressLineOneValue.length <
+      ValidationConfig.addressLineSettings.min
+    ) {
       addressLineOneErrorMessage = ValidationConfig.minAddressLengthError;
     }
 
-    if (currentAddressLineOneValue.length > ValidationConfig.addressLineSettings.max) {
+    if (
+      currentAddressLineOneValue.length >
+      ValidationConfig.addressLineSettings.max
+    ) {
       addressLineOneErrorMessage = ValidationConfig.maxAddressLengthError;
     }
 
@@ -158,21 +164,30 @@ const addressLineOneValidation = (errorMessages, getData) => {
       addressLineOneErrorMessage = profanityResult;
     }
 
-    errorMessages = { ...errorMessages, [NAME.ADDRESS_LINE_ONE]: addressLineOneErrorMessage}
+    errorMessages = {
+      ...errorMessages,
+      [NAME.ADDRESS_LINE_ONE]: addressLineOneErrorMessage,
+    };
   }
   return errorMessages;
-}
+};
 
 const addressLineTwoValidation = (errorMessages, getData) => {
   let addressLineTwoErrorMessage = null;
   const currentAddressLineTwoValue = getData(NAME.ADDRESS_LINE_TWO);
 
   if (currentAddressLineTwoValue) {
-    if (currentAddressLineTwoValue.length < ValidationConfig.addressLineSettings.min) {
+    if (
+      currentAddressLineTwoValue.length <
+      ValidationConfig.addressLineSettings.min
+    ) {
       addressLineTwoErrorMessage = ValidationConfig.minAddressLengthError;
     }
 
-    if (currentAddressLineTwoValue.length > ValidationConfig.addressLineSettings.max) {
+    if (
+      currentAddressLineTwoValue.length >
+      ValidationConfig.addressLineSettings.max
+    ) {
       addressLineTwoErrorMessage = ValidationConfig.maxAddressLengthError;
     }
 
@@ -182,7 +197,10 @@ const addressLineTwoValidation = (errorMessages, getData) => {
       addressLineTwoErrorMessage = profanityResult;
     }
 
-    errorMessages = { ...errorMessages, [NAME.ADDRESS_LINE_TWO]: addressLineTwoErrorMessage };
+    errorMessages = {
+      ...errorMessages,
+      [NAME.ADDRESS_LINE_TWO]: addressLineTwoErrorMessage,
+    };
   }
 
   return errorMessages;

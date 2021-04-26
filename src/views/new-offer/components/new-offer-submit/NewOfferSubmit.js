@@ -68,7 +68,6 @@ export default function NewOfferSubmit() {
     city,
     country,
     postcode,
-
   } = sellerContext.state.offeringData;
 
   const { library, account, chainId } = useWeb3React();
@@ -212,8 +211,8 @@ export default function NewOfferSubmit() {
       city: city,
       addressLineOne: address_line_one,
       addressLineTwo: address_line_two,
-      postcode: postcode
-    })
+      postcode: postcode,
+    });
 
     appendFilesToFormData();
 
