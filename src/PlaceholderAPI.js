@@ -66,14 +66,6 @@ export const cardBlocks = [
   },
 ];
 
-export const categoryMenu = [
-  "New",
-  "Electronics",
-  "Shoes",
-  "Health & Beauty",
-  "Electronics",
-];
-
 export const productAPI = [
   {
     id: 0,
@@ -245,4 +237,13 @@ export const categories = [
     image: "images/categories/toys-hobbies.png",
     title: "Toys & Hobbies",
   },
+];
+
+export const DEFAULT_FILTER = "New";
+
+export const categoryMenu = [
+  DEFAULT_FILTER,
+  categories[5].title, // Electronics
+  categories[10].title, // Shoes
+  categories[2].title, // Beauty & Health
 ];

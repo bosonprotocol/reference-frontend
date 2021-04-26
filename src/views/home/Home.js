@@ -10,15 +10,6 @@ import CategoryMenu from "./components/category-menu/CategoryMenu";
 import Onboarding from "../onboarding/Onboarding";
 import QRCodeScanner from "../../shared-components/qr-code-scanner/QRCodeScanner";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper";
-
-import "swiper/swiper.min.css";
-
-import { productListConfig } from "../../helpers/configs/SliderConfig";
-
-import { cardBlocks } from "../../PlaceholderAPI";
-
 import { GlobalContext, Action } from "../../contexts/Global";
 
 import { useWeb3React } from "@web3-react/core";
@@ -29,8 +20,7 @@ import {
 import { IconHome } from "../../shared-components/icons/Icons";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 import { Link } from "react-router-dom";
-
-SwiperCore.use([Navigation]);
+import { DEFAULT_FILTER } from "../../PlaceholderAPI";
 
 function Home() {
   const [productBlocks, setProductBlocks] = useState([]);
@@ -68,21 +58,7 @@ function Home() {
   const modalCloseTimeout = 900;
 
   useEffect(() => {
-    if (voucherSets) {
-      // filter by "expiry date in future" and "don't show voucher sets to their creator/supplier"
-      setProductBlocks(
-        voucherSets.filter(
-          (x) =>
-            new Date(x?.expiryDate) > new Date() &&
-            x.voucherOwner !== account?.toLowerCase() &&
-            x.qty > 0
-        )
-      );
-      productListConfig.infinite = voucherSets.length > 4;
-      setPageLoading(0);
-    } else {
-      setProductBlocks([]);
-    }
+    initialFilteringAndSorting();
   }, [voucherSets, globalContext.state.checkAccountUpdate]);
 
   const completeOnboarding = () => {
@@ -110,6 +86,58 @@ function Home() {
     authenticateUser(library, account, chainId);
   };
 
+  const initialFilteringAndSorting = () => {
+    if (voucherSets) {
+      // filter by "expiry date in future" and "don't show voucher sets to their creator/supplier"
+      let filteredSets = voucherSets.filter(
+        (x) =>
+          new Date(x?.expiryDate) > new Date() &&
+          x.voucherOwner !== account?.toLowerCase() &&
+          x.qty > 0
+      );
+
+      filteredSets = orderByDate(filteredSets);
+
+      setProductBlocks(filteredSets);
+      setPageLoading(0);
+    } else {
+      setProductBlocks([]);
+    }
+  };
+
+  const orderByDate = (voucherSets) => {
+    return voucherSets.sort((a, b) => {
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return new Date(b.offeredDate) - new Date(a.offeredDate);
+    });
+  };
+
+  const filterByCategory = (category) => {
+    if (category === DEFAULT_FILTER) {
+      initialFilteringAndSorting();
+      return;
+    }
+
+    if (voucherSets) {
+      // filter by "expiry date in future" and "don't show voucher sets to their creator/supplier"
+      let filteredSets = voucherSets.filter(
+        (x) =>
+          new Date(x?.expiryDate) > new Date() &&
+          x.voucherOwner !== account?.toLowerCase() &&
+          x.qty > 0 &&
+          x.category === category
+      );
+
+      filteredSets = orderByDate(filteredSets);
+
+      setProductBlocks(filteredSets);
+      setPageLoading(0);
+    } else {
+      setProductBlocks([]);
+    }
+  };
+
   return (
     <>
       {globalContext.state.qrReaderActivated ? <QRCodeScanner /> : null}
@@ -129,89 +157,19 @@ function Home() {
             </Link>
           </div>
           <div className="container o-hidden">
-            <CategoryMenu />
+            <CategoryMenu handleCategory={filterByCategory} />
           </div>
           <section className="product-list">
             <div className="container">
-              {!pageLoading ? (
-                productBlocks?.length ? (
-                  <Swiper
-                    spaceBetween={7}
-                    navigation
-                    slidesPerView={3}
-                    loop={true}
-                    shortSwipes={false}
-                    threshold={5}
-                    freeMode={true}
-                    freeModeSticky={true}
-                    observer={true}
-                    observeParents={true}
-                    freeModeMomentumVelocityRatio={0.01}
-                    breakpoints={{
-                      319: {
-                        slidesPerView: 1,
-                      },
-                      375: {
-                        slidesPerView: 2,
-                      },
-                      769: {
-                        slidesPerView: 3,
-                      },
-                    }}
-                  >
-                    {productBlocks.map((block, id) => (
-                      <SwiperSlide key={id}>
-                        <ProductBlock {...block} />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                ) : null
-              ) : (
-                loadingPlaceholder
-              )}
+              {!pageLoading
+                ? productBlocks?.length
+                  ? productBlocks.map((block, id) => (
+                      <ProductBlock key={id} {...block} />
+                    ))
+                  : null
+                : loadingPlaceholder}
             </div>
           </section>
-          <section className="card-list">
-            <div className="container erase-right">
-              {cardBlocks?.length ? (
-                <Swiper
-                  spaceBetween={8}
-                  slidesPerView={"auto"}
-                  loop={true}
-                  navigation
-                  shortSwipes={false}
-                  threshold={5}
-                  freeMode={true}
-                  freeModeSticky={true}
-                  observer={true}
-                  observeParents={true}
-                  freeModeMomentumVelocityRatio={0.05}
-                  breakpoints={{
-                    320: {
-                      slidesPerView: 1,
-                    },
-                    375: {
-                      slidesPerView: "auto",
-                    },
-                    769: {
-                      slidesPerView: 2,
-                    },
-                  }}
-                >
-                  {cardBlocks.map((block, id) => (
-                    <SwiperSlide key={id}>
-                      <CardBlock {...block} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              ) : null}
-            </div>
-          </section>
-          {/* <section className="home-products">
-                       <div className="container">
-                           <ProductListing animateEl={ animateEl.HP } animateDel={ animateDel.HP }/>
-                       </div>
-                    </section> */}
         </div>
       </div>
     </>
