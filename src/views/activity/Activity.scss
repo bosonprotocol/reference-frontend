@@ -46,9 +46,9 @@ section.activity {
     }
   }
 
-  .vouchers-container {
+  .voucher-set-container {
     margin-top: 40px;
-
+    
     .collapsible {
       .voucher-block {
         margin-top: 10px;
@@ -332,6 +332,9 @@ section.activity {
     }
   }
 
+  .voucher-container {
+    padding: 0;
+  }
   .no-vouchers {
     p {
       font-family: 'Exo', sans-serif;
