@@ -202,10 +202,11 @@ function VoucherAndSetDetails(props) {
 
   const location = getProp("location")
   const tableLocation = [
-    location.streetAddress,
-    location.city,
-    location.postcode,
-    location.country,
+    location?.addressLineOne,
+    location?.addressLineTwo,
+    location?.city,
+    location?.postcode,
+    location?.country,
   ]
 
   const tableCategory = [["Category", getProp("category")]];

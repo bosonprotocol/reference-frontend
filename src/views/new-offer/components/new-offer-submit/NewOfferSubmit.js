@@ -210,7 +210,8 @@ export default function NewOfferSubmit() {
     const location = JSON.stringify({
       country: country,
       city: city,
-      streetAddress: address_line_one,
+      addressLineOne: address_line_one,
+      addressLineTwo: address_line_two,
       postcode: postcode
     })
 

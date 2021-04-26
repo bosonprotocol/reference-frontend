@@ -44,18 +44,6 @@ const checkForErrorsInNewOfferForm = (
     lastInputChangeName
   );
 
-  newErrorMessages = countryValidation(
-    newErrorMessages,
-    getData,
-    lastInputChangeName
-  );
-
-  newErrorMessages = cityValidation(
-    newErrorMessages,
-    getData,
-    lastInputChangeName
-  );
-
   newErrorMessages = addressLineOneValidation(
     newErrorMessages,
     getData,
@@ -105,7 +93,7 @@ const titleValidation = (errorMessages, getData) => {
   const currentTitleValue = getData(NAME.TITLE);
 
   if (currentTitleValue) {
-    if (currentTitleValue.length <= ValidationConfig.titleSettings.min) {
+    if (currentTitleValue.length < ValidationConfig.titleSettings.min) {
       titleErrorMessage = ValidationConfig.minTitleLengthError;
     }
 
@@ -151,62 +139,12 @@ const descriptionValidation = (errorMessages, getData) => {
   return errorMessages;
 };
 
-const countryValidation = (errorMessages, getData) => {
-  let countryErrorMessage = null;
-  const currentCountryValue = getData(NAME.COUNTRY);
-
-  if (currentCountryValue) {
-    if (currentCountryValue.length <= ValidationConfig.countrySettings.min) {
-      countryErrorMessage = ValidationConfig.minCountryLengthError;
-    }
-
-    if (currentCountryValue.length > ValidationConfig.countrySettings.max) {
-      countryErrorMessage = ValidationConfig.maxCountryLengthError;
-    }
-
-    let profanityResult = profanityCheck(currentCountryValue);
-
-    if (profanityResult) {
-      countryErrorMessage = profanityResult;
-    }
-
-    errorMessages = { ...errorMessages, [NAME.COUNTRY]: countryErrorMessage };
-  }
-
-  return errorMessages;
-};
-
-const cityValidation = (errorMessages, getData) => {
-  let cityErrorMessage = null;
-  const currentCountryValue = getData(NAME.CITY);
-
-  if (currentCountryValue) {
-    if (currentCountryValue.length <= ValidationConfig.citySettings.min) {
-      cityErrorMessage = ValidationConfig.minCityLengthError;
-    }
-
-    if (currentCountryValue.length > ValidationConfig.citySettings.max) {
-      cityErrorMessage = ValidationConfig.maxCityLengthError;
-    }
-
-    let profanityResult = profanityCheck(currentCountryValue);
-
-    if (profanityResult) {
-      cityErrorMessage = profanityResult;
-    }
-
-    errorMessages = { ...errorMessages, [NAME.CITY]: cityErrorMessage };
-  }
-
-  return errorMessages;
-};
-
 const addressLineOneValidation = (errorMessages, getData) => {
   let addressLineOneErrorMessage = null;
   const currentAddressLineOneValue = getData(NAME.ADDRESS_LINE_ONE);
 
   if (currentAddressLineOneValue) {
-    if (currentAddressLineOneValue.length <= ValidationConfig.addressLineSettings.min) {
+    if (currentAddressLineOneValue.length < ValidationConfig.addressLineSettings.min) {
       addressLineOneErrorMessage = ValidationConfig.minAddressLengthError;
     }
 
@@ -230,7 +168,7 @@ const addressLineTwoValidation = (errorMessages, getData) => {
   const currentAddressLineTwoValue = getData(NAME.ADDRESS_LINE_TWO);
 
   if (currentAddressLineTwoValue) {
-    if (currentAddressLineTwoValue.length <= ValidationConfig.addressLineSettings.min) {
+    if (currentAddressLineTwoValue.length < ValidationConfig.addressLineSettings.min) {
       addressLineTwoErrorMessage = ValidationConfig.minAddressLengthError;
     }
 
@@ -255,7 +193,7 @@ const postCodeValidation = (errorMessages, getData) => {
   const currentPostcodeValue = getData(NAME.POSTCODE);
 
   if (currentPostcodeValue) {
-    if (currentPostcodeValue.length <= ValidationConfig.postcodeSettings.min) {
+    if (currentPostcodeValue.length < ValidationConfig.postcodeSettings.min) {
       postcodeErrorMessage = ValidationConfig.minPostcodeLengthError;
     }
 

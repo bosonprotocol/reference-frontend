@@ -16,16 +16,16 @@ export const minSizeExceededError = `Image is too small! Minimum file size is ${
 export const notAllowedMimeTypeError = `This file type is not allowed. Must be one of: ${acceptedImageExtensions}.`;
 // END IMAGE CONFIG
 
-const maxLentError = (field, max) => `${field} can't be more than ${max} characters long`
-const minLentError = (field, min) => `${field} must be at least ${min} characters long`
+const maxLengthError = (field, max) => `${field} can't be more than ${max} characters long`
+const minLengthError = (field, min) => `${field} must be at least ${min} characters long`
 
 // START TITLE CONFIG
 export const titleSettings = {
   min: 4,
   max: 50,
 };
-export const minTitleLengthError = minLentError("Title", titleSettings.min);
-export const maxTitleLengthError = maxLentError("Title", titleSettings.max);
+export const minTitleLengthError = minLengthError("Title", titleSettings.min);
+export const maxTitleLengthError = maxLengthError("Title", titleSettings.max);
 // END TITLE CONFIG
 
 // START DESCRIPTION CONFIG
@@ -67,27 +67,6 @@ export const expiryDateBeforeStartDateError =
 // END DATES CONFIG
 
 // LOCATION CONFIG
-//TODO Country / City settings not required? 
-// COUNTRY CONFIG
-export const countrySettings = {
-  min: 1,
-  max: 20
-}
-
-export const minCountryLengthError = minLentError("Country", countrySettings.min);
-export const maxCountryLengthError = maxLentError("Country", countrySettings.max);
-
-// END COUNTRY CONFIG
-
-// CITY CONFIG
-export const citySettings = {
-  min: 1,
-  max: 20
-} 
-
-export const minCityLengthError = minLentError("City", citySettings.min);
-export const maxCityLengthError = maxLentError("City", citySettings.max);
-// END CITY CONFIG
 
 // ADDRESS LINE CONFIG
 export const addressLineSettings = {
@@ -95,15 +74,15 @@ export const addressLineSettings = {
   max: 20
 } 
 
-export const minAddressLengthError = minLentError("Address", addressLineSettings.min);
-export const maxAddressLengthError = maxLentError("Address", addressLineSettings.max);
+export const minAddressLengthError = minLengthError("Address", addressLineSettings.min);
+export const maxAddressLengthError = maxLengthError("Address", addressLineSettings.max);
 // END ADDRESS LINE CONFIG
 
 // POSTCODE CONFIG
 export const postcodeSettings = {
   min: 4,
-  max: 20
+  max: 10
 } 
-export const minPostcodeLengthError =  minLentError("Postcode", postcodeSettings.min);
-export const maxPostcodeLengthError =  maxLentError("Postcode", postcodeSettings.max);
+export const minPostcodeLengthError =  minLengthError("Postcode", postcodeSettings.min);
+export const maxPostcodeLengthError =  maxLengthError("Postcode", postcodeSettings.max);
 // END POSTCODE CONFIG

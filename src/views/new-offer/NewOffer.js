@@ -173,10 +173,8 @@ function NewOffer() {
     />,
     <NewOfferLocation
       countryValueReceiver={createInputValueReceiver(NAME.COUNTRY)}
-      countryErrorMessage={errorMessages[NAME.COUNTRY]}
 
       cityValueReceiver={createInputValueReceiver(NAME.CITY)}
-      cityErrorMessage={errorMessages[NAME.CITY]}
 
       addressLineOneValueReceiver={createInputValueReceiver(NAME.ADDRESS_LINE_ONE)}
       addressLineOneErrorMessage={errorMessages[NAME.ADDRESS_LINE_ONE]}
