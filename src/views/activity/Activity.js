@@ -380,7 +380,7 @@ export const VoucherSetBlock = (props) => {
               </div>
               <div className="title elipsis">{title}</div>
             </div>
-            <div className="price flex split">
+            <div className="price flex split activity-price">
               <div className="value flex center">
                 {currencyIcon}
                 {price} {currency}
