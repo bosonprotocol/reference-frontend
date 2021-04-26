@@ -58,7 +58,7 @@ export const minBuyerDepositError = "Value must be greater than 0";
 // START DATES CONFIG
 export const startDateInPastError = "Start Date can't be set in the past.";
 export const startDateAfterExpiryError =
-  "Start Date can't be set after the Expiry Date.";
+  "Start Date must be before Expiry Date.";
 export const expiryDateBeforeStartDateError =
-  "Expiry Date can't be set before Start Date.";
+  "Expiry Date must be after Start Date.";
 // END DATES CONFIG
