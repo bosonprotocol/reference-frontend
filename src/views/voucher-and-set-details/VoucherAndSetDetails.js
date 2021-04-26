@@ -148,10 +148,7 @@ function VoucherAndSetDetails(props) {
   const [controls, setControls] = useState();
   const [actionPerformed, setActionPerformed] = useState(1);
   const [popupMessage, setPopupMessage] = useState();
-  const [
-    distributionMessage,
-    setDistributionMessage,
-  ] = useState(false);
+  const [distributionMessage, setDistributionMessage] = useState(false);
   const [recentlySignedTxHash, setRecentlySignedTxHash] = useState("");
   const [
     hideControlButtonsWaitPeriodExpired,
@@ -638,18 +635,22 @@ function VoucherAndSetDetails(props) {
           ...Object.values(payments?.distributedAmounts.sellerDeposit),
         ].filter((x) => x.hex !== "0x00").length > 0;
 
-        paymentDistributed =
-        [
-          ...Object.values(payments?.distributedAmounts.payment),
-        ].filter((x) => x.hex !== "0x00").length > 0;
+      paymentDistributed =
+        [...Object.values(payments?.distributedAmounts.payment)].filter(
+          (x) => x.hex !== "0x00"
+        ).length > 0;
     }
 
     if (!depositsDistributed && voucherDetails.FINALIZED) {
-      setDistributionMessage('Deposits will be distributed in 1 hour');
+      setDistributionMessage("Deposits will be distributed in 1 hour");
     }
-    if(!paymentDistributed && !voucherDetails.FINALIZED && (voucherDetails.REDEEMED || voucherDetails.REFUNDED)) {
-      console.log('setting to')
-      setDistributionMessage('Payment will be distributed in 1 hour');
+    if (
+      !paymentDistributed &&
+      !voucherDetails.FINALIZED &&
+      (voucherDetails.REDEEMED || voucherDetails.REFUNDED)
+    ) {
+      console.log("setting to");
+      setDistributionMessage("Payment will be distributed in 1 hour");
     }
 
     const getPaymentMatrixSet = (row, column) =>
@@ -1451,8 +1452,7 @@ function VoucherAndSetDetails(props) {
 
               {distributionMessage ? (
                 <div className="section depositsWarning flex center">
-                  <IconWarning />{" "}
-                  <span> {distributionMessage}</span>{" "}
+                  <IconWarning /> <span> {distributionMessage}</span>{" "}
                 </div>
               ) : null}
 
