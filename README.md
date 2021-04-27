@@ -2,7 +2,7 @@
 
 <h1 align="center">Boson Protocol Reference Frontend</h1>
 
-![](https://img.shields.io/badge/Coverage-6%25-733B27.svg?prefix=$coverage$)
+![](https://img.shields.io/badge/Coverage-7%25-733B27.svg?prefix=$coverage$)
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
 This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
