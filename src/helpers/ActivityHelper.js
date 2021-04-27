@@ -62,7 +62,7 @@ export const ActiveTab = (props) => {
   const { products, voucherType, voucherSetId } = props;
 
   return (
-    <div className="vouchers-container">
+    <div className="voucher-set-container">
       {products.map((block, id) =>
         getDesiredBlockType(voucherType, block, id, voucherSetId)
       )}
