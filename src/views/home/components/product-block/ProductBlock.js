@@ -13,7 +13,7 @@ import {
 import { QUERY_PARAMS, ROUTE } from "../../../../helpers/configs/Dictionary";
 
 function ProductBlock(props) {
-  const { id, title, image, price, deposit, col, paymentType } = props;
+  const { id, title, image, price, deposit, col, paymentType, keyId } = props;
   const productType = col ? "col" : "";
 
   const priceCurrency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
@@ -27,6 +27,7 @@ function ProductBlock(props) {
       <div
         // onClick={ openProduct }
         className={`product-block ${productType} `} //${ animate ? 'animate' : '' }
+        key={keyId}
       >
         <div
           className={`product-image flex center ${productType}`}

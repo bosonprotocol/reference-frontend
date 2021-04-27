@@ -8,3 +8,7 @@ ci_deployment_label: "%{ci_deployment_label}"
 development_hassium_provisioning_role_arn: "arn:aws:iam::%{hiera('bsn_development_potassium_account_id')}:role/cross-account-admin-role"
 development_hassium_deployment_type: "bsn-development"
 development_hassium_deployment_label: "hassium"
+
+production_vanadium_provisioning_role_arn: "arn:aws:iam::%{hiera('bsn_production_lutetium_account_id')}:role/cross-account-admin-role"
+production_vanadium_deployment_type: "bsn-production"
+production_vanadium_deployment_label: "vanadium"
