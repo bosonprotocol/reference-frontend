@@ -50,6 +50,7 @@ import PopupMessage from "../../shared-components/popup-message/PopupMessage";
 import {
   DateTable,
   TableRow,
+  TableLocation,
   PriceTable,
   DescriptionBlock,
 } from "../../shared-components/table-content/TableContent";
@@ -197,6 +198,15 @@ function VoucherAndSetDetails(props) {
   const tableDate = [
     formatDate(getProp("startDate")),
     formatDate(getProp("expiryDate")),
+  ];
+
+  const location = getProp("location");
+  const tableLocation = [
+    location?.addressLineOne,
+    location?.addressLineTwo,
+    location?.city,
+    location?.postcode,
+    location?.country,
   ];
 
   const tableCategory = [["Category", getProp("category")]];
@@ -1458,7 +1468,12 @@ function VoucherAndSetDetails(props) {
                 </div>
                 <div className="section category"></div>
                 <div className="section general">
-                  {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */}
+                  {tableLocation ? (
+                    <TableLocation
+                      data={tableLocation}
+                      hasBiggerTitle={false}
+                    />
+                  ) : null}
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}

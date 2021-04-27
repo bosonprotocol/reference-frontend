@@ -100,7 +100,7 @@ function NewOfferDates({
     <div className="date">
       <div className="row">
         <div className="field">
-          <div className="step-title">
+          <div>
             <label htmlFor="offer-start-date">Start Date</label>
           </div>
           <div
