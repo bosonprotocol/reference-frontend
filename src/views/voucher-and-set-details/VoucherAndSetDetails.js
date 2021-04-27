@@ -649,7 +649,6 @@ function VoucherAndSetDetails(props) {
       !voucherDetails.FINALIZED &&
       (voucherDetails.REDEEMED || voucherDetails.REFUNDED)
     ) {
-      console.log("setting to");
       setDistributionMessage("Payment will be distributed in 1 hour");
     }
 
