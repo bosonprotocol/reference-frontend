@@ -2,9 +2,9 @@ import React, { useRef, useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./PickUpLocation.scss";
 import { GlobalContext, Action } from "../../contexts/Global";
+import { ROUTE } from "../../helpers/configs/Dictionary";
+
 import { IconHome } from "../../shared-components/icons/Icons";
-import { useLocation } from "react-router";
-import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
 import {getAllCityNames} from '../../utils/location/location'
 
 function PickUpLocation() {
@@ -14,10 +14,10 @@ function PickUpLocation() {
   const globalContext = useContext(GlobalContext);
 
   const allCities = getAllCityNames();
-  const location = useLocation();
-  const queryParam = new URLSearchParams(location.search);
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [query, setQuery] = useState("")
 
-  const [cities, setCities] = useState([]);
+  const allVoucherSets = globalContext.state.allVoucherSets;
 
   const filterCities = (arr, query) => {
     return arr.filter(function (city) {
@@ -27,32 +27,29 @@ function PickUpLocation() {
 
   const handleSearchCriteria = (e) => {
     if (!e) {
-      setCities([]);
+      setFilteredCities([]);
       return;
     }
 
-    setCities(filterCities(allCities, e));
+    setFilteredCities(filterCities(allCities, e));
   };
 
   const clearSearch = () => {
     searchInput.current.value = "";
-    setCities([]);
-    globalContext.dispatch(Action.updateCityFilter(""));
+    setFilteredCities([])
+    globalContext.dispatch(Action.filterVoucherSetsByCity("", allVoucherSets));
   };
 
-  useEffect(() => {
-    searchInput?.current?.focus();
-    const searchCriteria = queryParam.get(QUERY_PARAMS.SEARCH_CRITERIA);
+  useEffect(()=> {
+    const timeOutId = setTimeout(() => handleSearchCriteria(query), 500);
+    return () => clearTimeout(timeOutId);
+  }, [query])
 
-    if (searchCriteria && searchCriteria !== QUERY_PARAMS.EMPTY) {
-      searchInput.current.value = searchCriteria;
-      handleSearchCriteria(searchCriteria);
-    }
-  }, [allCities]);
-
+ 
   const setSelectedCityAndGoHome = (city) => {
+    const filteredVouchers = allVoucherSets.filter(voucherSet => voucherSet.location.city == city)
 
-    globalContext.dispatch(Action.updateCityFilter(city));
+    globalContext.dispatch(Action.filterVoucherSetsByCity(city, filteredVouchers));
     history.push(ROUTE.Home);
   }
 
@@ -74,7 +71,7 @@ function PickUpLocation() {
                       id="filter-location"
                       type="text"
                       onChange={(e) =>
-                        handleSearchCriteria(e.target ? e.target.value : null)
+                        setQuery(e.target ? e.target.value : null)
                       }
                     />
                     <div
@@ -89,10 +86,10 @@ function PickUpLocation() {
               </div>
             </div>
             <div className="voucher-set-container">
-              {cities.length > 0
-                ? cities.map((city, id) => (
+              {filteredCities.length > 0
+                ? filteredCities.map((city, id) => (
                     <li
-                      key={city}
+                      key={id}
                       onClick={() => setSelectedCityAndGoHome(city)}
                     >
                       {city}

@@ -44,6 +44,23 @@
   }
 
   .location-filter {
-    color: #6E8298 //todo this color is being used a lot. Should be exported as a constant
+    color: #6E8298; //todo this color is being used a lot. Should be exported as a constant
+    display: flex;
+    flex-direction: row;
+  }
+
+  .test {
+    display: flex;
+    font-family: "Exo", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    padding: 2px 1.5rem;
+    font-size: 14px;
+    line-height: 19px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+    color: #6E8298;
+    background-color: #192028;
   }
 }

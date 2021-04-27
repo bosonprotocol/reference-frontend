@@ -16,7 +16,7 @@ export const GlobalInitialState = {
   account: null,
   checkDataUpdate: 1, //todo not sure if this is used. Might not be needed / could be removed
   checkAccountUpdate: 1,
-  selectedCity: "",
+  selectedCity: null,
 };
 
 export const Action = {
@@ -61,9 +61,12 @@ export const Action = {
   checkDataUpdate: () => ({
     type: CONTROL.CHECK_DATA_UPDATE,
   }),
-  updateCityFilter: (city) => ({
+  filterVoucherSetsByCity: (city, filteredVoucherSets) => ({
     type: DIC.UPDATE_CITY_FILTER,
-    payload: city,
+    payload: {
+      city,
+      filteredVoucherSets,
+    },
   })
 };
 
@@ -114,7 +117,8 @@ export const GlobalReducer = (state, action) => {
     },
     [DIC.UPDATE_CITY_FILTER]: () => {
       return {
-        selectedCity: action.payload,
+        selectedCity: action.payload.city,
+        allVoucherSets: action.payload.filteredVoucherSets
       };
     },
   };

@@ -51,10 +51,5 @@ export const getDefaultCityForCountry = (isoCode) => {
 };
 
 export const getAllCityNames = () => {
-    // return cities.map(e => e.name)
-    return [
-      "Dupnitsa",
-      "Sofia",
-      "Amsterdam"
-    ]
+  return cities.map(e => e.name)
 }
