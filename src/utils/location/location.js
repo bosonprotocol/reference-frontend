@@ -49,3 +49,12 @@ export const getDefaultCityForCountry = (isoCode) => {
 
   return getSortedCityNamesByCountryCode(isoCode)[0];
 };
+
+export const getAllCityNames = () => {
+    // return cities.map(e => e.name)
+    return [
+      "Dupnitsa",
+      "Sofia",
+      "Amsterdam"
+    ]
+}

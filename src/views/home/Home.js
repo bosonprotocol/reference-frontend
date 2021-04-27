@@ -148,13 +148,26 @@ function Home() {
       )}
       <div className={`screens ${newUser ? "new-user" : ""}`} ref={screensRef}>
         <div ref={homepage} className="home relative atomic-scoped">
-          <div className="container o-hidden">
+          <div className="container o-hidden flex row jc-sb">
             <Link className="def" to={ROUTE.Search}>
               <div className={`search-icon flex`}>
                 <IconHome />
                 <div className="search-label">Search</div>
               </div>
             </Link>
+            <div className="location-filter">
+            <Link className="def" to={ROUTE.PickUpLocation}>
+              <div className={`search-icon flex`}>
+                {globalContext.state.selectedCity ? 
+                <div>{globalContext.state.selectedCity}</div> 
+                :<div className="flex">
+                    <IconHome /> 
+                    <div className="search-label">Show vouchers in my area {">"}</div>
+                </div>
+                }
+              </div>
+            </Link>
+            </div>
           </div>
           <div className="container o-hidden">
             <CategoryMenu handleCategory={filterByCategory} />

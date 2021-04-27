@@ -41,7 +41,8 @@ function TopNavigation() {
       location.pathname === ROUTE.Connect ||
       location.pathname === ROUTE.Activity ||
       location.pathname === ROUTE.ActivityVouchers ||
-      location.pathname === ROUTE.Search
+      location.pathname === ROUTE.Search ||
+      location.pathname === ROUTE.PickUpLocation
     ) {
       history.push(ROUTE.Home);
       return;

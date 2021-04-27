@@ -14,8 +14,9 @@ export const GlobalInitialState = {
   allVoucherSets: undefined,
   fetchVoucherSets: 1,
   account: null,
-  checkDataUpdate: 1,
+  checkDataUpdate: 1, //todo not sure if this is used. Might not be needed / could be removed
   checkAccountUpdate: 1,
+  selectedCity: "",
 };
 
 export const Action = {
@@ -60,6 +61,10 @@ export const Action = {
   checkDataUpdate: () => ({
     type: CONTROL.CHECK_DATA_UPDATE,
   }),
+  updateCityFilter: (city) => ({
+    type: DIC.UPDATE_CITY_FILTER,
+    payload: city,
+  })
 };
 
 export const GlobalReducer = (state, action) => {
@@ -105,6 +110,11 @@ export const GlobalReducer = (state, action) => {
     [CONTROL.CHECK_DATA_UPDATE]: () => {
       return {
         checkDataUpdate: state.checkDataUpdate * -1,
+      };
+    },
+    [DIC.UPDATE_CITY_FILTER]: () => {
+      return {
+        selectedCity: action.payload,
       };
     },
   };

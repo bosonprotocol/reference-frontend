@@ -20,6 +20,7 @@ export const DIC = {
   ALL_VOUCHER_SETS: "all_voucher_sets",
   ALL_VOUCHERS: "all_vouchers",
   UPDATE_ACCOUNT: "update_account",
+  UPDATE_CITY_FILTER: "update_city_filter",
 };
 
 // CONTROL strings are used to execute commands related to Context
@@ -55,6 +56,7 @@ export const ROUTE = {
   VoucherSetView: "/supply",
   Details: "/details",
   Search: "/search",
+  PickUpLocation: "/pick-up-location"
 };
 
 export const BOTTOM_NAV_TYPE = {
