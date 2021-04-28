@@ -63,6 +63,11 @@ export default function NewOfferSubmit() {
     description,
     condition,
     selected_file, // switch with image to use blob
+    address_line_one,
+    address_line_two,
+    city,
+    country,
+    postcode,
   } = sellerContext.state.offeringData;
 
   const { library, account, chainId } = useWeb3React();
@@ -201,6 +206,14 @@ export default function NewOfferSubmit() {
     const startDate = new Date(dataArr[0] * 1000);
     const endDate = new Date(dataArr[1] * 1000);
 
+    const location = JSON.stringify({
+      country: country,
+      city: city,
+      addressLineOne: address_line_one,
+      addressLineTwo: address_line_two,
+      postcode: postcode,
+    });
+
     appendFilesToFormData();
 
     formData.append("title", title);
@@ -213,7 +226,7 @@ export default function NewOfferSubmit() {
     formData.append("buyerDeposit", dataArr[4]);
     formData.append("sellerDeposit", dataArr[3]);
     formData.append("description", description);
-    formData.append("location", "Location");
+    formData.append("location", location);
     formData.append("contact", "Contact");
     formData.append("conditions", condition);
     formData.append("voucherOwner", account);

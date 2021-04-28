@@ -50,6 +50,7 @@ import PopupMessage from "../../shared-components/popup-message/PopupMessage";
 import {
   DateTable,
   TableRow,
+  TableLocation,
   PriceTable,
   DescriptionBlock,
 } from "../../shared-components/table-content/TableContent";
@@ -148,10 +149,7 @@ function VoucherAndSetDetails(props) {
   const [controls, setControls] = useState();
   const [actionPerformed, setActionPerformed] = useState(1);
   const [popupMessage, setPopupMessage] = useState();
-  const [
-    showDepositsDistributionWarningMessage,
-    setShowDepositsDistributionWarningMessage,
-  ] = useState(false);
+  const [distributionMessage, setDistributionMessage] = useState(false);
   const [recentlySignedTxHash, setRecentlySignedTxHash] = useState("");
   const [
     hideControlButtonsWaitPeriodExpired,
@@ -197,6 +195,15 @@ function VoucherAndSetDetails(props) {
   const tableDate = [
     formatDate(getProp("startDate")),
     formatDate(getProp("expiryDate")),
+  ];
+
+  const location = getProp("location");
+  const tableLocation = [
+    location?.addressLineOne,
+    location?.addressLineTwo,
+    location?.city,
+    location?.postcode,
+    location?.country,
   ];
 
   const tableCategory = [["Category", getProp("category")]];
@@ -629,6 +636,7 @@ function VoucherAndSetDetails(props) {
     const payments = await getPayments(voucherDetails, account, modalContext);
 
     let depositsDistributed;
+    let paymentDistributed;
 
     if (payments?.distributedAmounts) {
       depositsDistributed =
@@ -636,10 +644,22 @@ function VoucherAndSetDetails(props) {
           ...Object.values(payments?.distributedAmounts.buyerDeposit),
           ...Object.values(payments?.distributedAmounts.sellerDeposit),
         ].filter((x) => x.hex !== "0x00").length > 0;
+
+      paymentDistributed =
+        [...Object.values(payments?.distributedAmounts.payment)].filter(
+          (x) => x.hex !== "0x00"
+        ).length > 0;
     }
 
     if (!depositsDistributed && voucherDetails.FINALIZED) {
-      setShowDepositsDistributionWarningMessage(true);
+      setDistributionMessage("Deposits will be distributed in 1 hour");
+    }
+    if (
+      !paymentDistributed &&
+      !voucherDetails.FINALIZED &&
+      (voucherDetails.REDEEMED || voucherDetails.REFUNDED)
+    ) {
+      setDistributionMessage("Payment will be distributed in 1 hour");
     }
 
     const getPaymentMatrixSet = (row, column) =>
@@ -1439,10 +1459,9 @@ function VoucherAndSetDetails(props) {
                 </div>
               ) : null}
 
-              {showDepositsDistributionWarningMessage ? (
+              {distributionMessage ? (
                 <div className="section depositsWarning flex center">
-                  <IconWarning />{" "}
-                  <span> Deposits will be distributed in 1 hour</span>{" "}
+                  <IconWarning /> <span> {distributionMessage}</span>{" "}
                 </div>
               ) : null}
 
@@ -1458,7 +1477,12 @@ function VoucherAndSetDetails(props) {
                 </div>
                 <div className="section category"></div>
                 <div className="section general">
-                  {/* { tableLocation ? <TableLocation data={ tableLocation }/> : null } */}
+                  {tableLocation ? (
+                    <TableLocation
+                      data={tableLocation}
+                      hasBiggerTitle={false}
+                    />
+                  ) : null}
                   {getProp("category") ? (
                     <TableRow data={tableCategory} />
                   ) : null}

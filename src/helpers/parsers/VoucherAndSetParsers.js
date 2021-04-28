@@ -190,6 +190,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
     startDate: rawVoucher.startDate,
     expiryDate: rawVoucher.expiryDate,
     category: rawVoucher.category,
+    location: rawVoucher.location,
     voucherOwner: rawVoucher.voucherOwner,
     paymentType: rawVoucher?.paymentType ? rawVoucher?.paymentType : 1,
     holder: rawVoucher._holder,

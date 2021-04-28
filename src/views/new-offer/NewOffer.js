@@ -12,9 +12,15 @@ import NewOfferGeneral from "./components/new-offer-general/NewOfferGeneral";
 import NewOfferPrice from "./components/new-offer-price/NewOfferPrice";
 import NewOfferDates from "./components/new-offer-dates/NewOfferDates";
 import NewOfferSummary from "./components/new-offer-summary/NewOfferSummary";
+import NewOfferLocation from "./components/new-offer-location/NewOfferLocation";
 
 import { SellerContext, Seller } from "../../contexts/Seller";
 import { NavigationContext, Action } from "../../contexts/Navigation";
+
+import {
+  DEFAULT_COUNTRY_NAME,
+  DEFAULT_CITY_NAME,
+} from "../../utils/location/location";
 
 import {
   NAME,
@@ -54,6 +60,8 @@ function NewOffer() {
     [NAME.PRICE_C]: CURRENCY.ETH,
     [NAME.DEPOSITS_C]: CURRENCY.ETH,
     [NAME.DATE_START]: new Date().setHours(0, 0, 0, 0),
+    [NAME.COUNTRY]: DEFAULT_COUNTRY_NAME,
+    [NAME.CITY]: DEFAULT_CITY_NAME,
   };
   const fundLimitsContract = useFundLimitsContract();
 
@@ -165,6 +173,20 @@ function NewOffer() {
       startDateErrorMessage={errorMessages[NAME.DATE_START]}
       endDateValueReceiver={createInputValueReceiver(NAME.DATE_END)}
       endDateErrorMessage={errorMessages[NAME.DATE_END]}
+    />,
+    <NewOfferLocation
+      countryValueReceiver={createInputValueReceiver(NAME.COUNTRY)}
+      cityValueReceiver={createInputValueReceiver(NAME.CITY)}
+      addressLineOneValueReceiver={createInputValueReceiver(
+        NAME.ADDRESS_LINE_ONE
+      )}
+      addressLineOneErrorMessage={errorMessages[NAME.ADDRESS_LINE_ONE]}
+      addressLineTwoValueReceiver={createInputValueReceiver(
+        NAME.ADDRESS_LINE_TWO
+      )}
+      addressLineTwoErrorMessage={errorMessages[NAME.ADDRESS_LINE_TWO]}
+      postcodeValueReceiver={createInputValueReceiver(NAME.POSTCODE)}
+      postcodeErrorMessage={errorMessages[NAME.POSTCODE]}
     />,
     <NewOfferSummary />,
   ];
