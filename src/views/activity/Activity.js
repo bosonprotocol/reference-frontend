@@ -453,7 +453,9 @@ export const SingleVoucherBlock = (props) => {
           </div>
         ) : null}
         <div
-          className={`info grow flex ${!voucherSetId ? "jc-sb voucher-set-info" : ""} column`}
+          className={`info grow flex ${
+            !voucherSetId ? "jc-sb voucher-set-info" : ""
+          } column`}
         >
           <div className="title-container">
             {!voucherSetId ? (
