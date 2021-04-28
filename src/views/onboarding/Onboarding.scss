@@ -263,7 +263,8 @@
   .swiper-button-next,
   .swiper-button-prev {
     transition: 0.2s ease-in-out;
-
+    position: absolute;
+    z-index: 2;
     width: 40px;
     height: 40px;
     border-top: 3px solid #80F0BE;
