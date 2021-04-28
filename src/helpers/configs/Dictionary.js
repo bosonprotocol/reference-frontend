@@ -151,6 +151,7 @@ export const MESSAGE = {
   COF_SUCCESS: "cof",
   REFUND_SUCCESS: "refund",
   COMPLAIN_SUCCESS: "complain",
+  COMMIT_SUCCESS: "commit",
 };
 
 export const QUERY_PARAMS = {

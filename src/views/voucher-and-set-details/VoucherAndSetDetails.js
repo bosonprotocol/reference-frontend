@@ -163,14 +163,23 @@ function VoucherAndSetDetails(props) {
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
 
+  const [triggerWaitForTransaction, setTriggerWaitForTransaction] = useState(
+    false
+  );
+
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
 
   const resetSuccessMessage = () => {
     setSuccessMessage("");
     setSuccessMessageType("");
+    const messageType = localStorage.getItem("successMessageType");
     localStorage.removeItem("successMessage");
     localStorage.removeItem("successMessageType");
+    if (messageType === MESSAGE.COMMIT_SUCCESS) {
+      history.push(ROUTE.ActivityVouchers);
+      return;
+    }
     window.location.reload();
   };
 
@@ -290,7 +299,7 @@ function VoucherAndSetDetails(props) {
         setSuccessMessageType
       );
     }
-  }, [voucherDetails, voucherSetDetails, library]);
+  }, [voucherDetails, voucherSetDetails, library, triggerWaitForTransaction]);
   // assign controlset to statuses
   const controlList = () => {
     setDisablePage(0);
@@ -840,8 +849,11 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
+      localStorage.setItem("successMessage", "Commit triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COMMIT_SUCCESS);
+      setTxHashToSupplyId(tx.hash, supplyId);
       setRecentlyUsedCorrelationId(correlationId, account);
-      setRecentlySignedTxHash(tx.hash, supplyId);
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -894,7 +906,6 @@ function VoucherAndSetDetails(props) {
 
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
-    history.push(ROUTE.ActivityVouchers);
   }
 
   async function onComplain() {
@@ -990,7 +1001,6 @@ function VoucherAndSetDetails(props) {
 
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
-    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onRefund() {
@@ -1086,7 +1096,6 @@ function VoucherAndSetDetails(props) {
     }
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
-    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onCoF() {
