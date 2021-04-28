@@ -22,8 +22,6 @@ function CategoryMenu({ handleCategory }) {
   const voucherSets = globalContext.state.allVoucherSets;
 
   useEffect(() => {
-    // categoryList.current.classList.add("arrange");
-
     generateExistingCategoriesList();
   }, [voucherSets]);
 
