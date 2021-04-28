@@ -33,7 +33,7 @@ function slide1() {
         <p className="number">1</p>
         <h1>Offer items for sale</h1>
         <p className="ta-center color-secondary">
-        Create a Boson commitment NFT set to list your item to be purchased.
+          Create a Boson commitment NFT set to list your item to be purchased.
         </p>
       </div>
     </>
@@ -60,8 +60,9 @@ function slide2() {
         <p className="number">2</p>
         <h1>Boson Protocol escrow </h1>
         <p className="ta-center color-secondary">
-        The escrow is governed by the Core Exchange Mechanism which takes deposits 
-        from both supplier and buyer to grow trust in a p2p exchange. 
+          The escrow is governed by the Core Exchange Mechanism which takes
+          deposits from both supplier and buyer to grow trust in a p2p
+          exchange. 
         </p>
       </div>
     </>
@@ -107,7 +108,8 @@ function slide3(completeOnboarding) {
         <p className="number">3</p>
         <h1>Redeem</h1>
         <p className="ta-center color-secondary">
-        When handing over the item the buyer signs the redemption to transfers funds to the seller.
+          When handing over the item the buyer signs the redemption to transfers
+          funds to the seller.
         </p>
       </div>
       <div
