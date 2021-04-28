@@ -57,6 +57,8 @@ function Home() {
   const voucherSets = globalContext.state.allVoucherSets;
   const modalCloseTimeout = 900;
 
+  let existingCategories;
+
   useEffect(() => {
     initialFilteringAndSorting();
   }, [voucherSets, globalContext.state.checkAccountUpdate]);
