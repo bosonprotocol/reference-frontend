@@ -58,7 +58,9 @@ export const waitForRecentTransactionIfSuchExists = (
   library,
   voucherDetails,
   voucherSetDetails,
-  setRecentlySignedTxHash
+  setRecentlySignedTxHash,
+  setSuccessMessage,
+  setSuccessMessageType
 ) => {
   const localStorageList =
     JSON.parse(localStorage.getItem("recentlySignedTxIdToSupplyIdList")) || [];
@@ -77,23 +79,20 @@ export const waitForRecentTransactionIfSuchExists = (
         setRecentlySignedTxHash(recentlySignedTxHash);
 
         const awaitForTx = async () => {
-          const locationBeforeTxWait = window.location;
           await library.waitForTransaction(recentlySignedTxHash);
-
           const localStorageListWithDeletedTx = localStorageList.filter(
             (x) => x.txHash !== recentlySignedTxHash
           );
           localStorage.setItem(
             "recentlySignedTxIdToSupplyIdList",
             JSON.stringify(localStorageListWithDeletedTx)
-          );
-
-          if (locationBeforeTxWait.href === window.location.href) {
-            // eslint-disable-next-line no-self-assign
-            window.location = window.location;
-          }
+          );   
         };
-        awaitForTx();
+        await awaitForTx();
+
+        setSuccessMessage(localStorage.getItem('successMessage'));
+        setSuccessMessageType(localStorage.getItem('successMessageType'));
+
       }
     };
     getTxReceiptAndCheckForCompletion();

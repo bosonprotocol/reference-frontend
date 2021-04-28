@@ -169,6 +169,9 @@ function VoucherAndSetDetails(props) {
   const resetSuccessMessage = () => {
     setSuccessMessage("");
     setSuccessMessageType("");
+    localStorage.removeItem('successMessage');
+    localStorage.removeItem('successMessageType');
+    window.location.reload();
   };
 
   const getProp = (prop) =>
@@ -282,7 +285,9 @@ function VoucherAndSetDetails(props) {
         library,
         voucherDetails,
         voucherSetDetails,
-        setRecentlySignedTxHash
+        setRecentlySignedTxHash,
+        setSuccessMessage,
+        setSuccessMessageType
       );
     }
   }, [voucherDetails, voucherSetDetails, library]);
@@ -951,8 +956,8 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
-      setSuccessMessage("Complain triggered");
-      setSuccessMessageType(MESSAGE.COMPLAIN_SUCCESS);
+      localStorage.setItem('successMessage', "Complain triggered")
+      localStorage.setItem('successMessageType', MESSAGE.COMPLAIN_SUCCESS)
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1047,8 +1052,8 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
-      setSuccessMessage("Refund triggered");
-      setSuccessMessageType(MESSAGE.REFUND_SUCCESS);
+      localStorage.setItem('successMessage', "Refund triggered")
+      localStorage.setItem('successMessageType', MESSAGE.REFUND_SUCCESS)
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1144,8 +1149,8 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      setSuccessMessage("Cancel/fault triggered");
-      setSuccessMessageType(MESSAGE.COF_SUCCESS);
+      localStorage.setItem('successMessage', "Cancel/fault triggered")
+      localStorage.setItem('successMessageType', MESSAGE.COF_SUCCESS)
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
