@@ -169,8 +169,8 @@ function VoucherAndSetDetails(props) {
   const resetSuccessMessage = () => {
     setSuccessMessage("");
     setSuccessMessageType("");
-    localStorage.removeItem('successMessage');
-    localStorage.removeItem('successMessageType');
+    localStorage.removeItem("successMessage");
+    localStorage.removeItem("successMessageType");
     window.location.reload();
   };
 
@@ -956,8 +956,8 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
-      localStorage.setItem('successMessage', "Complain triggered")
-      localStorage.setItem('successMessageType', MESSAGE.COMPLAIN_SUCCESS)
+      localStorage.setItem("successMessage", "Complain triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1052,8 +1052,8 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
 
-      localStorage.setItem('successMessage', "Refund triggered")
-      localStorage.setItem('successMessageType', MESSAGE.REFUND_SUCCESS)
+      localStorage.setItem("successMessage", "Refund triggered");
+      localStorage.setItem("successMessageType", MESSAGE.REFUND_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1149,8 +1149,8 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      localStorage.setItem('successMessage', "Cancel/fault triggered")
-      localStorage.setItem('successMessageType', MESSAGE.COF_SUCCESS)
+      localStorage.setItem("successMessage", "Cancel/fault triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({

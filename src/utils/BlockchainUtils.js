@@ -86,13 +86,12 @@ export const waitForRecentTransactionIfSuchExists = (
           localStorage.setItem(
             "recentlySignedTxIdToSupplyIdList",
             JSON.stringify(localStorageListWithDeletedTx)
-          );   
+          );
         };
         await awaitForTx();
 
-        setSuccessMessage(localStorage.getItem('successMessage'));
-        setSuccessMessageType(localStorage.getItem('successMessageType'));
-
+        setSuccessMessage(localStorage.getItem("successMessage"));
+        setSuccessMessageType(localStorage.getItem("successMessageType"));
       }
     };
     getTxReceiptAndCheckForCompletion();
