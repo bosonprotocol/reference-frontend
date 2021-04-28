@@ -162,27 +162,20 @@ function Home() {
             </Link>
             {
               globalContext.state.selectedCity
-              ? <div className="flex test"
+              ? <div className="flex jc-sb location-container"
                 onClick={resetVoucherSetsCityFilter}
               >
                 <IconLocation />
-                <div className=""
+                <div className="margin-left"
                 >
-                  {globalContext.state.selectedCity
-                }</div> 
-              </div>
-               
-              : <Link className="def" to={ROUTE.PickUpLocation}>
-              <div className={`search-icon flex`}>
-                <div 
-                  className="flex"
-                  >
-                  
-                    <IconHome /> 
-                    <div className="search-label">Show vouchers in my area {">"}</div>
+                  {globalContext.state.selectedCity}
                 </div>
+                <div className="clear-filter">X</div>
               </div>
-            </Link>
+              : <Link className="def location-container flex" to={ROUTE.PickUpLocation}>
+                  <div>Show vouchers in my area</div>
+                  <p className="arrow right"></p>
+              </Link>
             }
           </div>
           <div className="container o-hidden">
