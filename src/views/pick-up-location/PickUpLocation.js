@@ -37,10 +37,12 @@ function PickUpLocation() {
   const clearSearch = () => {
     searchInput.current.value = "";
     setFilteredCities([])
-    globalContext.dispatch(Action.filterVoucherSetsByCity("", allVoucherSets));
+    globalContext.dispatch(Action.updateVoucherSetsByLocation("", allVoucherSets));
   };
 
   useEffect(()=> {
+    searchInput?.current?.focus();
+
     const timeOutId = setTimeout(() => handleSearchCriteria(query), 500);
     return () => clearTimeout(timeOutId);
   }, [query])
@@ -49,7 +51,7 @@ function PickUpLocation() {
   const setSelectedCityAndGoHome = (city) => {
     const filteredVouchers = allVoucherSets.filter(voucherSet => voucherSet.location.city == city)
 
-    globalContext.dispatch(Action.filterVoucherSetsByCity(city, filteredVouchers));
+    globalContext.dispatch(Action.updateVoucherSetsByLocation(city, filteredVouchers));
     history.push(ROUTE.Home);
   }
 

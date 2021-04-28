@@ -61,8 +61,8 @@ export const Action = {
   checkDataUpdate: () => ({
     type: CONTROL.CHECK_DATA_UPDATE,
   }),
-  filterVoucherSetsByCity: (city, filteredVoucherSets) => ({
-    type: DIC.UPDATE_CITY_FILTER,
+  updateVoucherSetsByLocation: (city, filteredVoucherSets) => ({
+    type: DIC.UPDATE_VOUCHER_SETS_BY_LOCATION,
     payload: {
       city,
       filteredVoucherSets,
@@ -115,7 +115,7 @@ export const GlobalReducer = (state, action) => {
         checkDataUpdate: state.checkDataUpdate * -1,
       };
     },
-    [DIC.UPDATE_CITY_FILTER]: () => {
+    [DIC.UPDATE_VOUCHER_SETS_BY_LOCATION]: () => {
       return {
         selectedCity: action.payload.city,
         allVoucherSets: action.payload.filteredVoucherSets

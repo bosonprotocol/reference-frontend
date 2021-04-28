@@ -115,7 +115,7 @@ function Home() {
 
   const resetVoucherSetsCityFilter = () => {
     //if city filter is reset, we fetch voucher-sets from DB
-    globalContext.dispatch(Action.filterVoucherSetsByCity(""));
+    globalContext.dispatch(Action.updateVoucherSetsByLocation(""));
   }
 
   const filterByCategory = (category) => {

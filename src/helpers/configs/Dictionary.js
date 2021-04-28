@@ -20,7 +20,7 @@ export const DIC = {
   ALL_VOUCHER_SETS: "all_voucher_sets",
   ALL_VOUCHERS: "all_vouchers",
   UPDATE_ACCOUNT: "update_account",
-  UPDATE_CITY_FILTER: "update_city_filter",
+  UPDATE_VOUCHER_SETS_BY_LOCATION: "update_voucher_sets_by_location",
 };
 
 // CONTROL strings are used to execute commands related to Context
