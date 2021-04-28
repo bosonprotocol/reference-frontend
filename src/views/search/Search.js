@@ -60,7 +60,7 @@ function Search() {
                     </div>
                     <input
                       ref={searchInput}
-                      id="offer-title"
+                      id="search-bar"
                       type="text"
                       onChange={(e) =>
                         handleSearchCriteria(e.target ? e.target.value : null)

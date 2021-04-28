@@ -21,7 +21,7 @@ function PickUpLocation() {
 
   const filterCities = (arr, query) => {
     return arr.filter(function (city) {
-      return city?.toLowerCase().startsWith(query?.toLowerCase());
+      return city?.name.toLowerCase().startsWith(query?.toLowerCase());
     });
   };
 
@@ -49,13 +49,15 @@ function PickUpLocation() {
 
  
   const setSelectedCityAndGoHome = (city) => {
-    const filteredVouchers = allVoucherSets.filter(voucherSet => voucherSet.location.city == city)
+    const filteredVouchers = allVoucherSets.filter(voucherSet => 
+      voucherSet.location.city == city.name
+      && voucherSet.location.country == city.country
+    )
 
-    globalContext.dispatch(Action.updateVoucherSetsByLocation(city, filteredVouchers));
+    globalContext.dispatch(Action.updateVoucherSetsByLocation(city.name, filteredVouchers));
     history.push(ROUTE.Home);
   }
 
-  // SEARCH BAR
   return (
     <>
       {allCities ? (
@@ -87,14 +89,15 @@ function PickUpLocation() {
                 </div>
               </div>
             </div>
-            <div className="voucher-set-container">
+            <div className="city-list">
               {filteredCities.length > 0
                 ? filteredCities.map((city, id) => (
                     <li
                       key={id}
                       onClick={() => setSelectedCityAndGoHome(city)}
                     >
-                      {city}
+                      <p>{city.name}</p>
+                      <p className="country">{city.country}</p>
                     </li>
                   ))
                 : null}

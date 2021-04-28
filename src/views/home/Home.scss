@@ -47,7 +47,7 @@
     display: flex;
     font-family: "Exo", sans-serif;
     font-style: normal;
-    padding: 2px 1rem;
+    padding: 2px 0.5rem;
     font-size: 14px;
     border-radius: 8px;
     cursor: pointer;
@@ -57,18 +57,18 @@
     justify-content: space-between;
     align-items: center;
 
+    &.no-background {
+      background: none;
+    }
+
     .margin-left {
       margin-left: 15px;
     }
 
-    .no-background {
-      background-color: red !important;
-    }
-  
     .clear-filter {
       position: absolute;
       top: -8px;
-      right: 12px;
+      right: 3.4rem;
       z-index: 10;
       background: red;
       width: 18px;

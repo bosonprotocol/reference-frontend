@@ -172,7 +172,7 @@ function Home() {
                 </div>
                 <div className="clear-filter">X</div>
               </div>
-              : <Link className="def location-container flex" to={ROUTE.PickUpLocation}>
+              : <Link className="def location-container no-background flex" to={ROUTE.PickUpLocation}>
                   <div>Show vouchers in my area</div>
                   <p className="arrow right"></p>
               </Link>
