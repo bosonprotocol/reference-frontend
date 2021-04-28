@@ -16,13 +16,18 @@ export const minSizeExceededError = `Image is too small! Minimum file size is ${
 export const notAllowedMimeTypeError = `This file type is not allowed. Must be one of: ${acceptedImageExtensions}.`;
 // END IMAGE CONFIG
 
+const maxLengthError = (field, max) =>
+  `${field} can't be more than ${max} characters long`;
+const minLengthError = (field, min) =>
+  `${field} must be at least ${min} characters long`;
+
 // START TITLE CONFIG
 export const titleSettings = {
   min: 4,
   max: 50,
 };
-export const minTitleLengthError = `Title must be at least ${titleSettings.min} characters long`;
-export const maxTitleLengthError = `Title can't more than ${titleSettings.max} characters long`;
+export const minTitleLengthError = minLengthError("Title", titleSettings.min);
+export const maxTitleLengthError = maxLengthError("Title", titleSettings.max);
 // END TITLE CONFIG
 
 // START DESCRIPTION CONFIG
@@ -62,3 +67,36 @@ export const startDateAfterExpiryError =
 export const expiryDateBeforeStartDateError =
   "Expiry Date can't be set before Start Date.";
 // END DATES CONFIG
+
+// LOCATION CONFIG
+
+// ADDRESS LINE CONFIG
+export const addressLineSettings = {
+  min: 4,
+  max: 20,
+};
+
+export const minAddressLengthError = minLengthError(
+  "Address",
+  addressLineSettings.min
+);
+export const maxAddressLengthError = maxLengthError(
+  "Address",
+  addressLineSettings.max
+);
+// END ADDRESS LINE CONFIG
+
+// POSTCODE CONFIG
+export const postcodeSettings = {
+  min: 4,
+  max: 10,
+};
+export const minPostcodeLengthError = minLengthError(
+  "Postcode",
+  postcodeSettings.min
+);
+export const maxPostcodeLengthError = maxLengthError(
+  "Postcode",
+  postcodeSettings.max
+);
+// END POSTCODE CONFIG

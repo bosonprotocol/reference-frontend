@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import {
   TableRow,
   DateTable,
+  TableLocation,
 } from "../../../../shared-components/table-content/TableContent";
 import { SellerContext } from "../../../../contexts/Seller";
 import { formatDate, totalDepositCalcEth } from "../../../../utils/FormatUtils";
@@ -25,6 +26,11 @@ function NewOfferSummary() {
     buyer_deposit,
     image,
     condition,
+    address_line_one,
+    address_line_two,
+    city,
+    country,
+    postcode,
   } = sellerContext.state.offeringData;
   const tableContent = [
     category && ["Category", category],
@@ -50,6 +56,14 @@ function NewOfferSummary() {
       ],
   ];
 
+  const tableLocation = [
+    address_line_one && [address_line_one],
+    address_line_two && [address_line_two],
+    city && [city],
+    postcode && [postcode],
+    country && [country],
+  ];
+
   const tableDate = [
     start_date && formatDate(start_date),
     end_date && formatDate(end_date),
@@ -68,6 +82,9 @@ function NewOfferSummary() {
         </div>
         {tableContent.some((item) => item) ? (
           <TableRow data={tableContent} />
+        ) : null}
+        {tableLocation.some((item) => item) ? (
+          <TableLocation data={tableLocation} hasBiggerTitle={true} />
         ) : null}
         {tableDate.some((item) => item) ? <DateTable data={tableDate} /> : null}
         {tablePrices.some((item) => item) ? (
