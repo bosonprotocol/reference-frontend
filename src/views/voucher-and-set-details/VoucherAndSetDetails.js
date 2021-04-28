@@ -162,6 +162,7 @@ function VoucherAndSetDetails(props) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
 =======
@@ -172,24 +173,34 @@ function VoucherAndSetDetails(props) {
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
 >>>>>>> Disable back button while pending
+=======
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageType, setSuccessMessageType] = useState("");
+>>>>>>> 0249911f0ef94bc3908d18f178e4b9ad1b3c4676
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Disable back button while pending
+=======
+>>>>>>> 0249911f0ef94bc3908d18f178e4b9ad1b3c4676
   const resetSuccessMessage = () => {
     setSuccessMessage("");
     setSuccessMessageType("");
   };
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   const resetSuccessMessage = () => {setSuccessMessage('');setSuccessMessageType};
 >>>>>>> success messages done
 =======
 >>>>>>> Disable back button while pending
+=======
+>>>>>>> 0249911f0ef94bc3908d18f178e4b9ad1b3c4676
 
   const getProp = (prop) =>
     voucherSetDetails
@@ -200,8 +211,11 @@ function VoucherAndSetDetails(props) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Disable back button while pending
+=======
+>>>>>>> 0249911f0ef94bc3908d18f178e4b9ad1b3c4676
   useEffect(() => {
     if (recentlySignedTxHash) {
       const backButton = document.getElementById("topNavBackButton");
@@ -210,6 +224,7 @@ function VoucherAndSetDetails(props) {
       }
     }
   }, [recentlySignedTxHash]);
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
       useEffect(() => {
@@ -224,6 +239,8 @@ function VoucherAndSetDetails(props) {
 >>>>>>> success messages done
 =======
 >>>>>>> Disable back button while pending
+=======
+>>>>>>> 0249911f0ef94bc3908d18f178e4b9ad1b3c4676
   const paymentType = getProp("paymentType");
   const currencyResolver = (paymentType) => {
     if (paymentType === PAYMENT_METHODS.ETHETH) {
@@ -990,6 +1007,7 @@ function VoucherAndSetDetails(props) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       setSuccessMessage("Complain triggered");
 =======
       setSuccessMessage('Complain triggered');
@@ -997,6 +1015,9 @@ function VoucherAndSetDetails(props) {
 =======
       setSuccessMessage("Complain triggered");
 >>>>>>> Disable back button while pending
+=======
+      setSuccessMessage("Complain triggered");
+>>>>>>> 0249911f0ef94bc3908d18f178e4b9ad1b3c4676
       setSuccessMessageType(MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
