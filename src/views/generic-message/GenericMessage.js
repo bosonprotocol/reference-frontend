@@ -38,7 +38,7 @@ function GenericMessage({
             ) : messageType === MESSAGE.COMPLAIN_SUCCESS ? (
               <IconClock color={"#FA5B66"} length={"68px"} />
             ) : messageType === MESSAGE.COMMIT_SUCCESS ? (
-              <IconClock color={"#E49043"} length={"68px"} />
+              <IconClock color={"#80F0BE"} length={"68px"} />
             ) : null}
           </div>
           <p className="title">{title}</p>
