@@ -4,6 +4,7 @@ import {
   IconSuccess,
   IconError,
   LockedIcon,
+  IconClock,
 } from "../../shared-components/icons/Icons";
 import { MESSAGE } from "../../helpers/configs/Dictionary";
 
@@ -30,6 +31,18 @@ function GenericMessage({
               <IconError />
             ) : messageType === MESSAGE.LOCKED ? (
               <LockedIcon />
+            ) : messageType === MESSAGE.COF_SUCCESS ? (
+              <IconClock color={"#A1B2C5"} length={"68px"} />
+            ) : messageType === MESSAGE.REFUND_SUCCESS ? (
+              <IconClock color={"#E49043"} length={"68px"} />
+            ) : messageType === MESSAGE.COMPLAIN_SUCCESS ? (
+              <IconClock color={"#FA5B66"} length={"68px"} />
+            ) : messageType === MESSAGE.COMMIT_SUCCESS ? (
+              <IconClock color={"#80F0BE"} length={"68px"} />
+            ) : messageType === MESSAGE.REDEEM_SUCCESS ? (
+              <IconClock color={"#80F0BE"} length={"68px"} />
+            ) : messageType === MESSAGE.NEW_VOUCHER_SET_SUCCESS ? (
+              <IconClock color={"#80F0BE"} length={"68px"} />
             ) : null}
           </div>
           <p className="title">{title}</p>

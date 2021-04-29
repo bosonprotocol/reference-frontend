@@ -113,11 +113,11 @@ function TopNavigation() {
             <nav className="flex split">
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-                <div className="flex row">  
-                    <WalletConnection account={account} connector={connector} />
-                <div className="netowrk-info flex center">
-                   <span className={`net-name`}>{ChainLabels[chainId]}</span>
-                </div>
+                <div className="flex row">
+                  <WalletConnection account={account} connector={connector} />
+                  <div className="netowrk-info flex center">
+                    <span className={`net-name`}>{ChainLabels[chainId]}</span>
+                  </div>
                 </div>
               ) : null}
 
@@ -127,6 +127,7 @@ function TopNavigation() {
                   className="button square new"
                   role="button"
                   onClick={() => navigate()}
+                  id="topNavBackButton"
                 >
                   <Arrow color="#80F0BE" />
                 </div>

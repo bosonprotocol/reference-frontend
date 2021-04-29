@@ -86,9 +86,13 @@ function ShowQR({ voucherId, setShowQRCode }) {
       const tx = await bosonRouterContract.redeem(
         voucherDetails.voucher._tokenIdVoucher
       );
+
+      localStorage.setItem("successMessage", "Redemption was successful");
+      localStorage.setItem("successMessageType", MESSAGE.REDEEM_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
-      setLink(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
-      setMessageType(MESSAGE.SUCCESS);
+
+      setShowQRCode(false);
+      window.location.reload();
     } catch (e) {
       console.log(e);
       setLoading(0);
