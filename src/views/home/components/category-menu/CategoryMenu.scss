@@ -25,6 +25,7 @@
     opacity: 0;
     transition: 0.45s ease-in-out;
     transform: scale(1.1);
+    padding-bottom: 5px;
 
     &.arrange {
       opacity: 1;
@@ -32,7 +33,6 @@
     }
   }
   .category-container {
-    margin-left: 25px;
 
     ul {
       overflow-x: auto;
@@ -61,6 +61,16 @@
 
         & + li {
           margin-left: 24px;
+        }
+
+        &.selected-item {
+          &::after {
+            content: "";
+            display: block;
+            width: 30px;
+            padding-top: 5px;
+            border-bottom: 2px solid white;
+          }
         }
       }
 
