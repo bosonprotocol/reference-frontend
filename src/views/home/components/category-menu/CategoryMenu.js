@@ -61,8 +61,7 @@ function CategoryMenu({ handleCategory }) {
     return map;
   }
 
-  return voucherSets?.length
-  ? (
+  return voucherSets?.length ? (
     <div className="category-menu flex ai-center">
       <div className="category-container">
         {/* remove classes "arrange no-animation" to trigger animation */}
@@ -82,8 +81,7 @@ function CategoryMenu({ handleCategory }) {
         </ul>
       </div>
     </div>
-  ) 
-  : null
+  ) : null;
 }
 
 export default CategoryMenu;
