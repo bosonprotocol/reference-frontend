@@ -152,6 +152,8 @@ export const MESSAGE = {
   REFUND_SUCCESS: "refund",
   COMPLAIN_SUCCESS: "complain",
   COMMIT_SUCCESS: "commit",
+  REDEEM_SUCCESS: "redeem",
+  NEW_VOUCHER_SET_SUCCESS: "new_voucher_set"
 };
 
 export const QUERY_PARAMS = {
