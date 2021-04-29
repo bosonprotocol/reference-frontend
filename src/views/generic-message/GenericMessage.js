@@ -43,7 +43,7 @@ function GenericMessage({
               <IconClock color={"#80F0BE"} length={"68px"} />
             ) : messageType === MESSAGE.NEW_VOUCHER_SET_SUCCESS ? (
               <IconClock color={"#80F0BE"} length={"68px"} />
-            ): null}
+            ) : null}
           </div>
           <p className="title">{title}</p>
           <p className="description">{text}</p>

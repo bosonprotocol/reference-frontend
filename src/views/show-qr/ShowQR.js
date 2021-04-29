@@ -90,9 +90,9 @@ function ShowQR({ voucherId, setShowQRCode }) {
       localStorage.setItem("successMessage", "Redemption was successful");
       localStorage.setItem("successMessageType", MESSAGE.REDEEM_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
-     
+
       setShowQRCode(false);
-      window.location.reload()
+      window.location.reload();
     } catch (e) {
       console.log(e);
       setLoading(0);

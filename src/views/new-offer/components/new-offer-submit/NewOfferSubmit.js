@@ -70,7 +70,7 @@ export default function NewOfferSubmit() {
     address_line_two,
     city,
     country,
-    postcode, 
+    postcode,
   } = sellerContext.state.offeringData;
 
   const { library, account, chainId } = useWeb3React();
@@ -153,7 +153,6 @@ export default function NewOfferSubmit() {
         seller_deposit.add(buyer_deposit)
       );
 
-
       if (!created) {
         return;
       }
@@ -182,14 +181,14 @@ export default function NewOfferSubmit() {
             content:
               "Logging of the smart contract event failed. This does not affect creation of your voucher-set.",
           })
-        ); 
+        );
       }
 
       globalContext.dispatch(Action.fetchVoucherSets());
       setLoading(0);
-      setPending(true)
+      setPending(true);
       await created.wait();
-     
+
       setSuccessMessage("Voucher set published");
       setSuccessMessageType(MESSAGE.NEW_VOUCHER_SET_SUCCESS);
       setRedirectLink(ROUTE.Activity);
@@ -247,43 +246,44 @@ export default function NewOfferSubmit() {
   return (
     <>
       {loading ? <LoadingSpinner /> : null}
-      {
-          !redirect ? pending
-          ? [
-              <div
-                className="button cancelVoucherSet"
-                role="button"
-                style={{ border: "none" }}
-                disabled
-                onClick={(e) => e.preventDefault()}
-              >
-                <div>
-                  <span
-                    style={{ verticalAlign: "middle", display: "inline-block" }}
-                  >
-                    <IconClock color={"#E49043"} />
-                  </span>
-                  <span
-                    style={{
-                      verticalAlign: "middle",
-                      display: "inline-block",
-                      fontSize: "1.1em",
-                    }}
-                  >
-                    &nbsp;PENDING
-                  </span>
-                </div>
-              </div>,
-            ] : (
-        <ContractInteractionButton
-          className="button offer primary"
-          handleClick={onCreateVoucherSet}
-          label="OFFER"
-          sourcePath={location.pathname}
-        />
+      {!redirect ? (
+        pending ? (
+          [
+            <div
+              className="button cancelVoucherSet"
+              role="button"
+              style={{ border: "none" }}
+              disabled
+              onClick={(e) => e.preventDefault()}
+            >
+              <div>
+                <span
+                  style={{ verticalAlign: "middle", display: "inline-block" }}
+                >
+                  <IconClock color={"#E49043"} />
+                </span>
+                <span
+                  style={{
+                    verticalAlign: "middle",
+                    display: "inline-block",
+                    fontSize: "1.1em",
+                  }}
+                >
+                  &nbsp;PENDING
+                </span>
+              </div>
+            </div>,
+          ]
+        ) : (
+          <ContractInteractionButton
+            className="button offer primary"
+            handleClick={onCreateVoucherSet}
+            label="OFFER"
+            sourcePath={location.pathname}
+          />
+        )
       ) : (
         <GenericMessage
-          
           messageType={successMessageType}
           title={successMessage}
           link={redirectLink}
