@@ -1,9 +1,9 @@
 import cities from "./city.json";
 import countries from "./country.json";
 
-export const DEFAULT_COUNTRY_ISO_CODE = countries[0].isoCode;
-export const DEFAULT_COUNTRY_NAME = countries[0].name;
-export const DEFAULT_CITY_NAME = "Andkhoy";
+export const DEFAULT_COUNTRY_ISO_CODE = "";
+export const DEFAULT_COUNTRY_NAME = "";
+export const DEFAULT_CITY_NAME = "";
 
 const compare = (a, b) => {
   if (a.name < b.name) return -1;
@@ -48,4 +48,13 @@ export const getDefaultCityForCountry = (isoCode) => {
   }
 
   return getSortedCityNamesByCountryCode(isoCode)[0];
+};
+
+export const getAllCityNames = () => {
+  return cities.map((e) => {
+    return {
+      name: e.name,
+      country: e.country,
+    };
+  });
 };

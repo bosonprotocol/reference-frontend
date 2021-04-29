@@ -26,6 +26,10 @@
     }
   }
 
+  .padding-top-16 {
+    padding-top: 16px;
+  }
+
   .home-products {
     margin-top: 25px;
 
@@ -40,6 +44,63 @@
     .search-label {
       margin-left: 15px;
       color: white;
+    }
+  }
+
+  .location-container {
+    display: flex;
+    font-family: "Exo", sans-serif;
+    font-style: normal;
+    padding: 2px 0.5rem;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+    color: #6E8298;
+    background-color: #192028;
+    justify-content: space-between;
+    align-items: center;
+
+    &.no-background {
+      background: none;
+    }
+
+    .inline-container {
+      margin-left: 8px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .clear-filter {
+      position: absolute;
+      top: -10px;
+      right: -20px;
+      background: red;
+      width: 18px;
+      height: 18px;
+      border-radius: 17px;
+      text-align: center;
+      visibility: hidden;
+      transition: 0.3s ease-in-out;
+    }
+
+    &:hover {
+      .clear-filter {
+        visibility: initial;
+      }
+    }
+
+    .arrow {
+      border:solid #6E8298;
+      border-width: 0 2px 2px 0;
+      display: inline-block;
+      padding: 3px;
+      margin-left: 0.5rem;
+    }
+    
+    .right {
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
     }
   }
 }

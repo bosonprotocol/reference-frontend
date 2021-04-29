@@ -1,5 +1,13 @@
 [
     {
+        "isoCode": "AAA",
+        "name": "",
+        "phonecode": "",
+        "flag": "",
+        "currency": "",
+        "latitude": ""
+    },
+    {
         "isoCode": "AF",
         "name": "Afghanistan",
         "phonecode": "93",

@@ -24,6 +24,7 @@ import { NavigationContext } from "./contexts/Navigation";
 import GlobalListeners from "./hooks/globalListeners";
 import { useExpiredTokenResponseInterceptor } from "./hooks/useExpiredTokenResponseInterceptor";
 import Search from "./views/search/Search";
+import PickUpLocation from "./views/pick-up-location/PickUpLocation";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
@@ -84,6 +85,7 @@ function Routes() {
             component={ActivityAccountVouchers}
           />
           <Route path={ROUTE.Search} component={Search} />
+          <Route path={ROUTE.PickUpLocation} component={PickUpLocation} />
           <Route component={NotFound} />
         </Switch>
         <BottomNavigation />
