@@ -20,6 +20,7 @@ function CategoryMenu({ handleCategory }) {
   const globalContext = useContext(GlobalContext);
 
   const voucherSets = globalContext.state.allVoucherSets;
+  console.log("voucherSets: ", voucherSets);
 
   useEffect(() => {
     generateExistingCategoriesList();
@@ -44,6 +45,8 @@ function CategoryMenu({ handleCategory }) {
       existingCategories.push(key);
     });
 
+    console.log('existingCategories: ', existingCategories);
+
     setCategories(existingCategories);
   };
 
@@ -61,7 +64,9 @@ function CategoryMenu({ handleCategory }) {
     return map;
   }
 
-  return (
+
+  return voucherSets?.length
+  ? (
     <div className="category-menu flex ai-center">
       <div className="category-container">
         {/* remove classes "arrange no-animation" to trigger animation */}
@@ -81,7 +86,8 @@ function CategoryMenu({ handleCategory }) {
         </ul>
       </div>
     </div>
-  );
+  ) 
+  : null
 }
 
 export default CategoryMenu;
