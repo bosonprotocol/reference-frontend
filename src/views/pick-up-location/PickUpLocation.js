@@ -5,7 +5,7 @@ import { GlobalContext, Action } from "../../contexts/Global";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 
 import { IconHome } from "../../shared-components/icons/Icons";
-import {getAllCityNames} from '../../utils/location/location'
+import { getAllCityNames } from "../../utils/location/location";
 
 function PickUpLocation() {
   const history = useHistory();
@@ -15,7 +15,7 @@ function PickUpLocation() {
 
   const allCities = getAllCityNames();
   const [filteredCities, setFilteredCities] = useState([]);
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
 
   const allVoucherSets = globalContext.state.allVoucherSets;
 
@@ -36,27 +36,31 @@ function PickUpLocation() {
 
   const clearSearch = () => {
     searchInput.current.value = "";
-    setFilteredCities([])
-    globalContext.dispatch(Action.updateVoucherSetsByLocation("", allVoucherSets));
+    setFilteredCities([]);
+    globalContext.dispatch(
+      Action.updateVoucherSetsByLocation("", allVoucherSets)
+    );
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     searchInput?.current?.focus();
 
     const timeOutId = setTimeout(() => handleSearchCriteria(query), 500);
     return () => clearTimeout(timeOutId);
-  }, [query])
+  }, [query]);
 
- 
   const setSelectedCityAndGoHome = (city) => {
-    const filteredVouchers = allVoucherSets.filter(voucherSet => 
-      voucherSet.location.city == city.name
-      && voucherSet.location.country == city.country
-    )
+    const filteredVouchers = allVoucherSets.filter(
+      (voucherSet) =>
+        voucherSet.location.city == city.name &&
+        voucherSet.location.country == city.country
+    );
 
-    globalContext.dispatch(Action.updateVoucherSetsByLocation(city.name, filteredVouchers));
+    globalContext.dispatch(
+      Action.updateVoucherSetsByLocation(city.name, filteredVouchers)
+    );
     history.push(ROUTE.Home);
-  }
+  };
 
   return (
     <>
@@ -92,10 +96,7 @@ function PickUpLocation() {
             <div className="city-list">
               {filteredCities.length > 0
                 ? filteredCities.map((city, id) => (
-                    <li
-                      key={id}
-                      onClick={() => setSelectedCityAndGoHome(city)}
-                    >
+                    <li key={id} onClick={() => setSelectedCityAndGoHome(city)}>
                       <p>{city.name}</p>
                       <p className="country">{city.country}</p>
                     </li>

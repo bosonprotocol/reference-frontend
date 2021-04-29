@@ -67,7 +67,7 @@ export const Action = {
       city,
       filteredVoucherSets,
     },
-  })
+  }),
 };
 
 export const GlobalReducer = (state, action) => {
@@ -118,7 +118,7 @@ export const GlobalReducer = (state, action) => {
     [DIC.UPDATE_VOUCHER_SETS_BY_LOCATION]: () => {
       return {
         selectedCity: action.payload.city,
-        allVoucherSets: action.payload.filteredVoucherSets
+        allVoucherSets: action.payload.filteredVoucherSets,
       };
     },
   };

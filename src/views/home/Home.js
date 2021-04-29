@@ -116,7 +116,7 @@ function Home() {
   const resetVoucherSetsCityFilter = () => {
     //if city filter is reset, we fetch voucher-sets from DB
     globalContext.dispatch(Action.updateVoucherSetsByLocation(""));
-  }
+  };
 
   const filterByCategory = (category) => {
     if (category === DEFAULT_FILTER) {
@@ -160,23 +160,26 @@ function Home() {
                 <div className="search-label">Search</div>
               </div>
             </Link>
-            {
-              globalContext.state.selectedCity
-              ? <div className="flex jc-sb location-container"
+            {globalContext.state.selectedCity ? (
+              <div
+                className="flex jc-sb location-container"
                 onClick={resetVoucherSetsCityFilter}
               >
                 <IconLocation />
-                <div className="margin-left"
-                >
+                <div className="inline-container">
                   {globalContext.state.selectedCity}
+                  <div className="clear-filter">X</div>
                 </div>
-                <div className="clear-filter">X</div>
               </div>
-              : <Link className="def location-container no-background flex" to={ROUTE.PickUpLocation}>
-                  <div>Show vouchers in my area</div>
-                  <p className="arrow right"></p>
+            ) : (
+              <Link
+                className="def location-container no-background flex"
+                to={ROUTE.PickUpLocation}
+              >
+                <div>Show vouchers in my area</div>
+                <p className="arrow right"></p>
               </Link>
-            }
+            )}
           </div>
           <div className="container o-hidden">
             <CategoryMenu handleCategory={filterByCategory} />

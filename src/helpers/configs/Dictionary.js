@@ -56,7 +56,7 @@ export const ROUTE = {
   VoucherSetView: "/supply",
   Details: "/details",
   Search: "/search",
-  PickUpLocation: "/pick-up-location"
+  PickUpLocation: "/pick-up-location",
 };
 
 export const BOTTOM_NAV_TYPE = {

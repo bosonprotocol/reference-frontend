@@ -1,5 +1,6 @@
 .home {
   padding-bottom: 55px;
+  margin-top: 16px;
 
   @media (min-width: 961px) {
     padding-bottom: 112px;
@@ -61,15 +62,16 @@
       background: none;
     }
 
-    .margin-left {
-      margin-left: 15px;
+    .inline-container {
+      margin-left: 8px;
+      display: inline-block;
+      position: relative;
     }
 
     .clear-filter {
       position: absolute;
-      top: -8px;
-      right: 3.4rem;
-      z-index: 10;
+      top: -10px;
+      right: -20px;
       background: red;
       width: 18px;
       height: 18px;
@@ -77,6 +79,13 @@
       text-align: center;
       visibility: hidden;
       transition: 0.3s ease-in-out;
+
+      // width: 18px;
+      // color: red;
+      // border-radius: 17px;
+      // text-align: right;
+      // visibility: hidden;
+      // transition: 0.3s ease-in-out;
     }
 
     &:hover {
