@@ -187,6 +187,10 @@ export default function NewOfferSubmit() {
       globalContext.dispatch(Action.fetchVoucherSets());
       setLoading(0);
       setPending(true);
+      const backButton = document.getElementById("topOfferNavBackButton");
+      if (backButton) {
+        backButton.style.cssText += "pointer-events: none; opacity: 0.2";
+      }
       await created.wait();
 
       setSuccessMessage("Voucher set published");
