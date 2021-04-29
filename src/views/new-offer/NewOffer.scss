@@ -57,8 +57,15 @@
 
   .screen-controller {
     padding-top: 42px;
-    max-width: 592px;
-    margin: 0 auto;
+
+    .upload-photo, .general, .price, .date, .summary {
+      max-width: 592px;
+      margin: 0 auto;
+    }
+
+    .categories {
+      max-width: 100%;
+    }
 
     .date {
       max-width: 350px;
