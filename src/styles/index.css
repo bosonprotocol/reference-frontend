@@ -154,7 +154,7 @@ code {
 }
 
 .details-loading {
-  max-width: 960px;
+  max-width: 592px;
   margin: 0 auto;
   padding: 0 22px;
   width: 100%;
@@ -192,6 +192,7 @@ code {
 
 .details-loading .paytable-loading {
   margin-top: 50px;
+ 
 }
 
 .details-loading .paytable-loading .h {
@@ -202,11 +203,11 @@ code {
 
 .details-loading .paytable-loading .header {
   height: 28px;
-  width: 331px;
+  width: 100%;
 }
 
 .details-loading .paytable-loading .table {
-  width: 331px;
+  width: 100%;
   height: 138px;
   margin-top: 12px;
 }

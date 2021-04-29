@@ -120,7 +120,7 @@ function NewOfferLocation({
               id="offer-address-line-one"
               type="text"
               onBlur={() => setAddressOneHasBeenBlurred(true)}
-              onChange={(e) =>
+              onInput={(e) =>
                 addressLineOneValueReceiver(e.target ? e.target.value : null)
               }
             />
@@ -150,7 +150,7 @@ function NewOfferLocation({
               id="offer-address-line-two"
               type="text"
               onBlur={() => setAddressTwoHasBeenBlurred(true)}
-              onChange={(e) =>
+              onInput={(e) =>
                 addressLineTwoValueReceiver(e.target ? e.target.value : null)
               }
             />
@@ -178,7 +178,7 @@ function NewOfferLocation({
               id="offer-postcode"
               type="text"
               onBlur={() => setPostcodeHasBeenBlurred(true)}
-              onChange={(e) =>
+              onInput={(e) =>
                 postcodeValueReceiver(e.target ? e.target.value : null)
               }
             />

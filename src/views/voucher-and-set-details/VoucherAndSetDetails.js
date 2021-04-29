@@ -160,8 +160,28 @@ function VoucherAndSetDetails(props) {
   const [authenticationCompleted, setAuthenticationCompleted] = useState(false);
   const [transactionProccessing, setTransactionProccessing] = useState(1);
 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageType, setSuccessMessageType] = useState("");
+
+  const [triggerWaitForTransaction, setTriggerWaitForTransaction] = useState(
+    false
+  );
+
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
+
+  const resetSuccessMessage = () => {
+    setSuccessMessage("");
+    setSuccessMessageType("");
+    const messageType = localStorage.getItem("successMessageType");
+    localStorage.removeItem("successMessage");
+    localStorage.removeItem("successMessageType");
+    if (messageType === MESSAGE.COMMIT_SUCCESS) {
+      history.push(ROUTE.ActivityVouchers);
+      return;
+    }
+    window.location.reload();
+  };
 
   const getProp = (prop) =>
     voucherSetDetails
@@ -169,6 +189,15 @@ function VoucherAndSetDetails(props) {
       : voucherDetails
       ? voucherDetails[prop]
       : null;
+
+  useEffect(() => {
+    if (recentlySignedTxHash) {
+      const backButton = document.getElementById("topNavBackButton");
+      if (backButton) {
+        backButton.style.cssText += "pointer-events: none; opacity: 0.2";
+      }
+    }
+  }, [recentlySignedTxHash]);
 
   const paymentType = getProp("paymentType");
   const currencyResolver = (paymentType) => {
@@ -212,8 +241,8 @@ function VoucherAndSetDetails(props) {
 
   const confirmAction = (action, text) => {
     const callAction = () => {
-      action();
       setPopupMessage(false);
+      action();
     };
     setPopupMessage({
       text,
@@ -265,10 +294,12 @@ function VoucherAndSetDetails(props) {
         library,
         voucherDetails,
         voucherSetDetails,
-        setRecentlySignedTxHash
+        setRecentlySignedTxHash,
+        setSuccessMessage,
+        setSuccessMessageType
       );
     }
-  }, [voucherDetails, voucherSetDetails, library]);
+  }, [voucherDetails, voucherSetDetails, library, triggerWaitForTransaction]);
   // assign controlset to statuses
   const controlList = () => {
     setDisablePage(0);
@@ -282,7 +313,7 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button cof"
         onClick={() =>
-          confirmAction(onCoF, "Are you sure you want to cancel this voucher?")
+          confirmAction(onCoF, "Are you sure you want to cancel/fault?")
         }
         role="button"
       >
@@ -295,7 +326,9 @@ function VoucherAndSetDetails(props) {
         <div
           className="action button refund"
           role="button"
-          onClick={() => onRefund()}
+          onClick={() =>
+            confirmAction(onRefund, "Are you sure you want to refund?")
+          }
         >
           REFUND
         </div>
@@ -318,7 +351,9 @@ function VoucherAndSetDetails(props) {
       <div
         className="action button complain"
         role="button"
-        onClick={() => onComplain()}
+        onClick={() =>
+          confirmAction(onComplain, "Are you sure you want to complain?")
+        }
       >
         COMPLAIN
       </div>
@@ -814,8 +849,11 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
+      localStorage.setItem("successMessage", "Commit triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COMMIT_SUCCESS);
+      setTxHashToSupplyId(tx.hash, supplyId);
       setRecentlyUsedCorrelationId(correlationId, account);
-      setRecentlySignedTxHash(tx.hash, supplyId);
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -868,7 +906,6 @@ function VoucherAndSetDetails(props) {
 
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
-    history.push(ROUTE.ActivityVouchers);
   }
 
   async function onComplain() {
@@ -929,6 +966,9 @@ function VoucherAndSetDetails(props) {
       const tx = await bosonRouterContract.complain(
         voucherDetails._tokenIdVoucher
       );
+
+      localStorage.setItem("successMessage", "Complain triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -961,7 +1001,6 @@ function VoucherAndSetDetails(props) {
 
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
-    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onRefund() {
@@ -1022,6 +1061,9 @@ function VoucherAndSetDetails(props) {
       const tx = await bosonRouterContract.refund(
         voucherDetails._tokenIdVoucher
       );
+
+      localStorage.setItem("successMessage", "Refund triggered");
+      localStorage.setItem("successMessageType", MESSAGE.REFUND_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
     } catch (e) {
       modalContext.dispatch(
@@ -1054,7 +1096,6 @@ function VoucherAndSetDetails(props) {
     }
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
-    history.push(ROUTE.ActivityVouchers + "/" + voucherId + "/details");
   }
 
   async function onCoF() {
@@ -1117,13 +1158,8 @@ function VoucherAndSetDetails(props) {
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
 
-      setCancelMessage({
-        messageType: MESSAGE.SUCCESS,
-        title: "The voucher was cancelled",
-        link: ROUTE.Activity + "/" + voucherDetails.id + "/details",
-        setMessageType: cancelMessageCloseButton,
-        subprops: { refresh: true },
-      });
+      localStorage.setItem("successMessage", "Cancel/fault triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -1517,6 +1553,16 @@ function VoucherAndSetDetails(props) {
           link={ROUTE.Home}
         />
       )}
+
+      {successMessage ? (
+        <GenericMessage
+          messageType={successMessageType}
+          title={successMessage}
+          // text={successMessageType}
+          link={window.location}
+          setMessageType={resetSuccessMessage}
+        />
+      ) : null}
     </>
   );
 }

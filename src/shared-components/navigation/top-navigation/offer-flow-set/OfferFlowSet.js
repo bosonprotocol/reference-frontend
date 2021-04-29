@@ -22,6 +22,7 @@ function OfferFlowSet() {
     <div className="top-navigation-offer flex ai-center offer-flow w100">
       <div
         className="button square"
+        id="topOfferNavBackButton"
         role="button"
         onClick={() => setActiveScreen(activeScreen - 1, activeScreen === 0)}
       >

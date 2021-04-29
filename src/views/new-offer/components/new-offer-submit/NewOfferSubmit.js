@@ -35,6 +35,7 @@ import {
   setRecentlyUsedCorrelationId,
 } from "../../../../utils/DuplicateCorrelationIdGuard";
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
+import { IconClock } from "../../../../shared-components/icons/Icons";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -45,9 +46,11 @@ export default function NewOfferSubmit() {
   const modalContext = useContext(ModalContext);
   const location = useLocation();
 
-  const globalContext = useContext(GlobalContext);
+  const [pending, setPending] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageType, setSuccessMessageType] = useState("");
 
-  const messageTitle = "Voucher set published";
+  const globalContext = useContext(GlobalContext);
 
   const {
     start_date,
@@ -151,11 +154,8 @@ export default function NewOfferSubmit() {
       );
 
       if (!created) {
-        setLoading(0);
         return;
       }
-
-      setRecentlyUsedCorrelationId(correlationId, account);
 
       const paymentType = paymentTypeResolver(
         price_currency,
@@ -181,14 +181,23 @@ export default function NewOfferSubmit() {
             content:
               "Logging of the smart contract event failed. This does not affect creation of your voucher-set.",
           })
-        ); //just for statistics purposes. Don't need to do anything if it fails. Just inform the user
+        );
       }
 
       globalContext.dispatch(Action.fetchVoucherSets());
-
       setLoading(0);
+      setPending(true);
+      const backButton = document.getElementById("topOfferNavBackButton");
+      if (backButton) {
+        backButton.style.cssText += "pointer-events: none; opacity: 0.2";
+      }
+      await created.wait();
+
+      setSuccessMessage("Voucher set published");
+      setSuccessMessageType(MESSAGE.NEW_VOUCHER_SET_SUCCESS);
       setRedirectLink(ROUTE.Activity);
       setRedirect(1);
+      setPending(false);
     } catch (e) {
       setLoading(0);
       modalContext.dispatch(
@@ -242,16 +251,45 @@ export default function NewOfferSubmit() {
     <>
       {loading ? <LoadingSpinner /> : null}
       {!redirect ? (
-        <ContractInteractionButton
-          className="button offer primary"
-          handleClick={onCreateVoucherSet}
-          label="OFFER"
-          sourcePath={location.pathname}
-        />
+        pending ? (
+          [
+            <div
+              className="button cancelVoucherSet"
+              role="button"
+              style={{ border: "none" }}
+              disabled
+              onClick={(e) => e.preventDefault()}
+            >
+              <div>
+                <span
+                  style={{ verticalAlign: "middle", display: "inline-block" }}
+                >
+                  <IconClock color={"#E49043"} />
+                </span>
+                <span
+                  style={{
+                    verticalAlign: "middle",
+                    display: "inline-block",
+                    fontSize: "1.1em",
+                  }}
+                >
+                  &nbsp;PENDING
+                </span>
+              </div>
+            </div>,
+          ]
+        ) : (
+          <ContractInteractionButton
+            className="button offer primary"
+            handleClick={onCreateVoucherSet}
+            label="OFFER"
+            sourcePath={location.pathname}
+          />
+        )
       ) : (
         <GenericMessage
-          messageType={MESSAGE.SUCCESS}
-          title={messageTitle}
+          messageType={successMessageType}
+          title={successMessage}
           link={redirectLink}
         />
       )}

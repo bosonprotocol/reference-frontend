@@ -1,0 +1,18 @@
+@import "src/styles/Settings";
+
+.activity {
+
+  .city-list {
+    margin-top: 40px;
+    li {
+      margin-top: 0.5rem;
+      cursor: pointer;
+      list-style-type: none;
+
+      .country {
+        color: $text-semi;
+      }
+    }
+  }
+}
+

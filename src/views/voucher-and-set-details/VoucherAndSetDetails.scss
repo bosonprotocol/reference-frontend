@@ -339,13 +339,16 @@
           margin-top: 18px;
         }
         .description {
-          
+          &.description {
+            margin-top: 5px;
+          }
           .thumbnail {
             margin-bottom: 30px;
 
             img {
               max-height: 40vh;
             }
+            padding-top: 5px;
           }
           .image {
             max-width: 151px;
