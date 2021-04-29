@@ -78,6 +78,7 @@ function PickUpLocation() {
                       ref={searchInput}
                       id="filter-location"
                       type="text"
+                      autoComplete="off"
                       onChange={(e) =>
                         setQuery(e.target ? e.target.value : null)
                       }

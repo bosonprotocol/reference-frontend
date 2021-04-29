@@ -153,7 +153,7 @@ function Home() {
       )}
       <div className={`screens ${newUser ? "new-user" : ""}`} ref={screensRef}>
         <div ref={homepage} className="home relative atomic-scoped">
-          <div className="container o-hidden flex row jc-sb">
+          <div className="container o-hidden flex row jc-sb padding-top-16">
             <Link className="def" to={ROUTE.Search}>
               <div className={`search-icon flex`}>
                 <IconHome />

@@ -27,6 +27,10 @@
     }
   }
 
+  .padding-top-16 {
+    padding-top: 16px;
+  }
+
   .home-products {
     margin-top: 25px;
 
@@ -79,13 +83,6 @@
       text-align: center;
       visibility: hidden;
       transition: 0.3s ease-in-out;
-
-      // width: 18px;
-      // color: red;
-      // border-radius: 17px;
-      // text-align: right;
-      // visibility: hidden;
-      // transition: 0.3s ease-in-out;
     }
 
     &:hover {
