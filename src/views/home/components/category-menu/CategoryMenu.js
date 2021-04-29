@@ -20,7 +20,6 @@ function CategoryMenu({ handleCategory }) {
   const globalContext = useContext(GlobalContext);
 
   const voucherSets = globalContext.state.allVoucherSets;
-  console.log("voucherSets: ", voucherSets);
 
   useEffect(() => {
     generateExistingCategoriesList();
@@ -45,8 +44,6 @@ function CategoryMenu({ handleCategory }) {
       existingCategories.push(key);
     });
 
-    console.log('existingCategories: ', existingCategories);
-
     setCategories(existingCategories);
   };
 
@@ -63,7 +60,6 @@ function CategoryMenu({ handleCategory }) {
     });
     return map;
   }
-
 
   return voucherSets?.length
   ? (
