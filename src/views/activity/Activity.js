@@ -380,7 +380,7 @@ export const VoucherSetBlock = (props) => {
               </div>
               <div className="title elipsis">{title}</div>
             </div>
-            <div className="price flex split">
+            <div className="price flex split activity-price">
               <div className="value flex center">
                 {currencyIcon}
                 {price} {currency}
@@ -453,7 +453,9 @@ export const SingleVoucherBlock = (props) => {
           </div>
         ) : null}
         <div
-          className={`info grow flex ${!voucherSetId ? "jc-sb" : ""} column`}
+          className={`info grow flex ${
+            !voucherSetId ? "jc-sb voucher-set-info" : ""
+          } column`}
         >
           <div className="title-container">
             {!voucherSetId ? (
