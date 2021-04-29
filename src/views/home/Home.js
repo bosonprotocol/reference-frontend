@@ -17,7 +17,7 @@ import {
   authenticateUser,
   getAccountStoredInLocalStorage,
 } from "../../hooks/authenticate";
-import { IconHome } from "../../shared-components/icons/Icons";
+import { IconHome, IconLocation } from "../../shared-components/icons/Icons";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 import { Link } from "react-router-dom";
 import { DEFAULT_FILTER } from "../../PlaceholderAPI";
@@ -113,6 +113,11 @@ function Home() {
     });
   };
 
+  const resetVoucherSetsCityFilter = () => {
+    //if city filter is reset, we fetch voucher-sets from DB
+    globalContext.dispatch(Action.updateVoucherSetsByLocation(""));
+  };
+
   const filterByCategory = (category) => {
     if (category === DEFAULT_FILTER) {
       initialFilteringAndSorting();
@@ -148,13 +153,33 @@ function Home() {
       )}
       <div className={`screens ${newUser ? "new-user" : ""}`} ref={screensRef}>
         <div ref={homepage} className="home relative atomic-scoped">
-          <div className="container o-hidden">
+          <div className="container o-hidden flex row jc-sb padding-top-16">
             <Link className="def" to={ROUTE.Search}>
               <div className={`search-icon flex`}>
                 <IconHome />
                 <div className="search-label">Search</div>
               </div>
             </Link>
+            {globalContext.state.selectedCity ? (
+              <div
+                className="flex jc-sb location-container"
+                onClick={resetVoucherSetsCityFilter}
+              >
+                <IconLocation />
+                <div className="inline-container">
+                  {globalContext.state.selectedCity}
+                  <div className="clear-filter">X</div>
+                </div>
+              </div>
+            ) : (
+              <Link
+                className="def location-container no-background flex"
+                to={ROUTE.PickUpLocation}
+              >
+                <div>Show vouchers in my area</div>
+                <p className="arrow right"></p>
+              </Link>
+            )}
           </div>
           <div className="container o-hidden">
             <CategoryMenu handleCategory={filterByCategory} />

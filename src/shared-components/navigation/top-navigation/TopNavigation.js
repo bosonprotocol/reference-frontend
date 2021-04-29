@@ -21,7 +21,7 @@ import "./TopNavigation.scss";
 
 import { IconQR, Arrow } from "../../icons/Icons";
 import { useWeb3React } from "@web3-react/core";
-import { shortenAddress } from "../../../utils/BlockchainUtils";
+import { ChainLabels, shortenAddress } from "../../../utils/BlockchainUtils";
 import { injected, walletconnect } from "../../../Connectors";
 import MetaMaskLogo from "../../../assets/wallets/metamask.png";
 import WalletConnectLogo from "../../../assets/wallets/walletconnect.svg";
@@ -33,7 +33,7 @@ function TopNavigation() {
   const globalContext = useContext(GlobalContext);
   const history = useHistory();
   const location = useLocation();
-  const { account, connector } = useWeb3React();
+  const { account, connector, chainId } = useWeb3React();
   const query = new URLSearchParams(location.search);
 
   const navigate = () => {
@@ -41,7 +41,8 @@ function TopNavigation() {
       location.pathname === ROUTE.Connect ||
       location.pathname === ROUTE.Activity ||
       location.pathname === ROUTE.ActivityVouchers ||
-      location.pathname === ROUTE.Search
+      location.pathname === ROUTE.Search ||
+      location.pathname === ROUTE.PickUpLocation
     ) {
       history.push(ROUTE.Home);
       return;
@@ -112,7 +113,12 @@ function TopNavigation() {
             <nav className="flex split">
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-                <WalletConnection account={account} connector={connector} />
+                <div className="flex row">  
+                    <WalletConnection account={account} connector={connector} />
+                <div className="netowrk-info flex center">
+                   <span className={`net-name`}>{ChainLabels[chainId]}</span>
+                </div>
+                </div>
               ) : null}
 
               {/* Back button */}

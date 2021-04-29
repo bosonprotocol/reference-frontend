@@ -1235,7 +1235,7 @@ function VoucherAndSetDetails(props) {
   ]);
 
   useEffect(() => {
-    if (!voucherSetDetails && account && globalContext.state.allVoucherSets) {
+    if (!voucherSetDetails && account) {
       initVoucherDetails(
         account,
         modalContext,
