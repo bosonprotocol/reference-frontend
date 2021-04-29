@@ -141,31 +141,6 @@
       }
     }
 
-    .dropdown-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      .select {
-        display: flex;
-        flex-direction: row;
-        margin-top: 15px;
-        color: #fff;
-        background: #151A1F;
-        border: none;
-        padding: 15px 13px;
-        flex: 1;
-        width: 100%;
-
-        &.minimal {
-          background-image:url('../../assets/icons/dropdown-office.png');
-          background-position: calc(100% - 20px) calc(1em + 5px);
-          background-size: 14px 8px;
-          background-repeat: no-repeat;
-        }
-      }
-    }
-
     .row {
       &.display {
         p {

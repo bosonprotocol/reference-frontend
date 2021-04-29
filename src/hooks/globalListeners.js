@@ -44,6 +44,14 @@ function PopulateVouchers() {
   }, [account]);
 
   useEffect(() => {
+    if (globalContext.state.selectedCity === "") {
+      fetchVoucherSets().then((result) => {
+        globalContext.dispatch(Action.allVoucherSets(result));
+      });
+    }
+  }, [globalContext.state.selectedCity]);
+
+  useEffect(() => {
     loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 1));
   }, []);
 
