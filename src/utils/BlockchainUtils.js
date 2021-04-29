@@ -62,7 +62,6 @@ export const waitForRecentTransactionIfSuchExists = (
   setSuccessMessage,
   setSuccessMessageType
 ) => {
-  console.log("in wait func");
   const localStorageList =
     JSON.parse(localStorage.getItem("recentlySignedTxIdToSupplyIdList")) || [];
 
