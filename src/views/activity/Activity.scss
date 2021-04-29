@@ -147,7 +147,7 @@ section.activity {
         justify-content: center;
         
         @media (max-width: 320px) {
-          max-width: 30%;
+          max-width: 35%;
         }
 
         .label {
@@ -230,6 +230,11 @@ section.activity {
         }
       }
 
+      .voucher-set-info {
+        @media (max-width: 320px) {
+          max-width: 34%;
+        }
+      }
       .info {
         font-family: $font-secondary;
         font-style: normal;
@@ -238,9 +243,7 @@ section.activity {
         padding: 10px 0;
         flex: 8 0 auto;
 
-        @media (max-width: 320px) {
-          max-width: 34%;
-        }
+      
 
         & > div + div {
           margin-top: 9px;
@@ -272,11 +275,13 @@ section.activity {
           font-size: 16px;
           line-height: 17px;
           padding: 7px 0;
-
           color: #FFFFFF;
 
           @media (min-width: 1366px) {
             font-size: 20px;
+          }
+          @media (min-width: 320px) {
+            max-width: 100%;
           }
         }
 
@@ -332,9 +337,6 @@ section.activity {
     }
   }
 
-  .voucher-container {
-    padding: 0;
-  }
   .no-vouchers {
     p {
       font-family: 'Exo', sans-serif;
@@ -359,5 +361,11 @@ section.activity {
     .wallet-list-item .wallet-list-item-image-holder {
       padding: 0;
     }
+  }
+}
+.activity-price {
+  @media (max-width: 320px) {
+    flex-direction: column;
+    align-items: flex-start !important;
   }
 }
