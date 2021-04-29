@@ -130,7 +130,13 @@
         &::after {
           content: attr(data-error);
           opacity: 1;
+                    
+          @media(max-width: 320px) {
+            max-width: 170px;
+            top: -32px;
+          }
         }
+       
       }
     }
 
