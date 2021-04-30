@@ -174,6 +174,50 @@ function NewOfferPrice({
           )
         : null}
       <div className="row">
+        <div className="field dual">
+          <label htmlFor="offer-seller-deposit">
+            Seller’s Deposit Per Voucher
+          </label>
+          <div className="bind">
+            <CurrencySelector
+              inputValueHandler={sellerDepositCurrencyValueReceiver}
+            />
+            <div
+              className="input relative focus"
+              data-error={sellerDepositErrorMessage ? "" : null}
+            >
+              <input
+                ref={sellersDepositInputRef}
+                style={sellerDepositErrorMessage ? { color: "#FA5B66" } : {}}
+                id="offer-seller-deposit"
+                onWheel={() => sellersDepositInputRef.current.blur()}
+                onBlur={(e) => removePointOnLoseFocus(e)}
+                onChange={(e) =>
+                  updateValueIfValid(e, sellerDepositValueReceiver)
+                }
+              />
+              {depositsPriceLimits[depositsCurrency]?.max ? (
+                <div className="max">
+                  max{" "}
+                  {depositsPriceLimits[depositsCurrency]
+                    ? calculateMaxForCurrency(depositsCurrency)
+                    : null}{" "}
+                  {depositsCurrency}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+      {quantity > 1 && sellerDeposit
+        ? getLimitCalculationsBar(
+            sellerDeposit,
+            quantity,
+            depositsCurrency,
+            sellerDepositErrorMessage
+          )
+        : null}
+      <div className="row">
         <div className="field">
           <label htmlFor="offer-buyer-deposit">
             Buyer’s Deposit Per Voucher
@@ -219,50 +263,6 @@ function NewOfferPrice({
             quantity,
             depositsCurrency,
             buyerDepositErrorMessage
-          )
-        : null}
-      <div className="row">
-        <div className="field dual">
-          <label htmlFor="offer-seller-deposit">
-            Seller’s Deposit Per Voucher
-          </label>
-          <div className="bind">
-            <CurrencySelector
-              inputValueHandler={sellerDepositCurrencyValueReceiver}
-            />
-            <div
-              className="input relative focus"
-              data-error={sellerDepositErrorMessage ? "" : null}
-            >
-              <input
-                ref={sellersDepositInputRef}
-                style={sellerDepositErrorMessage ? { color: "#FA5B66" } : {}}
-                id="offer-seller-deposit"
-                onWheel={() => sellersDepositInputRef.current.blur()}
-                onBlur={(e) => removePointOnLoseFocus(e)}
-                onChange={(e) =>
-                  updateValueIfValid(e, sellerDepositValueReceiver)
-                }
-              />
-              {depositsPriceLimits[depositsCurrency]?.max ? (
-                <div className="max">
-                  max{" "}
-                  {depositsPriceLimits[depositsCurrency]
-                    ? calculateMaxForCurrency(depositsCurrency)
-                    : null}{" "}
-                  {depositsCurrency}
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </div>
-      {quantity > 1 && sellerDeposit
-        ? getLimitCalculationsBar(
-            sellerDeposit,
-            quantity,
-            depositsCurrency,
-            sellerDepositErrorMessage
           )
         : null}
     </div>
