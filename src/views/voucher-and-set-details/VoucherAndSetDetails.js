@@ -1258,7 +1258,7 @@ function VoucherAndSetDetails(props) {
               <div
                 className="button cancelVoucherSet"
                 role="button"
-                style={{ border: "none" }}
+                style={{ border: "none", opacity: 1 }}
                 disabled
                 onClick={(e) => e.preventDefault()}
               >
