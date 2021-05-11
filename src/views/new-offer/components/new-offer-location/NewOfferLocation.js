@@ -38,12 +38,10 @@ function NewOfferLocation({
   const postcodeInput = useRef();
   const postcodeClear = useRef();
 
-  const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] = useState(
-    false
-  );
-  const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] = useState(
-    false
-  );
+  const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] =
+    useState(false);
+  const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] =
+    useState(false);
   const [postcodeHasBeenBlurred, setPostcodeHasBeenBlurred] = useState(false);
 
   const sellerContext = useContext(SellerContext);
