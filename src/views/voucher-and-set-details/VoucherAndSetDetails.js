@@ -1544,14 +1544,16 @@ function VoucherAndSetDetails(props) {
             </div>
           </div>
         </section>
-      ) : (
+      ) : null}
+      {disablePage ? (
         <GenericMessage
           subprops={{ button: "HOME PAGE" }}
           messageType={MESSAGE.LOCKED}
           title="Invalid link"
           link={ROUTE.Home}
+          Í
         />
-      )}
+      ) : null}
 
       {successMessage ? (
         <GenericMessage
