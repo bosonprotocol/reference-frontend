@@ -1276,6 +1276,7 @@ function VoucherAndSetDetails(props) {
                         verticalAlign: "middle",
                         display: "inline-block",
                         fontSize: "1.1em",
+                        color: "white",
                       }}
                     >
                       &nbsp;PENDING
