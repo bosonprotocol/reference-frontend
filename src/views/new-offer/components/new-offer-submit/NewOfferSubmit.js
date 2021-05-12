@@ -329,11 +329,12 @@ const createNewVoucherSet = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderETHETH",
-      [dataArr, { value: txValue }]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderETHETH",
+        [dataArr, { value: txValue }]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({
@@ -369,11 +370,12 @@ const createNewVoucherSet = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderTKNETH",
-      [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderTKNETH",
+        [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({
@@ -421,20 +423,21 @@ const createNewVoucherSet = async (
       txValue
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderTKNTKNWithPermit",
-      [
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        txValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        dataArr,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderTKNTKNWithPermit",
+        [
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          txValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          dataArr,
+        ]
+      );
     if (
       contractInteractionDryRunErrorMessageMaker({
         action: "Create a new Voucher Set",
@@ -485,19 +488,20 @@ const createNewVoucherSet = async (
       chainId,
       txValue
     );
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderETHTKNWithPermit",
-      [
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        txValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        dataArr,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderETHTKNWithPermit",
+        [
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          txValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          dataArr,
+        ]
+      );
     if (
       contractInteractionDryRunErrorMessageMaker({
         action: "Create a new Voucher Set",

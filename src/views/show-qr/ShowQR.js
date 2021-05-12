@@ -92,7 +92,9 @@ function ShowQR({ voucherId, setShowQRCode }) {
       setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
 
       setShowQRCode(false);
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     } catch (e) {
       console.log(e);
       setLoading(0);

@@ -7,11 +7,8 @@ import { Arrow } from "../../../icons/Icons";
 function OfferFlowSet() {
   const navigationContext = useContext(NavigationContext);
   const [progressBarWidth, setProgressBarWidth] = useState();
-  const {
-    activeScreen,
-    setActiveScreen,
-    screens,
-  } = navigationContext.state.offerFlowControl;
+  const { activeScreen, setActiveScreen, screens } =
+    navigationContext.state.offerFlowControl;
 
   useEffect(() => {
     let calc = parseInt((100 / screens.length) * (activeScreen + 1));
