@@ -17,9 +17,8 @@ export const validateContractInteraction = async (
     console.log(e);
     try {
       const smartContractsErrorMessage = extractErrorMessageFromError(e);
-      complaintUserFriendlyErrorMessageMaker = smartContractToUserFriendlyErrorMapping.get(
-        smartContractsErrorMessage
-      );
+      complaintUserFriendlyErrorMessageMaker =
+        smartContractToUserFriendlyErrorMapping.get(smartContractsErrorMessage);
 
       if (!complaintUserFriendlyErrorMessageMaker) {
         throw e;
