@@ -136,9 +136,8 @@ export function useInactiveListener(suppress = false) {
           const newAccount = accounts[0];
           createUnauthenticatedLocalStorageRecord(newAccount);
 
-          const localStoredAccountData = getAccountStoredInLocalStorage(
-            account
-          );
+          const localStoredAccountData =
+            getAccountStoredInLocalStorage(account);
           if (!localStoredAccountData.activeToken) {
             await authenticateUser(library, newAccount, chainId);
           }
