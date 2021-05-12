@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from "react";
 import "./VoucherAndSetDetails.scss";
+import "../../styles/PendingButton.scss";
 import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -1254,28 +1255,32 @@ function VoucherAndSetDetails(props) {
           ? controls
           : recentlySignedTxHash
           ? [
-              <div
-                className="button cancelVoucherSet"
-                role="button"
-                style={{ border: "none", opacity: 1 }}
-                disabled
-                onClick={(e) => e.preventDefault()}
-              >
-                <div>
-                  <span
-                    style={{ verticalAlign: "middle", display: "inline-block" }}
-                  >
-                    <IconClock color={"#E49043"} />
-                  </span>
-                  <span
-                    style={{
-                      verticalAlign: "middle",
-                      display: "inline-block",
-                      fontSize: "1.1em",
-                    }}
-                  >
-                    &nbsp;PENDING
-                  </span>
+              <div className="pending-button-holder" data-config="button">
+                <div
+                  className="button cancelVoucherSet pending-button"
+                  role="button"
+                  disabled
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <div>
+                    <span
+                      style={{
+                        verticalAlign: "middle",
+                        display: "inline-block",
+                      }}
+                    >
+                      <IconClock color={"#E49043"} />
+                    </span>
+                    <span
+                      style={{
+                        verticalAlign: "middle",
+                        display: "inline-block",
+                        fontSize: "1.1em",
+                      }}
+                    >
+                      &nbsp;PENDING
+                    </span>
+                  </div>
                 </div>
               </div>,
             ]

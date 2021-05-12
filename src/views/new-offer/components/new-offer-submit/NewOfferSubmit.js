@@ -36,6 +36,7 @@ import {
 } from "../../../../utils/DuplicateCorrelationIdGuard";
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
 import { IconClock } from "../../../../shared-components/icons/Icons";
+import "../../../../styles/PendingButton.scss";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -253,28 +254,29 @@ export default function NewOfferSubmit() {
       {!redirect ? (
         pending ? (
           [
-            <div
-              className="button cancelVoucherSet"
-              role="button"
-              style={{ border: "none", opacity: 1 }}
-              disabled
-              onClick={(e) => e.preventDefault()}
-            >
-              <div>
-                <span
-                  style={{ verticalAlign: "middle", display: "inline-block" }}
-                >
-                  <IconClock color={"#E49043"} />
-                </span>
-                <span
-                  style={{
-                    verticalAlign: "middle",
-                    display: "inline-block",
-                    fontSize: "1.1em",
-                  }}
-                >
-                  &nbsp;PENDING
-                </span>
+            <div className="pending-button-holder" data-config="button">
+              <div
+                className="button cancelVoucherSet pending-button"
+                role="button"
+                disabled
+                onClick={(e) => e.preventDefault()}
+              >
+                <div>
+                  <span
+                    style={{ verticalAlign: "middle", display: "inline-block" }}
+                  >
+                    <IconClock color={"#E49043"} />
+                  </span>
+                  <span
+                    style={{
+                      verticalAlign: "middle",
+                      display: "inline-block",
+                      fontSize: "1.1em",
+                    }}
+                  >
+                    &nbsp;PENDING
+                  </span>
+                </div>
               </div>
             </div>,
           ]
