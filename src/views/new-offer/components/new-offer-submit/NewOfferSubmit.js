@@ -36,7 +36,7 @@ import {
 } from "../../../../utils/DuplicateCorrelationIdGuard";
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
 import { IconClock } from "../../../../shared-components/icons/Icons";
-import "./NewOfferSubmit.scss";
+import "../../../../styles/PendingButton.scss";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
