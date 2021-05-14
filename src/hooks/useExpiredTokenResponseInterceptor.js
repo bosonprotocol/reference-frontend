@@ -20,9 +20,8 @@ export const useExpiredTokenResponseInterceptor = () => {
             error?.response?.status === 403 ||
             error?.response?.status === 401
           ) {
-            const jwtTokenSent = error?.config?.headers?.Authorization?.split(
-              " "
-            )[1];
+            const jwtTokenSent =
+              error?.config?.headers?.Authorization?.split(" ")[1];
             if (jwtTokenSent) {
               refreshTokenIfExpired(
                 jwtTokenSent,

@@ -115,9 +115,11 @@ function TopNavigation() {
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
                 <div className="flex row">
                   <WalletConnection account={account} connector={connector} />
-                  <div className="netowrk-info flex center">
-                    <span className={`net-name`}>{ChainLabels[chainId]}</span>
-                  </div>
+                  {chainId ? (
+                    <div className="network-info flex center">
+                      <span className={`net-name`}>{ChainLabels[chainId]}</span>
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
 

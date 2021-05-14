@@ -6,12 +6,8 @@ import { NAME } from "../../../../helpers/configs/Dictionary";
 import NewOfferSubmit from "../new-offer-submit/NewOfferSubmit";
 
 function NewOfferBottomNavigation(props) {
-  const {
-    lastScreenBoolean,
-    activeScreen,
-    setActiveScreen,
-    errorMessages,
-  } = props;
+  const { lastScreenBoolean, activeScreen, setActiveScreen, errorMessages } =
+    props;
   const [disabled, setDisabled] = useState(true);
   const buttonRef = useRef();
 

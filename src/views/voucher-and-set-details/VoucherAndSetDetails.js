@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from "react";
 import "./VoucherAndSetDetails.scss";
+import "../../styles/PendingButton.scss";
 import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
@@ -133,9 +134,8 @@ function VoucherAndSetDetails(props) {
   const [showQRCode, setShowQRCode] = useState(0);
   const [imageView, setImageView] = useState(0);
   const [pageLoading, setPageLoading] = useState(0);
-  const [pageLoadingPlaceholder, setPageLoadingPlaceholder] = useState(
-    voucherPlaceholder
-  );
+  const [pageLoadingPlaceholder, setPageLoadingPlaceholder] =
+    useState(voucherPlaceholder);
   const voucherId = props.match.params.id;
   const modalContext = useContext(ModalContext);
   const globalContext = useContext(GlobalContext);
@@ -163,9 +163,8 @@ function VoucherAndSetDetails(props) {
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
 
-  const [triggerWaitForTransaction, setTriggerWaitForTransaction] = useState(
-    false
-  );
+  const [triggerWaitForTransaction, setTriggerWaitForTransaction] =
+    useState(false);
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
@@ -305,21 +304,21 @@ function VoucherAndSetDetails(props) {
     setDisablePage(0);
     const CASE = {};
 
-    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]
-    ] = () => (
-      <div
-        className="action button cof"
-        onClick={() =>
-          confirmAction(onCoF, "Are you sure you want to cancel/fault?")
-        }
-        role="button"
-      >
-        Cancel or Fault
-      </div>
-    );
+    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] =
+        () => (
+          <div
+            className="action button cof"
+            onClick={() =>
+              confirmAction(onCoF, "Are you sure you want to cancel/fault?")
+            }
+            role="button"
+          >
+            Cancel or Fault
+          </div>
+        );
 
     CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
       <div className="flex dual split">
@@ -345,19 +344,20 @@ function VoucherAndSetDetails(props) {
       </div>
     );
 
-    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-      <div
-        className="action button complain"
-        role="button"
-        onClick={() =>
-          confirmAction(onComplain, "Are you sure you want to complain?")
-        }
-      >
-        COMPLAIN
-      </div>
-    );
+    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] =
+        () => (
+          <div
+            className="action button complain"
+            role="button"
+            onClick={() =>
+              confirmAction(onComplain, "Are you sure you want to complain?")
+            }
+          >
+            COMPLAIN
+          </div>
+        );
     CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = CASE[
       OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]
     ] = () => (
@@ -389,22 +389,23 @@ function VoucherAndSetDetails(props) {
         </div>
       ) : null;
 
-    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => {
-      setTransactionProccessing(transactionProccessing * -1);
-      return (
-        <div
-          className="button cancelVoucherSet"
-          role="button"
-          style={{ border: "none" }}
-          disabled
-          onClick={(e) => e.preventDefault()}
-        >
-          DRAFT: TRANSACTION IS BEING PROCESSED
-        </div>
-      );
-    };
+    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]] =
+      CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] =
+        () => {
+          setTransactionProccessing(transactionProccessing * -1);
+          return (
+            <div
+              className="button cancelVoucherSet"
+              role="button"
+              style={{ border: "none" }}
+              disabled
+              onClick={(e) => e.preventDefault()}
+            >
+              DRAFT: TRANSACTION IS BEING PROCESSED
+            </div>
+          );
+        };
 
     CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]] = () => {
       setDisablePage(1);
@@ -937,11 +938,10 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "complain",
-        [voucherDetails._tokenIdVoucher]
-      );
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(bosonRouterContract, "complain", [
+          voucherDetails._tokenIdVoucher,
+        ]);
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1032,11 +1032,10 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "refund",
-        [voucherDetails._tokenIdVoucher]
-      );
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(bosonRouterContract, "refund", [
+          voucherDetails._tokenIdVoucher,
+        ]);
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1127,11 +1126,12 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "cancelOrFault",
-        [voucherDetails._tokenIdVoucher]
-      );
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(
+          bosonRouterContract,
+          "cancelOrFault",
+          [voucherDetails._tokenIdVoucher]
+        );
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1255,28 +1255,33 @@ function VoucherAndSetDetails(props) {
           ? controls
           : recentlySignedTxHash
           ? [
-              <div
-                className="button cancelVoucherSet"
-                role="button"
-                style={{ border: "none", opacity: 1 }}
-                disabled
-                onClick={(e) => e.preventDefault()}
-              >
-                <div>
-                  <span
-                    style={{ verticalAlign: "middle", display: "inline-block" }}
-                  >
-                    <IconClock color={"#E49043"} />
-                  </span>
-                  <span
-                    style={{
-                      verticalAlign: "middle",
-                      display: "inline-block",
-                      fontSize: "1.1em",
-                    }}
-                  >
-                    &nbsp;PENDING
-                  </span>
+              <div className="pending-button-holder" data-config="button">
+                <div
+                  className="button cancelVoucherSet pending-button"
+                  role="button"
+                  disabled
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <div>
+                    <span
+                      style={{
+                        verticalAlign: "middle",
+                        display: "inline-block",
+                      }}
+                    >
+                      <IconClock color={"#E49043"} />
+                    </span>
+                    <span
+                      style={{
+                        verticalAlign: "middle",
+                        display: "inline-block",
+                        fontSize: "1.1em",
+                        color: "white",
+                      }}
+                    >
+                      &nbsp;PENDING
+                    </span>
+                  </div>
                 </div>
               </div>,
             ]
@@ -1327,11 +1332,12 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "requestCancelOrFaultVoucherSet",
-        [voucherSetDetails._tokenIdSupply]
-      );
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(
+          bosonRouterContract,
+          "requestCancelOrFaultVoucherSet",
+          [voucherSetDetails._tokenIdSupply]
+        );
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1380,8 +1386,7 @@ function VoucherAndSetDetails(props) {
       setCancelMessage({
         messageType: MESSAGE.SUCCESS,
         title: "The voucher set was cancelled",
-        text:
-          "The vouchers have been cancelled, except the ones that were committed.",
+        text: "The vouchers have been cancelled, except the ones that were committed.",
         link: ROUTE.Activity + "/" + voucherSetDetails.id + "/details",
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: true },
@@ -1545,14 +1550,16 @@ function VoucherAndSetDetails(props) {
             </div>
           </div>
         </section>
-      ) : (
+      ) : null}
+      {disablePage ? (
         <GenericMessage
           subprops={{ button: "HOME PAGE" }}
           messageType={MESSAGE.LOCKED}
           title="Invalid link"
           link={ROUTE.Home}
+          Í
         />
-      )}
+      ) : null}
 
       {successMessage ? (
         <GenericMessage
@@ -1661,17 +1668,18 @@ const commitToBuyTransactionCreator = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherETHETH",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        {
-          value: txValue.toString(),
-        },
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherETHETH",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          {
+            value: txValue.toString(),
+          },
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
@@ -1731,20 +1739,21 @@ const commitToBuyTransactionCreator = async (
       tokensDeposit
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherETHTKNWithPermit",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        tokensDeposit.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        { value: txValue },
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherETHTKNWithPermit",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          tokensDeposit.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          { value: txValue },
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
@@ -1795,19 +1804,20 @@ const commitToBuyTransactionCreator = async (
       tokensTxValue
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherTKNTKNSameWithPermit",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        tokensTxValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherTKNTKNSameWithPermit",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          tokensTxValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
@@ -1869,20 +1879,21 @@ const commitToBuyTransactionCreator = async (
       tokensDeposit
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherTKNETHWithPermit",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        tokensDeposit.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        { value: txValue.toString() },
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherTKNETHWithPermit",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          tokensDeposit.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          { value: txValue.toString() },
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })

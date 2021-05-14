@@ -120,14 +120,8 @@ export function ActivityVoucherSets() {
 }
 
 function ActivityView(props) {
-  const {
-    voucherBlocks,
-    voucherType,
-    account,
-    title,
-    voucherSetId,
-    block,
-  } = props;
+  const { voucherBlocks, voucherType, account, title, voucherSetId, block } =
+    props;
   const globalContext = useContext(GlobalContext);
 
   const [resultVouchers, setResultVouchers] = useState(undefined);
