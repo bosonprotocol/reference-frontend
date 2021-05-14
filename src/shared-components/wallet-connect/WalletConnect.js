@@ -286,9 +286,11 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     <>
       <div className="connected-wallet">
         <div className="address relative">
-          <div className="netowrk-info flex center">
-            <span className={`net-name`}>{ChainLabels[chainId]}</span>
-          </div>
+          {chainId ? (
+            <div className="network-info flex center">
+              <span className={`net-name`}>{ChainLabels[chainId]}</span>
+            </div>
+          ) : null}
           <div className="url flex ai-center">
             {getStatusIcon()}
             {shortenAddress(account)}

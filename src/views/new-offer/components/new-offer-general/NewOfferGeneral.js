@@ -15,9 +15,8 @@ function NewOfferGeneral({
   const titleClear = useRef();
 
   const [titleHasBeenBlurred, setTitleHasBeenBlurred] = useState(false);
-  const [descriptionHasBeenBlurred, setDescriptionHasBeenBlurred] = useState(
-    false
-  );
+  const [descriptionHasBeenBlurred, setDescriptionHasBeenBlurred] =
+    useState(false);
 
   const sellerContext = useContext(SellerContext);
   const getOfferingData = getData(sellerContext.state.offeringData);

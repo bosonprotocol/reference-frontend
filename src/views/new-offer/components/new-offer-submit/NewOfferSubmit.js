@@ -36,6 +36,7 @@ import {
 } from "../../../../utils/DuplicateCorrelationIdGuard";
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
 import { IconClock } from "../../../../shared-components/icons/Icons";
+import "../../../../styles/PendingButton.scss";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -253,28 +254,30 @@ export default function NewOfferSubmit() {
       {!redirect ? (
         pending ? (
           [
-            <div
-              className="button cancelVoucherSet"
-              role="button"
-              style={{ border: "none", opacity: 1 }}
-              disabled
-              onClick={(e) => e.preventDefault()}
-            >
-              <div>
-                <span
-                  style={{ verticalAlign: "middle", display: "inline-block" }}
-                >
-                  <IconClock color={"#E49043"} />
-                </span>
-                <span
-                  style={{
-                    verticalAlign: "middle",
-                    display: "inline-block",
-                    fontSize: "1.1em",
-                  }}
-                >
-                  &nbsp;PENDING
-                </span>
+            <div className="pending-button-holder" data-config="button">
+              <div
+                className="button cancelVoucherSet pending-button"
+                role="button"
+                disabled
+                onClick={(e) => e.preventDefault()}
+              >
+                <div>
+                  <span
+                    style={{ verticalAlign: "middle", display: "inline-block" }}
+                  >
+                    <IconClock color={"#E49043"} />
+                  </span>
+                  <span
+                    style={{
+                      verticalAlign: "middle",
+                      display: "inline-block",
+                      fontSize: "1.1em",
+                      color: "white",
+                    }}
+                  >
+                    &nbsp;PENDING
+                  </span>
+                </div>
               </div>
             </div>,
           ]
@@ -327,11 +330,12 @@ const createNewVoucherSet = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderETHETH",
-      [dataArr, { value: txValue }]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderETHETH",
+        [dataArr, { value: txValue }]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({
@@ -367,11 +371,12 @@ const createNewVoucherSet = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderTKNETH",
-      [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderTKNETH",
+        [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({
@@ -419,20 +424,21 @@ const createNewVoucherSet = async (
       txValue
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderTKNTKNWithPermit",
-      [
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        txValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        dataArr,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderTKNTKNWithPermit",
+        [
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          txValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          dataArr,
+        ]
+      );
     if (
       contractInteractionDryRunErrorMessageMaker({
         action: "Create a new Voucher Set",
@@ -483,19 +489,20 @@ const createNewVoucherSet = async (
       chainId,
       txValue
     );
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderETHTKNWithPermit",
-      [
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        txValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        dataArr,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderETHTKNWithPermit",
+        [
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          txValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          dataArr,
+        ]
+      );
     if (
       contractInteractionDryRunErrorMessageMaker({
         action: "Create a new Voucher Set",

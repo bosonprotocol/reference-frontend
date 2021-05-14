@@ -227,7 +227,7 @@ function NewOfferPrice({
             data-error={buyerDepositErrorMessage ? "" : null}
           >
             <div className="currency-icon">
-              <span className={"icons " + priceCurrency}>
+              <span className={"icons " + depositsCurrency}>
                 <div className={CURRENCY.ETH}></div>
                 <div className={CURRENCY.BSN}></div>
               </span>
