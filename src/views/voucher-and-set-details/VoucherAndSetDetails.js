@@ -30,7 +30,7 @@ import {
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
-} from "../../helpers/configs/Dictionary";
+} from "../../helpers/configs/Dictionary"; 
 import { capitalize, formatDate } from "../../utils/FormatUtils";
 import {
   initVoucherDetails,
@@ -70,6 +70,8 @@ import { getControlList } from "./ControlListProvider";
 import { useVoucherStatusBlocks } from "../../hooks/useVoucherStatusBlocks";
 import { getEscrowData } from "./EscrowDataProvider";
 import { voucherPlaceholder, voucherSetPlaceholder } from "../../constants/PlaceHolders";
+import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
+import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -211,26 +213,7 @@ function VoucherAndSetDetails(props) {
     });
   };
 
-  const ViewImageFullScreen = () => (
-    <div
-      className="image-view-overlay flex center"
-      onClick={() => setImageView(0)}
-    >
-      <div className="button-container">
-        <div className="container">
-          <div
-            className="cancel new"
-            onClick={() => {
-              setImageView(0);
-            }}
-          >
-            <span className="icon"></span>
-          </div>
-        </div>
-      </div>
-      <img src={getProp("image")} alt="" />
-    </div>
-  );
+  
 
   useEffect(() => {
     if (library && (voucherDetails || voucherSetDetails)) {
@@ -247,77 +230,7 @@ function VoucherAndSetDetails(props) {
   // assign controlset to statuses
   
 
-  const determineRoleAndStatusOfVoucherResourse = ({ checkAuthentication }) => {
-    const voucherResource = voucherDetails
-      ? voucherDetails
-      : voucherSetDetails
-      ? voucherSetDetails
-      : false;
 
-    const voucherRoles = {
-      owner:
-        voucherResource?.voucherOwner?.toLowerCase() ===
-          account?.toLowerCase() && account,
-      holder:
-        voucherResource?.holder?.toLowerCase() === account?.toLowerCase() &&
-        account,
-    };
-
-    const draftStatusCheck = !(
-      voucherResource?._tokenIdVoucher || voucherResource?._tokenIdSupply
-    );
-
-    const statusPropagate = () =>
-      draftStatusCheck
-        ? STATUS.DRAFT
-        : voucherResource.FINALIZED
-        ? STATUS.FINALIZED
-        : voucherResource.CANCELLED
-        ? !voucherResource.COMPLAINED
-          ? STATUS.CANCELLED
-          : STATUS.COMPLANED_CANCELED
-        : voucherResource.COMPLAINED
-        ? STATUS.COMPLAINED
-        : voucherResource.REFUNDED
-        ? STATUS.REFUNDED
-        : voucherResource.REDEEMED
-        ? STATUS.REDEEMED
-        : voucherResource.COMMITTED
-        ? STATUS.COMMITED
-        : !voucherResource?.qty
-        ? STATUS.VIEW_ONLY
-        : !voucherResource.COMMITTED
-        ? STATUS.OFFERED
-        : false;
-
-    const role = voucherRoles.owner
-      ? ROLE.SELLER
-      : voucherRoles.holder
-      ? ROLE.BUYER
-      : ROLE.NON_BUYER_SELLER;
-    const status = voucherResource && statusPropagate();
-
-    // don't show actions if:
-    const blockActionConditions = [
-      new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
-      new Date() <= new Date(voucherResource?.startDate) && !!voucherDetails, // has future start date and is voucher
-      voucherSetDetails?.qty <= 0, // no quantity
-      recentlySignedTxHash !== "",
-      hideControlButtonsWaitPeriodExpired,
-    ];
-
-    if (
-      role === ROLE.NON_BUYER_SELLER &&
-      checkAuthentication &&
-      !voucherSetDetails
-    )
-      return OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED];
-
-    // status: undefined - user that has not logged in
-    return !blockActionConditions.includes(true)
-      ? OFFER_FLOW_SCENARIO[role][status]
-      : undefined;
-  };
 
   const getControlState = () => {
     const controlResponse = getControlList(
@@ -774,10 +687,10 @@ function VoucherAndSetDetails(props) {
   }
 
   useEffect(() => {
-    setVoucherStatus(determineRoleAndStatusOfVoucherResourse({ checkAuthentication: false }));
+    setVoucherStatus(determineRoleAndStatusOfVoucherResourse(false, account, voucherDetails, voucherSetDetails, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired));
 
     const authentication = setTimeout(() => {
-      setVoucherStatus(determineRoleAndStatusOfVoucherResourse({ checkAuthentication: true }));
+      setVoucherStatus(determineRoleAndStatusOfVoucherResourse(true, account, voucherDetails, voucherSetDetails, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired));
       setAuthenticationCompleted(1);
     }, 500);
 
@@ -1045,7 +958,7 @@ function VoucherAndSetDetails(props) {
               voucherId={voucherDetails?.id}
             />
           ) : null}
-          {imageView ? <ViewImageFullScreen /> : null}
+          {imageView ? <FullScreenImage src={getProp('image')} setImageView={setImageView}/> : null}
           <div className="container erase">
             <div className="content">
               <div className="section title">
@@ -1065,7 +978,7 @@ function VoucherAndSetDetails(props) {
                       ItemComponent={({ item }) => item.jsx}
                       defaultSpace="0"
                       spaceBetweenItems="8px"
-                      moveSpeed={1}
+                      moveSpeed={1} 
                     />
                   </div>
                 </div>
