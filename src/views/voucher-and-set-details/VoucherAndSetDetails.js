@@ -52,7 +52,6 @@ import {
 import EscrowTable from "./components/escrow-table/EscrowTable";
 import {
   IconWarning,
-  IconClock,
 } from "../../shared-components/icons/Icons";
 
 import {
@@ -72,6 +71,7 @@ import { getEscrowData } from "./EscrowDataProvider";
 import { voucherPlaceholder, voucherSetPlaceholder } from "../../constants/PlaceHolders";
 import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
 import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
+import PendingButton from "./components/escrow-table/PendingButton";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -746,35 +746,7 @@ function VoucherAndSetDetails(props) {
           ? controls
           : recentlySignedTxHash
           ? [
-              <div className="pending-button-holder" data-config="button">
-                <div
-                  className="button cancelVoucherSet pending-button"
-                  role="button"
-                  disabled
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <div>
-                    <span
-                      style={{
-                        verticalAlign: "middle",
-                        display: "inline-block",
-                      }}
-                    >
-                      <IconClock color={"#E49043"} />
-                    </span>
-                    <span
-                      style={{
-                        verticalAlign: "middle",
-                        display: "inline-block",
-                        fontSize: "1.1em",
-                        color: "white",
-                      }}
-                    >
-                      &nbsp;PENDING
-                    </span>
-                  </div>
-                </div>
-              </div>,
+              <PendingButton/>
             ]
           : null,
       })
