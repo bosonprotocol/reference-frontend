@@ -8,11 +8,7 @@ import TopNavigation from "./shared-components/navigation/top-navigation/TopNavi
 import BottomNavigation from "./shared-components/navigation/bottom-navigation/BottomNavigation";
 import LocationManager from "./shared-components/navigation/location-manager/LocationManager";
 import NotFound from "./views/not-found/NotFound";
-import {
-  ActivityVoucherSets,
-  ActivityAccountVouchers,
-  ActivityVoucherSetView,
-} from "./views/activity/Activity";
+import { VoucherSetSupplyView } from "./views/activity/components/VoucherSetSupply";
 import VoucherAndSetDetails from "./views/voucher-and-set-details/VoucherAndSetDetails";
 import QRScanner from "./views/qr-scanner/QRScanner";
 import Home from "./views/home/Home";
@@ -25,6 +21,8 @@ import GlobalListeners from "./hooks/globalListeners";
 import { useExpiredTokenResponseInterceptor } from "./hooks/useExpiredTokenResponseInterceptor";
 import Search from "./views/search/Search";
 import PickUpLocation from "./views/pick-up-location/PickUpLocation";
+import { OfferedVoucherSets } from "./views/activity/components/OfferedVoucherSets";
+import { PurchasedVouchers } from "./views/activity/components/PurchasedVouchers";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
@@ -77,13 +75,10 @@ function Routes() {
           <Route
             path={ROUTE.Activity + ROUTE.PARAMS.ID + ROUTE.VoucherSetView}
             exact
-            component={ActivityVoucherSetView}
+            component={VoucherSetSupplyView}
           />
-          <Route path={ROUTE.Activity} component={ActivityVoucherSets} />
-          <Route
-            path={ROUTE.ActivityVouchers}
-            component={ActivityAccountVouchers}
-          />
+          <Route path={ROUTE.Activity} component={OfferedVoucherSets} />
+          <Route path={ROUTE.ActivityVouchers} component={PurchasedVouchers} />
           <Route path={ROUTE.Search} component={Search} />
           <Route path={ROUTE.PickUpLocation} component={PickUpLocation} />
           <Route component={NotFound} />
