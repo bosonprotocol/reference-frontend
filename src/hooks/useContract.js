@@ -9,7 +9,7 @@ import FUND_LIMITS from "./ABIs/FundLimitsOracle.json";
 
 function useContract(address, ABI, withSignerIfPossible = true) {
   const { library, account } = useWeb3React();
-
+  console.log(library)
   return useMemo(() => {
     if (!address || !ABI || !library) return null;
     try {
