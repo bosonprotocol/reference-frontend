@@ -1,6 +1,6 @@
 import { OFFER_FLOW_SCENARIO, ROLE, STATUS } from "../../helpers/configs/Dictionary";
 
-export const determineRoleAndStatusOfVoucherResourse = (checkAuthentication, account, voucherDetails, voucherSetDetails, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired) => {
+const determineRoleAndStatusOfVoucherResourse = (checkAuthentication, account, voucherDetails, voucherSetDetails, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired) => {
     const voucherResource = voucherDetails
       ? voucherDetails
       : voucherSetDetails
@@ -71,3 +71,4 @@ export const determineRoleAndStatusOfVoucherResourse = (checkAuthentication, acc
       ? OFFER_FLOW_SCENARIO[role][status]
       : undefined;
   };
+  export {determineRoleAndStatusOfVoucherResourse}

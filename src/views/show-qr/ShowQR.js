@@ -18,7 +18,7 @@ import { setTxHashToSupplyId } from "../../utils/BlockchainUtils";
 import { useEffect } from "react";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 
-function ShowQR({ voucherId, setShowQRCode }) {
+function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
   const { library, account } = useWeb3React();
   const modalContext = useContext(ModalContext);
   const [loading, setLoading] = useState(0);
@@ -92,9 +92,7 @@ function ShowQR({ voucherId, setShowQRCode }) {
       setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
 
       setShowQRCode(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
+      setTriggerWaitForTransaction(true)
     } catch (e) {
       console.log(e);
       setLoading(0);

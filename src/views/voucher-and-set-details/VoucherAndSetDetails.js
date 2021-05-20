@@ -25,8 +25,6 @@ import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 import {
   ROLE,
-  OFFER_FLOW_SCENARIO,
-  STATUS,
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
@@ -223,14 +221,11 @@ function VoucherAndSetDetails(props) {
         voucherSetDetails,
         setRecentlySignedTxHash,
         setSuccessMessage,
-        setSuccessMessageType
+        setSuccessMessageType,
+        setTriggerWaitForTransaction
       );
     }
   }, [voucherDetails, voucherSetDetails, library, triggerWaitForTransaction]);
-  // assign controlset to statuses
-  
-
-
 
   const getControlState = () => {
     const controlResponse = getControlList(
@@ -247,7 +242,8 @@ function VoucherAndSetDetails(props) {
       account,
       setTransactionProccessing,
       transactionProccessing,
-      setPageLoading
+      setPageLoading,
+      successMessage
     );
 
     return voucherStatus
@@ -742,9 +738,9 @@ function VoucherAndSetDetails(props) {
     setTransactionProccessing(transactionProccessing * -1);
     navigationContext.dispatch(
       Action.setRedemptionControl({
-        controls: controls
+        controls: controls && !triggerWaitForTransaction
           ? controls
-          : recentlySignedTxHash
+          : recentlySignedTxHash || triggerWaitForTransaction
           ? [
               <PendingButton/>
             ]
@@ -928,6 +924,7 @@ function VoucherAndSetDetails(props) {
             <ShowQR
               setShowQRCode={setShowQRCode}
               voucherId={voucherDetails?.id}
+              setTriggerWaitForTransaction={setTriggerWaitForTransaction}
             />
           ) : null}
           {imageView ? <FullScreenImage src={getProp('image')} setImageView={setImageView}/> : null}

@@ -17,7 +17,6 @@ export const getControlList = (
     setTransactionProccessing,
     transactionProccessing,
     setPageLoading
-
     ) => {
     setDisablePage(0);
     const CASE = {};
