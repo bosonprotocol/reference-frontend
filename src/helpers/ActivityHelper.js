@@ -1,11 +1,6 @@
-/* eslint-disable array-callback-return */
-import { QRCodeScaner } from "../shared-components/icons/Icons";
-import { Link } from "react-router-dom";
-import { ROUTE } from "./configs/Dictionary";
-import {
-  SingleVoucherBlock,
-  VoucherSetBlock,
-} from "../views/activity/Activity";
+import { IconActivityMessage } from "../shared-components/icons/Icons";
+import { WalletConnect } from "../shared-components/wallet-connect/WalletConnect";
+import React from "react";
 
 export const VOUCHER_TYPE = {
   accountVoucher: 1,
@@ -40,39 +35,56 @@ export const sortBlocks = (blocksArray, voucherType) => {
   return tabGroup;
 };
 
-export const ChildVoucherBlock = ({ title, expiration, id }) => (
-  <Link to={`${ROUTE.Activity}/${id}${ROUTE.Details}`}>
-    <div className="voucher-block solo sub flex ai-center">
-      <div className="img no-shrink">
-        <QRCodeScaner />
-      </div>
-      <div className="description">
-        <h2 className="title elipsis">{title}</h2>
-        <div className="expiration">{expiration}</div>
-      </div>
-      {/* <div className="statuses">
-              <div className="label">COMMITED</div>
-              <div className="label">REDEEMED</div>
-          </div> */}
+export const getLastAction = (el) => {
+  let latest = 0;
+  const compareDates = (el) =>
+    el
+      ? new Date(el).getTime() > latest
+        ? new Date(el).getTime()
+        : latest
+      : latest;
+
+  latest = compareDates(el.CANCELLED);
+  latest = compareDates(el.COMMITTED);
+  latest = compareDates(el.COMPLAINED);
+  latest = compareDates(el.EXPIRED);
+  latest = compareDates(el.FINALIZED);
+  latest = compareDates(el.REDEEMED);
+  latest = compareDates(el.REFUNDED);
+
+  return latest;
+};
+
+export const activityMessageType = {
+  [VOUCHER_TYPE.accountVoucher]: {
+    active: "active vouchers.",
+    inactive: "inactive vouchers.",
+  },
+  [VOUCHER_TYPE.voucherSet]: {
+    active: "open voucher sets.",
+    inactive: "closed voucher sets.",
+  },
+};
+
+export const activityMessage = (message, account) => {
+  return account ? (
+    <div className="no-vouchers flex column center">
+      <p>You currently have no {message}</p>
+      <IconActivityMessage />
     </div>
-  </Link>
-);
-
-export const ActiveTab = (props) => {
-  const { products, voucherType, voucherSetId } = props;
-
-  return (
-    <div className="voucher-set-container">
-      {products.map((block, id) =>
-        getDesiredBlockType(voucherType, block, id, voucherSetId)
-      )}
+  ) : (
+    <div className="no-vouchers flex column center">
+      <p>
+        <strong>No wallet connected.</strong> <br /> Connect to a wallet to view
+        your vouchers.
+      </p>
+      <WalletConnect />
     </div>
   );
 };
 
-export const getDesiredBlockType = (voucherType, props, id, voucherSetId) =>
-  voucherType === VOUCHER_TYPE.accountVoucher ? (
-    <SingleVoucherBlock voucherSetId={voucherSetId} {...props} key={id} />
-  ) : (
-    <VoucherSetBlock {...props} key={id} />
-  );
+export const activityBlockPlaceholder = (
+  <div className="placeholder-parent">
+    <div className="block plceholder is-loading"></div>
+  </div>
+);

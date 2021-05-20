@@ -1,10 +1,10 @@
 import React, { useRef, useContext, useState, useEffect } from "react";
 import "./Search.scss";
 import { GlobalContext } from "../../contexts/Global";
-import { VoucherSetBlock } from "../activity/Activity";
 import { IconHome } from "../../shared-components/icons/Icons";
 import { useLocation } from "react-router";
 import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
+import { VoucherSetBlock } from "../activity/components/OfferedVoucherSets";
 
 function Search() {
   const searchInput = useRef();
