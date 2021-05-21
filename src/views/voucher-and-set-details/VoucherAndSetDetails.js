@@ -449,6 +449,7 @@ function VoucherAndSetDetails(props) {
       localStorage.setItem("successMessage", "Complain triggered");
       localStorage.setItem("successMessageType", MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+      setTriggerWaitForTransaction(true)
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -543,6 +544,7 @@ function VoucherAndSetDetails(props) {
       localStorage.setItem("successMessage", "Refund triggered");
       localStorage.setItem("successMessageType", MESSAGE.REFUND_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+      setTriggerWaitForTransaction(true)
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -636,7 +638,7 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-
+      setTriggerWaitForTransaction(true);
       localStorage.setItem("successMessage", "Cancel/fault triggered");
       localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
     } catch (e) {
@@ -841,7 +843,7 @@ function VoucherAndSetDetails(props) {
         voucherSetDetails._tokenIdSupply
       );
       setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
-
+      setTriggerWaitForTransaction(true)
       setCancelMessage({
         messageType: MESSAGE.SUCCESS,
         title: "The voucher set was cancelled",
