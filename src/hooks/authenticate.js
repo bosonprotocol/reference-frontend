@@ -1,6 +1,4 @@
-import { splitSignature } from "ethers/lib/utils";
 import { clientLibrary } from "..";
-import { generateNonce, verifySignature } from "./api";
 
 export const AUTH_ADDRESSES_KEY = "authAddresses";
 
@@ -10,7 +8,21 @@ export const authenticateUser = async (
   chainId,
   successCallback
 ) => {
- const jwt = await clientLibrary.authenticateUser(account, library);
+console.log(library._network, library._connector)
+  const web3Provider = {
+    provider: {
+      network: library._network,
+      connector: library._connector,
+      send: library.send,
+      signTypedData_v4: async (account, data) => {
+        return await library.send("eth_signTypedData_v4", [
+          account, 
+          data,
+        ]);
+      },
+    }
+  }
+ const jwt = await clientLibrary.authenticateUser(account, web3Provider);
 
   updateAuthToken(account, jwt);
   if (successCallback) {
