@@ -92,7 +92,7 @@ function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
       setTxHashToSupplyId(tx.hash, voucherDetails.voucher._tokenIdVoucher);
 
       setShowQRCode(false);
-      setTriggerWaitForTransaction(true)
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       console.log(e);
       setLoading(0);

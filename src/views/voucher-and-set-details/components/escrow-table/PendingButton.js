@@ -1,7 +1,7 @@
 import { IconClock } from "../../../../shared-components/icons/Icons";
 
-const PendingButton = ()=> (
-    <div className="pending-button-holder" data-config="button">
+const PendingButton = () => (
+  <div className="pending-button-holder" data-config="button">
     <div
       className="button cancelVoucherSet pending-button"
       role="button"
@@ -31,4 +31,4 @@ const PendingButton = ()=> (
     </div>
   </div>
 );
-export default PendingButton
+export default PendingButton;
