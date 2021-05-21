@@ -12,6 +12,7 @@ import {
   getAccountStoredInLocalStorage,
 } from "./authenticate";
 import { CONNECTOR_TYPES } from "../shared-components/wallet-connect/WalletConnect";
+import { useClientLibraryProvider } from "./useClientLibraryProvider";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
@@ -117,6 +118,7 @@ export function useEagerConnect() {
  */
 export function useInactiveListener(suppress = false) {
   const { library, account, active, error, activate, chainId } = useWeb3React();
+  const clientLibraryProvider = useClientLibraryProvider();
 
   useEffect(() => {
     const { ethereum } = window;
@@ -125,7 +127,7 @@ export function useInactiveListener(suppress = false) {
       const handleChainChanged = () => {
         // ToDo: Add global notification for network changing
 
-        // eat errors 
+        // eat errors
         activate(injected, undefined, true).catch((error) => {
           console.error("Failed to activate after chain changed", error);
         });
@@ -139,7 +141,9 @@ export function useInactiveListener(suppress = false) {
           const localStoredAccountData =
             getAccountStoredInLocalStorage(account);
           if (!localStoredAccountData.activeToken) {
-            await authenticateUser(library, newAccount, chainId);
+            console.log("index js js authing");
+
+            await authenticateUser(clientLibraryProvider, newAccount);
           }
 
           // eat errors
@@ -160,7 +164,7 @@ export function useInactiveListener(suppress = false) {
       };
     }
     return;
-  }, [active, error, suppress, activate, account, chainId, library]);
+  }, [active, error, suppress, activate, account, clientLibraryProvider]);
 }
 
 export function useCopyClipboard(timeout = 500) {

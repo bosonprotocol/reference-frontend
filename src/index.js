@@ -6,13 +6,13 @@ import { Web3Provider } from "@ethersproject/providers";
 
 import App from "./App";
 import { NetworkContextName } from "./constants";
-import {ClientLibrary} from 'client-library';
-  
+import { ClientLibrary } from "client-library";
+
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
-const clientLibrary = new ClientLibrary(process.env.REACT_APP_BACKEND_BASE_URL)
+const clientLibrary = new ClientLibrary(process.env.REACT_APP_BACKEND_BASE_URL);
 
-export {clientLibrary}
+export { clientLibrary };
 function getLibrary(provider) {
   const library = new Web3Provider(provider);
   library.pollingInterval = 8000;
