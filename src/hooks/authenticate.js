@@ -14,7 +14,7 @@ console.log(library._network, library._connector)
       network: library._network,
       connector: library._connector,
       send: library.send,
-      signTypedData_v4: async (account, data) => {
+      signTypedData_v4: async function (account, data) {
         return await library.send("eth_signTypedData_v4", [
           account, 
           data,
