@@ -40,7 +40,6 @@ export const authenticateUser = async (
     message,
   });
 
-  const isSmartWalletAccount = isSmartWallet(library);
   const signatureLike = await library.send("eth_signTypedData_v4", [
     account,
     data,
@@ -48,7 +47,7 @@ export const authenticateUser = async (
   const signature = await splitSignature(signatureLike);
   const jwt = await verifySignature(
     signerAddress,
-    isSmartWalletAccount,
+    undefined,
     domain,
     { AuthSignature },
     signature
@@ -58,13 +57,6 @@ export const authenticateUser = async (
   if (successCallback) {
     successCallback();
   }
-};
-
-const isSmartWallet = (library) => {
-  return (
-    library.provider.connector &&
-    library.provider.connector?.peerMeta?.name.includes(ARGENT_PEER_NAME)
-  );
 };
 
 const updateAuthToken = (userAddress, token, active = true) => {
