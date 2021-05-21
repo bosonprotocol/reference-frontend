@@ -7,7 +7,6 @@ export const authenticateUser = async (
   account,
   successCallback
 ) => {
-  console.log("authing");
   const jwt = await clientLibrary.authenticateUser(account, web3Provider);
   updateAuthToken(account, jwt);
 

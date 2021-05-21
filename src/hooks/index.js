@@ -141,8 +141,6 @@ export function useInactiveListener(suppress = false) {
           const localStoredAccountData =
             getAccountStoredInLocalStorage(account);
           if (!localStoredAccountData.activeToken) {
-            console.log("index js js authing");
-
             await authenticateUser(clientLibraryProvider, newAccount);
           }
 
