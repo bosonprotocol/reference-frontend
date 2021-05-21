@@ -37,6 +37,7 @@ import {
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
 import { IconClock } from "../../../../shared-components/icons/Icons";
 import "../../../../styles/PendingButton.scss";
+import PendingButton from "../../../voucher-and-set-details/components/escrow-table/PendingButton";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -254,32 +255,7 @@ export default function NewOfferSubmit() {
       {!redirect ? (
         pending ? (
           [
-            <div className="pending-button-holder" data-config="button">
-              <div
-                className="button cancelVoucherSet pending-button"
-                role="button"
-                disabled
-                onClick={(e) => e.preventDefault()}
-              >
-                <div>
-                  <span
-                    style={{ verticalAlign: "middle", display: "inline-block" }}
-                  >
-                    <IconClock color={"#E49043"} />
-                  </span>
-                  <span
-                    style={{
-                      verticalAlign: "middle",
-                      display: "inline-block",
-                      fontSize: "1.1em",
-                      color: "white",
-                    }}
-                  >
-                    &nbsp;PENDING
-                  </span>
-                </div>
-              </div>
-            </div>,
+            <PendingButton/>,
           ]
         ) : (
           <ContractInteractionButton
