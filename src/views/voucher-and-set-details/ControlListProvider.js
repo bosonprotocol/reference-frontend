@@ -109,24 +109,6 @@ export const getControlList = (
       </div>
     ) : null;
 
-  CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] =
-    CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]] =
-    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] =
-      () => {
-        setTransactionProccessing(transactionProccessing * -1);
-        return (
-          <div
-            className="button cancelVoucherSet"
-            role="button"
-            style={{ border: "none" }}
-            disabled
-            onClick={(e) => e.preventDefault()}
-          >
-            DRAFT: TRANSACTION IS BEING PROCESSED
-          </div>
-        );
-      };
-
   CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]] = () => {
     setDisablePage(1);
     setPageLoading(0);

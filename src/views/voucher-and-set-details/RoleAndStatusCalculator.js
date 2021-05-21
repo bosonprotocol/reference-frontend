@@ -4,7 +4,7 @@ import {
   STATUS,
 } from "../../helpers/configs/Dictionary";
 
-const determineRoleAndStatusOfVoucherResourse = (
+export const determineRoleAndStatusOfVoucherResourse = (
   checkAuthentication,
   account,
   voucherDetails,
@@ -82,4 +82,3 @@ const determineRoleAndStatusOfVoucherResourse = (
     ? OFFER_FLOW_SCENARIO[role][status]
     : undefined;
 };
-export { determineRoleAndStatusOfVoucherResourse };

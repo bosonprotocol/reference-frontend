@@ -73,7 +73,7 @@ export const expiryDateBeforeStartDateError =
 // ADDRESS LINE CONFIG
 export const addressLineSettings = {
   min: 4,
-  max: 20,
+  max: 60,
 };
 
 export const minAddressLengthError = minLengthError(
