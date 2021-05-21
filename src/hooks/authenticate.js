@@ -8,23 +8,25 @@ export const authenticateUser = async (
   chainId,
   successCallback
 ) => {
-console.log(library._network, library._connector)
   const web3Provider = {
     provider: {
-      network: library._network,
-      connector: library._connector,
+      network: {
+        chainId
+      },
+      connector: library.provider?.connector,
       send: library.send,
       signTypedData_v4: async function (account, data) {
         return await library.send("eth_signTypedData_v4", [
           account, 
-          data,
+          JSON.stringify(data),
         ]);
-      },
+      }
     }
   }
- const jwt = await clientLibrary.authenticateUser(account, web3Provider);
 
+  const jwt = await clientLibrary.authenticateUser(account, web3Provider);
   updateAuthToken(account, jwt);
+
   if (successCallback) {
     successCallback();
   }
