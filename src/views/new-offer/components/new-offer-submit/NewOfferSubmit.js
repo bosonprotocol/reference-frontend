@@ -254,9 +254,7 @@ export default function NewOfferSubmit() {
       {loading ? <LoadingSpinner /> : null}
       {!redirect ? (
         pending ? (
-          [
-            <PendingButton/>,
-          ]
+          [<PendingButton />]
         ) : (
           <ContractInteractionButton
             className="button offer primary"

@@ -15,11 +15,7 @@ import {
   useBosonTokenContract,
 } from "../../hooks/useContract";
 import { PAYMENT_METHODS, SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
-import {
-  getVoucherDetails,
-  commitToBuy,
-  createEvent,
-} from "../../hooks/api";
+import { getVoucherDetails, commitToBuy, createEvent } from "../../hooks/api";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
@@ -30,11 +26,9 @@ import {
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
-} from "../../helpers/configs/Dictionary"; 
+} from "../../helpers/configs/Dictionary";
 import { capitalize, formatDate } from "../../utils/FormatUtils";
-import {
-  initVoucherDetails,
-} from "../../helpers/parsers/VoucherAndSetParsers";
+import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
 import { ModalResolver } from "../../contexts/Modal";
@@ -50,9 +44,7 @@ import {
   DescriptionBlock,
 } from "../../shared-components/table-content/TableContent";
 import EscrowTable from "./components/escrow-table/EscrowTable";
-import {
-  IconWarning,
-} from "../../shared-components/icons/Icons";
+import { IconWarning } from "../../shared-components/icons/Icons";
 
 import {
   isCorrelationIdAlreadySent,
@@ -68,7 +60,10 @@ import { validateContractInteraction } from "../../helpers/validators/ContractIn
 import { getControlList } from "./ControlListProvider";
 import { useVoucherStatusBlocks } from "../../hooks/useVoucherStatusBlocks";
 import { getEscrowData } from "./EscrowDataProvider";
-import { voucherPlaceholder, voucherSetPlaceholder } from "../../constants/PlaceHolders";
+import {
+  voucherPlaceholder,
+  voucherSetPlaceholder,
+} from "../../constants/PlaceHolders";
 import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
 import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
 import PendingButton from "./components/escrow-table/PendingButton";
@@ -113,8 +108,11 @@ function VoucherAndSetDetails(props) {
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
- 
-  const statusBlocks = useVoucherStatusBlocks(voucherDetails, setHideControlButtonsWaitPeriodExpired);
+
+  const statusBlocks = useVoucherStatusBlocks(
+    voucherDetails,
+    setHideControlButtonsWaitPeriodExpired
+  );
 
   const resetSuccessMessage = () => {
     setSuccessMessage("");
@@ -213,8 +211,6 @@ function VoucherAndSetDetails(props) {
     });
   };
 
-  
-
   useEffect(() => {
     if (library && (voucherDetails || voucherSetDetails)) {
       waitForRecentTransactionIfSuchExists(
@@ -228,15 +224,12 @@ function VoucherAndSetDetails(props) {
     }
   }, [voucherDetails, voucherSetDetails, library, triggerWaitForTransaction]);
   // assign controlset to statuses
-  
-
-
 
   const getControlState = () => {
     const controlResponse = getControlList(
-      setDisablePage, 
+      setDisablePage,
       setShowQRCode,
-      confirmAction, 
+      confirmAction,
       onCoF,
       onRefund,
       onComplain,
@@ -254,9 +247,6 @@ function VoucherAndSetDetails(props) {
       ? controlResponse[voucherStatus] && controlResponse[voucherStatus]()
       : null;
   };
-
-  
-
 
   async function onCommitToBuy() {
     if (!library || !account) {
@@ -687,10 +677,28 @@ function VoucherAndSetDetails(props) {
   }
 
   useEffect(() => {
-    setVoucherStatus(determineRoleAndStatusOfVoucherResourse(false, account, voucherDetails, voucherSetDetails, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired));
+    setVoucherStatus(
+      determineRoleAndStatusOfVoucherResourse(
+        false,
+        account,
+        voucherDetails,
+        voucherSetDetails,
+        recentlySignedTxHash,
+        hideControlButtonsWaitPeriodExpired
+      )
+    );
 
     const authentication = setTimeout(() => {
-      setVoucherStatus(determineRoleAndStatusOfVoucherResourse(true, account, voucherDetails, voucherSetDetails, recentlySignedTxHash, hideControlButtonsWaitPeriodExpired));
+      setVoucherStatus(
+        determineRoleAndStatusOfVoucherResourse(
+          true,
+          account,
+          voucherDetails,
+          voucherSetDetails,
+          recentlySignedTxHash,
+          hideControlButtonsWaitPeriodExpired
+        )
+      );
       setAuthenticationCompleted(1);
     }, 500);
 
@@ -706,15 +714,17 @@ function VoucherAndSetDetails(props) {
   ]);
 
   useEffect(() => {
-    if (voucherDetails) setEscrowData(
-      getEscrowData(
-          voucherDetails, 
-          account, 
+    if (voucherDetails)
+      setEscrowData(
+        getEscrowData(
+          voucherDetails,
+          account,
           modalContext,
           setDistributionMessage,
           currencies,
           getAccountStoredInLocalStorage
-    ));
+        )
+      );
     setControls(getControlState());
   }, [
     voucherStatus,
@@ -745,9 +755,7 @@ function VoucherAndSetDetails(props) {
         controls: controls
           ? controls
           : recentlySignedTxHash
-          ? [
-              <PendingButton/>
-            ]
+          ? [<PendingButton />]
           : null,
       })
     );
@@ -930,7 +938,12 @@ function VoucherAndSetDetails(props) {
               voucherId={voucherDetails?.id}
             />
           ) : null}
-          {imageView ? <FullScreenImage src={getProp('image')} setImageView={setImageView}/> : null}
+          {imageView ? (
+            <FullScreenImage
+              src={getProp("image")}
+              setImageView={setImageView}
+            />
+          ) : null}
           <div className="container erase">
             <div className="content">
               <div className="section title">
@@ -950,7 +963,7 @@ function VoucherAndSetDetails(props) {
                       ItemComponent={({ item }) => item.jsx}
                       defaultSpace="0"
                       spaceBetweenItems="8px"
-                      moveSpeed={1} 
+                      moveSpeed={1}
                     />
                   </div>
                 </div>
@@ -1035,7 +1048,6 @@ function VoucherAndSetDetails(props) {
     </>
   );
 }
-
 
 export default VoucherAndSetDetails;
 
