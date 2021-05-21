@@ -56,6 +56,7 @@ import {
 } from "./hooks/authenticate";
 import { isTokenValid } from "./utils/Auth";
 import { handleAccountChangedMetaMaskBrowser } from "./utils/BlockchainUtils";
+import { useClientLibraryProvider } from "./hooks/useClientLibraryProvider";
 
 function App() {
   const [walletState] = useReducer(WalletReducer, WalletInitialState);
@@ -119,13 +120,14 @@ function App() {
   };
 
   const context = useWeb3React();
-  const { active, account, library, chainId } = context;
+  const { active, account } = context;
   const {
     active: networkActive,
     error: networkError,
     activate: activateNetwork,
   } = useWeb3React(NetworkContextName);
 
+  const clientLibraryProvider = useClientLibraryProvider();
   const triedEager = useEagerConnect();
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
   useEffect(() => {
@@ -139,7 +141,7 @@ function App() {
   const previousAccount = usePrevious(account);
 
   useEffect(() => {
-    if (!account) {
+    if (!account || !clientLibraryProvider) {
       return;
     }
 
@@ -157,9 +159,8 @@ function App() {
     if (!!!+onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
-
-    authenticateUser(library, account, chainId);
-  }, [account, library, chainId]);
+    authenticateUser(clientLibraryProvider, account);
+  }, [account, clientLibraryProvider]);
 
   useEffect(() => {
     const localstorage_v = process.env.REACT_APP_FRONT_END_LOCALSTORAGE_VERSION;

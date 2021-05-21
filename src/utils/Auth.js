@@ -9,8 +9,7 @@ import { MODAL_TYPES } from "../helpers/configs/Dictionary";
 export const refreshTokenIfExpired = (
   rawToken,
   modalContext,
-  library,
-  chainId,
+  clientLibraryProvider,
   account
 ) => {
   if (!isTokenValid(rawToken)) {
@@ -27,7 +26,7 @@ export const refreshTokenIfExpired = (
     );
 
     // eslint-disable-next-line no-self-assign
-    authenticateUser(library, account, chainId, () => {
+    authenticateUser(clientLibraryProvider, account, () => {
       window.location = window.location;
     });
   }

@@ -3,27 +3,11 @@ import { clientLibrary } from "..";
 export const AUTH_ADDRESSES_KEY = "authAddresses";
 
 export const authenticateUser = async (
-  library,
+  web3Provider,
   account,
-  chainId,
   successCallback
 ) => {
-  const web3Provider = {
-    provider: {
-      network: {
-        chainId
-      },
-      connector: library.provider?.connector,
-      send: library.send,
-      signTypedData_v4: async function (account, data) {
-        return await library.send("eth_signTypedData_v4", [
-          account, 
-          JSON.stringify(data),
-        ]);
-      }
-    }
-  }
-
+  console.log("authing");
   const jwt = await clientLibrary.authenticateUser(account, web3Provider);
   updateAuthToken(account, jwt);
 

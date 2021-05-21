@@ -21,6 +21,7 @@ import { IconHome, IconLocation } from "../../shared-components/icons/Icons";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 import { Link } from "react-router-dom";
 import { DEFAULT_FILTER } from "../../PlaceholderAPI";
+import { useClientLibraryProvider } from "../../hooks/useClientLibraryProvider";
 
 function Home() {
   const [productBlocks, setProductBlocks] = useState([]);
@@ -34,6 +35,7 @@ function Home() {
   const [pageLoading, setPageLoading] = useState(1);
 
   const { account, library, chainId } = useWeb3React();
+  const clientLibraryProvider = useClientLibraryProvider();
 
   const globalContext = useContext(GlobalContext);
 
@@ -82,8 +84,7 @@ function Home() {
     if (!onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
-
-    authenticateUser(library, account, chainId);
+    authenticateUser(clientLibraryProvider, account);
   };
 
   const initialFilteringAndSorting = () => {
