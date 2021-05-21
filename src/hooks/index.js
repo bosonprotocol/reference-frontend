@@ -125,7 +125,7 @@ export function useInactiveListener(suppress = false) {
       const handleChainChanged = () => {
         // ToDo: Add global notification for network changing
 
-        // eat errors
+        // eat errors 
         activate(injected, undefined, true).catch((error) => {
           console.error("Failed to activate after chain changed", error);
         });
