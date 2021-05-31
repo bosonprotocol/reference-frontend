@@ -21,8 +21,6 @@ import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 import {
   ROLE,
-  OFFER_FLOW_SCENARIO,
-  STATUS,
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
@@ -219,11 +217,11 @@ function VoucherAndSetDetails(props) {
         voucherSetDetails,
         setRecentlySignedTxHash,
         setSuccessMessage,
-        setSuccessMessageType
+        setSuccessMessageType,
+        setTriggerWaitForTransaction
       );
     }
   }, [voucherDetails, voucherSetDetails, library, triggerWaitForTransaction]);
-  // assign controlset to statuses
 
   const getControlState = () => {
     const controlResponse = getControlList(
@@ -240,7 +238,8 @@ function VoucherAndSetDetails(props) {
       account,
       setTransactionProccessing,
       transactionProccessing,
-      setPageLoading
+      setPageLoading,
+      successMessage
     );
 
     return voucherStatus
@@ -443,6 +442,7 @@ function VoucherAndSetDetails(props) {
       localStorage.setItem("successMessage", "Complain triggered");
       localStorage.setItem("successMessageType", MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -537,6 +537,7 @@ function VoucherAndSetDetails(props) {
       localStorage.setItem("successMessage", "Refund triggered");
       localStorage.setItem("successMessageType", MESSAGE.REFUND_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
@@ -630,7 +631,7 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-
+      setTriggerWaitForTransaction(true);
       localStorage.setItem("successMessage", "Cancel/fault triggered");
       localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
     } catch (e) {
@@ -752,11 +753,12 @@ function VoucherAndSetDetails(props) {
     setTransactionProccessing(transactionProccessing * -1);
     navigationContext.dispatch(
       Action.setRedemptionControl({
-        controls: controls
-          ? controls
-          : recentlySignedTxHash
-          ? [<PendingButton />]
-          : null,
+        controls:
+          controls && !triggerWaitForTransaction
+            ? controls
+            : recentlySignedTxHash || triggerWaitForTransaction
+            ? [<PendingButton />]
+            : null,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -853,7 +855,7 @@ function VoucherAndSetDetails(props) {
         voucherSetDetails._tokenIdSupply
       );
       setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
-
+      setTriggerWaitForTransaction(true);
       setCancelMessage({
         messageType: MESSAGE.SUCCESS,
         title: "The voucher set was cancelled",
@@ -936,6 +938,7 @@ function VoucherAndSetDetails(props) {
             <ShowQR
               setShowQRCode={setShowQRCode}
               voucherId={voucherDetails?.id}
+              setTriggerWaitForTransaction={setTriggerWaitForTransaction}
             />
           ) : null}
           {imageView ? (
