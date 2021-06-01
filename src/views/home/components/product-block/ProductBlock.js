@@ -24,11 +24,7 @@ function ProductBlock(props) {
     <Link
       to={`${ROUTE.Activity}/${id}${ROUTE.Details}?${QUERY_PARAMS.DIRECT}=1`}
     >
-      <div
-        // onClick={ openProduct }
-        className={`product-block ${productType} `} //${ animate ? 'animate' : '' }
-        key={keyId}
-      >
+      <div className={`product-block ${productType} `} key={keyId}>
         <div
           className={`product-image flex center ${productType}`}
           style={{ backgroundImage: `url('${image}')` }}

@@ -3,7 +3,7 @@ import "./Search.scss";
 import { GlobalContext } from "../../contexts/Global";
 import { IconHome } from "../../shared-components/icons/Icons";
 import { useLocation } from "react-router";
-import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS } from "../../helpers/configs/Dictionary";
 import { VoucherSetBlock } from "../activity/components/OfferedVoucherSets";
 
 function Search() {

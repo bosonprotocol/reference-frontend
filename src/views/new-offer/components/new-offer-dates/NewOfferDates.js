@@ -6,7 +6,6 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./NewOfferDates.scss";
-// https://www.npmjs.com/package/react-datepicker
 
 import { Arrow } from "../../../../shared-components/icons/Icons";
 import { NAME } from "../../../../helpers/configs/Dictionary";

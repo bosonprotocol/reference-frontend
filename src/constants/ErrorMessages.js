@@ -1,19 +1,4 @@
-import { ethers } from "ethers";
-
-export const ErrorMessages = {
-  NOT_ENOUGH_OF_CURRENCY_IN_ACCOUNT: (currency, txValueBn, amountInAccountBn) =>
-    `Currently you have ${ethers.utils.formatEther(
-      amountInAccountBn
-    )} ${currency} in your account, but you need ${ethers.utils.formatEther(
-      txValueBn
-    )}`,
-  NO_VOUCHERS_LEFT_IN_SUPPLY: `Sorry. There seems to be no vouchers left.`,
-  WALLET_ACCOUNT_NOT_CONNECTED: "Please connect your wallet account.",
-  ACCOUNT_OWNER_OF_VOUCHER_SET:
-    "The connected account is the owner of the voucher set.",
-};
-
-export const smartContractToUserFriendlyErrorMapping = new Map([
+export const smartContractErrorMapping = new Map([
   [
     "UNDEFINED_OWNER",
     ({ account }) =>

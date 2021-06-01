@@ -8,7 +8,6 @@ import {
 import { useEagerConnect } from "../../hooks";
 import { NetworkContextName } from "../../constants";
 import { network } from "../../Connectors";
-// import { shortenAddress } from "../utils";
 
 import "./Connect-Wallet.scss";
 
@@ -71,15 +70,3 @@ export default function ConnectWallet() {
     </section>
   );
 }
-
-/* <div className="bind column">
-<div className="top-navigation flex ai-center">
-    <div className="button square" role="button" onClick={ goToHomeScreen }>
-        <Arrow/>
-    </div>
-</div>
-<div className="content">
-    { getWalletTitle({ account, walletView, setWalletView }) }
-    <WalletConnect walletView={ walletView } setWalletView={ setWalletView }/>
-</div>
-</div> */

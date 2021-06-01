@@ -10,16 +10,6 @@ export const BuyerInitialState = {
   buyerStep: 0,
 };
 
-// payload resolver
-export const Buyer = {
-  commitToBuy: () => ({
-    type: DIC.COMMITED,
-  }),
-  connectToMetamask: () => ({
-    type: DIC.CONNECTED,
-  }),
-};
-
 export const BuyerReducer = (state, action) => {
   const actionList = {
     [DIC.COMMITED]: () => ({
