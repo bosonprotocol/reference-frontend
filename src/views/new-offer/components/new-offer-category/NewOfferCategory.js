@@ -23,7 +23,7 @@ function NewOfferCategory({ inputValueReceiver }) {
 
   useEffect(() => {
     setList(
-        CATEGORIES.map((category, index) => (
+      CATEGORIES.map((category, index) => (
         <li
           key={index}
           data-category={category.title}
