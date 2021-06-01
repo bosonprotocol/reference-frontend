@@ -1,4 +1,4 @@
-export const smartContractErrorMapping = new Map([
+export const SMART_CONTRACT_ERRORS = new Map([
   [
     "UNDEFINED_OWNER",
     ({ account }) =>

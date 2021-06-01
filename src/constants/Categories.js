@@ -1,4 +1,4 @@
-export const categories = [
+export const CATEGORIES = [
   {
     image: "images/categories/accessories.png",
     title: "Accessories",

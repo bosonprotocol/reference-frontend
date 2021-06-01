@@ -1,4 +1,4 @@
-import { smartContractErrorMapping } from "../../constants/ErrorMessages";
+import { SMART_CONTRACT_ERRORS } from "../../constants/ErrorMessages";
 
 export const validateContractInteraction = async (
   contract,
@@ -17,7 +17,7 @@ export const validateContractInteraction = async (
     console.log(e);
     try {
       const smartContractsErrorMessage = extractErrorMessageFromError(e);
-      handleSmartContractError = smartContractErrorMapping.get(
+      handleSmartContractError = SMART_CONTRACT_ERRORS.get(
         smartContractsErrorMessage
       );
 

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
-import { NetworkContextName } from "../constants";
+import { NETWORK_CONTEXT_NAME } from "../constants";
 import { injected, walletconnect } from "../Connectors";
 import {
   authenticateUser,
@@ -147,7 +147,7 @@ export function useCopyClipboard(timeout = 500) {
 
 export function useActiveWeb3React() {
   const context = useWeb3React();
-  const contextNetwork = useWeb3React(NetworkContextName);
+  const contextNetwork = useWeb3React(NETWORK_CONTEXT_NAME);
   return context.active ? context : contextNetwork;
 }
 

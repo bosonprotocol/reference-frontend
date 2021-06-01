@@ -6,7 +6,7 @@ import {
   WALLET_VIEWS,
 } from "../../shared-components/wallet-connect/WalletConnect";
 import { useEagerConnect } from "../../hooks";
-import { NetworkContextName } from "../../constants";
+import { NETWORK_CONTEXT_NAME } from "../../constants";
 import { network } from "../../Connectors";
 
 import "./Connect-Wallet.scss";
@@ -27,7 +27,7 @@ export default function ConnectWallet() {
     active: networkActive,
     error: networkError,
     activate: activateNetwork,
-  } = useWeb3React(NetworkContextName);
+  } = useWeb3React(NETWORK_CONTEXT_NAME);
 
   const triedEager = useEagerConnect();
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd

@@ -5,9 +5,9 @@ import { Web3ReactProvider, createWeb3ReactRoot } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 
 import App from "./App";
-import { NetworkContextName } from "./constants";
+import { NETWORK_CONTEXT_NAME } from "./constants";
 
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+const Web3ProviderNetwork = createWeb3ReactRoot(NETWORK_CONTEXT_NAME);
 
 function getLibrary(provider) {
   const library = new Web3Provider(provider);
