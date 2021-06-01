@@ -54,11 +54,18 @@ export const getAllVoucherSets = async () => {
   return allVoucherSets.data;
 };
 
+export const getVoucherSetById = async (id) => {
+  const voucherSet = await axiosInstance.get(`/voucher-sets/${id}`);
+  return voucherSet.data;
+};
+
+
 export const createVoucherSet = async (data, token) => {
   const allVouchers = await axiosInstance.post(`/voucher-sets`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return allVouchers.data.voucherSupply._id;
+  console.log('all vouchers wtf ??', allVouchers)
+  return allVouchers.data.voucherSupply;
 };
 
 export const commitToBuy = async (supplyId, data, token) => {
