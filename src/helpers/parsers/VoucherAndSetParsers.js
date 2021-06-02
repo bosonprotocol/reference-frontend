@@ -137,6 +137,7 @@ export async function getAccountVouchers(account, modalContext) {
   }
 
   const allAccountVouchers = await getVouchers(authData.authToken);
+
   const vouchersParsed =
     allAccountVouchers.voucherData &&
     prepareVoucherData(allAccountVouchers.voucherData);
