@@ -66,7 +66,9 @@ export const prepareVoucherSetData = (rawVoucherSets) => {
 export const prepareAccountVoucherSetData = (rawVoucherSets) => {
   if (!rawVoucherSets) return;
 
-  const parsedVoucherSets = rawVoucherSets.voucherSupplies.map(prepareSingleVoucherSetData);
+  const parsedVoucherSets = rawVoucherSets.voucherSupplies.map(
+    prepareSingleVoucherSetData
+  );
 
   return parsedVoucherSets;
 };

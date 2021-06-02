@@ -1,6 +1,9 @@
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router";
-import { NavigationContext, NavigationAction } from "../../../contexts/Navigation";
+import {
+  NavigationContext,
+  NavigationAction,
+} from "../../../contexts/Navigation";
 
 import {
   ROUTE,
@@ -123,9 +126,13 @@ function LocationManager() {
     }
 
     if (param === "qr" || param === "supply") {
-      navigationContext.dispatch(NavigationAction.displayBottomNavigation(false));
+      navigationContext.dispatch(
+        NavigationAction.displayBottomNavigation(false)
+      );
     } else {
-      navigationContext.dispatch(NavigationAction.displayBottomNavigation(true));
+      navigationContext.dispatch(
+        NavigationAction.displayBottomNavigation(true)
+      );
     }
 
     // trigger a function that will enable relative affordances to the current page

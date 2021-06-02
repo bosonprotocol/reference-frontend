@@ -40,12 +40,12 @@ export const Action = {
   }),
   addVoucherSet: (newVoucherSet) => ({
     type: DIC.ADD_NEW_VOUCHER_SET,
-    payload: newVoucherSet
-  }), 
+    payload: newVoucherSet,
+  }),
   reduceVoucherSetQuantity: (voucherSetId) => ({
     type: DIC.REDUCE_VOUCHER_SET_QUANTITY,
-    payload: voucherSetId
-  }), 
+    payload: voucherSetId,
+  }),
   updateAllVouchers: (state) => ({
     type: DIC.ALL_VOUCHERS,
     payload: state,
@@ -98,7 +98,7 @@ export const GlobalReducer = (state, action) => {
     },
     [DIC.ADD_NEW_VOUCHER_SET]: () => {
       return {
-        allVoucherSets: [action.payload, ...state.allVoucherSets]
+        allVoucherSets: [action.payload, ...state.allVoucherSets],
       };
     },
     [DIC.UPDATE_ACCOUNT]: () => {
@@ -113,14 +113,14 @@ export const GlobalReducer = (state, action) => {
       };
     },
     [DIC.REDUCE_VOUCHER_SET_QUANTITY]: () => {
-        return {
-          allVoucherSets: state.allVoucherSets.map(x => {
-            if(x._id === action.payload) {
-              return {...x, qty: x.qty - 1};
-            }
-            return x;
-          })
-        }
+      return {
+        allVoucherSets: state.allVoucherSets.map((x) => {
+          if (x._id === action.payload) {
+            return { ...x, qty: x.qty - 1 };
+          }
+          return x;
+        }),
+      };
     },
     [DIC.ALL_VOUCHERS]: () => {
       return {

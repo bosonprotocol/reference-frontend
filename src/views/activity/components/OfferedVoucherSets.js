@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-import {
-  getParsedVouchersFromSupply,
-} from "../../../helpers/parsers/VoucherAndSetParsers";
+import { getParsedVouchersFromSupply } from "../../../helpers/parsers/VoucherAndSetParsers";
 import {
   activityBlockPlaceholder,
   activityMessage,
@@ -31,10 +29,11 @@ export function OfferedVoucherSets() {
   const voucherSets = globalContext.state.allVoucherSets;
 
   useEffect(() => {
-      if (voucherSets){
-        setVoucherBlocks(voucherSets.filter(x => x.voucherOwner === account.toLowerCase()));
-      } 
-
+    if (voucherSets) {
+      setVoucherBlocks(
+        voucherSets.filter((x) => x.voucherOwner === account.toLowerCase())
+      );
+    }
   }, [account, voucherSets]);
 
   return (

@@ -1,5 +1,9 @@
 import React, { useContext, useState } from "react";
-import { createVoucherSet, createEvent, getVoucherSetById } from "../../../../hooks/api";
+import {
+  createVoucherSet,
+  createEvent,
+  getVoucherSetById,
+} from "../../../../hooks/api";
 import {
   useBosonRouterContract,
   useBosonTokenContract,
@@ -167,7 +171,10 @@ export default function NewOfferSubmit() {
 
       prepareVoucherFormData(correlationId, dataArr, paymentType);
 
-      const createdVoucherSet = await createVoucherSet(formData, authData.authToken);
+      const createdVoucherSet = await createVoucherSet(
+        formData,
+        authData.authToken
+      );
 
       try {
         const eventData = {
@@ -186,8 +193,7 @@ export default function NewOfferSubmit() {
           })
         );
       }
-     
-     
+
       setLoading(0);
       setPending(true);
       const backButton = document.getElementById("topOfferNavBackButton");
@@ -195,7 +201,9 @@ export default function NewOfferSubmit() {
         backButton.style.cssText += "pointer-events: none; opacity: 0.2";
       }
       await created.wait();
-      globalContext.dispatch(Action.addVoucherSet(prepareSingleVoucherSetData(createdVoucherSet)));
+      globalContext.dispatch(
+        Action.addVoucherSet(prepareSingleVoucherSetData(createdVoucherSet))
+      );
       setSuccessMessage("Voucher set published");
       setSuccessMessageType(MESSAGE.NEW_VOUCHER_SET_SUCCESS);
       setRedirectLink(ROUTE.Activity);
