@@ -12,7 +12,6 @@ import {
   getAccountStoredInLocalStorage,
 } from "./authenticate";
 import { CONNECTOR_TYPES } from "../shared-components/wallet-connect/WalletConnect";
-import { useClientLibraryProvider } from "./useClientLibraryProvider";
 // import { useDefaultTokenList } from "../redux/lists/hooks";
 // import { useTokenContract, useBytes32TokenContract } from "./useContract";
 
@@ -118,7 +117,6 @@ export function useEagerConnect() {
  */
 export function useInactiveListener(suppress = false) {
   const { library, account, active, error, activate, chainId } = useWeb3React();
-  const clientLibraryProvider = useClientLibraryProvider();
 
   useEffect(() => {
     const { ethereum } = window;
@@ -141,9 +139,7 @@ export function useInactiveListener(suppress = false) {
           const localStoredAccountData =
             getAccountStoredInLocalStorage(account);
           if (!localStoredAccountData.activeToken) {
-            console.log("index js js authing");
-
-            await authenticateUser(clientLibraryProvider, newAccount);
+            await authenticateUser(library, newAccount, chainId);
           }
 
           // eat errors
@@ -164,7 +160,7 @@ export function useInactiveListener(suppress = false) {
       };
     }
     return;
-  }, [active, error, suppress, activate, account, clientLibraryProvider]);
+  }, [active, error, suppress, activate, account, chainId, library]);
 }
 
 export function useCopyClipboard(timeout = 500) {

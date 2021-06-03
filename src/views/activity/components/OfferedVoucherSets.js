@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-import {
-  getParsedAccountVoucherSets,
-  getParsedVouchersFromSupply,
-} from "../../../helpers/parsers/VoucherAndSetParsers";
+import { getParsedVouchersFromSupply } from "../../../helpers/parsers/VoucherAndSetParsers";
 import {
   activityBlockPlaceholder,
   activityMessage,
@@ -27,12 +24,17 @@ import "./../Activity.scss";
 export function OfferedVoucherSets() {
   const [voucherBlocks, setVoucherBlocks] = useState(undefined);
   const { account } = useWeb3React();
+  const globalContext = useContext(GlobalContext);
+
+  const voucherSets = globalContext.state.allVoucherSets;
 
   useEffect(() => {
-    getParsedAccountVoucherSets(account).then((voucherSets) => {
-      if (voucherSets) setVoucherBlocks(voucherSets);
-    });
-  }, [account]);
+    if (voucherSets) {
+      setVoucherBlocks(
+        voucherSets.filter((x) => x.voucherOwner === account.toLowerCase())
+      );
+    }
+  }, [account, voucherSets]);
 
   return (
     <OfferedView
