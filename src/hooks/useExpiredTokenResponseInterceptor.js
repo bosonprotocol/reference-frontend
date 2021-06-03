@@ -3,13 +3,11 @@ import { refreshTokenIfExpired } from "../utils/Auth";
 import { axiosInstance } from "./api";
 import { useContext, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { useClientLibraryProvider } from "./useClientLibraryProvider";
 
 export const useExpiredTokenResponseInterceptor = () => {
   const modalContext = useContext(ModalContext);
   const context = useWeb3React();
   const { account, library, chainId } = context;
-  const clientLibraryProvider = useClientLibraryProvider();
 
   useEffect(() => {
     if (account && library && chainId && modalContext) {
@@ -28,7 +26,8 @@ export const useExpiredTokenResponseInterceptor = () => {
               refreshTokenIfExpired(
                 jwtTokenSent,
                 modalContext,
-                clientLibraryProvider,
+                library,
+                chainId,
                 account
               );
               console.log(error);
