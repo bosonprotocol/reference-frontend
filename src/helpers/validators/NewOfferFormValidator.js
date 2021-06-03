@@ -177,12 +177,12 @@ const addressLineTwoValidation = (errorMessages, getData) => {
   const currentAddressLineTwoValue = getData(NAME.ADDRESS_LINE_TWO);
 
   if (currentAddressLineTwoValue) {
-    // if (
-    //   currentAddressLineTwoValue.length <
-    //   ValidationConfig.addressLineSettings.min
-    // ) {
-    //   addressLineTwoErrorMessage = ValidationConfig.minAddressLengthError;
-    // }
+    if (
+      currentAddressLineTwoValue.length <
+      ValidationConfig.addressLineSettings.min
+    ) {
+      addressLineTwoErrorMessage = ValidationConfig.minAddressLengthError;
+    }
 
     if (
       currentAddressLineTwoValue.length >
@@ -201,7 +201,6 @@ const addressLineTwoValidation = (errorMessages, getData) => {
       [NAME.ADDRESS_LINE_TWO]: addressLineTwoErrorMessage,
     };
   }
-  console.log(errorMessages);
 
   return errorMessages;
 };
