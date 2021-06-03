@@ -1,5 +1,9 @@
 import React, { useContext, useState } from "react";
-import { createVoucherSet, createEvent } from "../../../../hooks/api";
+import {
+  createVoucherSet,
+  createEvent,
+  getVoucherSetById,
+} from "../../../../hooks/api";
 import {
   useBosonRouterContract,
   useBosonTokenContract,
@@ -38,6 +42,7 @@ import { validateContractInteraction } from "../../../../helpers/validators/Cont
 import { IconClock } from "../../../../shared-components/icons/Icons";
 import "../../../../styles/PendingButton.scss";
 import PendingButton from "../../../voucher-and-set-details/components/escrow-table/PendingButton";
+import { prepareSingleVoucherSetData } from "../../../../helpers/parsers/VoucherAndSetParsers";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -166,7 +171,10 @@ export default function NewOfferSubmit() {
 
       prepareVoucherFormData(correlationId, dataArr, paymentType);
 
-      await createVoucherSet(formData, authData.authToken);
+      const createdVoucherSet = await createVoucherSet(
+        formData,
+        authData.authToken
+      );
 
       try {
         const eventData = {
@@ -186,7 +194,6 @@ export default function NewOfferSubmit() {
         );
       }
 
-      globalContext.dispatch(Action.fetchVoucherSets());
       setLoading(0);
       setPending(true);
       const backButton = document.getElementById("topOfferNavBackButton");
@@ -194,7 +201,9 @@ export default function NewOfferSubmit() {
         backButton.style.cssText += "pointer-events: none; opacity: 0.2";
       }
       await created.wait();
-
+      globalContext.dispatch(
+        Action.addVoucherSet(prepareSingleVoucherSetData(createdVoucherSet))
+      );
       setSuccessMessage("Voucher set published");
       setSuccessMessageType(MESSAGE.NEW_VOUCHER_SET_SUCCESS);
       setRedirectLink(ROUTE.Activity);

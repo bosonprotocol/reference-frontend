@@ -76,17 +76,13 @@ const updateAuthToken = (userAddress, token, active = true) => {
     authToken: token,
     activeToken: active,
   };
-
   if (!Array.isArray(allAddresses)) {
     allAddresses = [updatedUserInfo];
   }
-
   let updatedLS = [...allAddresses.filter((e) => e.address !== addressToLower)];
   updatedLS.push(updatedUserInfo);
-
   localStorage.setItem(AUTH_ADDRESSES_KEY, JSON.stringify(updatedLS));
 };
-
 export const createUnauthenticatedLocalStorageRecord = (accountAddress) => {
   let allAddresses = JSON.parse(localStorage.getItem(AUTH_ADDRESSES_KEY));
   let updatedAddress = {
@@ -94,26 +90,20 @@ export const createUnauthenticatedLocalStorageRecord = (accountAddress) => {
     authToken: "",
     activeToken: false,
   };
-
   if (!Array.isArray(allAddresses)) {
     allAddresses = [updatedAddress];
   }
-
   if (!allAddresses.some((e) => e.address === accountAddress)) {
     allAddresses.push(updatedAddress);
   }
-
   localStorage.setItem(AUTH_ADDRESSES_KEY, JSON.stringify(allAddresses));
 };
-
 export const getAccountStoredInLocalStorage = (userAddress) => {
   let allAddresses = JSON.parse(localStorage.getItem(AUTH_ADDRESSES_KEY));
   if (!userAddress || !Array.isArray(allAddresses)) {
     return "";
   }
-
   const addressToLower = userAddress.toLowerCase();
   const record = allAddresses.find((e) => e.address === addressToLower);
-
   return record ? record : "";
 };

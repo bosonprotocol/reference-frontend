@@ -31,8 +31,8 @@ import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
 import { ModalResolver } from "../../contexts/Modal";
 import { ModalContext } from "../../contexts/Modal";
-import { GlobalContext } from "../../contexts/Global";
-import { NavigationContext, Action } from "../../contexts/Navigation";
+import { Action, GlobalContext } from "../../contexts/Global";
+import { NavigationContext, NavigationAction } from "../../contexts/Navigation";
 import PopupMessage from "../../shared-components/popup-message/PopupMessage";
 import {
   DateTable,
@@ -376,6 +376,8 @@ function VoucherAndSetDetails(props) {
         })
       );
     }
+
+    globalContext.dispatch(Action.reduceVoucherSetQuantity(voucherSetInfo.id));
 
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
@@ -752,7 +754,7 @@ function VoucherAndSetDetails(props) {
   useEffect(() => {
     setTransactionProccessing(transactionProccessing * -1);
     navigationContext.dispatch(
-      Action.setRedemptionControl({
+      NavigationAction.setRedemptionControl({
         controls:
           controls && !triggerWaitForTransaction
             ? controls
