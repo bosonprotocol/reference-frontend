@@ -196,7 +196,6 @@ const addressLineTwoValidation = (errorMessages, getData) => {
     if (profanityResult) {
       addressLineTwoErrorMessage = profanityResult;
     }
-
     errorMessages = {
       ...errorMessages,
       [NAME.ADDRESS_LINE_TWO]: addressLineTwoErrorMessage,

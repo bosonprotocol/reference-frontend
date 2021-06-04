@@ -108,7 +108,7 @@ function slide3(completeOnboarding) {
         <p className="number">3</p>
         <h1>Redeem</h1>
         <p className="ta-center color-secondary">
-          When handing over the item the buyer signs the redemption to transfers
+          When handing over the item the buyer signs the redemption to transfer
           funds to the seller.
         </p>
       </div>
