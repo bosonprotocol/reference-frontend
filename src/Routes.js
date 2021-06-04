@@ -18,7 +18,7 @@ import NewOffer from "./views/new-offer/NewOffer";
 
 import { NavigationContext } from "./contexts/Navigation";
 import GlobalListeners from "./hooks/globalListeners";
-import { useExpiredTokenResponseInterceptor } from "./hooks/useExpiredTokenResponseInterceptor";
+import { useExpiredTokenInterceptor } from "./hooks/useExpiredTokenInterceptor";
 import Search from "./views/search/Search";
 import PickUpLocation from "./views/pick-up-location/PickUpLocation";
 import { OfferedVoucherSets } from "./views/activity/components/OfferedVoucherSets";
@@ -33,7 +33,7 @@ function Routes() {
     navigationContext.state.top[AFFMAP.OFFER_FLOW_SET];
   const isHomePage = navigationContext.state.bottom.mainNavigationItem === 0;
 
-  useExpiredTokenResponseInterceptor();
+  useExpiredTokenInterceptor();
 
   return (
     // class - dark|light; (default: dark)

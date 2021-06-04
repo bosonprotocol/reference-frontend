@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from "react";
 import "./NewOfferCategory.scss";
-import { categories } from "../../../../PlaceholderAPI";
+import { CATEGORIES } from "../../../../constants/Categories";
 
 function NewOfferCategory({ inputValueReceiver }) {
   const categoryList = useRef();
   const [list, setList] = useState();
 
   const [isCategoryActive, setIsCategoryActive] = useState(
-    Array.from({ length: categories.length }, () => false)
+    Array.from({ length: CATEGORIES.length }, () => false)
   );
 
   const setCategory = (el, id, index) => {
@@ -23,7 +23,7 @@ function NewOfferCategory({ inputValueReceiver }) {
 
   useEffect(() => {
     setList(
-      categories.map((category, index) => (
+      CATEGORIES.map((category, index) => (
         <li
           key={index}
           data-category={category.title}

@@ -34,12 +34,8 @@ import {
 import { toFixed } from "../../../../utils/FormatUtils";
 import { onAttemptToApprove } from "../../../../hooks/approveWithPermit";
 
-import {
-  isCorrelationIdAlreadySent,
-  setRecentlyUsedCorrelationId,
-} from "../../../../utils/DuplicateCorrelationIdGuard";
+import { isCorrelationIdAlreadySent } from "../../../../utils/DuplicateCorrelationIdGuard";
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
-import { IconClock } from "../../../../shared-components/icons/Icons";
 import "../../../../styles/PendingButton.scss";
 import PendingButton from "../../../voucher-and-set-details/components/escrow-table/PendingButton";
 import { prepareSingleVoucherSetData } from "../../../../helpers/parsers/VoucherAndSetParsers";

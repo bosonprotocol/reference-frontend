@@ -6,8 +6,6 @@ import {
 } from "../helpers/configs/Dictionary";
 import { getData as getContextData } from "../helpers/ContextHelper";
 
-export const MAP = CONTROL;
-
 export const getData = getContextData;
 
 export const NavigationContext = createContext();

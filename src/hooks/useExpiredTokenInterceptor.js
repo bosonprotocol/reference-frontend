@@ -4,7 +4,7 @@ import { axiosInstance } from "./api";
 import { useContext, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
 
-export const useExpiredTokenResponseInterceptor = () => {
+export const useExpiredTokenInterceptor = () => {
   const modalContext = useContext(ModalContext);
   const context = useWeb3React();
   const { account, library, chainId } = context;

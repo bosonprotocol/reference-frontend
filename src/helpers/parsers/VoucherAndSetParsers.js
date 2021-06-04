@@ -244,27 +244,6 @@ export async function initVoucherDetails(
   if (parsedVoucher) return parsedVoucher;
 }
 
-export async function addNewVoucher(
-  account,
-  getVoucherDetails,
-  voucherId,
-  arrayOfAllVouchers
-) {
-  if (!account) {
-    return;
-  }
-
-  const authData = getAccountStoredInLocalStorage(account);
-
-  const rawVoucherDetails = await getVoucherDetails(
-    voucherId,
-    authData.authToken
-  );
-  const parsedVoucher = await prepareVoucherDetails(rawVoucherDetails.voucher);
-
-  if (parsedVoucher) arrayOfAllVouchers.push(parsedVoucher);
-}
-
 export const determineCurrentStatusOfVoucher = (voucherDetails) => {
   const allStatuses = [];
   if (voucherDetails.COMMITTED)

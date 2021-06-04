@@ -6,9 +6,8 @@ import {
   WALLET_VIEWS,
 } from "../../shared-components/wallet-connect/WalletConnect";
 import { useEagerConnect } from "../../hooks";
-import { NetworkContextName } from "../../constants";
+import { NETWORK_CONTEXT_NAME } from "../../constants";
 import { network } from "../../Connectors";
-// import { shortenAddress } from "../utils";
 
 import "./Connect-Wallet.scss";
 
@@ -28,7 +27,7 @@ export default function ConnectWallet() {
     active: networkActive,
     error: networkError,
     activate: activateNetwork,
-  } = useWeb3React(NetworkContextName);
+  } = useWeb3React(NETWORK_CONTEXT_NAME);
 
   const triedEager = useEagerConnect();
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
@@ -71,15 +70,3 @@ export default function ConnectWallet() {
     </section>
   );
 }
-
-/* <div className="bind column">
-<div className="top-navigation flex ai-center">
-    <div className="button square" role="button" onClick={ goToHomeScreen }>
-        <Arrow/>
-    </div>
-</div>
-<div className="content">
-    { getWalletTitle({ account, walletView, setWalletView }) }
-    <WalletConnect walletView={ walletView } setWalletView={ setWalletView }/>
-</div>
-</div> */

@@ -1,6 +1,5 @@
 import { createContext } from "react";
 import { DIC, CONTROL } from "../helpers/configs/Dictionary";
-// import { disableScroll, enableScroll } from "../helpers/ScrollManipulation"
 import { getData as getContextData } from "../helpers/ContextHelper";
 
 export const getData = getContextData;
@@ -20,15 +19,6 @@ export const GlobalInitialState = {
 };
 
 export const Action = {
-  openProduct: (newId) => ({
-    type: DIC.OPEN_PRODUCT,
-    payload: newId,
-  }),
-
-  closeProduct: () => ({
-    type: DIC.CLOSE_PRODUCT,
-  }),
-
   toggleQRReader: (state) => ({
     type: DIC.ACTIVATE_QR_READER,
     payload: state,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 
 import "./CategoryMenu.scss";
 import { GlobalContext } from "../../../../contexts/Global";
-import { DEFAULT_FILTER } from "../../../../PlaceholderAPI";
+import { DEFAULT_FILTER } from "../../../../constants/Categories";
 import { useWeb3React } from "@web3-react/core";
 
 function CategoryMenu({ handleCategory }) {
