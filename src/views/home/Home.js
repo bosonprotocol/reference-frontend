@@ -80,7 +80,6 @@ function Home() {
     if (!onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
-
     authenticateUser(library, account, chainId);
   };
 

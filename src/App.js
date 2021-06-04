@@ -157,7 +157,6 @@ function App() {
     if (!!!+onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
-
     authenticateUser(library, account, chainId);
   }, [account, library, chainId]);
 

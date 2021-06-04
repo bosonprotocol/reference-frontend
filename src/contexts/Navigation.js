@@ -28,7 +28,7 @@ export const NavigationInitialState = {
   displayBottomNavigation: false,
 };
 
-export const Action = {
+export const NavigationAction = {
   updateLocation: (location) => ({
     type: CONTROL.UPDATE_LOCATION,
     payload: location,

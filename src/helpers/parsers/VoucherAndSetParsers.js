@@ -67,27 +67,28 @@ export const prepareAccountVoucherSetData = (rawVoucherSets) => {
   if (!rawVoucherSets) return;
 
   const parsedVoucherSets = rawVoucherSets.voucherSupplies.map(
-    (voucherSet) => ({
-      _id: voucherSet._id,
-      title: voucherSet.title,
-      image: voucherSet.imagefiles[0]?.url
-        ? voucherSet.imagefiles[0].url
-        : "images/temp/product-block-image-temp.png",
-      price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
-      qty: voucherSet.qty,
-      startDate: voucherSet.startDate,
-      category: voucherSet.category,
-      description: voucherSet.description,
-      expiryDate: voucherSet.expiryDate,
-      visible: voucherSet.visible,
-      currency: voucherSet.currency ? voucherSet._currency : "ETH",
-      voucherOwner: voucherSet.voucherOwner,
-      paymentType: voucherSet._paymentType ? voucherSet._paymentType : 1,
-    })
+    prepareSingleVoucherSetData
   );
 
   return parsedVoucherSets;
 };
+export const prepareSingleVoucherSetData = (voucherSet) => ({
+  _id: voucherSet._id,
+  title: voucherSet.title,
+  image: voucherSet.imagefiles[0]?.url
+    ? voucherSet.imagefiles[0].url
+    : "images/temp/product-block-image-temp.png",
+  price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+  qty: voucherSet.qty,
+  startDate: voucherSet.startDate,
+  category: voucherSet.category,
+  description: voucherSet.description,
+  expiryDate: voucherSet.expiryDate,
+  visible: voucherSet.visible,
+  currency: voucherSet.currency ? voucherSet._currency : "ETH",
+  voucherOwner: voucherSet.voucherOwner,
+  paymentType: voucherSet._paymentType ? voucherSet._paymentType : 1,
+});
 
 export const prepareVoucherData = (rawVouchers) => {
   if (!rawVouchers) return;
@@ -138,6 +139,7 @@ export async function getAccountVouchers(account, modalContext) {
   }
 
   const allAccountVouchers = await getVouchers(authData.authToken);
+
   const vouchersParsed =
     allAccountVouchers.voucherData &&
     prepareVoucherData(allAccountVouchers.voucherData);

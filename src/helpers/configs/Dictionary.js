@@ -10,6 +10,8 @@ export const DIC = {
   LOAD_OFFERING_BACKUP: "load_offering_backup",
   RESET_OFFERING_DATA: "reset_offering_data",
   FETCH_VOUCHER_SETS: "fetch_voucher_sets",
+  ADD_NEW_VOUCHER_SET: "add_new_voucher_set",
+  REDUCE_VOUCHER_SET_QUANTITY: "reduce_voucher_set_quantity",
   NAV: {
     CONTROL: "navigationControl",
     DEF: "default_view",
