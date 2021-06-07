@@ -29,7 +29,7 @@ export const useVoucherStatusBlocks = (
         ethers.BigNumber.from(voucherDetails._tokenIdVoucher)
       );
       const currentStatus = determineCurrentStatusOfVoucher(voucherDetails);
-      
+
       const complainPeriod = await voucherKernalContract.complainPeriod();
       const cancelFaultPeriod = await voucherKernalContract.cancelFaultPeriod();
 
