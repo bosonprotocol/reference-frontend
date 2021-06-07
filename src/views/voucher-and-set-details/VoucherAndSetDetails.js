@@ -261,7 +261,7 @@ function VoucherAndSetDetails(props) {
 
     const voucherSetInfo = voucherSetDetails;
 
-    if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+    if (voucherSetInfo?.voucherOwner.toLowerCase() === account?.toLowerCase()) {
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
