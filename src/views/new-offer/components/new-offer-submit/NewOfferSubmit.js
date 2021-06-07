@@ -122,7 +122,7 @@ export default function NewOfferSubmit() {
 
     try {
       correlationId = (
-        await bosonRouterContract.correlationIds(account)
+        await bosonRouterContract.getCorrelationId(account)
       ).toString();
 
       const correlationIdRecentySent = isCorrelationIdAlreadySent(
