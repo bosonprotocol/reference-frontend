@@ -94,7 +94,6 @@ function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
       setShowQRCode(false);
       setTriggerWaitForTransaction(true);
     } catch (e) {
-      console.log(e);
       setLoading(0);
       setMessageType(MESSAGE.ERROR);
       setMessageText(e.message);

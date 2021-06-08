@@ -30,8 +30,6 @@ export function OfferedVoucherSets() {
 
   useEffect(() => {
     if (voucherSets && account) {
-      console.log(voucherSets);
-
       setVoucherBlocks(
         voucherSets.filter((x) => x.voucherOwner === account.toLowerCase())
       );
