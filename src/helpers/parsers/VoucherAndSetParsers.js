@@ -74,6 +74,7 @@ export const prepareAccountVoucherSetData = (rawVoucherSets) => {
 };
 export const prepareSingleVoucherSetData = (voucherSet) => ({
   _id: voucherSet._id,
+  id: voucherSet._id,
   title: voucherSet.title,
   image: voucherSet.imagefiles[0]?.url
     ? voucherSet.imagefiles[0].url
