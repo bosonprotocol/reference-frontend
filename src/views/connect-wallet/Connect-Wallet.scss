@@ -78,6 +78,7 @@
 .wallets {
   padding-top: 33px;
   border-top: 1px solid #37414C;
+  display: flex;
 
   .status {
     margin-left: auto;
@@ -93,5 +94,9 @@
     img {
       margin-right: 6px;
     }
+  }
+
+  @media (max-width: 768px) {
+    display: block;
   }
 }
