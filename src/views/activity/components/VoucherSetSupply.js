@@ -16,10 +16,6 @@ export function VoucherSetSupplyView() {
   const [block, setBlock] = useState();
 
   useEffect(() => {
-    globalContext.dispatch(Action.fetchVoucherSets());
-  }, []);
-
-  useEffect(() => {
     const getVoucherSet = globalContext.state.allVoucherSets?.find(
       (voucher) => voucher.id === voucherSetId
     );

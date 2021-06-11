@@ -149,7 +149,7 @@ function NewOfferLocation({
               type="text"
               onBlur={() => setAddressTwoHasBeenBlurred(true)}
               onInput={(e) =>
-                addressLineTwoValueReceiver(e.target ? e.target.value : null)
+                addressLineTwoValueReceiver(e.target ? e.target.value : "")
               }
             />
             <div

@@ -20,7 +20,7 @@ end
 RakeFly.define_installation_tasks(version: '6.7.2')
 RakeTerraform.define_installation_tasks(
   path: File.join(Dir.pwd, 'vendor', 'terraform'),
-  version: '0.14.7')
+  version: '0.15.4')
 
 task :default => [
   :build_fix,

@@ -3,15 +3,23 @@ import "./Search.scss";
 import { GlobalContext } from "../../contexts/Global";
 import { IconHome } from "../../shared-components/icons/Icons";
 import { useLocation } from "react-router";
-import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS } from "../../helpers/configs/Dictionary";
 import { VoucherSetBlock } from "../activity/components/OfferedVoucherSets";
+import { useWeb3React } from "@web3-react/core";
 
 function Search() {
   const searchInput = useRef();
   const globalContext = useContext(GlobalContext);
   const [voucherSets, setVoucherSets] = useState([]);
+  const { account } = useWeb3React();
 
-  const allVoucherSets = globalContext.state.allVoucherSets;
+  const allVoucherSets = globalContext.state.allVoucherSets
+    ? !account
+      ? globalContext.state.allVoucherSets
+      : globalContext.state.allVoucherSets.filter(
+          (x) => x.voucherOwner.toLowerCase() !== account.toLowerCase()
+        )
+    : [];
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
 
@@ -26,7 +34,6 @@ function Search() {
       setVoucherSets([]);
       return;
     }
-
     setVoucherSets(filterVoucherSets(allVoucherSets, e));
   };
 

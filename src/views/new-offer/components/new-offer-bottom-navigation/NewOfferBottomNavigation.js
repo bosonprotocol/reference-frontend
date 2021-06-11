@@ -46,7 +46,7 @@ function NewOfferBottomNavigation(props) {
       );
       if (screenFields[activeScreen]) {
         activeScreenFieldNames.forEach((field) => {
-          if (!getOfferingData(field)) {
+          if (!getOfferingData(field) && field !== NAME.ADDRESS_LINE_TWO) {
             disable = true;
           }
         });

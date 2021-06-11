@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
 import { ChainLabels, shortenAddress } from "../../utils/BlockchainUtils";
-// import Modal from "../shared/Modal";
 import { injected, NETWORK_ID, walletconnect } from "../../Connectors";
 import WalletConnectIcon from "../../assets/wallets/walletconnect.svg";
 import MetaMaskLogo from "../../assets/wallets/metamask.png";
@@ -27,47 +26,6 @@ export const CONNECTOR_TYPES = {
   METAMASK: "MetaMask",
   WALLET_CONNECT: "WalletConnect",
 };
-
-export function getWalletTitle({ account, walletView, setWalletView }) {
-  if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-    return <h1 className="account-title">Account</h1>;
-  }
-  if (account && walletView === WALLET_VIEWS.OPTIONS) {
-    return (
-      <button
-        onClick={() => setWalletView(WALLET_VIEWS.ACCOUNT)}
-        className="button primary"
-      >
-        Back
-      </button>
-    );
-  }
-  if (!account) {
-    return <h1 className="account-title">Connect to a wallet</h1>;
-  }
-}
-
-// export default function ModalWalletConnect({ modal, setModal }) {
-//     const context = useWeb3React();
-//     const { account } = context;
-//     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
-//
-//     return (
-//         <Modal
-//             title={ getWalletTitle({ account, walletView, setWalletView }) }
-//             setModal={ setModal }
-//             modal={ modal }
-//         >
-//             <InnerModal isAccount={ account && walletView === WALLET_VIEWS.ACCOUNT }>
-//                 <WalletConnect
-//                     onSuccess={ () => setModal(null) }
-//                     walletView={ walletView }
-//                     setWalletView={ setWalletView }
-//                 />
-//             </InnerModal>
-//         </Modal>
-//     );
-// }
 
 export function WalletConnect({
   onSuccess,
@@ -199,10 +157,6 @@ export function WalletConnect({
   );
 }
 
-// function InnerModal({ children, isAccount }) {
-//     return <div className={ "pa4 " + (isAccount ? "pt0" : "") }>{ children }</div>;
-// }
-
 function WalletListItem({
   name,
   imageName,
@@ -315,11 +269,6 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
             </div>
           ) : null}
         </div>
-        {/* <div className="control flex split">
-                    <div className="button gray w50">REMOVE</div>
-                    <div className="button gray action w50" role="button"
-                    onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }>CHANGE</div>
-                </div> */}
       </div>
     </>
   );
