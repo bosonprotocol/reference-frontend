@@ -6,6 +6,7 @@ import { GlobalContext, Action } from "../../../contexts/Global";
 import "react-tabs/style/react-tabs.css";
 import { PurchasedVouchers } from "./PurchasedVouchers";
 import { VoucherSetBlock } from "./OfferedVoucherSets";
+import { getVoucherSetById } from "../../../hooks/api";
 
 export function VoucherSetSupplyView() {
   const history = useHistory();
