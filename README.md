@@ -7,24 +7,29 @@
 
 This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
 
+Live demo running on the Rinkeby test network: \
+https://reference-app.bosonprotocol.io
+---
+
 **Table of Contents**:
 
 - [Local Development](#local-development)
-- [Testing](#testing)
-- [Code Linting](#code-linting)
-- [Front-end Doc](#front-end-doc)
-  - [Offer Flow](#offer-flow)
-    - [`src/views/new-offer/NewOffer.js`](#componentsnewofferjs)
-    - [Configuring input fields](#configuring-input-fields)
-    - [`src/helpers/configs/Dictionary.js`](#helpersdictionaryjs)
+  - [Prerequisites](#prerequisites)
+  - [Configuration](#configuration)
+  - [Run](#run)
+  - [Build](#build)
+  - [Test](#test)
+  - [Code Linting & Formatting](#code-linting-&-formatting)
+- [Design & Architecture](#design-&-architecture)
 - [Contributing](#contributing)
 - [License](#license)
+---
 
 ## Local Development
 
 ### Prerequisites
 
-For local development of the reference-backend, your development machine will need a few
+For local development of the reference-frontend, your development machine will need a few
 tools installed.
 
 At a minimum, you'll need:
@@ -39,10 +44,17 @@ At a minimum, you'll need:
 For instructions on how to get set up with these specific versions:
 * See the [OS X guide](docs/setup/osx.md) if you are on a Mac.
 * See the [Linux guide](docs/setup/linux.md) if you use a Linux distribution.
+---
 
-### Running the app locally
+### Configuration
+Prior to running the application, you must set up a `.env` file in the project's root directory with the following environment variables:
+ - `REACT_APP_BACKEND_BASE_URL` - This is a URL for the reference backend.
+ - `REACT_APP_FRONT_END_LOCALSTORAGE_VERSION` - This is the version of the local storage buster (can be defaulted to "1.0")
+ - `GENERATE_SOURCEMAP` - This is a boolean and can be defaulted to false;
+---
 
-To run the app, run the following:
+### Run
+To run the app, execute the following commands from the root directory:
 
 ```shell script
 npm install
@@ -51,8 +63,9 @@ npm run start
 
 A browser window will open at http://localhost:3000/ with a live version of the 
 code. You're all set to edit and have it rerender there.
+---
 
-### Running the build
+### Build
 
 We have a fully automated local build process to check that your changes are
 good to be merged. To run the build:
@@ -70,8 +83,9 @@ To fetch dependencies:
 ```shell script
 ./go dependencies:install
 ```
+---
 
-## Testing
+### Test
 
 All tests are written using [Jest](https://jestjs.io/).
 
@@ -80,8 +94,9 @@ To run the unit tests:
 ```shell script
 ./go tests:unit
 ```
+---
 
-## Code Linting
+### Code Linting & Formatting
 
 Both the app itself and the tests are linted and formatted as part of
 the build process.
@@ -123,34 +138,21 @@ Similarly, for the tests, to perform the same tasks:
 ./go tests:format
 ./go tests:format_fix
 ```
+---
+## Design & Architecture
 
-## Front-end Doc
+The application architecture is as depicted below. There are various components to this:
+ - `Frontend`
+ - `Backend`
+ - `Database` (this is part of the `reference-backend` repository)
+ - `Cloud functions` (these are part of the `reference-backend` repository)
+   - `Keepers service`
+   - `Event Listeners`
+ - Smart contracts (these must be deployed to the Ethereum network as described in the `contracts` repository)
 
-### Offer Flow
+[![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
 
-The flow is using context (and will use localstorage) for state management.
-
-#### `src/views/new-offer/NewOffer.js`
-This is where the form is registered, and it's data is navigated.
-
-'screens' defines the order of the screens
-
-The function 'updateData' will send an object with property: value of the field changed and its' value.
-
-On activeScreen change, we fire useEffect, which will bind event listener (which is either 'input' or 'change') to the active input fields.
-
-The component returns TOP NAVIGATION, SCREEN, and BOTTOM NAVIGATION. SCREEN is dynamic.
-
-#### Configuring input fields
-To change, add, or remove an input field:
-1. Refer to desired screen (defined in 'screens' constant)
-2. When making changes - make sure the field has a 'name' attribute. Assign a corresponding property in the 'NAME' object in 'src/helpers/configs/Dictionary.js'.
--If you are removing a field - remove its' property from 'NAME'
--If you want to store the field's value in the context - assign a new property in 'NAME' and bind it to the field's name attribute.
-
-
-#### `src/helpers/configs/Dictionary.js`
-'NAME' object is assigned to context and used to store data from the form. If you modify the fields here, there is no need to update any other logic, for the submission to work fine.
+---
 
 ## Contributing
 
@@ -163,6 +165,8 @@ Questions are also welcome, as long as they are tech related. We can use them to
 All PRs must pass all tests before being merged.
 
 By being in this community, you agree to the [Code of Conduct](CODE_OF_CONDUCT.md). Take a look at it, if you haven't already.
+
+---
 
 ## License
 
