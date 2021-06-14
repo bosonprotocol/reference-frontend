@@ -8,6 +8,7 @@
     position: absolute;
     pointer-events: none;
   }
+
   .image-upload-container {
     margin-top: 68px;
     padding-bottom: 80px;
@@ -26,25 +27,35 @@
           text-align: center;
 
           color: #80F0BE;
-          top: calc(100% + 20px);
+          top: calc(85% + 25px);
           position: absolute;
-          left: 50%;
+          right: -20px;
           transform: translateX(-50%);
 
           background: #19232A;
           border-radius: 62px;
           padding: 8px 15px;
+          z-index: 99;
+
+          @media (max-width: 768px) {
+            top: calc(100% + 20px);
+            right: 0;
+            left: 50%;
+            max-width: 78px;
+          }
         }
       }
+
       .thumb-container {
         opacity: 1;
-        background: #1C252D;
+        background: #415061;
       }
     }
   }
+
   .image-upload {
-    width: 172px;
-    height: 152px;
+    width: 100%;
+    height: 413px;
 
     max-width: 100%;
     max-height: 100%;
@@ -99,6 +110,10 @@
         max-width: 100%;
         max-height: 100%;
       }
+    }
+
+    @media (max-width: 768px) {
+      height: 216px;
     }
   }
 }

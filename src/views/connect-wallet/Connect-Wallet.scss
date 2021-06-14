@@ -1,97 +1,165 @@
-.connect {
-  .container {
-    min-height: 100vh;
+.wallet-holder {
+  display: flex;
+  margin-top: 40px;
 
-    h1 {
-      margin-bottom: 30px;
-      padding-top: 25px;
+  .connect {
+    .container {
+      min-height: 100vh;
 
-      font-family: 'Montserrat', sans-serif;
+      h1 {
+        margin-bottom: 30px;
+        padding-top: 25px;
+
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 111.4%;
+        /* identical to box height, or 27px */
+
+
+        color: #FFFFFF;
+      }
+    }
+  }
+
+  .connected-wallet {
+    border: 1px solid #2D3743;
+    border-radius: 8px;
+    flex: 1;
+    margin-right: 10px;
+    min-height: 220px;
+    background: #13191F;
+
+    @media (max-width: 768px) {
+      margin-right: 0;
+    }
+
+    .url {
+      font-family: 'Exo', sans-serif;
       font-style: normal;
       font-weight: 600;
-      font-size: 24px;
+      font-size: 18px;
       line-height: 111.4%;
-      /* identical to box height, or 27px */
+      /* identical to box height, or 20px */
 
 
       color: #FFFFFF;
     }
-  }
-}
 
-.connected-wallet {
-  margin-bottom: 33px;
+    & .address > div:first-child {
+      margin-left: 30px;
+    }
 
-  .url {
-    font-family: 'Exo', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 111.4%;
-    /* identical to box height, or 20px */
+    .address {
+      padding: 30px;
+      border-radius: 8px;
 
+      .url {
+        div {
+          margin-right: 11px;
+        }
+      }
 
-    color: #FFFFFF;
-  }
-
-  & .address > div:first-child {
-    margin-left: 11px;
-  }
-
-  .address {
-    padding: 26px 12px;
-    background: #13191F;
-    border-radius: 8px;
-
-    .url {
-      div {
-        margin-right: 11px;
+      .copy {
+        button {
+          padding-left: 0;
+        }
       }
     }
 
-    .copy {
-      button {
-        padding-left: 0;
+    .wallet-connect-buttons-wrapper {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      padding: 5px;
+      margin-top: 25px;
+
+      .button {
+        flex-grow: 1;
+        width: 45%;
+        margin: 0 5px;
+        text-align: center;
+        height: 35px;
+        line-height: 12px;
+
+        &.change {
+          color: #80F0BE;
+        }
       }
     }
   }
 
-  .wallet-connect-buttons-wrapper {
+  .wallets {
+    padding-top: 33px;
     display: flex;
-    justify-content: space-around;
-    width: 100%;
-    padding: 5px;
+    flex: 1;
 
-    .button {
-      flex-grow: 1;
-      width: 45%;
-      margin: 0 5px;
-      text-align: center;
+    .status {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
 
-      &.change {
-        color: #80F0BE;
+    .active-wallet-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        margin-right: 6px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      display: block;
+    }
+
+    &.has-wallet {
+      flex: 1;
+      display: block;
+      padding-top: 10px;
+      border: 1px solid #2D3743;
+      border-radius: 8px;
+
+      .wallet-list-item {
+        height: 54px;
+        justify-content: normal;
+        border: none;
+        background-color: transparent;
+        padding: 0 15px;
+
+        .list-item-option {
+          margin: 0;
+          font-size: 16px;
+          text-align: left;
+
+          &.metamask-label {
+            margin: 0;
+          }
+        }
+
+        .wallet-list-item-image-holder {
+          margin: 0;
+          padding: 25px;
+
+          img {
+            width: 22px;
+          }
+        }
+      }
+
+      @media (max-width: 768px) {
+        margin-top: 20px;
+        border: none;
+        border-top: 1px solid #2D3743;
+        border-radius: 0;
       }
     }
   }
-}
 
-.wallets {
-  padding-top: 33px;
-  border-top: 1px solid #37414C;
 
-  .status {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-  }
-
-  .active-wallet-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-      margin-right: 6px;
-    }
+  @media (max-width: 768px) {
+    display: block;
   }
 }
