@@ -316,10 +316,8 @@ export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
         </div>
         {!FINALIZED ? (
           <div className="expires">
-            <p className="flex item">
-              EXPIRES &nbsp;
-            </p>
-         
+            <p className="flex item">EXPIRES &nbsp;</p>
+
             <p className="flex item">
               {expiryDate ? formatDate(expiryDate, "string") : "..."}
             </p>
