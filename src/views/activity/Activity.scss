@@ -103,7 +103,8 @@ section.activity {
         font-weight: 500;
         font-size: 12px;
         line-height: 14px;
-
+        margin-right: 3px;
+        margin-bottom: 3px;
         color: #4C6581;
       }
       &.supply {
@@ -234,7 +235,19 @@ section.activity {
             max-width: 82px;
         }
       }
+      .qr-thumb {
+        // margin-right: -3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
 
+
+        
+        @media (min-width: 450px) {
+          flex: 0 1 65px;
+        }
+      }
       .voucher-set-info {
         @media (max-width: 320px) {
           max-width: 34%;
@@ -382,29 +395,17 @@ section.activity {
 .status {
   font-size: 0;
   .status-container {
+
     .rc__item-container{
       flex-shrink: 0;
     }
     
-    div:last-of-type  h3 {
-      font-size: 3;
-
-      h3 {
-        font-size: 0;
-
-      }
+    .status-block:not(:last-of-type)  h3 {
+      font-size: 0px;
+      padding: 4px;
     }
     .status-block {
-      // padding: 6px 6px9px 6px;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
-      // flex-direction: column;
-      
-      // & + .status-block {
-      //   margin-left: 8px;
-      // }
-     
+
       &.color {
         align-items: center;
         justify-content: center;
@@ -416,8 +417,6 @@ section.activity {
         padding: 5px;
         border-radius: 4px;
         height: 22px;
-        // display: flex;
-        
       
         &_1 {            
           .status-name {
@@ -471,6 +470,10 @@ section.activity {
         padding: 6px;
 
 
+        @media (max-width: 420px) {
+          font-size: 9.5px !important;
+  
+        }
         &.color {
           &_1 {
             background:  #15BB9D;

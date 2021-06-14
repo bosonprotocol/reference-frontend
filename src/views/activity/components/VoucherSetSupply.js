@@ -24,7 +24,6 @@ export function VoucherSetSupplyView() {
     setVoucherSetId(locationPath[locationPath.length - 2]);
     setBlock(getVoucherSet);
   }, [globalContext.state.allVoucherSets, voucherSetId]);
-
   return (
     <section className="activity atomic-scoped">
       <div className="voucher-set-container container">

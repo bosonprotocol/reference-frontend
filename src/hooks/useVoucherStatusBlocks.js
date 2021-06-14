@@ -86,7 +86,11 @@ export const useVoucherStatusBlocks = (
           timeAvailable
         );
 
-        if (!(currentStatus === STATUS.EXPIRED) && diffInPercentage >= 100 && setHideControlButtonsWaitPeriodExpired) {
+        if (
+          !(currentStatus === STATUS.EXPIRED) &&
+          diffInPercentage >= 100 &&
+          setHideControlButtonsWaitPeriodExpired
+        ) {
           setHideControlButtonsWaitPeriodExpired(true);
         }
         const expiryProgress = voucherDetails && diffInPercentage + "%";
@@ -111,7 +115,7 @@ export const useVoucherStatusBlocks = (
             color: 4,
             progress: expiryProgress,
             status: currentStatus.status,
-            extended: extendedStatuses
+            extended: extendedStatuses,
           }),
         ];
       }
@@ -130,8 +134,7 @@ export const useVoucherStatusBlocks = (
                 title: "COMMITED",
                 date: voucherDetails.COMMITTED,
                 color: 1,
-                extended: extendedStatuses
-
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.REDEEMED)
@@ -140,8 +143,7 @@ export const useVoucherStatusBlocks = (
                 title: "REDEMPTION SIGNED",
                 date: voucherDetails.REDEEMED,
                 color: 2,
-                extended: extendedStatuses
-
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.REFUNDED)
@@ -150,8 +152,7 @@ export const useVoucherStatusBlocks = (
                 title: "REFUND TRIGGERED",
                 date: voucherDetails.REFUNDED,
                 color: 5,
-                extended: extendedStatuses
-
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.COMPLAINED)
@@ -160,8 +161,7 @@ export const useVoucherStatusBlocks = (
                 title: "COMPLAINT MADE",
                 date: voucherDetails.COMPLAINED,
                 color: 3,
-                extended: extendedStatuses
-
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.CANCELLED)
@@ -170,24 +170,24 @@ export const useVoucherStatusBlocks = (
                 title: "CANCEL OR FAULT ADMITTED",
                 date: voucherDetails.CANCELLED,
                 color: 4,
-                extended: extendedStatuses
-
+                extended: extendedStatuses,
               })
             );
 
           if (newStatusBlocks?.length)
             newStatusBlocks.sort((a, b) => (a.date > b.date ? 1 : -1));
 
-              voucherDetails.FINALIZED = "2021-06-11T13:31:56.936Z";
-            if (voucherDetails.FINALIZED) {
-            const finalStatusComp =  finalStatusComponent(
+          if (voucherDetails.FINALIZED) {
+            const finalStatusComp = finalStatusComponent(
               !!voucherDetails.REDEEMED,
               !!voucherDetails.COMPLAINED,
               !!voucherDetails.CANCELLED,
               voucherDetails.FINALIZED,
               extendedStatuses
-            )
-            newStatusBlocks = extendedStatuses ? [...newStatusBlocks, finalStatusComp] : [finalStatusComp];
+            );
+            newStatusBlocks = extendedStatuses
+              ? [...newStatusBlocks, finalStatusComp]
+              : [finalStatusComp];
           }
         }
         const withWaitPeriodBox = await resolveWaitPeriodStatusBox(
@@ -204,7 +204,14 @@ export const useVoucherStatusBlocks = (
   return statusBlocks;
 };
 
-function singleStatusComponent({ title, date, color, progress, status, extended }) {
+function singleStatusComponent({
+  title,
+  date,
+  color,
+  progress,
+  status,
+  extended,
+}) {
   const jsx = (
     <div key={title} className={`status-block color_${color}`}>
       <h3 className="status-name">
@@ -212,26 +219,23 @@ function singleStatusComponent({ title, date, color, progress, status, extended 
         {progress && extended ? <div className="progress"></div> : null}
       </h3>
       <p className="status-details">
-        {
-          extended ?
+        {extended ? (
           <div>
-          {!progress || (progress && status === STATUS.COMMITED)
-            ? formatDate(date, "string")
-            : `${
-                new Date(date).getTime() - new Date().getTime() > 0
-                  ? humanizeDuration(
-                      new Date(date).getTime() - new Date().getTime(),
-                      {
-                        round: true,
-                        largest: 1,
-                      }
-                    )
-                  : "Finished"
-              }`}
-              </div>
-          : null
-        }
-        
+            {!progress || (progress && status === STATUS.COMMITED)
+              ? formatDate(date, "string")
+              : `${
+                  new Date(date).getTime() - new Date().getTime() > 0
+                    ? humanizeDuration(
+                        new Date(date).getTime() - new Date().getTime(),
+                        {
+                          round: true,
+                          largest: 1,
+                        }
+                      )
+                    : "Finished"
+                }`}
+          </div>
+        ) : null}
       </p>
     </div>
   );
@@ -264,15 +268,12 @@ function finalStatusComponent(
           <h3 className="status-name color_6">NO COF</h3>
         )}
       </div>
-      {
-        extended ?
+      {extended ? (
         <p className="status-details">{`Finalised on ${formatDate(
           expiredDate,
           "string"
         )}`}</p>
-        : null
-      }
-     
+      ) : null}
     </div>
   );
   return { jsx, date: expiredDate };

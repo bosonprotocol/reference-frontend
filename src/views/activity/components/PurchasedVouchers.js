@@ -99,7 +99,6 @@ function PurchasedView(props) {
         voucherType,
         globalContext
       );
-console.log(blocksSorted)
       setActiveVouchers(
         blocksSorted.active?.sort((a, b) =>
           getLastAction(a) > getLastAction(b) ? -1 : 1
@@ -192,17 +191,20 @@ console.log(blocksSorted)
 
 export const PurchasedTab = (props) => {
   const { products, voucherSetId } = props;
-console.log(products)
   return (
     <div className="voucher-set-container">
       {products.map((voucher, id) => (
-        <SingleVoucherBlock voucherSetId={voucherSetId} voucher={voucher} key={id} />
+        <SingleVoucherBlock
+          voucherSetId={voucherSetId}
+          voucher={voucher}
+          key={id}
+        />
       ))}
     </div>
   );
 };
 
-export const SingleVoucherBlock = ({voucher, voucherSetId}) => {
+export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
   const {
     title,
     image,
@@ -210,33 +212,12 @@ export const SingleVoucherBlock = ({voucher, voucherSetId}) => {
     id,
     _id,
     expiryDate,
-    COMMITTED,
-    REDEEMED,
-    REFUNDED,
-    COMPLAINED,
-    CANCELLED,
     FINALIZED,
     paymentType,
   } = voucher;
 
-  const statusBlocks = useVoucherStatusBlocks(
-    voucher, null, false
-  );
-  console.log(statusBlocks)
-  // const [currency, setCurrency]
-  const statusOrder = {
-    COMMITTED: new Date(COMMITTED).getTime(),
-    REDEEMED: new Date(REDEEMED).getTime(),
-    REFUNDED: new Date(REFUNDED).getTime(),
-    COMPLAINED: new Date(COMPLAINED).getTime(),
-    CANCELLED: new Date(CANCELLED).getTime(),
-  };
+  const statusBlocks = useVoucherStatusBlocks(voucher, null, false);
 
-  const statuses = statusOrder
-    ? Object.entries(statusOrder)
-        .sort(([, a], [, b]) => a - b)
-        .reduce((r, [k, v]) => ({ ...r, [k]: v }), {})
-    : null;
 
   const currency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
   const currencyIcon =
@@ -257,67 +238,98 @@ export const SingleVoucherBlock = ({voucher, voucherSetId}) => {
           <div className="thumb no-shrink">
             <img src={image} alt={title} />
           </div>
-        ) :  
-      
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="13.2852" y="13.2854" width="6.93603" height="6.93603" rx="2.19032" fill="#8393A6"></rect><rect x="13.2852" y="22.0464" width="6.93603" height="6.93603" rx="2.19032" fill="#8393A6"></rect><rect x="22.0476" y="22.0464" width="6.93603" height="6.93603" rx="2.19032" fill="#8393A6"></rect><rect x="22.0476" y="13.2737" width="6.93603" height="6.93603" rx="2.19032" fill="#8393A6"></rect><path d="M16.9363 10.0002H15.111C12.2884 10.0002 10.0002 12.2884 10.0002 15.111V16.9363" stroke="#8393A6" stroke-width="1.3099"></path><path d="M25.3323 32.2683L27.1576 32.2683C29.9801 32.2683 32.2683 29.9801 32.2683 27.1576L32.2683 25.3323" stroke="#8393A6" stroke-width="1.3099"></path><path d="M10 25.3323L10 27.1576C10 29.9801 12.2882 32.2683 15.1108 32.2683L16.936 32.2683" stroke="#8393A6" stroke-width="1.3099"></path><path d="M32.2683 16.936L32.2683 15.1108C32.2683 12.2882 29.9801 10 27.1576 10L25.3323 10" stroke="#8393A6" stroke-width="1.3099"></path></svg>
-
-        }
+        ) : (
+          <div className="qr-thumb">
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="13.2852"
+                y="13.2854"
+                width="6.93603"
+                height="6.93603"
+                rx="2.19032"
+                fill="#8393A6"
+              ></rect>
+              <rect
+                x="13.2852"
+                y="22.0464"
+                width="6.93603"
+                height="6.93603"
+                rx="2.19032"
+                fill="#8393A6"
+              ></rect>
+              <rect
+                x="22.0476"
+                y="22.0464"
+                width="6.93603"
+                height="6.93603"
+                rx="2.19032"
+                fill="#8393A6"
+              ></rect>
+              <rect
+                x="22.0476"
+                y="13.2737"
+                width="6.93603"
+                height="6.93603"
+                rx="2.19032"
+                fill="#8393A6"
+              ></rect>
+              <path
+                d="M16.9363 10.0002H15.111C12.2884 10.0002 10.0002 12.2884 10.0002 15.111V16.9363"
+                stroke="#8393A6"
+                stroke-width="1.3099"
+              ></path>
+              <path
+                d="M25.3323 32.2683L27.1576 32.2683C29.9801 32.2683 32.2683 29.9801 32.2683 27.1576L32.2683 25.3323"
+                stroke="#8393A6"
+                stroke-width="1.3099"
+              ></path>
+              <path
+                d="M10 25.3323L10 27.1576C10 29.9801 12.2882 32.2683 15.1108 32.2683L16.936 32.2683"
+                stroke="#8393A6"
+                stroke-width="1.3099"
+              ></path>
+              <path
+                d="M32.2683 16.936L32.2683 15.1108C32.2683 12.2882 29.9801 10 27.1576 10L25.3323 10"
+                stroke="#8393A6"
+                stroke-width="1.3099"
+              ></path>
+            </svg>
+          </div>
+        )}
         <div
           className={`info grow flex ${
             !voucherSetId ? "jc-sb voucher-set-info" : ""
           } column`}
         >
-          
-         
-            {!voucherSetId && statusBlocks ? (
-               <div className="status">
-              
-               <div
-                 className="status-container flex"
-               >
-             { statusBlocks.map(x => x.jsx)}
-              </div>
-              </div>
-            ) : null}
-           
-            <div className="title elipsis">{!!title ? title : _id}</div>
-      
-            <div className="price flex split">
-              <div className="value flex center">
-                {currencyIcon} {price} {currency}
+          {statusBlocks ? (
+            <div className="status">
+              <div className="status-container flex">
+                {statusBlocks.map((x) => x.jsx)}
               </div>
             </div>
-         
-        </div>
-        {
-          !FINALIZED ?
-<div className="expires">
-              <p>
-                EXPIRES {" "}
-                {expiryDate ? formatDate(expiryDate, "string") : "..."}
-              </p>
-            </div>
-          : null
-        }
-        
-        {/* <div className="statuses"> */}
-       
-          {/* {statuses
-            ? Object.keys(statuses).map((status, i) =>
-                statusOrder[status] ? (
-                  <div key={i} className={`label color_${status}`}>
-                    {status}
-                  </div>
-                ) : null
-              )
-            : null}
-          {new Date() > new Date(expiryDate) ? (
-            <div className="label color_EXPIRED">EXPIRED</div>
           ) : null}
-          {FINALIZED ? (
-            <div className="label color_FINALIZED">FINALIZED</div>
-          ) : null} */}
-        {/* </div> */}
+
+          <div className="title elipsis">{!!title ? title : _id}</div>
+
+          <div className="price flex split">
+            <div className="value flex center">
+              {currencyIcon} {price} {currency}
+            </div>
+          </div>
+        </div>
+        {!FINALIZED ? (
+          <div className="expires">
+            <p>
+              EXPIRES {expiryDate ? formatDate(expiryDate, "string") : "..."}
+            </p>
+          </div>
+        ) : null}
       </Link>
     </div>
   );
