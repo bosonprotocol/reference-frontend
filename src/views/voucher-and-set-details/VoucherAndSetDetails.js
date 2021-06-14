@@ -106,12 +106,10 @@ function VoucherAndSetDetails(props) {
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
-  console.log(voucherDetails);
   const statusBlocks = useVoucherStatusBlocks(
     voucherDetails,
     setHideControlButtonsWaitPeriodExpired
   );
-  console.log(voucherDetails);
 
   const resetSuccessMessage = () => {
     setSuccessMessage("");
