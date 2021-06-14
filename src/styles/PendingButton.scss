@@ -5,12 +5,12 @@
 }
 
 [data-config="button"] {
-  --color-1: #E49043;
+  --color-1: #ea780e;
   --color-2: #5B391A;
   --background-color: #192028;
   --border-radius: 15px;
   --animation-speed: 3.5s;
-  --border-width: 1.5px;
+  --border-width: 2px;
 }
 
 .pending-button-holder {
@@ -19,6 +19,8 @@
   padding: var(--border-width);
   border-radius: var(--border-radius);
   animation: rotateBackground var(--animation-speed) ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  //transform: scale(1);
 
   .pending-button {
     border-radius: var(--border-radius);
@@ -27,7 +29,28 @@
 }
 
 @keyframes rotateBackground {
-  0%{background-position:0 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0 50%}
+  0%{
+    background-position:0 50%;
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 25px 0 rgba(91, 57, 26, 0.5);
+  }
+  25%{
+    box-shadow: 0 0 50px 0 rgba(91, 57, 26, 1);
+  }
+  50%{
+    background-position:100% 50%;
+    opacity: 1;
+    transform: scale(0.975);
+    box-shadow: 0 0 75px 0 rgba(91, 57, 26, 0.5);
+  }
+  75%{
+    box-shadow: 0 0 50px 0 rgba(91, 57, 26, 1);
+  }
+  100%{
+    background-position:0 50%;
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 25px 0 rgba(91, 57, 26, 0.5);
+  }
 }
