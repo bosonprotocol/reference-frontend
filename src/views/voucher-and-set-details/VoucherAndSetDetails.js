@@ -106,7 +106,6 @@ function VoucherAndSetDetails(props) {
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
-
   const statusBlocks = useVoucherStatusBlocks(
     voucherDetails,
     setHideControlButtonsWaitPeriodExpired
