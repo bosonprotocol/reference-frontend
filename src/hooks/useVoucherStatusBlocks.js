@@ -167,7 +167,7 @@ export const useVoucherStatusBlocks = (
           if (voucherDetails.CANCELLED)
             newStatusBlocks.push(
               singleStatusComponent({
-                title: "CANCEL OR FAULT ADMITTED",
+                title: "COF ADMITTED",
                 date: voucherDetails.CANCELLED,
                 color: 4,
                 extended: extendedStatuses,
