@@ -25,7 +25,7 @@ const PendingButton = () => (
             color: "white",
           }}
         >
-          &nbsp;PENDING
+          &nbsp;PENDING: Transaction is being processed
         </span>
       </div>
     </div>
