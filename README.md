@@ -5,6 +5,8 @@
 ![](https://img.shields.io/badge/Coverage-6%25-733B27.svg?prefix=$coverage$)
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
+This is a reference application which demonstrates how to integrate Boson Protocol into a React front-end.
+
 This reference application shows you how to build a p2p marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
 
 Live demo running on the Rinkeby test network: \
@@ -17,8 +19,8 @@ https://reference-app.bosonprotocol.io
 - [Local Development](#local-development)
   - [Prerequisites](#prerequisites)
   - [Configuration](#configuration)
-  - [Run](#run)
   - [Build](#build)
+  - [Run](#run)
   - [Test](#test)
   - [Code Linting & Formatting](#code-linting--formatting)
 - [Contributing](#contributing)
@@ -39,7 +41,6 @@ The application architecture is as depicted below. There are various components 
 [![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
 
 ---
-
 ## Local Development
 
 ### Prerequisites
@@ -68,18 +69,6 @@ Prior to running the application, you must set up a `.env` file in the project's
  - `GENERATE_SOURCEMAP` - This is a boolean and can be defaulted to false.
 
 ---
-### Run
-To run the app, execute the following commands from the root directory:
-
-```shell script
-npm install
-npm run start
-```
-
-A browser window will open at http://localhost:3000/ with a live version of the 
-code. You're all set to edit and have it rerender there.
-
----
 ### Build
 
 We have a fully automated local build process to check that your changes are
@@ -98,6 +87,18 @@ To fetch dependencies:
 ```shell script
 ./go dependencies:install
 ```
+
+---
+### Run
+To run the app, execute the following commands from the root directory:
+
+```shell script
+npm install
+npm run start
+```
+
+A browser window will open at http://localhost:3000/ with a live version of the 
+code. You're all set to edit and have it rerender there.
 
 ---
 ### Test
