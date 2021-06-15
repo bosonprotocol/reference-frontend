@@ -5,12 +5,10 @@
 ![](https://img.shields.io/badge/Coverage-6%25-733B27.svg?prefix=$coverage$)
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
-This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
+This reference application shows you how to build a p2p marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
 
 Live demo running on the Rinkeby test network: \
 https://reference-app.bosonprotocol.io 
-
-This reference app shows you how to build a p2p marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
 
 ---
 **Table of Contents**:
