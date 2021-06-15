@@ -49,8 +49,8 @@ For instructions on how to get set up with these specific versions:
 ### Configuration
 Prior to running the application, you must set up a `.env` file in the project's root directory with the following environment variables:
  - `REACT_APP_BACKEND_BASE_URL` - This is a URL for the reference backend.
- - `REACT_APP_FRONT_END_LOCALSTORAGE_VERSION` - This is the version of the local storage buster (can be defaulted to "1.0")
- - `GENERATE_SOURCEMAP` - This is a boolean and can be defaulted to false;
+ - `REACT_APP_FRONT_END_LOCALSTORAGE_VERSION` - This is the version of the local storage buster (can be defaulted to "1.0").
+ - `GENERATE_SOURCEMAP` - This is a boolean and can be defaulted to false.
 
 ---
 ### Run
