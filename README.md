@@ -144,12 +144,12 @@ Similarly, for the tests, to perform the same tasks:
 
 The application architecture is as depicted below. There are various components to this:
  - `Frontend`
- - `Backend`
- - `Database` (this is part of the `reference-backend` repository)
- - `Cloud functions` (these are part of the `reference-backend` repository)
-   - `Keepers service`
-   - `Event Listeners`
- - Smart contracts (these must be deployed to the Ethereum network as described in the `contracts` repository)
+ - `Backend` (instructions can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
+     - `Server`
+     - `Database`
+     - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization.
+     - `Event Listeners` - This listens for blockchain events and updates the backend accordingly.
+ - `Smart contracts` (these must be deployed to the Ethereum network as described in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
 
 [![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
 
