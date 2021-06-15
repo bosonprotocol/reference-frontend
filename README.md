@@ -8,11 +8,14 @@
 This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
 
 Live demo running on the Rinkeby test network: \
-https://reference-app.bosonprotocol.io
+https://reference-app.bosonprotocol.io 
+
+This reference app shows you how to build a p2p marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
 
 ---
 **Table of Contents**:
 
+- [Design & Architecture](#design--architecture)
 - [Local Development](#local-development)
   - [Prerequisites](#prerequisites)
   - [Configuration](#configuration)
@@ -20,11 +23,25 @@ https://reference-app.bosonprotocol.io
   - [Build](#build)
   - [Test](#test)
   - [Code Linting & Formatting](#code-linting--formatting)
-- [Design & Architecture](#design--architecture)
 - [Contributing](#contributing)
 - [License](#license)
 
 ---
+## Design & Architecture
+
+The application architecture is as depicted below. There are various components to this:
+- `Frontend`
+- `Backend` (instructions can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
+    - `Server`
+    - `Database`
+    - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization.
+    - `Event Listeners` - This listens for blockchain events and updates the backend accordingly.
+- `Smart contracts` (these must be deployed to the Ethereum network as described in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
+
+[![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
+
+---
+
 ## Local Development
 
 ### Prerequisites
@@ -138,20 +155,6 @@ Similarly, for the tests, to perform the same tasks:
 ./go tests:format
 ./go tests:format_fix
 ```
-
----
-## Design & Architecture
-
-The application architecture is as depicted below. There are various components to this:
- - `Frontend`
- - `Backend` (instructions can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
-     - `Server`
-     - `Database`
-     - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization.
-     - `Event Listeners` - This listens for blockchain events and updates the backend accordingly.
- - `Smart contracts` (these must be deployed to the Ethereum network as described in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
-
-[![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
 
 ---
 ## Contributing
