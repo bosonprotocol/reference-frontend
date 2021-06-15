@@ -29,12 +29,12 @@ https://reference-app.bosonprotocol.io
 
 The application architecture is as depicted below. There are various components to this:
 - `Frontend`
-- `Backend` (instructions can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
+- `Backend` (details can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
     - `Server`
     - `Database`
     - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization.
     - `Event Listeners` - This listens for blockchain events and updates the backend accordingly.
-- `Smart contracts` (these must be deployed to the Ethereum network as described in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
+- `Smart contracts` (details can be found in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
 
 [![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
 
