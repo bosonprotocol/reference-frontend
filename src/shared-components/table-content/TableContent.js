@@ -16,7 +16,7 @@ function setRows(list, howMany) {
   return result;
 }
 
-export const DescriptionBlock = (props) => {
+export const ImageBlock = (props) => {
   const { voucherSetDetails, getProp, toggleImageView } = props;
   return (
     <>
@@ -29,9 +29,17 @@ export const DescriptionBlock = (props) => {
         >
           <img src={getProp("image")} alt={getProp("title")} />
         </div>
-        <div>Description</div>
       </h2>
-      <div className="description">{getProp("description")}</div>
+    </>
+  );
+};
+
+export const DescriptionBlock = (props) => {
+  const { getProp } = props;
+  return (
+    <>
+      <p>Description</p>
+      <p className="description">{getProp("description")}</p>
     </>
   );
 };
