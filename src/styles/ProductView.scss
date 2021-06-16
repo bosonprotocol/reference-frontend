@@ -11,9 +11,9 @@
   z-index: 2;
   pointer-events: none;
   background-color: rgba($background-primary, 0);
-  min-height:100%;
-  overflow-y:scroll;
-  overflow-x:hidden;
+  min-height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
   transition: 0.5s ease-in-out;
 }
 
@@ -30,6 +30,7 @@
   .container {
     padding-top: 80px;
   }
+
   &:not(.single-voucher) .window {
     min-height: calc(100vh - 80px);
     margin: 0 auto;
@@ -38,7 +39,7 @@
     position: relative;
     max-width: 450px;
     z-index: 5;
-    
+
     background-color: #212C39;
     border-top-right-radius: 16.3398px;;
     border-top-left-radius: 16.3398px;
@@ -72,7 +73,7 @@
       background-color: rgba($white, 0.13);
     }
   }
-  
+
   .content {
     padding: 0 22px;
     padding-top: 40px;
@@ -108,14 +109,24 @@
       &.price,
       &.date {
         padding: 34px 0 41px 0;
-        
+        width: 275px;
+        text-align: left;
+        float: left;
+
         .row {
           & + .row {
             margin-top: 20px;
           }
         }
+
+        .block {
+          background: #12161B;
+          padding: 5px 15px;
+          border-radius: 8px;
+        }
       }
-    };
+    }
+  ;
 
     .button.refund {
       margin-top: 15px;
@@ -124,20 +135,22 @@
 
   &.summary {
     padding-bottom: 31px;
-    
+
     h1 {
       font-family: $font-primary;
       font-style: normal;
-      font-weight: 600;
-      font-size: 26px;
+      font-weight: normal;
+      font-size: 18px;
       line-height: $height-small;
 
       margin-top: 41px;
       margin-bottom: 24px;
     }
+
     .content {
       padding: 0;
     }
+
     .thumbnail {
       min-height: 150px;
       display: flex;
@@ -151,7 +164,7 @@
       img {
         border-radius: 14.074px;
       }
-      
+
       @media (max-width: 768px) {
         padding: 0;
         margin-left: -25px;
@@ -183,8 +196,8 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .product-view {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 

@@ -6,10 +6,11 @@
   .top-navigation {
     margin-top: 48px;
   }
+
   .thumbnail {
     background: none !important;
   }
-  
+
   .product-view.summary h1 {
     margin-top: 0;
   }
@@ -61,9 +62,94 @@
   .screen-controller {
     padding-top: 42px;
 
-    .upload-photo, .general, .price, .date, .summary {
+    .upload-photo, .general, .price, .date {
       max-width: 592px;
       margin: 0 auto;
+    }
+
+    .summary {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+
+      .voucher-column {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 100%;
+        flex: 1;
+        padding: 25px;
+
+        .offer-action-holder {
+          display: flex;
+          background: #12161B;
+          padding: 15px 25px;
+          border-top-left-radius: 14px;
+          border-top-right-radius: 14px;
+          height: 100px;
+          align-items: center;
+
+          p {
+            color: #C1C7CE;
+          }
+
+          .offer-action-column {
+            flex: 1;
+
+            .deposit-value {
+              font-size: 26px;
+              font-weight: bold;
+              @media (max-width: 768px) {
+                font-size: 16px;
+              }
+            }
+          }
+        }
+
+        &:first-child {
+          margin-right: 25px;
+
+          .product-info {
+            background: #12161B;
+            padding: 0 25px 25px 25px;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+
+            .row:first-of-type {
+              border-top: 1px solid rgba(255, 255, 255, 0.06);
+              padding-top: 10px;
+            }
+          }
+
+          @media (max-width: 768px) {
+            margin: 0;
+          }
+        }
+
+        &:last-child {
+          margin-left: 25px;
+
+          @media (max-width: 768px) {
+            margin: 0;
+          }
+        }
+
+      }
+
+      @media (max-width: 768px) {
+        display: block;
+
+        .voucher-column {
+          .product-info {
+            @media (max-width: 768px) {
+              h2 {
+                position: absolute;
+                top: 120px;
+              }
+            }
+          }
+        }
+      }
     }
 
     .categories {
@@ -145,7 +231,7 @@
             top: -32px;
           }
         }
-        
+
       }
     }
 
@@ -512,7 +598,7 @@
       }
 
       & + .row:not(.display) {
-        margin-top: 30px;
+        margin-top: 10px;
       }
     }
 
@@ -592,6 +678,7 @@
       }
     }
   }
+
 }
 
 ::-webkit-calendar-picker-indicator {
@@ -605,6 +692,7 @@
 
   .progress-bar {
     justify-content: flex-end;
+
     .bar {
       width: 310px;
     }
@@ -613,6 +701,7 @@
   @media (max-width: 768px) {
     .progress-bar {
       justify-content: flex-start;
+
       .bar {
         width: 80px;
       }
