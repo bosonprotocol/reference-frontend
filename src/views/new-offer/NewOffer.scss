@@ -3,6 +3,12 @@
 .new-offer {
   height: 100%;
 
+  .container {
+    @media (max-width: 768px) {
+      padding: 0;
+    }
+  }
+
   .top-navigation {
     margin-top: 48px;
   }
@@ -115,6 +121,11 @@
             border-bottom-left-radius: 14px;
             border-bottom-right-radius: 14px;
 
+            @media (max-width: 768px) {
+              padding: 15px;
+              border-radius: 0;
+            }
+
             .row:first-of-type {
               border-top: 1px solid rgba(255, 255, 255, 0.06);
               padding-top: 10px;
@@ -122,8 +133,8 @@
           }
 
           @media (max-width: 768px) {
-            margin: 0;
-          }
+          margin: 0;
+        }
         }
 
         &:last-child {
@@ -131,6 +142,14 @@
 
           @media (max-width: 768px) {
             margin: 0;
+          }
+        }
+
+        @media (max-width: 768px) {
+          padding: 0;
+          .offer-action-holder, .table, .product-info {
+            padding: 15px;
+            border-radius: 0;
           }
         }
 

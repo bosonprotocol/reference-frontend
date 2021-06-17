@@ -1048,7 +1048,7 @@ function VoucherAndSetDetails(props) {
                   <div className="section title">
                     <h1>{getProp("title")}</h1>
                   </div>
-                  <div className="section info">
+                  <div className="section info additional-info">
                     <div className="section description">
                       {
                         <DescriptionBlock
