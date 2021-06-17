@@ -78,6 +78,7 @@ function PurchasedView(props) {
             voucher["image"] = "/images/voucher_scan.png";
             voucher["expiryDate"] = block?.expiryDate;
             voucher["price"] = block?.price;
+            voucher["paymentType"] = block?.paymentType;
             return voucher;
           });
 
@@ -99,6 +100,7 @@ function PurchasedView(props) {
         voucherType,
         globalContext
       );
+      console.log("BLOCKS_SORTED:", blocksSorted);
       setActiveVouchers(
         blocksSorted.active?.sort((a, b) =>
           getLastAction(a) > getLastAction(b) ? -1 : 1
@@ -306,7 +308,7 @@ export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
             </div>
           ) : null}
 
-          <div className="title elipsis">{!!title ? title : _id}</div>
+            <div className="title elipsis">{!!title ? title : _id}</div>
 
           <div className="price flex split">
             <div className="value flex center">
