@@ -9,9 +9,15 @@ import {
 import { SellerContext } from "../../../../contexts/Seller";
 import { formatDate, totalDepositCalcEth } from "../../../../utils/FormatUtils";
 import { capitalize } from "./../../../../utils/FormatUtils";
+import NewOfferBottomNavigation from "../new-offer-bottom-navigation/NewOfferBottomNavigation";
+import { NavigationContext } from "../../../../contexts/Navigation";
+import NewOfferSubmit from "../new-offer-submit/NewOfferSubmit";
 
 function NewOfferSummary() {
   const sellerContext = useContext(SellerContext);
+  const navigationContext = useContext(NavigationContext);
+  const formNavigation = navigationContext.state.offerFlowControl;
+
   const {
     category,
     title,
@@ -71,25 +77,45 @@ function NewOfferSummary() {
 
   return (
     <div className="summary product-view">
-      <h1>Offer voucher</h1>
-      <div className="thumbnail flex center">
-        <img className="mw100" src={image} alt={title} />
-      </div>
-      <div className="content">
-        <div className="product-info">
-          <h2>{title}</h2>
-          <p>{description}</p>
+      <div className="voucher-column">
+        <div className="thumbnail flex center">
+          <img className="mw100" src={image} alt={title} />
         </div>
-        {tableContent.some((item) => item) ? (
-          <TableRow data={tableContent} />
-        ) : null}
-        {tableLocation.some((item) => item) ? (
-          <TableLocation data={tableLocation} hasBiggerTitle={true} />
-        ) : null}
-        {tableDate.some((item) => item) ? <DateTable data={tableDate} /> : null}
-        {tablePrices.some((item) => item) ? (
-          <TableRow data={tablePrices} />
-        ) : null}
+        <div className="content">
+          <div className="offer-action-holder">
+            <div className="offer-action-column">
+              <p className="deposit-label">Deposit to offer</p>
+              <p className="deposit-value">
+                {totalDepositCalcEth(seller_deposit, quantity) +
+                  deposits_currency}
+              </p>
+            </div>
+            <div className="offer-action-column">
+              <NewOfferSubmit />
+            </div>
+          </div>
+          {tablePrices.some((item) => item) ? (
+            <TableRow data={tablePrices} />
+          ) : null}
+        </div>
+      </div>
+      <div className="voucher-column">
+        <div className="content">
+          <div className="product-info">
+            <h2>{title}</h2>
+            <p className="description-label">Description</p>
+            <p>{description}</p>
+          </div>
+          {tableContent.some((item) => item) ? (
+            <TableRow data={tableContent} />
+          ) : null}
+          {tableLocation.some((item) => item) ? (
+            <TableLocation data={tableLocation} hasBiggerTitle={true} />
+          ) : null}
+          {tableDate.some((item) => item) ? (
+            <DateTable data={tableDate} />
+          ) : null}
+        </div>
       </div>
     </div>
   );
