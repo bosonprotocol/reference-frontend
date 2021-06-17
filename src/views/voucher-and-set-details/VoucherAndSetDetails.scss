@@ -10,10 +10,11 @@
   .container {
     .status {
       margin-bottom: 15px;
-      padding: 0 22px;
+      padding: 0 60px;
 
       .status-container {
-        margin-top: 19px;
+        margin-top: 15px;
+        margin-bottom: 30px;
 
         .rc__item-container {
           flex-shrink: 0;
@@ -150,7 +151,7 @@
     }
 
     .voucher-column-holder {
-      padding: 0 22px;
+      padding: 0 60px;
 
       display: flex;
       flex-direction: row;
@@ -170,6 +171,7 @@
             &:first-child {
               margin-right: 5px;
             }
+
             &:nth-child(2) {
               margin-left: 5px;
             }
@@ -203,6 +205,10 @@
           }
         }
 
+        .title {
+          margin-bottom: 15px;
+        }
+
         &:first-child {
           margin-right: 25px;
 
@@ -224,8 +230,11 @@
 
             .block {
               background: #12161B;
-              padding: 5px 15px;
+              padding: 15px;
               border-radius: 8px;
+              .title {
+                margin: 0;
+              }
             }
           }
 
@@ -253,7 +262,7 @@
             @media (max-width: 768px) {
               h1 {
                 position: absolute;
-                top: 120px;
+                top: 100px;
               }
             }
           }
@@ -461,7 +470,7 @@
       }
 
       &.escrow {
-        margin-top: 50px;
+        margin-top: 5px;
       }
 
       &.info {
@@ -473,7 +482,6 @@
 
         .description {
           &.description {
-            margin-top: 16px;
             font-family: "Barlow", sans-serif;
             font-weight: normal;
             font-size: 16px;
@@ -507,7 +515,8 @@
 
           .voucher-set-image {
             margin: 0px auto 15px auto;
-            max-width: 500px;
+            background-color: #1C2835;
+            border-radius: 15px;
 
             img {
               position: relative;
