@@ -148,6 +148,11 @@
           }
         }
       }
+
+      @media (max-width: 768px) {
+        padding: 15px;
+        margin-bottom: 0;
+      }
     }
 
     .voucher-column-holder {
@@ -245,6 +250,7 @@
               background: #12161B;
               padding: 15px;
               border-radius: 8px;
+
               .title {
                 margin: 0;
               }
@@ -254,9 +260,11 @@
               width: 100%;
               .block {
                 flex: 1;
+
                 &:first-child {
                   margin-right: 5px;
                 }
+
                 &:nth-child(2) {
                   margin-left: 5px;
                 }
@@ -276,6 +284,12 @@
 
           @media (max-width: 768px) {
             margin: 0;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .escrow-controls-holder {
+            padding: 15px;
           }
         }
       }
@@ -662,8 +676,12 @@
   @media (max-width: 320px) {
     max-width: 275px;
   }
+
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+
   padding: 6px;
-  margin-top: 10px;
   line-height: 112.4%;
   background: #2A3542;
   border-radius: 4px;
