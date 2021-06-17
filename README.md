@@ -2,15 +2,11 @@
 
 <h1 align="center">Boson Protocol Reference Frontend</h1>
 
-![](https://img.shields.io/badge/Coverage-6%25-733B27.svg?prefix=$coverage$)
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
 This is a reference application which demonstrates how to integrate Boson Protocol into a React front-end.
 
-This reference application shows you how to build a p2p marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
-
-Live demo running on the Rinkeby test network: \
-https://reference-app.bosonprotocol.io 
+This reference app may be used as a template for building your own marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
 
 ---
 **Table of Contents**:
@@ -46,7 +42,7 @@ The application architecture is as depicted below. There are various components 
 ### Prerequisites
 
 For local development of the reference-frontend, your development machine will need a few
-tools installed.
+tools installed. These will allow you run the ruby scripts (ran as `./go [args]`) to build and test the project.
 
 At a minimum, you'll need:
 * Node (12.20)
@@ -56,6 +52,7 @@ At a minimum, you'll need:
 * Git
 * Docker
 * direnv
+   * This easily allows environment variables to be switched when navigating between project directories (e.g. `contracts`, `reference-backend` and `reference-frontend`). You will be prompted to run `direnv allow` to enable this.
 
 For instructions on how to get set up with these specific versions:
 * See the [OS X guide](docs/setup/osx.md) if you are on a Mac.
