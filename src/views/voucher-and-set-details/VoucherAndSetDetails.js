@@ -108,7 +108,8 @@ function VoucherAndSetDetails(props) {
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
   const statusBlocks = useVoucherStatusBlocks(
     voucherDetails,
-    setHideControlButtonsWaitPeriodExpired
+    setHideControlButtonsWaitPeriodExpired,
+    true
   );
 
   const resetSuccessMessage = () => {

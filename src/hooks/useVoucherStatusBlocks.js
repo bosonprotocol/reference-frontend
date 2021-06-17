@@ -11,6 +11,7 @@ import { determineCurrentStatusOfVoucher } from "../helpers/parsers/VoucherAndSe
 export const useVoucherStatusBlocks = (
   voucherDetails,
   setHideControlButtonsWaitPeriodExpired,
+  expiryStatus,
   extendedStatuses = true
 ) => {
   const [statusBlocks, setStatusBlocks] = useState(voucherDetails ? [] : false);
@@ -21,7 +22,7 @@ export const useVoucherStatusBlocks = (
     if (
       voucherDetails &&
       !voucherDetails.FINALIZED &&
-      voucherDetails._tokenIdVoucher
+      (voucherDetails._tokenIdVoucher && expiryStatus)
     ) {
       if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
         return newStatusBlocks;

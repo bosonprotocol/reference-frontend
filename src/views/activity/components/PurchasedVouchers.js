@@ -200,17 +200,18 @@ export const PurchasedTab = (props) => {
           voucherSetId={voucherSetId}
           voucher={voucher}
           key={id}
+          expiryStatus={false}
         />
       ))}
     </div>
   );
 };
 
-export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
+export const SingleVoucherBlock = ({ voucher, voucherSetId, expiryStatus }) => {
   const { title, image, price, id, _id, expiryDate, FINALIZED, paymentType } =
     voucher;
 
-  const statusBlocks = useVoucherStatusBlocks(voucher, null, false);
+  const statusBlocks = useVoucherStatusBlocks(voucher, null, expiryStatus, false);
 
   const currency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
   const currencyIcon =
