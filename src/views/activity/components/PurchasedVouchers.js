@@ -100,7 +100,7 @@ function PurchasedView(props) {
         voucherType,
         globalContext
       );
-      console.log("BLOCKS_SORTED:", blocksSorted);
+
       setActiveVouchers(
         blocksSorted.active?.sort((a, b) =>
           getLastAction(a) > getLastAction(b) ? -1 : 1
