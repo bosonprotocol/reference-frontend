@@ -42,7 +42,7 @@ The application architecture is as depicted below. There are various components 
 ### Prerequisites
 
 For local development of the reference-frontend, your development machine will need a few
-tools installed. These will allow you run the ruby scripts (ran as `./go [args]`) to build and test the project.
+tools installed. These will allow you to run the ruby scripts (executed as `./go [args]`) to build and test the project.
 
 At a minimum, you'll need:
 * Node (12.20)
