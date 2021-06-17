@@ -978,26 +978,28 @@ function VoucherAndSetDetails(props) {
             <div className="voucher-column-holder">
               <div className="voucher-column">
                 <div className="content">
-                  {!voucherSetDetails &&
-                  voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
-                    <div className="section escrow">
-                      {escrowData ? (
-                        <EscrowTable escrowData={escrowData} />
-                      ) : null}
-                    </div>
-                  ) : null}
+                  <div className="escrow-controls-holder">
+                    {!voucherSetDetails &&
+                    voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
+                      <div className="section escrow">
+                        {escrowData ? (
+                          <EscrowTable escrowData={escrowData} />
+                        ) : null}
+                      </div>
+                    ) : null}
 
-                  {distributionMessage ? (
-                    <div className="section depositsWarning flex center">
-                      <IconWarning /> <span> {distributionMessage}</span>{" "}
-                    </div>
-                  ) : null}
+                    {distributionMessage ? (
+                      <div className="section depositsWarning flex center">
+                        <IconWarning /> <span> {distributionMessage}</span>{" "}
+                      </div>
+                    ) : null}
 
-                  {!voucherSetDetails && voucherControls?.controls ? (
-                    <div className="section voucher-control">
-                      {voucherControls.controls}
-                    </div>
-                  ) : null}
+                    {!voucherSetDetails && voucherControls?.controls ? (
+                      <div className="section voucher-control">
+                        {voucherControls.controls}
+                      </div>
+                    ) : null}
+                  </div>
 
                   <div className="section info">
                     <div className="section description">

@@ -176,6 +176,13 @@
               margin-left: 5px;
             }
           }
+
+          @media (min-width: 768px) {
+            padding: 20px;
+            background-color: #12161B;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+          }
         }
 
         .voucher-control-holder {
