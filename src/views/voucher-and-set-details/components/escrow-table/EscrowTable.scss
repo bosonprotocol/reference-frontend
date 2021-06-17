@@ -108,8 +108,12 @@ $cell-width: 87px;
     }
 
     .top-row {
-      width: calc(100% - 87px);
+      width: calc(100% - 75px);
       margin-left: auto;
+
+      @media (max-width: 768px) {
+        width: calc(100% - 70px);
+      }
 
       .cell {
         font-family: 'Barlow', sans-serif;

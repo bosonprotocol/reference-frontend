@@ -177,6 +177,10 @@
               margin-right: 5px;
             }
 
+            &.pending-button {
+              margin-right: 0;
+            }
+
             &:nth-child(2) {
               margin-left: 5px;
             }
@@ -594,6 +598,14 @@
           }
         }
 
+        .category {
+          .product-info {
+            .value {
+              margin-bottom: 15px;
+            }
+          }
+        }
+
         .general {
           margin-top: 42px;
         }
@@ -671,28 +683,36 @@
   }
 }
 
-.depositsWarning {
-  width: 100%;
-  @media (max-width: 320px) {
-    max-width: 275px;
+.deposits-warning-holder {
+
+  @media (min-width: 768px) {
+    padding: 0 20px;
+    background: #12161B;
   }
 
-  @media (max-width: 768px) {
-    margin-top: 10px;
-  }
+  .depositsWarning {
+    width: 100%;
+    @media (max-width: 320px) {
+      max-width: 275px;
+    }
 
-  padding: 6px;
-  line-height: 112.4%;
-  background: #2A3542;
-  border-radius: 4px;
-  font-family: Barlow;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  text-align: center;
-  color: #FFFFFF;
+    @media (max-width: 768px) {
+      margin-top: 10px;
+    }
 
-  span {
-    margin-left: 11px;
+    padding: 6px;
+    line-height: 112.4%;
+    background: #2A3542;
+    border-radius: 4px;
+    font-family: Barlow;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    text-align: center;
+    color: #FFFFFF;
+
+    span {
+      margin-left: 11px;
+    }
   }
 }

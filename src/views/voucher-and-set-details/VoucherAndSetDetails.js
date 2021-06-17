@@ -989,8 +989,10 @@ function VoucherAndSetDetails(props) {
                     ) : null}
 
                     {distributionMessage ? (
-                      <div className="section depositsWarning flex center">
-                        <IconWarning /> <span> {distributionMessage}</span>{" "}
+                      <div className="deposits-warning-holder">
+                        <div className="section depositsWarning flex center">
+                          <IconWarning /> <span> {distributionMessage}</span>{" "}
+                        </div>
                       </div>
                     ) : null}
 
