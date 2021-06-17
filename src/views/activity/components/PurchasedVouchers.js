@@ -307,9 +307,9 @@ export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
               </div>
             </div>
           ) : null}
-
-            <div className="title elipsis">{!!title ? title : _id}</div>
-
+          <div className="title-container">
+            <div className="title elipsis">{title ? title : _id}</div>
+          </div>
           <div className="price flex split">
             <div className="value flex center">
               {currencyIcon} {price} {currency}
