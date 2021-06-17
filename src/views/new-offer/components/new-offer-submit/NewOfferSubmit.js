@@ -197,6 +197,7 @@ export default function NewOfferSubmit() {
         backButton.style.cssText += "pointer-events: none; opacity: 0.2";
       }
       await created.wait();
+
       globalContext.dispatch(
         Action.addVoucherSet(prepareSingleVoucherSetData(createdVoucherSet))
       );

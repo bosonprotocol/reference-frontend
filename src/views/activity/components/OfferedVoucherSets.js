@@ -29,7 +29,7 @@ export function OfferedVoucherSets() {
   const voucherSets = globalContext.state.allVoucherSets;
 
   useEffect(() => {
-    if (voucherSets) {
+    if (voucherSets && account) {
       setVoucherBlocks(
         voucherSets.filter((x) => x.voucherOwner === account.toLowerCase())
       );

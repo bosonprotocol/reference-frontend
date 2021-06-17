@@ -6,6 +6,7 @@ import { GlobalContext, Action } from "../../../contexts/Global";
 import "react-tabs/style/react-tabs.css";
 import { PurchasedVouchers } from "./PurchasedVouchers";
 import { VoucherSetBlock } from "./OfferedVoucherSets";
+import { getVoucherSetById } from "../../../hooks/api";
 
 export function VoucherSetSupplyView() {
   const history = useHistory();
@@ -23,7 +24,6 @@ export function VoucherSetSupplyView() {
     setVoucherSetId(locationPath[locationPath.length - 2]);
     setBlock(getVoucherSet);
   }, [globalContext.state.allVoucherSets, voucherSetId]);
-
   return (
     <section className="activity atomic-scoped">
       <div className="voucher-set-container container">
