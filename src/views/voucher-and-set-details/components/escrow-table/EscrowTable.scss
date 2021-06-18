@@ -47,8 +47,11 @@ $cell-width: 87px;
         background-color: #12161B;
         border-top-left-radius: 14px;
         border-top-right-radius: 14px;
+        border-bottom-left-radius: 14px;
+        border-bottom-right-radius: 14px;
+        padding-bottom: 30px;
+        margin-bottom: -10px;
       }
-
     }
 
     .cell, .set {
