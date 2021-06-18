@@ -290,7 +290,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       correlationId = (
-        await bosonRouterContract.correlationIds(account)
+        await bosonRouterContract.getCorrelationId(account)
       ).toString();
 
       const correlationIdRecentlySent = isCorrelationIdAlreadySent(

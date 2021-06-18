@@ -26,13 +26,13 @@ export const useVoucherStatusBlocks = (
       if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
         return newStatusBlocks;
       }
-      const voucherStatus = await voucherKernalContract.vouchersStatus(
+      const voucherStatus = await voucherKernalContract.getVoucherStatus(
         ethers.BigNumber.from(voucherDetails._tokenIdVoucher)
       );
       const currentStatus = determineCurrentStatusOfVoucher(voucherDetails);
-
-      const complainPeriod = await voucherKernalContract.complainPeriod();
-      const cancelFaultPeriod = await voucherKernalContract.cancelFaultPeriod();
+      const complainPeriod = await voucherKernalContract.getComplainPeriod();
+      const cancelFaultPeriod =
+        await voucherKernalContract.getCancelFaultPeriod();
 
       const complainPeriodStart = voucherStatus.complainPeriodStart;
       const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
