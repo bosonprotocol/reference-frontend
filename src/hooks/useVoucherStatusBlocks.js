@@ -11,6 +11,7 @@ import { determineCurrentStatusOfVoucher } from "../helpers/parsers/VoucherAndSe
 export const useVoucherStatusBlocks = (
   voucherDetails,
   setHideControlButtonsWaitPeriodExpired,
+  expiryStatus,
   extendedStatuses = true
 ) => {
   const [statusBlocks, setStatusBlocks] = useState(voucherDetails ? [] : false);
@@ -21,7 +22,8 @@ export const useVoucherStatusBlocks = (
     if (
       voucherDetails &&
       !voucherDetails.FINALIZED &&
-      voucherDetails._tokenIdVoucher
+      voucherDetails._tokenIdVoucher &&
+      expiryStatus
     ) {
       if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
         return newStatusBlocks;
@@ -167,7 +169,7 @@ export const useVoucherStatusBlocks = (
           if (voucherDetails.CANCELLED)
             newStatusBlocks.push(
               singleStatusComponent({
-                title: "COF ADMITTED",
+                title: "CANCLE OR FAULT ADMITTED",
                 date: voucherDetails.CANCELLED,
                 color: 4,
                 extended: extendedStatuses,
