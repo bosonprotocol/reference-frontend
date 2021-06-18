@@ -68,7 +68,7 @@ apt-get install \
   git curl libssl-dev libreadline-dev zlib1g-dev \
   autoconf bison build-essential libyaml-dev \
   libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
-curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
 echo 'export PATH="$PATH:~/.rbenv/bin"' >> ~/.bashrc
 echo 'eval "$(rbenv init - bash)"' >> ~/.bashrc
 exec $SHELL
