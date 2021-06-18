@@ -130,7 +130,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     .col-3#{$selector} {
       flex: 0 0 calc(100% / 3);
       max-width: calc(100% / 3);
-  
+
       &.rest {
         flex: 0 0 calc(100% - (100% / 3));
         max-width: calc(100% - (100% / 3));
@@ -142,7 +142,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     .col-4#{$selector} {
       flex: 0 0 25%;
       max-width: 25%;
-  
+
       &.rest {
         flex: 0 0 75%;
         max-width: 75%;
@@ -154,7 +154,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     .col-5#{$selector} {
       flex: 0 0 20%;
       max-width: 20%;
-  
+
       &.rest {
         flex: 0 0 80%;
         max-width: 80%;
@@ -186,7 +186,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     width: calc(100% / 3);
   }
   .w25#{$selector} {
-    width: 25;
+    width: 25%;
   }
   .w20#{$selector} {
     width: 20%;
@@ -207,7 +207,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     max-width: calc(100% / 3);
   }
   .mw25#{$selector} {
-    max-width: 25;
+    max-width: 25%;
   }
   .mw20#{$selector} {
     max-width: 20%;
@@ -278,7 +278,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     width: auto;
     height: auto;
     max-width: 100%;
-  
+
     &.full {
       width: 100%;
     }
