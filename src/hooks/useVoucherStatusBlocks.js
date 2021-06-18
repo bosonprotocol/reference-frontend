@@ -22,7 +22,8 @@ export const useVoucherStatusBlocks = (
     if (
       voucherDetails &&
       !voucherDetails.FINALIZED &&
-      (voucherDetails._tokenIdVoucher && expiryStatus)
+      voucherDetails._tokenIdVoucher &&
+      expiryStatus
     ) {
       if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
         return newStatusBlocks;
