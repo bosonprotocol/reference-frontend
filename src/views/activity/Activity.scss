@@ -48,7 +48,7 @@ section.activity {
 
   .voucher-set-container {
     margin-top: 40px;
-    
+
     .collapsible {
       .voucher-block {
         align-items: center;
@@ -117,9 +117,9 @@ section.activity {
         .info {
           flex-shrink: 1;
           width: 58%;
-       
 
-          
+
+
         }
       }
 
@@ -151,7 +151,7 @@ section.activity {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        
+
         @media (max-width: 320px) {
           max-width: 35%;
         }
@@ -232,7 +232,7 @@ section.activity {
         max-height: 80px;
 
         flex: 0 1 125px;
-       
+
 
         @media (max-width: 320px) {
           max-width: calc(20% - 15px);
@@ -249,7 +249,7 @@ section.activity {
         overflow: hidden;
 
 
-        
+
         @media (min-width: 450px) {
           flex: 0 1 65px;
         }
@@ -267,7 +267,7 @@ section.activity {
         padding: 10px 0;
         flex: 8 0 auto;
 
-      
+
 
         & > div + div {
           margin-top: 2px;
@@ -337,7 +337,7 @@ section.activity {
           justify-content: center;
           align-items: center;
           padding: 5px 13px 5px 8px;
-          
+
           @media (max-width: 320px) {
             margin-top: 10px;
             background: no-repeat;
@@ -384,14 +384,10 @@ section.activity {
     .wallets {
       border-top: 0;
     }
-
-    .wallet-list-item .wallet-list-item-image-holder {
-      padding: 0;
-    }
   }
 }
 .activity-price {
-  
+
   @media (max-width: 320px) {
     flex-direction: column;
     align-items: flex-start !important;
@@ -405,7 +401,7 @@ section.activity {
     .rc__item-container{
       flex-shrink: 0;
     }
-    
+
     .status-block:not(:last-of-type)  h3 {
       font-size: 0px !important;
       padding: 4px;
@@ -423,24 +419,24 @@ section.activity {
         padding: 5px;
         border-radius: 4px;
         height: 22px;
-      
-        &_1 {            
+
+        &_1 {
           .status-name {
-            background: #358ef5;  
-                                   
+            background: #358ef5;
+
           }
         }
-        &_2 {               
+        &_2 {
           .status-name {
             background:  #15BB9D;
           }
         }
-        &_3 {                
+        &_3 {
           .status-name {
             background:  #FA5B66;
           }
         }
-        &_4 {               
+        &_4 {
           .status-name {
             background:  #334253;
           }
@@ -456,13 +452,13 @@ section.activity {
           display: flex;
       }
 
-      .status-name {  
+      .status-name {
         border-radius: 4px;
         height: 22px;
         display: flex;
         margin-left: 3px;
         margin-right: 3px;
-      
+
         // margin: 5px 5px 0px 5px;
         align-items: center;
         justify-content: center;
@@ -478,7 +474,7 @@ section.activity {
 
         @media (max-width: 420px) {
           font-size: 9.5px !important;
-  
+
         }
         &.color {
           &_1 {
@@ -490,7 +486,7 @@ section.activity {
             color: #15BB9D;
            }
 
-          &_3 { 
+          &_3 {
             background:  #FA5B66;
           }
 
@@ -499,7 +495,7 @@ section.activity {
             color:  #FA5B66;
           }
 
-          &_5 {    
+          &_5 {
             color: #FFFFFF;
             background:  #334253;
           }
@@ -508,11 +504,11 @@ section.activity {
              background: #334253;
              border: #6D839B 1px solid;
              color: #6D839B;
-          } 
+          }
 
       }
       }
-      
+
     }
   }
 }
