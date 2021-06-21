@@ -78,6 +78,7 @@ function PurchasedView(props) {
             voucher["image"] = "/images/voucher_scan.png";
             voucher["expiryDate"] = block?.expiryDate;
             voucher["price"] = block?.price;
+            voucher["paymentType"] = block?.paymentType;
             return voucher;
           });
 
@@ -99,6 +100,7 @@ function PurchasedView(props) {
         voucherType,
         globalContext
       );
+
       setActiveVouchers(
         blocksSorted.active?.sort((a, b) =>
           getLastAction(a) > getLastAction(b) ? -1 : 1
@@ -198,17 +200,23 @@ export const PurchasedTab = (props) => {
           voucherSetId={voucherSetId}
           voucher={voucher}
           key={id}
+          expiryStatus={false}
         />
       ))}
     </div>
   );
 };
 
-export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
+export const SingleVoucherBlock = ({ voucher, voucherSetId, expiryStatus }) => {
   const { title, image, price, id, _id, expiryDate, FINALIZED, paymentType } =
     voucher;
 
-  const statusBlocks = useVoucherStatusBlocks(voucher, null, false);
+  const statusBlocks = useVoucherStatusBlocks(
+    voucher,
+    null,
+    expiryStatus,
+    false
+  );
 
   const currency = paymentType === 1 || paymentType === 2 ? "ETH" : "BSN";
   const currencyIcon =
@@ -305,9 +313,9 @@ export const SingleVoucherBlock = ({ voucher, voucherSetId }) => {
               </div>
             </div>
           ) : null}
-
-          <div className="title elipsis">{!!title ? title : _id}</div>
-
+          <div className="title-container">
+            <div className="title elipsis">{title ? title : _id}</div>
+          </div>
           <div className="price flex split">
             <div className="value flex center">
               {currencyIcon} {price} {currency}

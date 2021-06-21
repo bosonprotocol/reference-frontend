@@ -25,7 +25,11 @@ import {
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
-import { capitalize, formatDate } from "../../utils/FormatUtils";
+import {
+  capitalize,
+  formatDate,
+  totalDepositCalcEth,
+} from "../../utils/FormatUtils";
 import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
@@ -40,6 +44,7 @@ import {
   TableLocation,
   PriceTable,
   DescriptionBlock,
+  ImageBlock,
 } from "../../shared-components/table-content/TableContent";
 import EscrowTable from "./components/escrow-table/EscrowTable";
 import { IconWarning } from "../../shared-components/icons/Icons";
@@ -65,6 +70,7 @@ import {
 import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
 import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
 import PendingButton from "./components/escrow-table/PendingButton";
+import NewOfferSubmit from "../new-offer/components/new-offer-submit/NewOfferSubmit";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -81,6 +87,7 @@ function VoucherAndSetDetails(props) {
   const navigationContext = useContext(NavigationContext);
   const bosonRouterContract = useBosonRouterContract();
   const bosonTokenContract = useBosonTokenContract();
+  const voucherControls = navigationContext.state.redemptionFlowControl;
   const { library, account, chainId } = useWeb3React();
   const history = useHistory();
   const [voucherStatus, setVoucherStatus] = useState();
@@ -108,7 +115,8 @@ function VoucherAndSetDetails(props) {
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
   const statusBlocks = useVoucherStatusBlocks(
     voucherDetails,
-    setHideControlButtonsWaitPeriodExpired
+    setHideControlButtonsWaitPeriodExpired,
+    true
   );
 
   const resetSuccessMessage = () => {
@@ -157,8 +165,8 @@ function VoucherAndSetDetails(props) {
 
   // int on index #2 is the X position of the block
   const tablePrices = [
-    ["Payment Price", getProp("price"), currencies[0], 0],
-    false,
+    // ["Payment Price", getProp("price"), currencies[0], 0],
+    // false,
     ["Buyer’s deposit", getProp("deposit"), currencies[1], 1],
     ["Seller’s deposit", getProp("sellerDeposit"), currencies[1], 1],
   ];
@@ -283,7 +291,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       correlationId = (
-        await bosonRouterContract.correlationIds(account)
+        await bosonRouterContract.getCorrelationId(account)
       ).toString();
 
       const correlationIdRecentlySent = isCorrelationIdAlreadySent(
@@ -949,81 +957,132 @@ function VoucherAndSetDetails(props) {
             />
           ) : null}
           <div className="container erase">
-            <div className="content">
-              <div className="section title">
-                <h1>{getProp("title")}</h1>
+            {!voucherSetDetails &&
+            voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
+            statusBlocks ? (
+              <div className="section status">
+                <h2>Status</h2>
+                <div
+                  className="status-container flex"
+                  id="horizontal-view-container"
+                >
+                  <HorizontalScrollView
+                    items={statusBlocks}
+                    ItemComponent={({ item }) => item.jsx}
+                    defaultSpace="0"
+                    spaceBetweenItems="8px"
+                    moveSpeed={1}
+                  />
+                </div>
               </div>
-              {!voucherSetDetails &&
-              voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
-              statusBlocks ? (
-                <div className="section status">
-                  <h2>Status</h2>
-                  <div
-                    className="status-container flex"
-                    id="horizontal-view-container"
-                  >
-                    <HorizontalScrollView
-                      items={statusBlocks}
-                      ItemComponent={({ item }) => item.jsx}
-                      defaultSpace="0"
-                      spaceBetweenItems="8px"
-                      moveSpeed={1}
-                    />
-                  </div>
-                </div>
-              ) : null}
-              {!voucherSetDetails &&
-              voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
-                <div className="section escrow">
-                  {escrowData ? <EscrowTable escrowData={escrowData} /> : null}
-                </div>
-              ) : null}
+            ) : null}
+            <div className="voucher-column-holder">
+              <div className="voucher-column">
+                <div className="content">
+                  <div className="escrow-controls-holder">
+                    {!voucherSetDetails &&
+                    voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
+                      <div className="section escrow">
+                        {escrowData ? (
+                          <EscrowTable escrowData={escrowData} />
+                        ) : null}
+                      </div>
+                    ) : null}
 
-              {distributionMessage ? (
-                <div className="section depositsWarning flex center">
-                  <IconWarning /> <span> {distributionMessage}</span>{" "}
-                </div>
-              ) : null}
+                    {distributionMessage ? (
+                      <div className="deposits-warning-holder">
+                        <div className="section depositsWarning flex center">
+                          <IconWarning /> <span> {distributionMessage}</span>{" "}
+                        </div>
+                      </div>
+                    ) : null}
 
-              <div className="section info">
-                <div className="section description">
-                  {
-                    <DescriptionBlock
-                      toggleImageView={setImageView}
-                      voucherSetDetails={voucherSetDetails}
-                      getProp={getProp}
-                    />
-                  }
-                </div>
-                <div className="section category"></div>
-                <div className="section general">
-                  {tableLocation ? (
-                    <TableLocation
-                      data={tableLocation}
-                      hasBiggerTitle={false}
-                    />
-                  ) : null}
-                  {getProp("category") ? (
-                    <TableRow data={tableCategory} />
-                  ) : null}
-                  {getProp("condition") ? (
-                    <TableRow data={tableCondition} />
-                  ) : null}
-                </div>
-                {voucherSetDetails ? (
-                  <div className="section price">
-                    {tablePrices.some((item) => item) ? (
-                      <PriceTable
-                        paymentType={paymentType}
-                        data={tablePrices}
-                      />
+                    {!voucherSetDetails && voucherControls?.controls ? (
+                      <div className="section voucher-control">
+                        {voucherControls.controls}
+                      </div>
                     ) : null}
                   </div>
-                ) : null}
-                <div className="section date">
-                  {tableDate.some((item) => item) ? (
-                    <DateTable data={tableDate} />
+
+                  <div className="section info">
+                    <div className="section description">
+                      {
+                        <ImageBlock
+                          toggleImageView={setImageView}
+                          voucherSetDetails={voucherSetDetails}
+                          getProp={getProp}
+                        />
+                      }
+                    </div>
+                  </div>
+                  {voucherSetDetails ? (
+                    <div className="voucher-control-holder">
+                      <div className="voucher-control-column">
+                        <p className="deposit-label">Payment Price</p>
+                        <p className="deposit-value">
+                          {" "}
+                          {`${voucherSetDetails?.price} ${
+                            currencyResolver(voucherSetDetails?.paymentType)[0]
+                          }`}{" "}
+                        </p>
+                      </div>
+                      <div className="voucher-control-column">
+                        {voucherControls?.controls
+                          ? voucherControls.controls
+                          : null}
+                      </div>
+                    </div>
                   ) : null}
+
+                  {voucherSetDetails ? (
+                    <div className="section price">
+                      {tablePrices.some((item) => item) ? (
+                        <PriceTable
+                          paymentType={paymentType}
+                          data={tablePrices}
+                        />
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="voucher-column">
+                <div className="content">
+                  <div className="section title">
+                    <h1>{getProp("title")}</h1>
+                  </div>
+                  <div className="section info additional-info">
+                    <div className="section description">
+                      {
+                        <DescriptionBlock
+                          toggleImageView={setImageView}
+                          voucherSetDetails={voucherSetDetails}
+                          getProp={getProp}
+                        />
+                      }
+                    </div>
+                    <div className="section category">
+                      {getProp("category") ? (
+                        <TableRow data={tableCategory} />
+                      ) : null}
+                      {getProp("condition") ? (
+                        <TableRow data={tableCondition} />
+                      ) : null}
+                    </div>
+                    <div className="section location">
+                      {tableLocation ? (
+                        <TableLocation
+                          data={tableLocation}
+                          hasBiggerTitle={false}
+                        />
+                      ) : null}
+                    </div>
+                    <div className="section date">
+                      {tableDate.some((item) => item) ? (
+                        <DateTable data={tableDate} />
+                      ) : null}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

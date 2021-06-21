@@ -1,4 +1,5 @@
 {
+  "contractName": "VoucherKernel",
   "abi": [
     {
       "inputs": [
@@ -359,400 +360,112 @@
       "type": "event"
     },
     {
-      "inputs": [],
-      "name": "MASK_NF_INDEX",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "MASK_TYPE",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "TYPE_NF_BIT",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "_issuer",
           "type": "address"
-        }
-      ],
-      "name": "accountSupply",
-      "outputs": [
+        },
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_qty",
           "type": "uint256"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "bosonRouterAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "cancelFaultPeriod",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "cashierAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "complainPeriod",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
+      "name": "burnSupplyOnPause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "_tokenIdVoucher",
           "type": "uint256"
-        }
-      ],
-      "name": "ordersPromise",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
+        },
         {
           "internalType": "address",
-          "name": "",
+          "name": "_msgSender",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "paused",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
+      "name": "cancelOrFault",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_issuer",
+          "type": "address"
+        }
+      ],
+      "name": "cancelOrFaultVoucherSet",
+      "outputs": [
+        {
+          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
       ],
-      "name": "paymentDetails",
-      "outputs": [
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_msgSender",
+          "type": "address"
+        }
+      ],
+      "name": "complain",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        },
         {
           "internalType": "uint8",
-          "name": "paymentMethod",
+          "name": "_paymentMethod",
           "type": "uint8"
         },
         {
           "internalType": "address",
-          "name": "addressTokenPrice",
+          "name": "_tokenPrice",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "addressTokenDeposits",
+          "name": "_tokenDeposits",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "promiseKeys",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "promises",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "promiseId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "nonce",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "seller",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "validFrom",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "validTo",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "depositSe",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "depositBu",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "idx",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "tokenNonces",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "tokensContract",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "typeCounters",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "typeId",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "vouchersStatus",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "status",
-          "type": "uint8"
-        },
-        {
-          "internalType": "bool",
-          "name": "isPaymentReleased",
-          "type": "bool"
-        },
-        {
-          "internalType": "bool",
-          "name": "isDepositsReleased",
-          "type": "bool"
-        },
-        {
-          "internalType": "uint256",
-          "name": "complainPeriodStart",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "cancelFaultPeriodStart",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "pause",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "unpause",
+      "name": "createPaymentMethod",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -814,34 +527,6 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint8",
-          "name": "_paymentMethod",
-          "type": "uint8"
-        },
-        {
-          "internalType": "address",
-          "name": "_tokenPrice",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_tokenDeposits",
-          "type": "address"
-        }
-      ],
-      "name": "createPaymentMethod",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdSupply",
-          "type": "uint256"
-        },
-        {
           "internalType": "address",
           "name": "_issuer",
           "type": "address"
@@ -850,6 +535,11 @@
           "internalType": "address",
           "name": "_holder",
           "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_paymentMethod",
+          "type": "uint8"
         },
         {
           "internalType": "uint256",
@@ -863,98 +553,16 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "getBosonRouterAddress",
+      "outputs": [
         {
           "internalType": "address",
-          "name": "_issuer",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdSupply",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_qty",
-          "type": "uint256"
-        }
-      ],
-      "name": "burnSupplyOnPause",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_msgSender",
+          "name": "",
           "type": "address"
         }
       ],
-      "name": "redeem",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_msgSender",
-          "type": "address"
-        }
-      ],
-      "name": "refund",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_msgSender",
-          "type": "address"
-        }
-      ],
-      "name": "complain",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_msgSender",
-          "type": "address"
-        }
-      ],
-      "name": "cancelOrFault",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -963,14 +571,27 @@
           "internalType": "uint256",
           "name": "_tokenIdSupply",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_issuer",
-          "type": "address"
         }
       ],
-      "name": "cancelOrFaultVoucherSet",
+      "name": "getBuyerOrderCosts",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCancelFaultPeriod",
       "outputs": [
         {
           "internalType": "uint256",
@@ -978,145 +599,30 @@
           "type": "uint256"
         }
       ],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "setPaymentReleased",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "setDepositsReleased",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "triggerExpiration",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "triggerFinalizeVoucher",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdSupply",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_newSeller",
-          "type": "address"
-        }
-      ],
-      "name": "setSupplyHolderOnTransfer",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_bosonRouterAddress",
-          "type": "address"
-        }
-      ],
-      "name": "setBosonRouterAddress",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_cashierAddress",
-          "type": "address"
-        }
-      ],
-      "name": "setCashierAddress",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_complainPeriod",
-          "type": "uint256"
-        }
-      ],
-      "name": "setComplainPeriod",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_cancelFaultPeriod",
-          "type": "uint256"
-        }
-      ],
-      "name": "setCancelFaultPeriod",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_idx",
-          "type": "uint256"
-        }
-      ],
-      "name": "getPromiseKey",
+      "inputs": [],
+      "name": "getCashierAddress",
       "outputs": [
         {
-          "internalType": "bytes32",
+          "internalType": "address",
           "name": "",
-          "type": "bytes32"
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getComplainPeriod",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -1145,11 +651,117 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        }
+      ],
+      "name": "getOrderCosts",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_promiseKey",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getPromiseData",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPromiseIdFromSupplyId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "_tokenIdVoucher",
           "type": "uint256"
         }
       ],
       "name": "getPromiseIdFromVoucherId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_idx",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPromiseKey",
       "outputs": [
         {
           "internalType": "bytes32",
@@ -1192,113 +804,12 @@
           "type": "uint256"
         }
       ],
-      "name": "getOrderCosts",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdSupply",
-          "type": "uint256"
-        }
-      ],
-      "name": "getBuyerOrderCosts",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdSupply",
-          "type": "uint256"
-        }
-      ],
       "name": "getSellerDeposit",
       "outputs": [
         {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "getVoucherStatus",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        },
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        },
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenIdVoucher",
-          "type": "uint256"
-        }
-      ],
-      "name": "getVoucherHolder",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -1326,17 +837,43 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "_seller",
+          "type": "address"
+        }
+      ],
+      "name": "getTokenNonce",
+      "outputs": [
+        {
           "internalType": "uint256",
-          "name": "_tokenIdSupply",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "getVoucherPriceToken",
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTokensContractAddress",
       "outputs": [
         {
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTypeId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -1351,6 +888,25 @@
         }
       ],
       "name": "getVoucherDepositToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVoucherHolder",
       "outputs": [
         {
           "internalType": "address",
@@ -1384,6 +940,64 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVoucherPriceToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVoucherStatus",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "_tokenIdVoucher",
           "type": "uint256"
         }
@@ -1397,6 +1011,243 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "isVoucherTransferable",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_msgSender",
+          "type": "address"
+        }
+      ],
+      "name": "redeem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_msgSender",
+          "type": "address"
+        }
+      ],
+      "name": "refund",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_bosonRouterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setBosonRouterAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_cancelFaultPeriod",
+          "type": "uint256"
+        }
+      ],
+      "name": "setCancelFaultPeriod",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_cashierAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setCashierAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_complainPeriod",
+          "type": "uint256"
+        }
+      ],
+      "name": "setComplainPeriod",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "setDepositsReleased",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPaymentReleased",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_newSeller",
+          "type": "address"
+        }
+      ],
+      "name": "setSupplyHolderOnTransfer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "triggerExpiration",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenIdVoucher",
+          "type": "uint256"
+        }
+      ],
+      "name": "triggerFinalizeVoucher",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unpause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     }
   ]

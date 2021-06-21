@@ -85,9 +85,7 @@ export const getControlList = (
     <ContractInteractionButton
       className="action button commit"
       handleClick={() => onCommitToBuy()}
-      label={`COMMIT TO BUY ${voucherSetDetails?.price} ${
-        currencyResolver(voucherSetDetails?.paymentType)[0]
-      }`}
+      label={`COMMIT TO BUY`}
     />
   );
 
