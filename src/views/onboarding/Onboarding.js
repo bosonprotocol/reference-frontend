@@ -15,12 +15,12 @@ function slide1() {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
             className="pe-none"
           />
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
       </div>
       <div className="slide-image flex center">
         <img
@@ -46,12 +46,12 @@ function slide2() {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson/boson-logo.png"
+            src="images/leptonite/leptonite.png"
             alt="Boson Protocol Logo"
             className="pe-none"
           />
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
       </div>
       <div className="slide-image center-flex">
         <FakeEscrowTable />
@@ -75,12 +75,12 @@ function slide3(completeOnboarding) {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson/boson-logo.png"
+            src="images/leptonite/leptonite.png"
             alt="Boson Protocol Logo"
             className="pe-none"
           />
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
       </div>
       <div className="slide-image flex center">
         <div className="qr-display relative">

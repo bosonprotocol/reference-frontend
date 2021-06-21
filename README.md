@@ -1,6 +1,6 @@
-[![banner](docs/assets/banner.png)](https://bosonprotocol.io)
+[![banner](docs/assets/banner.png)](https://leptonite.io)
 
-<h1 align="center">Boson Protocol Reference Frontend</h1>
+<h1 align="center">Leptonite - Powered by Boson Protocol</h1>
 
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
