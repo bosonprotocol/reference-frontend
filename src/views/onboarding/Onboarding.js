@@ -34,13 +34,49 @@ function slide1() {
                     ©{ new Date().getFullYear() } Leptonite.io
                 </div>
             </div>
-            <div className="column-holder animated-column">
+            <div className="column-holder animated-column-1">
             </div>
         </>
     );
 }
 
 function slide2() {
+    return (
+        <>
+            <div className="column-holder main-column">
+                <div className="top">
+                    <div className="logo flex jc-left">
+                        <img
+                            src="images/onboarding/leptonite-main.png"
+                            alt="Leptonite Logo"
+                            className="pe-none"
+                        />
+                    </div>
+                    <h2 className="ta-left"><span>Welcome</span> to Leptonite</h2>
+                </div>
+                <div className="text flex column ai-center">
+                    <p className="number">2</p>
+                    <h1>Boson Protocol escrow </h1>
+                    <p className="ta-center color-secondary">
+                        The escrow is governed by the Core Exchange Mechanism which takes
+                        deposits from both supplier and buyer to grow trust in a p2p
+                        exchange.
+                    </p>
+                </div>
+                <div className="footer color-secondary">
+                    ©{ new Date().getFullYear() } Leptonite.io
+                </div>
+            </div>
+            <div className="column-holder animated-column">
+                <div className="slide-image center-flex">
+                    <FakeEscrowTable/>
+                </div>
+            </div>
+        </>
+    );
+}
+
+function slide3() {
     return (
         <>
             <div className="top">
@@ -54,62 +90,13 @@ function slide2() {
                 <h2 className="ta-center">Welcome to Leptonite</h2>
             </div>
             <div className="slide-image center-flex">
-                <FakeEscrowTable/>
-            </div>
-            <div className="text flex column ai-center">
-                <p className="number">2</p>
-                <h1>Boson Protocol escrow </h1>
-                <p className="ta-center color-secondary">
-                    The escrow is governed by the Core Exchange Mechanism which takes
-                    deposits from both supplier and buyer to grow trust in a p2p
-                    exchange.
-                </p>
-            </div>
-        </>
-    );
-}
 
-function slide3() {
-    return (
-        <>
-            <div className="top">
-                <div className="logo flex jc-center">
-                    <img
-                        src="images/boson/boson-logo.png"
-                        alt="Boson Protocol Logo"
-                        className="pe-none"
-                    />
-                </div>
-                <h2 className="ta-center">Welcome to Boson Protocol</h2>
-            </div>
-            <div className="slide-image flex center">
-                <div className="qr-display relative">
-                    <div className="scan">
-                        <div className="phone-bg flex center">
-                            <p>Scan the QR code</p>
-                            <img
-                                src="images/onboarding/onboarding-slide-3-qr.svg"
-                                alt="QR Code Read"
-                            />
-                        </div>
-                    </div>
-                    <div className="show">
-                        <img
-                            src="images/onboarding/onboarding-slide-3-show.svg"
-                            alt="Show QR Code"
-                        />
-                    </div>
-                    <div className="background">
-                        <img src="images/onboarding/onboarding-slide-3-net.svg" alt="Net"/>
-                    </div>
-                </div>
             </div>
             <div className="text flex column ai-center">
                 <p className="number">3</p>
-                <h1>Redeem</h1>
+                <h1>Disclaimer</h1>
                 <p className="ta-center color-secondary">
-                    When handing over the item the buyer signs the redemption to transfer
-                    funds to the seller.
+                    This is placeholder text for where our disclaimer and checkbox for accepting the disclaimer's terms will be.
                 </p>
             </div>
         </>
