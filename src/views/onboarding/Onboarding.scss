@@ -40,9 +40,12 @@
 
 .onboarding {
   max-width: 100%;
+  background-color: #181A29;
 
   .container {
-    max-width: clamp(700px, 80vw, 1200px);
+    //max-width: clamp(700px, 80vw, 1200px);
+    max-width: 100%;
+    padding: 0 82px;
   }
   max-height: 100vh;
 
@@ -55,6 +58,16 @@
     padding-bottom: 128px;
     padding-bottom: clamp(128px, 10vh, 130px);
     // height: 100%;
+
+    .column-holder {
+      flex: 1;
+
+      &.animated-column {
+        background-image: url('../../assets/onboarding/slide-1.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+      }
+    }
 
     .button {
       margin-top: 20px;
@@ -123,7 +136,7 @@
 
         background: rgba($background-primary, 0.4);
         background: linear-gradient(to top, $background-primary 0%, transparent 100%)
-        
+
       }
     }
     p:not(.number) {
@@ -160,7 +173,7 @@
         border-radius: 12px;
         background: rgba(29, 40, 53, 0.8);
         border: 2px solid #506377;
-        
+
         p {
           font-weight: 600;
           font-size: 8.5px;
@@ -191,14 +204,14 @@
       }
       .seller .block {
         animation: blockForward 6s  ease-in-out infinite;
-  
+
         &::after {
           animation: fadeOut 6s  ease-in-out infinite;
         }
       }
       .buyer .block {
         animation: blockBackwards 6s  ease-in-out infinite;
-  
+
         &::before {
           animation: fadeOut2 6s  ease-in-out infinite;
         }
@@ -228,14 +241,14 @@
         }
         .seller .block {
           animation-play-state: paused;
-    
+
           &::after {
             animation-play-state: paused;
           }
         }
         .buyer .block {
           animation-play-state: paused;
-    
+
           &::before {
             animation-play-state: paused;
           }
@@ -278,7 +291,7 @@
       border-top: 2px solid #80F0BE;
       border-left: 2px solid #80F0BE;
     }
-    
+
     &:hover {
       opacity: 0.7;
     }
@@ -313,15 +326,14 @@
     }
 
     .container {
-      height: calc(100vh - 110px);
+      height: 100%;
       display: flex !important;
       flex-direction: column;
       justify-content: center;
 
       .screen {
         padding-bottom: 0;
-        height: clamp(700px, 64vh, 100vh);
-        max-height: calc(100vh - 110px);
+        height: 100%;
 
         @media (max-width: 374px) {
           height: 440px;
@@ -374,7 +386,7 @@
           left: 50%;
           transform: translate(-50%, 100%);
           z-index: 20;
-          
+
           @media (max-width: 374px) {
             bottom: 5px;
           }
@@ -384,9 +396,8 @@
   }
 
   .swiper-pagination {
-    bottom: 10px;
-    left: 0;
-    right: 0;
+    bottom: 300px;
+    left: calc(25% - 25px);
     height: 20px;
     position: fixed;
     display: flex;
@@ -559,14 +570,14 @@
   95% {opacity: 1; transform: translateX(0)}
 }
 
-@keyframes fadeIn { 
+@keyframes fadeIn {
   20% {border: 1px dashed rgba($white, 0.08)}
   30% {border: 1px dashed rgba($labels-accent-1, 1)}
   70% {border: 1px dashed rgba($labels-accent-1, 1)}
   80% {border: 1px dashed rgba($white, 0.08)}
 }
 
-@keyframes fadeIn2 { 
+@keyframes fadeIn2 {
   50% {border: 1px dashed rgba($white, 0.08)}
   60% {border: 1px dashed rgba($labels-accent-2, 1)}
   70% {border: 1px dashed rgba($labels-accent-2, 1)}
