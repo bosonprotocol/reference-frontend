@@ -70,30 +70,29 @@ function slide2() {
 }
 
 function slide3() {
-    return (
-        <>
-            <div className="top">
-                <div className="logo flex jc-center">
-                    <img
-                        src="images/leptonite/leptonite.png"
-                        alt="Leptonite Logo"
-                        className="pe-none"
-                    />
-                </div>
-                <h2 className="ta-center">Welcome to Leptonite</h2>
-            </div>
-            <div className="slide-image center-flex">
-                
-            </div>
-            <div className="text flex column ai-center">
-                <p className="number">3</p>
-                <h1>Disclaimer</h1>
-                <p className="ta-center color-secondary">
-                    This is placeholder text for where our disclaimer and checkbox for accepting the disclaimer's terms will be.
-                </p>
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="top">
+        <div className="logo flex jc-center">
+          <img
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
+            className="pe-none"
+          />
+        </div>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
+      </div>
+      <div className="slide-image center-flex"></div>
+      <div className="text flex column ai-center">
+        <p className="number">3</p>
+        <h1>Disclaimer</h1>
+        <p className="ta-center color-secondary">
+          This is placeholder text for where our disclaimer and checkbox for
+          accepting the disclaimer's terms will be.
+        </p>
+      </div>
+    </>
+  );
 }
 
 function slide4(completeOnboarding) {
