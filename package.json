@@ -1,7 +1,8 @@
 {
-  "name": "boson-protocol",
-  "description": "An example front-end application for Boson Protocol",
+  "name": "leptonite",
+  "description": "A demo marketplace powered by Boson Protocol.",
   "keywords": [
+    "leptonite",
     "boson",
     "boson protocol",
     "reference",

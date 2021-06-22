@@ -45,35 +45,35 @@ function slide1() {
 }
 
 function slide2() {
-    return (
-        <>
-            <div className="top">
-                <div className="logo flex jc-center">
-                    <img
-                        src="images/onboarding/leptonite-main.png"
-                        alt="Boson Protocol Logo"
-                        className="pe-none"
-                    />
-                </div>
-                <h2 className="ta-center">Welcome to Boson Protocol</h2>
-            </div>
-            <div className="slide-image center-flex">
-                <FakeEscrowTable/>
-            </div>
-            <div className="text flex column ai-center">
-                <p className="number">2</p>
-                <h1>Boson Protocol escrow </h1>
-                <p className="ta-center color-secondary">
-                    The escrow is governed by the Core Exchange Mechanism which takes
-                    deposits from both supplier and buyer to grow trust in a p2p
-                    exchange.
-                </p>
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="top">
+        <div className="logo flex jc-center">
+          <img
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
+            className="pe-none"
+          />
+        </div>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
+      </div>
+      <div className="slide-image center-flex">
+        <FakeEscrowTable />
+      </div>
+      <div className="text flex column ai-center">
+        <p className="number">2</p>
+        <h1>Boson Protocol escrow </h1>
+        <p className="ta-center color-secondary">
+          The escrow is governed by the Core Exchange Mechanism which takes
+          deposits from both supplier and buyer to grow trust in a p2p
+          exchange. 
+        </p>
+      </div>
+    </>
+  );
 }
 
-function slide3(completeOnboarding) {
+function slide3() {
     return (
         <>
             <div className="top">
@@ -127,6 +127,60 @@ function slide3(completeOnboarding) {
     );
 }
 
+function slide4(completeOnboarding) {
+  return (
+    <>
+      <div className="top">
+        <div className="logo flex jc-center">
+          <img
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
+            className="pe-none"
+          />
+        </div>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
+      </div>
+      <div className="slide-image flex center">
+        <div className="qr-display relative">
+          <div className="scan">
+            <div className="phone-bg flex center">
+              <p>Scan the QR code</p>
+              <img
+                src="images/onboarding/onboarding-slide-3-qr.svg"
+                alt="QR Code Read"
+              />
+            </div>
+          </div>
+          <div className="show">
+            <img
+              src="images/onboarding/onboarding-slide-3-show.svg"
+              alt="Show QR Code"
+            />
+          </div>
+          <div className="background">
+            <img src="images/onboarding/onboarding-slide-3-net.svg" alt="Net" />
+          </div>
+        </div>
+      </div>
+      <div className="text flex column ai-center">
+        <p className="number">4</p>
+        <h1>Redeem</h1>
+        <p className="ta-center color-secondary">
+          When handing over the item the buyer signs the redemption to transfer
+          funds to the seller.
+        </p>
+      </div>
+      <div
+        className="button primary"
+        role="button"
+        onClick={completeOnboarding}
+      >
+        START
+      </div>
+    </>
+  );
+}
+
 function Onboarding(props) {
     const initialSlide = localStorage.getItem("onboarding-slide");
 
@@ -142,7 +196,7 @@ function Onboarding(props) {
         localStorage.setItem("onboarding-slide", currentSlide.toString());
     };
 
-    const sequence = [slide1, slide2, slide3];
+  const sequence = [slide1, slide2, slide3, slide4];
 
     return (
         <section className="onboarding relative">
