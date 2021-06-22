@@ -40,13 +40,13 @@
 
 .onboarding {
   max-width: 100%;
-  background-color: #181A29;
 
   .container {
     //max-width: clamp(700px, 80vw, 1200px);
     max-width: 100%;
-    padding: 0 82px;
+    padding: 0;
   }
+
   max-height: 100vh;
 
   .awssld__content {
@@ -62,10 +62,15 @@
     .column-holder {
       flex: 1;
 
+      &.main-column {
+        padding-left: 84px;
+      }
+
       &.animated-column {
-        background-image: url('../../assets/onboarding/slide-1.png');
-        background-position: center center;
+        background-image: url('../../assets/onboarding/bg-onboarding desktop-1.png');
+        background-size: auto 100%;
         background-repeat: no-repeat;
+        background-position: left top;
       }
     }
 
@@ -76,10 +81,12 @@
         margin-top: 9px;
       }
     }
+
     .top {
       min-height: 125px;
       margin-bottom: 20px;
     }
+
     .slide-image {
       height: calc(100% - (125px + 175px + min(5vh, 86px)));
       min-height: 250px;
@@ -95,9 +102,11 @@
         }
       }
     }
+
     .text {
       min-height: 175px;
       margin-top: -20px;
+      align-items: flex-start;
     }
 
     @media (max-width: 768px) {
@@ -114,6 +123,8 @@
   h1, p {
     z-index: 2;
     text-align: center;
+    margin-top: 40px;
+    font-family: 'Exo', sans-serif;
   }
 
   .text {
@@ -122,25 +133,16 @@
       font-weight: 300;
       font-family: $font-secondary;
       line-height: 0.5;
-      transform: translateY(50%);
       position: relative;
       opacity: 0.2;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: -18%;
-        right: 0;
-        bottom: -34%;
-        left: 0;
-
-        background: rgba($background-primary, 0.4);
-        background: linear-gradient(to top, $background-primary 0%, transparent 100%)
-
-      }
+      margin-top: 80px;
+      margin-left: -10px;
     }
+
     p:not(.number) {
       margin-top: 12px;
+      width: 50%;
+      text-align: left;
     }
   }
 
@@ -152,6 +154,12 @@
     }
   }
 
+  .footer {
+    font-family: 'Barlow', sans-serif;
+    bottom: 36px;
+    position: absolute;
+  }
+
   .qr-display {
     .show {
       position: absolute;
@@ -160,6 +168,7 @@
       transform: translate(-5px);
       opacity: 0.5;
     }
+
     .scan {
       position: absolute;
       top: 20%;
@@ -192,53 +201,65 @@
     .show {
       animation: show-move 3.8s 100ms ease-in-out infinite;
     }
+
     .scan {
       animation: scan-move 3.8s 280ms ease-in-out infinite;
     }
+
     .phone-bg img {
       animation: qr-scan 3.8s 280ms ease-in-out infinite;
     }
+
     .diagram-content {
       .field {
-        animation: success 6s  ease-in-out infinite;
+        animation: success 6s ease-in-out infinite;
       }
+
       .seller .block {
-        animation: blockForward 6s  ease-in-out infinite;
+        animation: blockForward 6s ease-in-out infinite;
 
         &::after {
-          animation: fadeOut 6s  ease-in-out infinite;
+          animation: fadeOut 6s ease-in-out infinite;
         }
       }
+
       .buyer .block {
-        animation: blockBackwards 6s  ease-in-out infinite;
+        animation: blockBackwards 6s ease-in-out infinite;
 
         &::before {
-          animation: fadeOut2 6s  ease-in-out infinite;
+          animation: fadeOut2 6s ease-in-out infinite;
         }
       }
+
       .block.empty {
         &.seller {
-          animation: fadeIn 6s  ease-in-out infinite;
+          animation: fadeIn 6s ease-in-out infinite;
         }
+
         &.buyer {
-          animation: fadeIn2 6s  ease-in-out infinite;
+          animation: fadeIn2 6s ease-in-out infinite;
         }
       }
     }
+
     &.pause {
       .show {
         animation-play-state: paused;
       }
+
       .scan {
         animation-play-state: paused;
       }
+
       .phone-bg img {
         animation-play-state: paused;
       }
+
       .diagram-content {
         .field {
           animation-play-state: paused;
         }
+
         .seller .block {
           animation-play-state: paused;
 
@@ -246,6 +267,7 @@
             animation-play-state: paused;
           }
         }
+
         .buyer .block {
           animation-play-state: paused;
 
@@ -253,10 +275,12 @@
             animation-play-state: paused;
           }
         }
+
         .block.empty {
           &.seller {
             animation-play-state: paused;
           }
+
           &.buyer {
             animation-play-state: paused;
           }
@@ -278,11 +302,7 @@
     transition: 0.2s ease-in-out;
     position: absolute;
     z-index: 2;
-    width: 40px;
-    height: 40px;
-    border-top: 3px solid #80F0BE;
-    border-left: 3px solid #80F0BE;
-    top: 50%;
+    cursor: pointer;
 
     @media (max-width: 768px) {
       width: 20px;
@@ -306,13 +326,37 @@
       display: none;
     }
   }
+
   .swiper-button-next {
-    right: 8px;
-    transform: translateY(-50%) rotate(135deg);
+    left: 80px;
+    bottom: 200px;
+    width: 92px;
+    height: 44px;
+    background-color: #80F0BE;
+    border-radius: 8px;
+
+    &::after {
+      content: "NEXT";
+      color: black;
+      display: block;
+      text-align: center;
+      height: 44px;
+      line-height: 44px;
+    }
   }
+
+  .complete-onboarding {
+    position: absolute;
+    left: 80px;
+    bottom: 200px;
+    width: 92px;
+    height: 44px;
+    background-color: #80F0BE;
+    border-radius: 8px;
+  }
+
   .swiper-button-prev {
-    left: 8px;
-    transform: translateY(-50%) rotate(-45deg);
+    display: none;
   }
 
   .swiper-slide {
@@ -350,7 +394,6 @@
           }
 
           .logo {
-            height: clamp(55px, 21vw, 80px);
 
             @media (max-width: 374px) {
               height: 57px;
@@ -358,7 +401,15 @@
           }
 
           h2 {
-            margin-top: clamp(10px, 2vh, 30px);
+            margin-top: 80px;
+            font-size: 40px;
+            font-weight: 400;
+            font-family: 'Montserrat', sans-serif;
+
+
+            span {
+              display: block;
+            }
 
             @media (max-width: 374px) {
               font-size: 16px;
@@ -397,7 +448,7 @@
 
   .swiper-pagination {
     bottom: 300px;
-    left: calc(25% - 25px);
+    left:84px;
     height: 20px;
     position: fixed;
     display: flex;
@@ -541,54 +592,142 @@
 }
 
 @keyframes blockForward {
-  0% {transform: translateX(0); opacity: 1}
-  20% {transform: translateX(calc(100% + 8px)); opacity: 1}
-  30% {transform: translateX(calc(100% + 8px)); opacity: 0.4}
-  70% {transform: translateX(calc(100% + 8px)); opacity: 0.4}
-  85% {transform: translateX(0); opacity: 1}
+  0% {
+    transform: translateX(0);
+    opacity: 1
+  }
+  20% {
+    transform: translateX(calc(100% + 8px));
+    opacity: 1
+  }
+  30% {
+    transform: translateX(calc(100% + 8px));
+    opacity: 0.4
+  }
+  70% {
+    transform: translateX(calc(100% + 8px));
+    opacity: 0.4
+  }
+  85% {
+    transform: translateX(0);
+    opacity: 1
+  }
 }
 
 @keyframes blockBackwards {
-  30% {transform: translateX(0); opacity: 1}
-  50% {transform: translateX(calc(-100% - 8px)); opacity: 1}
-  60% {transform: translateX(calc(-100% - 8px)); opacity: 0.4}
-  70% {transform: translateX(calc(-100% - 8px)); opacity: 0.4}
-  85% {transform: translateX(0); opacity: 1}
+  30% {
+    transform: translateX(0);
+    opacity: 1
+  }
+  50% {
+    transform: translateX(calc(-100% - 8px));
+    opacity: 1
+  }
+  60% {
+    transform: translateX(calc(-100% - 8px));
+    opacity: 0.4
+  }
+  70% {
+    transform: translateX(calc(-100% - 8px));
+    opacity: 0.4
+  }
+  85% {
+    transform: translateX(0);
+    opacity: 1
+  }
 }
 
 @keyframes fadeOut {
-  0% {opacity: 1; transform: translateX(0)}
-  10% {opacity: 0; transform: translateX(16px)}
-  80% {opacity: 0; transform: translateX(16px)}
-  95% {opacity: 1; transform: translateX(0)}
+  0% {
+    opacity: 1;
+    transform: translateX(0)
+  }
+  10% {
+    opacity: 0;
+    transform: translateX(16px)
+  }
+  80% {
+    opacity: 0;
+    transform: translateX(16px)
+  }
+  95% {
+    opacity: 1;
+    transform: translateX(0)
+  }
 }
 
 @keyframes fadeOut2 {
-  30% {opacity: 1; transform: translateX(0)}
-  40% {opacity: 0; transform: translateX(-10px)}
-  80% {opacity: 0; transform: translateX(-10px)}
-  95% {opacity: 1; transform: translateX(0)}
+  30% {
+    opacity: 1;
+    transform: translateX(0)
+  }
+  40% {
+    opacity: 0;
+    transform: translateX(-10px)
+  }
+  80% {
+    opacity: 0;
+    transform: translateX(-10px)
+  }
+  95% {
+    opacity: 1;
+    transform: translateX(0)
+  }
 }
 
 @keyframes fadeIn {
-  20% {border: 1px dashed rgba($white, 0.08)}
-  30% {border: 1px dashed rgba($labels-accent-1, 1)}
-  70% {border: 1px dashed rgba($labels-accent-1, 1)}
-  80% {border: 1px dashed rgba($white, 0.08)}
+  20% {
+    border: 1px dashed rgba($white, 0.08)
+  }
+  30% {
+    border: 1px dashed rgba($labels-accent-1, 1)
+  }
+  70% {
+    border: 1px dashed rgba($labels-accent-1, 1)
+  }
+  80% {
+    border: 1px dashed rgba($white, 0.08)
+  }
 }
 
 @keyframes fadeIn2 {
-  50% {border: 1px dashed rgba($white, 0.08)}
-  60% {border: 1px dashed rgba($labels-accent-2, 1)}
-  70% {border: 1px dashed rgba($labels-accent-2, 1)}
-  80% {border: 1px dashed rgba($white, 0.08)}
+  50% {
+    border: 1px dashed rgba($white, 0.08)
+  }
+  60% {
+    border: 1px dashed rgba($labels-accent-2, 1)
+  }
+  70% {
+    border: 1px dashed rgba($labels-accent-2, 1)
+  }
+  80% {
+    border: 1px dashed rgba($white, 0.08)
+  }
 }
 
 @keyframes success {
-  50% {opacity: 1; border: 1px solid rgba($accent, 0)}
-  59% {opacity: 0.8; border: 1px solid rgba($accent, 1)}
-  63% {opacity: 0.8; border: 1px solid rgba($accent, 0.3)}
-  68% {opacity: 0.8; border: 1px solid rgba($accent, 1)}
-  70% {opacity: 0.8; border: 1px solid rgba($accent, 1)}
-  83% {opacity: 1; border: 1px solid rgba($accent, 0)}
+  50% {
+    opacity: 1;
+    border: 1px solid rgba($accent, 0)
+  }
+  59% {
+    opacity: 0.8;
+    border: 1px solid rgba($accent, 1)
+  }
+  63% {
+    opacity: 0.8;
+    border: 1px solid rgba($accent, 0.3)
+  }
+  68% {
+    opacity: 0.8;
+    border: 1px solid rgba($accent, 1)
+  }
+  70% {
+    opacity: 0.8;
+    border: 1px solid rgba($accent, 1)
+  }
+  83% {
+    opacity: 1;
+    border: 1px solid rgba($accent, 0)
+  }
 }
