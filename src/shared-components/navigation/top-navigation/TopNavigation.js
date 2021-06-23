@@ -29,7 +29,6 @@ import MetaMaskLogo from "../../../assets/wallets/metamask.png";
 import WalletConnectLogo from "../../../assets/wallets/walletconnect.svg";
 
 import OfferFlowSet from "./offer-flow-set/OfferFlowSet";
-import { height } from "dom7";
 
 function TopNavigation() {
   const navigationContext = useContext(NavigationContext);
