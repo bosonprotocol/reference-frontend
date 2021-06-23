@@ -64,6 +64,11 @@
 
       &.main-column {
         padding-left: 84px;
+
+        @media (max-width: 768px) {
+          height: 50%;
+          padding: 0;
+        }
       }
 
       &.animated-column-1 {
@@ -71,6 +76,11 @@
         background-size: auto 100%;
         background-repeat: no-repeat;
         background-position: left top;
+
+        @media (max-width: 768px) {
+          height: 50%;
+          background-size: 100%;
+        }
       }
 
       &.animated-column {
@@ -260,6 +270,11 @@
 
   h1 {
     margin-top: 40px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      margin-top: 20px;
+    }
   }
 
   .text {
@@ -272,12 +287,25 @@
       opacity: 0.2;
       margin-top: 80px;
       margin-left: -10px;
+
+      @media (max-width: 768px) {
+        margin-top: 40px;
+        width: 100%;
+        font-size: 100px;
+      }
     }
 
     p:not(.number) {
       margin-top: 12px;
       width: 50%;
       text-align: left;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        padding: 0 80px;
+        font-size: 14px;
+        text-align: center;
+      }
     }
   }
 
@@ -293,6 +321,12 @@
     font-family: 'Barlow', sans-serif;
     bottom: 36px;
     position: absolute;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      text-align: center;
+      bottom: 20px;
+    }
   }
 
   .qr-display {
@@ -482,6 +516,10 @@
     .last-slide {
       display: none;
     }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   .complete-onboarding {
@@ -517,23 +555,23 @@
       flex-direction: column;
       justify-content: center;
 
+      @media (max-width: 768px) {
+        height: auto;
+        display: initial !important;
+      }
+
       .screen {
         padding-bottom: 0;
         height: 100%;
 
-        @media (max-width: 374px) {
-          height: 440px;
-          max-height: 100%;
+        @media (max-width: 768px) {
+          flex-direction: column-reverse;
         }
 
         .top {
           margin-top: #{'min(4vh, 86px)'};
           min-height: auto;
           margin-bottom: 15px;
-
-          @media (max-width: 374px) {
-            margin-top: 0;
-          }
 
           .logo {
 
@@ -555,6 +593,27 @@
 
             @media (max-width: 374px) {
               font-size: 16px;
+            }
+          }
+
+          @media (max-width: 768px) {
+            position: absolute;
+            top: 35px;
+            margin: 0;
+            width: 100%;
+            text-align: center;
+
+            .logo {
+              justify-content: center;
+            }
+
+            h2 {
+              font-size: 18px;
+              margin-top: 18px;
+
+              span {
+                display: inline-block;
+              }
             }
           }
         }
@@ -614,6 +673,12 @@
       & + .swiper-pagination-bullet {
         margin-left: 10px;
       }
+    }
+
+    @media (max-width: 768px) {
+      bottom: 60px;
+      left: 0;
+      right: 0;
     }
   }
 
