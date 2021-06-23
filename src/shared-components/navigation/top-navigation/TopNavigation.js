@@ -17,6 +17,8 @@ import {
   ROUTE,
 } from "../../../helpers/configs/Dictionary";
 
+import logo from "./../../../assets/boson/leptonite.png";
+
 import "./TopNavigation.scss";
 
 import { IconQR, Arrow } from "../../icons/Icons";
@@ -27,6 +29,7 @@ import MetaMaskLogo from "../../../assets/wallets/metamask.png";
 import WalletConnectLogo from "../../../assets/wallets/walletconnect.svg";
 
 import OfferFlowSet from "./offer-flow-set/OfferFlowSet";
+import { height } from "dom7";
 
 function TopNavigation() {
   const navigationContext = useContext(NavigationContext);
@@ -109,10 +112,16 @@ function TopNavigation() {
             !globalContext.state.onboardingCompleted ? "d-none" : ""
           }`}
         >
+
           <div className="container">
             <nav className="flex split">
+              {/* <div className="desktop">
+                <img src={logo}></img>
+              </div> */}
+              {/* <div style={{ borderWidth: "10px" }}><p>blabla</p></div> */}
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
+                // <div className="flex row" style={{marginLeft: "auto"}}>
                 <div className="flex row">
                   <WalletConnection account={account} connector={connector} />
                   {chainId ? (
@@ -143,7 +152,6 @@ function TopNavigation() {
                   </div>
                 </Link>
               ) : null}
-
               {/* NewOffer Set */}
               {navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ? (
                 <OfferFlowSet />
