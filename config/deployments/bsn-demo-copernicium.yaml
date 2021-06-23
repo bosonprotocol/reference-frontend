@@ -12,7 +12,7 @@ certificate_domain_name: "%{hiera('primary_domain_name')}"
 
 primary_address: "%{hiera('component')}-%{deployment_label}.%{hiera('primary_domain_name')}"
 other_addresses:
-  - "reference-frontend-preview.%{hiera('parent_domain_name')}"
+  - "reference-frontend-uat.%{hiera('parent_domain_name')}"
 
 # State
 parent_common_state_bucket_name: "bsn-aws-parent-account-bsn-parent-default"
