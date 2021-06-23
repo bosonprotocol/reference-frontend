@@ -324,6 +324,33 @@ namespace :ci do
     end
 
     RakeFly.define_pipeline_tasks(
+      namespace: :demo,
+      argument_names: [
+        :ci_deployment_type,
+        :ci_deployment_label
+      ]
+    ) do |t, args|
+      configuration = configuration
+        .for_scope(args.to_h.merge(role: 'demo-pipeline'))
+      ci_deployment_type = configuration.ci_deployment_identifier
+
+      t.target = configuration.concourse_team
+      t.team = configuration.concourse_team
+      t.pipeline = "reference-frontend-demo"
+
+      t.config = 'pipelines/demo/pipeline.yaml'
+
+      t.vars = configuration.vars
+      t.var_files = [
+        'config/secrets/pipeline/constants.yaml',
+        "config/secrets/pipeline/#{ci_deployment_type}.yaml"
+      ]
+
+      t.non_interactive = true
+      t.home_directory = 'build/fly'
+    end
+
+    RakeFly.define_pipeline_tasks(
       namespace: :builder,
       argument_names: [
         :ci_deployment_type,
@@ -409,6 +436,7 @@ namespace :ci do
     desc "Push all pipelines"
     task :push, [:ci_deployment_type, :ci_deployment_label] do |_, args|
       Rake::Task[:"ci:pipeline:develop:push"].invoke(*args)
+      Rake::Task[:"ci:pipeline:demo:push"].invoke(*args)
       Rake::Task[:"ci:pipeline:builder:push"].invoke(*args)
     end
   end
