@@ -13,9 +13,9 @@ vars:
   storage_bucket_region: "%{hiera('ci_storage_bucket_region')}"
   storage_bucket_encryption: "%{hiera('ci_storage_bucket_encryption')}"
 
-  demo_copernicium_provisioning_role_arn: "%{hiera('demo_copernicium_provisioning_role_arn')}"
-  demo_copernicium_deployment_type: "%{hiera('demo_copernicium_deployment_type')}"
-  demo_copernicium_deployment_label: "%{hiera('demo_copernicium_deployment_label')}"
+  development_copernicium_provisioning_role_arn: "%{hiera('development_copernicium_provisioning_role_arn')}"
+  development_copernicium_deployment_type: "%{hiera('development_copernicium_deployment_type')}"
+  development_copernicium_deployment_label: "%{hiera('development_copernicium_deployment_label')}"
 
   slack_success_channel: "#builds"
   slack_success_message: "<%{hiera('concourse_url')}/builds/$BUILD_ID|$BUILD_TEAM_NAME:$BUILD_PIPELINE_NAME:$BUILD_JOB_NAME [$BUILD_NAME]> _successful_! :clap:."
