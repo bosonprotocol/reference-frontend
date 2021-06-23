@@ -67,10 +67,10 @@
       }
 
       &.animated-column-1 {
-          background-image: url('../../assets/onboarding/bg-onboarding desktop-1.png');
-          background-size: auto 100%;
-          background-repeat: no-repeat;
-          background-position: left top;
+        background-image: url('../../assets/onboarding/bg-onboarding desktop-1.png');
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        background-position: left top;
       }
 
       &.animated-column {
@@ -78,6 +78,131 @@
         background-size: auto 100%;
         background-repeat: no-repeat;
         background-position: left top;
+
+        .policy-holder {
+          margin-top: 33%;
+          font-family: 'Barlow', sans-serif;
+
+          .divider {
+            height: 1px;
+            padding: 20px;
+            margin: 0 84px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          }
+
+          .policy-text {
+            font-size: 14px;
+
+            .policy-header {
+              padding: 20px 0;
+              font-weight: bold;
+              margin-left: 84px;
+              margin-right: 84px;
+            }
+
+            .policy-content {
+              height: 300px;
+              overflow: scroll;
+              margin-left: 84px;
+              margin-right: 84px;
+              padding-right: 40px;
+            }
+          }
+
+          .accept-policy-holder {
+            padding: 60px 84px;
+
+            :root {
+              --color: rebeccapurple;
+              --disabled: #959495;
+            }
+
+            *,
+            *:before,
+            *:after {
+              box-sizing: border-box;
+            }
+
+            .checkbox {
+              display: grid;
+              grid-template-columns: min-content auto;
+              grid-gap: 0.5em;
+              font-size: 2rem;
+              color: var(--color);
+              padding: 10px 20px;
+              background: black;
+              width: 320px;
+              border-radius: 10px;
+              opacity: 0.8;
+
+              &--disabled {
+                color: var(--disabled);
+              }
+            }
+
+            .checkbox__control {
+              display: inline-grid;
+              width: 1em;
+              height: 1em;
+              border-radius: 0.25em;
+              border: 0.1em solid white;
+
+              svg {
+                transition: transform 0.1s ease-in 25ms;
+                transform: scale(0);
+                transform-origin: bottom left;
+              }
+            }
+
+            .checkbox__input {
+              display: grid;
+              grid-template-areas: "checkbox";
+              align-items: center;
+              cursor: pointer;
+
+              > * {
+                grid-area: checkbox;
+              }
+
+              input {
+                opacity: 0;
+                width: 1em;
+                height: 1em;
+
+                &:focus + .checkbox__control {
+                  box-shadow: 0 0 0 0.05em #80F0BE, 0 0 0.15em 0.1em #80F0BE;
+                }
+
+                &:checked + .checkbox__control svg {
+                  transform: scale(1);
+                }
+
+                &:disabled + .checkbox__control {
+                  color: var(--disabled);
+                }
+              }
+            }
+
+            .radio__label {
+              font-size: 14px;
+              line-height: 45px;
+
+              a {
+                color: #80F0BE;
+              }
+            }
+
+            body {
+              min-height: 100vh;
+              display: grid;
+              place-content: center;
+              grid-gap: 2rem;
+              padding: 1rem;
+              line-height: 1;
+            }
+
+          }
+        }
       }
     }
 
@@ -353,16 +478,23 @@
       height: 44px;
       line-height: 44px;
     }
+
+    .last-slide {
+      display: none;
+    }
   }
 
   .complete-onboarding {
     position: absolute;
     left: 80px;
-    bottom: 200px;
+    bottom: 10%;
     width: 92px;
     height: 44px;
     background-color: #80F0BE;
     border-radius: 8px;
+    text-align: center;
+    line-height: 44px;
+    color: black;
   }
 
   .swiper-button-prev {
@@ -458,7 +590,7 @@
 
   .swiper-pagination {
     bottom: 20%;
-    left:84px;
+    left: 84px;
     height: 20px;
     position: fixed;
     display: flex;
