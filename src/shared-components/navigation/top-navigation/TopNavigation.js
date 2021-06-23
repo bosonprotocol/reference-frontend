@@ -115,12 +115,12 @@ function TopNavigation() {
 
           <div className="container">
             <nav className="flex split">
-              <div className="desktop">
+              <div className="desktop-only">
                 <img src={logo} style={{ height: "40px" }}></img>
               </div>
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-                <div className="flex row float-left-desktop">
+                <div className="flex row float-right-desktop inherit-ml-mobile">
                   <WalletConnection account={account} connector={connector} />
                   {chainId ? (
                     <div className="network-info flex center">
@@ -144,7 +144,7 @@ function TopNavigation() {
 
               {/* QR Reader button */}
               {navigationContext.state.top[AFFMAP.QR_CODE_READER] ? (
-                <Link to={ROUTE.CodeScanner}>
+                <Link to={ROUTE.CodeScanner} className="inherit-ml-mobile ml-10-desktop">
                   <div className="qr-icon" role="button">
                     <IconQR color="#8393A6" noBorder />
                   </div>
