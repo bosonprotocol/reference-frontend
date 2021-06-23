@@ -36,8 +36,8 @@ export const useVoucherStatusBlocks = (
       const cancelFaultPeriod =
         await voucherKernalContract.getCancelFaultPeriod();
 
-      const complainPeriodStart = voucherStatus.complainPeriodStart;
-      const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
+      const complainPeriodStart = voucherStatus[3];
+      const cancelFaultPeriodStart = voucherStatus[4];
 
       let waitPeriodStart;
       let waitPeriod;
