@@ -1,7 +1,7 @@
 .message {
   position: fixed;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   top: 0;
   right: 0;
   bottom: 0;
@@ -11,12 +11,22 @@
 
   .container {
     bottom: 0;
-    left: 0;
     height: 500px;
-    padding-bottom: 66px;
+    padding: 66px;
+    background: #12161B;
+    width: 70%;
+    flex: none;
+    border-radius: 14px;
+    border: 1px solid #2D3743;
 
     .action .button {
       position: relative;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+      background: transparent;
+      border: none;
     }
   }
 

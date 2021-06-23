@@ -10,7 +10,9 @@ import { determineCurrentStatusOfVoucher } from "../helpers/parsers/VoucherAndSe
 
 export const useVoucherStatusBlocks = (
   voucherDetails,
-  setHideControlButtonsWaitPeriodExpired
+  setHideControlButtonsWaitPeriodExpired,
+  expiryStatus,
+  extendedStatuses = true
 ) => {
   const [statusBlocks, setStatusBlocks] = useState(voucherDetails ? [] : false);
   const voucherKernalContract = useVoucherKernalContract();
@@ -20,21 +22,22 @@ export const useVoucherStatusBlocks = (
     if (
       voucherDetails &&
       !voucherDetails.FINALIZED &&
-      voucherDetails._tokenIdVoucher
+      voucherDetails._tokenIdVoucher &&
+      expiryStatus
     ) {
       if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
         return newStatusBlocks;
       }
-      const voucherStatus = await voucherKernalContract.vouchersStatus(
+      const voucherStatus = await voucherKernalContract.getVoucherStatus(
         ethers.BigNumber.from(voucherDetails._tokenIdVoucher)
       );
       const currentStatus = determineCurrentStatusOfVoucher(voucherDetails);
+      const complainPeriod = await voucherKernalContract.getComplainPeriod();
+      const cancelFaultPeriod =
+        await voucherKernalContract.getCancelFaultPeriod();
 
-      const complainPeriod = await voucherKernalContract.complainPeriod();
-      const cancelFaultPeriod = await voucherKernalContract.cancelFaultPeriod();
-
-      const complainPeriodStart = voucherStatus.complainPeriodStart;
-      const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
+      const complainPeriodStart = voucherStatus[3];
+      const cancelFaultPeriodStart = voucherStatus[4];
 
       let waitPeriodStart;
       let waitPeriod;
@@ -85,7 +88,11 @@ export const useVoucherStatusBlocks = (
           timeAvailable
         );
 
-        if (!(currentStatus === STATUS.EXPIRED) && diffInPercentage >= 100) {
+        if (
+          !(currentStatus === STATUS.EXPIRED) &&
+          diffInPercentage >= 100 &&
+          setHideControlButtonsWaitPeriodExpired
+        ) {
           setHideControlButtonsWaitPeriodExpired(true);
         }
         const expiryProgress = voucherDetails && diffInPercentage + "%";
@@ -110,6 +117,7 @@ export const useVoucherStatusBlocks = (
             color: 4,
             progress: expiryProgress,
             status: currentStatus.status,
+            extended: extendedStatuses,
           }),
         ];
       }
@@ -128,6 +136,7 @@ export const useVoucherStatusBlocks = (
                 title: "COMMITED",
                 date: voucherDetails.COMMITTED,
                 color: 1,
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.REDEEMED)
@@ -136,6 +145,7 @@ export const useVoucherStatusBlocks = (
                 title: "REDEMPTION SIGNED",
                 date: voucherDetails.REDEEMED,
                 color: 2,
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.REFUNDED)
@@ -144,6 +154,7 @@ export const useVoucherStatusBlocks = (
                 title: "REFUND TRIGGERED",
                 date: voucherDetails.REFUNDED,
                 color: 5,
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.COMPLAINED)
@@ -152,14 +163,16 @@ export const useVoucherStatusBlocks = (
                 title: "COMPLAINT MADE",
                 date: voucherDetails.COMPLAINED,
                 color: 3,
+                extended: extendedStatuses,
               })
             );
           if (voucherDetails.CANCELLED)
             newStatusBlocks.push(
               singleStatusComponent({
-                title: "CANCEL OR FAULT ADMITTED",
+                title: "CANCLE OR FAULT ADMITTED",
                 date: voucherDetails.CANCELLED,
                 color: 4,
+                extended: extendedStatuses,
               })
             );
 
@@ -167,14 +180,16 @@ export const useVoucherStatusBlocks = (
             newStatusBlocks.sort((a, b) => (a.date > b.date ? 1 : -1));
 
           if (voucherDetails.FINALIZED) {
-            newStatusBlocks.push(
-              finalStatusComponent(
-                !!voucherDetails.REDEEMED,
-                !!voucherDetails.COMPLAINED,
-                !!voucherDetails.CANCELLED,
-                voucherDetails.FINALIZED
-              )
+            const finalStatusComp = finalStatusComponent(
+              !!voucherDetails.REDEEMED,
+              !!voucherDetails.COMPLAINED,
+              !!voucherDetails.CANCELLED,
+              voucherDetails.FINALIZED,
+              extendedStatuses
             );
+            newStatusBlocks = extendedStatuses
+              ? [...newStatusBlocks, finalStatusComp]
+              : [finalStatusComp];
           }
         }
         const withWaitPeriodBox = await resolveWaitPeriodStatusBox(
@@ -191,27 +206,38 @@ export const useVoucherStatusBlocks = (
   return statusBlocks;
 };
 
-function singleStatusComponent({ title, date, color, progress, status }) {
+function singleStatusComponent({
+  title,
+  date,
+  color,
+  progress,
+  status,
+  extended,
+}) {
   const jsx = (
     <div key={title} className={`status-block color_${color}`}>
       <h3 className="status-name">
         {title}
-        {progress ? <div className="progress"></div> : null}
+        {progress && extended ? <div className="progress"></div> : null}
       </h3>
       <p className="status-details">
-        {!progress || (progress && status === STATUS.COMMITED)
-          ? formatDate(date, "string")
-          : `${
-              new Date(date).getTime() - new Date().getTime() > 0
-                ? humanizeDuration(
-                    new Date(date).getTime() - new Date().getTime(),
-                    {
-                      round: true,
-                      largest: 1,
-                    }
-                  )
-                : "Finished"
-            }`}
+        {extended ? (
+          <div>
+            {!progress || (progress && status === STATUS.COMMITED)
+              ? formatDate(date, "string")
+              : `${
+                  new Date(date).getTime() - new Date().getTime() > 0
+                    ? humanizeDuration(
+                        new Date(date).getTime() - new Date().getTime(),
+                        {
+                          round: true,
+                          largest: 1,
+                        }
+                      )
+                    : "Finished"
+                }`}
+          </div>
+        ) : null}
       </p>
     </div>
   );
@@ -222,7 +248,8 @@ function finalStatusComponent(
   hasBeenRedeemed,
   hasBeenComplained,
   hasBeenCancelOrFault,
-  expiredDate
+  expiredDate,
+  extended
 ) {
   const jsx = (
     <div className={`status-block`}>
@@ -238,15 +265,17 @@ function finalStatusComponent(
           <h3 className="status-name color_4">NO COMPLAINT</h3>
         )}
         {hasBeenCancelOrFault ? (
-          <h3 className="status-name color_5">CANCEL/FAULT</h3>
+          <h3 className="status-name color_5">COF</h3>
         ) : (
-          <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
+          <h3 className="status-name color_6">NO COF</h3>
         )}
       </div>
-      <p className="status-details">{`Finalised on ${formatDate(
-        expiredDate,
-        "string"
-      )}`}</p>
+      {extended ? (
+        <p className="status-details">{`Finalised on ${formatDate(
+          expiredDate,
+          "string"
+        )}`}</p>
+      ) : null}
     </div>
   );
   return { jsx, date: expiredDate };

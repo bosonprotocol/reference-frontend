@@ -1,31 +1,48 @@
-[![banner](docs/assets/banner.png)](https://bosonprotocol.io)
+[![banner](docs/assets/banner.png)](https://leptonite.io)
 
-<h1 align="center">Boson Protocol Reference Frontend</h1>
+<h1 align="center">Leptonite - Powered by Boson Protocol</h1>
 
-![](https://img.shields.io/badge/Coverage-6%25-733B27.svg?prefix=$coverage$)
 [![Gitter chat](https://badges.gitter.im/bosonprotocol.png)](https://gitter.im/bosonprotocol/community)
 
-This is a reference app meant to show how to integrate Boson into a React front-end. Questions and comments encouraged!
+This is a reference application which demonstrates how to integrate Boson Protocol into a React front-end.
 
+This reference app may be used as a template for building your own marketplace powered by Boson Protocol. Users can connect their wallets and list a set of items as a seller, as well as discover products that can be purchased as a buyer. The application also demonstrates how to the transaction lifecycle can be tracked and co-ordinated by both parties.
+
+---
 **Table of Contents**:
 
+- [Design & Architecture](#design--architecture)
 - [Local Development](#local-development)
-- [Testing](#testing)
-- [Code Linting](#code-linting)
-- [Front-end Doc](#front-end-doc)
-  - [Offer Flow](#offer-flow)
-    - [`src/views/new-offer/NewOffer.js`](#componentsnewofferjs)
-    - [Configuring input fields](#configuring-input-fields)
-    - [`src/helpers/configs/Dictionary.js`](#helpersdictionaryjs)
+  - [Prerequisites](#prerequisites)
+  - [Configuration](#configuration)
+  - [Build](#build)
+  - [Run](#run)
+  - [Test](#test)
+  - [Code Linting & Formatting](#code-linting--formatting)
 - [Contributing](#contributing)
 - [License](#license)
 
+---
+## Design & Architecture
+
+The application architecture is as depicted below. There are various components to this:
+- `Frontend`
+- `Backend` (details can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
+    - `Server`
+    - `Database`
+    - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization.
+    - `Event Listeners` - This listens for blockchain events and updates the backend accordingly.
+- `Smart contracts` (details can be found in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
+
+[![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
+
+---
 ## Local Development
 
 ### Prerequisites
 
-For local development of the reference-backend, your development machine will need a few
-tools installed.
+For local development of the reference-frontend, your development machine will need a few
+tools installed. These will allow you to run the ruby scripts (executed as `./go [args]`) to build and test the project.
 
 At a minimum, you'll need:
 * Node (12.20)
@@ -35,24 +52,21 @@ At a minimum, you'll need:
 * Git
 * Docker
 * direnv
+   * This easily allows environment variables to be switched when navigating between project directories (e.g. `contracts`, `reference-backend` and `reference-frontend`). You will be prompted to run `direnv allow` to enable this.
 
 For instructions on how to get set up with these specific versions:
 * See the [OS X guide](docs/setup/osx.md) if you are on a Mac.
 * See the [Linux guide](docs/setup/linux.md) if you use a Linux distribution.
 
-### Running the app locally
+---
+### Configuration
+Prior to running the application, you must set up a `.env` file in the project's root directory with the following environment variables:
+ - `REACT_APP_BACKEND_BASE_URL` - This is a URL for the reference backend.
+ - `REACT_APP_FRONT_END_LOCALSTORAGE_VERSION` - This is the version of the local storage buster (can be defaulted to "1.0").
+ - `GENERATE_SOURCEMAP` - This is a boolean and can be defaulted to false.
 
-To run the app, run the following:
-
-```shell script
-npm install
-npm run start
-```
-
-A browser window will open at http://localhost:3000/ with a live version of the 
-code. You're all set to edit and have it rerender there.
-
-### Running the build
+---
+### Build
 
 We have a fully automated local build process to check that your changes are
 good to be merged. To run the build:
@@ -71,7 +85,20 @@ To fetch dependencies:
 ./go dependencies:install
 ```
 
-## Testing
+---
+### Run
+To run the app, execute the following commands from the root directory:
+
+```shell script
+npm install
+npm run start
+```
+
+A browser window will open at http://localhost:3000/ with a live version of the 
+code. You're all set to edit and have it rerender there.
+
+---
+### Test
 
 All tests are written using [Jest](https://jestjs.io/).
 
@@ -81,7 +108,8 @@ To run the unit tests:
 ./go tests:unit
 ```
 
-## Code Linting
+---
+### Code Linting & Formatting
 
 Both the app itself and the tests are linted and formatted as part of
 the build process.
@@ -124,34 +152,7 @@ Similarly, for the tests, to perform the same tasks:
 ./go tests:format_fix
 ```
 
-## Front-end Doc
-
-### Offer Flow
-
-The flow is using context (and will use localstorage) for state management.
-
-#### `src/views/new-offer/NewOffer.js`
-This is where the form is registered, and it's data is navigated.
-
-'screens' defines the order of the screens
-
-The function 'updateData' will send an object with property: value of the field changed and its' value.
-
-On activeScreen change, we fire useEffect, which will bind event listener (which is either 'input' or 'change') to the active input fields.
-
-The component returns TOP NAVIGATION, SCREEN, and BOTTOM NAVIGATION. SCREEN is dynamic.
-
-#### Configuring input fields
-To change, add, or remove an input field:
-1. Refer to desired screen (defined in 'screens' constant)
-2. When making changes - make sure the field has a 'name' attribute. Assign a corresponding property in the 'NAME' object in 'src/helpers/configs/Dictionary.js'.
--If you are removing a field - remove its' property from 'NAME'
--If you want to store the field's value in the context - assign a new property in 'NAME' and bind it to the field's name attribute.
-
-
-#### `src/helpers/configs/Dictionary.js`
-'NAME' object is assigned to context and used to store data from the form. If you modify the fields here, there is no need to update any other logic, for the submission to work fine.
-
+---
 ## Contributing
 
 We welcome contributions! Until now, Boson Protocol has been largely worked on by a small dedicated team. However, the ultimate goal is for all of the Boson Protocol repositories to be fully owned by the community and contributors. Issues, pull requests, suggestions, and any sort of involvement are more than welcome.
@@ -164,6 +165,7 @@ All PRs must pass all tests before being merged.
 
 By being in this community, you agree to the [Code of Conduct](CODE_OF_CONDUCT.md). Take a look at it, if you haven't already.
 
+---
 ## License
 
 Licensed under [LGPL v3](LICENSE).

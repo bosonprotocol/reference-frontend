@@ -21,7 +21,7 @@ export const authenticateUser = async (
     { name: "verifyingContract", type: "address" },
   ];
   const domain = {
-    name: "Boson Protocol",
+    name: "Leptonite",
     version: "1",
     chainId: chainId,
     verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",

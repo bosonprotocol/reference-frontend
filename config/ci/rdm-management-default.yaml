@@ -11,5 +11,5 @@ concourse_url: "https://ci-server.rdm-management.redeemeum.io"
 
 image_repository_base_url: "%{hiera('rdm_management_account_id')}.dkr.ecr.%{hiera('region')}.amazonaws.com"
 
-node_builder_image_repository_name: "rdm/node-14-builder"
+node_builder_image_repository_name: "rdm/node-12-builder"
 node_builder_image_repository_url: "%{hiera('image_repository_base_url')}/%{hiera('node_builder_image_repository_name')}"

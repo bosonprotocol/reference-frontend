@@ -12,12 +12,7 @@ function NewOfferCategory({ inputValueReceiver }) {
   );
 
   const setCategory = (el, id, index) => {
-    setIsCategoryActive((prev) => {
-      prev = prev.map((x) => false);
-      prev[index] = true;
-      return prev;
-    });
-
+    setIsCategoryActive(isCategoryActive.map((x, i) => i === index));
     inputValueReceiver(id);
   };
 
@@ -39,7 +34,7 @@ function NewOfferCategory({ inputValueReceiver }) {
         </li>
       ))
     );
-  }, []);
+  }, [isCategoryActive]);
 
   return (
     <div ref={categoryList} className="categories">

@@ -15,12 +15,12 @@ function slide1() {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
             className="pe-none"
           />
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
       </div>
       <div className="slide-image flex center">
         <img
@@ -46,12 +46,12 @@ function slide2() {
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
             className="pe-none"
           />
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
       </div>
       <div className="slide-image center-flex">
         <FakeEscrowTable />
@@ -69,18 +69,44 @@ function slide2() {
   );
 }
 
-function slide3(completeOnboarding) {
+function slide3() {
   return (
     <>
       <div className="top">
         <div className="logo flex jc-center">
           <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
             className="pe-none"
           />
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
+      </div>
+      <div className="slide-image center-flex"></div>
+      <div className="text flex column ai-center">
+        <p className="number">3</p>
+        <h1>Disclaimer</h1>
+        <p className="ta-center color-secondary">
+          This is placeholder text for where our disclaimer and checkbox for
+          accepting the disclaimer's terms will be.
+        </p>
+      </div>
+    </>
+  );
+}
+
+function slide4(completeOnboarding) {
+  return (
+    <>
+      <div className="top">
+        <div className="logo flex jc-center">
+          <img
+            src="images/leptonite/leptonite.png"
+            alt="Leptonite Logo"
+            className="pe-none"
+          />
+        </div>
+        <h2 className="ta-center">Welcome to Leptonite</h2>
       </div>
       <div className="slide-image flex center">
         <div className="qr-display relative">
@@ -105,7 +131,7 @@ function slide3(completeOnboarding) {
         </div>
       </div>
       <div className="text flex column ai-center">
-        <p className="number">3</p>
+        <p className="number">4</p>
         <h1>Redeem</h1>
         <p className="ta-center color-secondary">
           When handing over the item the buyer signs the redemption to transfer
@@ -138,7 +164,7 @@ function Onboarding(props) {
     localStorage.setItem("onboarding-slide", currentSlide.toString());
   };
 
-  const sequence = [slide1, slide2, slide3];
+  const sequence = [slide1, slide2, slide3, slide4];
 
   return (
     <section className="onboarding relative">
