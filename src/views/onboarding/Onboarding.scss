@@ -98,6 +98,11 @@
             padding: 20px;
             margin: 0 84px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+            @media (max-width: 768px) {
+              display: none;
+            }
+
           }
 
           .policy-text {
@@ -108,6 +113,10 @@
               font-weight: bold;
               margin-left: 84px;
               margin-right: 84px;
+
+              @media (max-width: 768px) {
+                margin-left: 15px;
+              }
             }
 
             .policy-content {
@@ -116,6 +125,14 @@
               margin-left: 84px;
               margin-right: 84px;
               padding-right: 40px;
+
+              @media (max-width: 768px) {
+                height: 140px;
+                overflow: scroll;
+                margin-left: 15px;
+                margin-right: 15px;
+                padding-right: 40px;
+              }
             }
           }
 
@@ -211,7 +228,23 @@
               line-height: 1;
             }
 
+            @media (max-width: 768px) {
+              padding: 0 15px;
+              width: 100%;
+
+              .checkbox {
+                width: 100%;
+                padding: 0 15px;
+                margin-top: 5px;
+              }
+            }
+
           }
+        }
+
+        @media (max-width: 768px) {
+          height: 50%;
+          background-size: 100%;
         }
       }
     }
@@ -260,6 +293,7 @@
         }
       }
     }
+
   }
 
   h1, p {
@@ -292,6 +326,7 @@
         margin-top: 40px;
         width: 100%;
         font-size: 100px;
+        margin-left: 0;
       }
     }
 
@@ -458,14 +493,6 @@
     }
   }
 
-  @media (max-width: 768px) {
-    .swiper-slide:last-of-type {
-      .slide-image {
-        margin-top: -50px !important;
-      }
-    }
-  }
-
   .swiper-button-next,
   .swiper-button-prev {
     transition: 0.2s ease-in-out;
@@ -533,6 +560,21 @@
     text-align: center;
     line-height: 44px;
     color: black;
+
+    @media (max-width: 768px) {
+      position: absolute;
+      left: 0;
+      margin: 0 auto;
+      bottom: 92px;
+      width: 92px;
+      height: 44px;
+      background-color: #80F0BE;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 44px;
+      color: black;
+      right: 0;
+    }
   }
 
   .swiper-button-prev {
@@ -623,6 +665,11 @@
           margin-bottom: -15px;
           height: 100vh;
           min-height: auto;
+
+          @media (max-width: 768px) {
+            height: 60vh;
+            padding: 0 40px;
+          }
         }
 
         .text {
@@ -685,6 +732,7 @@
   .boson-logo {
     margin-right: 7px;
   }
+
 }
 
 @keyframes show-move {
