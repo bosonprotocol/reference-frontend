@@ -116,9 +116,9 @@ jobs:
         file: source/pipelines/demo/provision-website/task.yaml
         params:
           GPG_KEY: ((gpg_key))
-          PROVISIONING_ROLE_ARN: ((development_copernicium_provisioning_role_arn))
-          DEPLOYMENT_TYPE: ((development_copernicium_deployment_type))
-          DEPLOYMENT_LABEL: ((development_copernicium_deployment_label))
+          PROVISIONING_ROLE_ARN: ((demo_copernicium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((demo_copernicium_deployment_type))
+          DEPLOYMENT_LABEL: ((demo_copernicium_deployment_label))
 
     on_success: *on_success
     on_failure: *on_failure
@@ -138,9 +138,9 @@ jobs:
         file: source/pipelines/demo/provision-content/task.yaml
         params:
           GPG_KEY: ((gpg_key))
-          PROVISIONING_ROLE_ARN: ((development_copernicium_provisioning_role_arn))
-          DEPLOYMENT_TYPE: ((development_copernicium_deployment_type))
-          DEPLOYMENT_LABEL: ((development_copernicium_deployment_label))
+          PROVISIONING_ROLE_ARN: ((demo_copernicium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((demo_copernicium_deployment_type))
+          DEPLOYMENT_LABEL: ((demo_copernicium_deployment_label))
 
     on_success: *on_success
     on_failure: *on_failure
