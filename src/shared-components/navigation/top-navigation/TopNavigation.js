@@ -112,7 +112,6 @@ function TopNavigation() {
             !globalContext.state.onboardingCompleted ? "d-none" : ""
           }`}
         >
-
           <div className="container">
             <nav className="flex split">
               <div className="desktop-only">
@@ -144,7 +143,10 @@ function TopNavigation() {
 
               {/* QR Reader button */}
               {navigationContext.state.top[AFFMAP.QR_CODE_READER] ? (
-                <Link to={ROUTE.CodeScanner} className="inherit-ml-mobile ml-10-desktop">
+                <Link
+                  to={ROUTE.CodeScanner}
+                  className="inherit-ml-mobile ml-10-desktop"
+                >
                   <div className="qr-icon" role="button">
                     <IconQR color="#8393A6" noBorder />
                   </div>
