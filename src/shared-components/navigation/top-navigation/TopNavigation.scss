@@ -43,6 +43,15 @@
 
 .desktop {
   @media (max-width: 768px) {
-  display: none;
+    display: none;
+  }
+}
+
+.float-left-desktop {
+  @media (min-width: 769px) {
+    margin-left: auto !important;
+  }
+  @media (max-width: 768px) {
+    margin-left: inherit !important;
   }
 }

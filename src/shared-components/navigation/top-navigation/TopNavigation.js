@@ -115,14 +115,12 @@ function TopNavigation() {
 
           <div className="container">
             <nav className="flex split">
-              {/* <div className="desktop">
-                <img src={logo}></img>
-              </div> */}
-              {/* <div style={{ borderWidth: "10px" }}><p>blabla</p></div> */}
+              <div className="desktop">
+                <img src={logo} style={{ height: "40px" }}></img>
+              </div>
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-                // <div className="flex row" style={{marginLeft: "auto"}}>
-                <div className="flex row">
+                <div className="flex row float-left-desktop">
                   <WalletConnection account={account} connector={connector} />
                   {chainId ? (
                     <div className="network-info flex center">
