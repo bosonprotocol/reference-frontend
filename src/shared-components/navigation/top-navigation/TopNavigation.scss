@@ -1,8 +1,6 @@
 @import "src/styles/Settings";
 
 .top-navigation {
-
-
   nav {
     width: 100%;
 
@@ -12,7 +10,6 @@
 
     a {
       text-decoration: none;
-
     }
 
     .search {
@@ -27,6 +24,7 @@
     }
   }
 }
+
 .network-info {
   display: flex;
   padding: 6px 12px;
@@ -40,4 +38,29 @@
   line-height: 16px;
   text-align: center;
   color: #F08D1A;
+}
+
+
+.desktop-only {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.float-right-desktop {
+  @media (min-width: 769px) {
+    margin-left: auto !important;
+  }
+}
+
+.inherit-ml-mobile {
+  @media (max-width: 768px) {
+    margin-left: inherit !important;
+  }
+}
+
+.ml-10-desktop {
+  @media (min-width: 769px) {
+    margin-left: 10px !important;
+  }
 }
