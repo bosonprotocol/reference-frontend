@@ -9,6 +9,7 @@ import FakeEscrowTable from "./components/fake-escrow-table/FakeEscrowTable";
 import React from "react";
 
 SwiperCore.use([Navigation, Pagination]);
+const POLICY_ACCEPTED_KEY = "policy-accepted";
 
 function slide1() {
   return (
@@ -18,7 +19,7 @@ function slide1() {
           <div className="logo flex jc-left">
             <img
               src="images/onboarding/leptonite-main.png"
-              alt="Boson Protocol Logo"
+              alt="Leptonite Logo"
               className="pe-none"
             />
           </div>
@@ -220,10 +221,7 @@ function slide3() {
 }
 
 function handleClick(e) {
-  // ToDo: Implement guard functionality based on accepted policy
-  console.log(e?.target?.checked);
-
-  localStorage.setItem("policy-accepted", e?.target?.checked);
+  localStorage.setItem(POLICY_ACCEPTED_KEY, e?.target?.checked);
 
   if (e?.target?.checked) {
     document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
@@ -307,10 +305,7 @@ function Onboarding(props) {
   const initialSlide = localStorage.getItem("onboarding-slide");
 
   const playSlide = (currentSlide) => {
-    console.log(currentSlide);
-
-    const policyAccepted = localStorage.getItem("policy-accepted");
-    console.log(policyAccepted);
+    const policyAccepted = localStorage.getItem(POLICY_ACCEPTED_KEY);
 
     const isPolicyAccepted = policyAccepted === "true";
 
@@ -333,6 +328,18 @@ function Onboarding(props) {
       });
     }
 
+    if (currentSlide < 2) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.remove("swiper-button-disabled");
+      });
+    }
+
+    if (currentSlide < 3) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.remove("last-slide");
+      });
+    }
+
     // reactize later
     document.querySelectorAll(`.onboarding [data-slide]`).forEach((slide) => {
       slide.classList.add("pause");
@@ -342,6 +349,17 @@ function Onboarding(props) {
       .classList.remove("pause");
 
     localStorage.setItem("onboarding-slide", currentSlide.toString());
+  };
+
+  const allowSlideNextDelayed = (swiper) => {
+    const LOCAL_STORAGE_TIMEOUT_MS = 200;
+
+    setTimeout(() => {
+      const policyAccepted = localStorage.getItem(POLICY_ACCEPTED_KEY);
+      const isPolicyAccepted = policyAccepted === "true";
+
+      swiper.allowSlideNext = !(swiper.activeIndex === 2 && !isPolicyAccepted);
+    }, LOCAL_STORAGE_TIMEOUT_MS);
   };
 
   const sequence = [slide1, slide2, slide3, slide4];
@@ -362,6 +380,10 @@ function Onboarding(props) {
           observeParents={true}
           onSlideChange={(slider) => playSlide(slider.snapIndex)}
           initialSlide={initialSlide ? initialSlide : 0}
+          onSlideChangeTransitionStart={(swiper) =>
+            allowSlideNextDelayed(swiper)
+          }
+          onClick={(swiper) => allowSlideNextDelayed(swiper)}
         >
           {sequence.map((slide, id) => (
             <SwiperSlide key={id}>

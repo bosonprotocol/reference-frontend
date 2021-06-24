@@ -540,13 +540,13 @@
       line-height: 44px;
     }
 
-    .last-slide {
-      display: none;
-    }
-
     @media (max-width: 768px) {
       display: none;
     }
+  }
+
+  .last-slide {
+    display: none;
   }
 
   .complete-onboarding {
