@@ -42,7 +42,6 @@
   max-width: 100%;
 
   .container {
-    //max-width: clamp(700px, 80vw, 1200px);
     max-width: 100%;
     padding: 0;
   }
@@ -132,6 +131,10 @@
                 margin-left: 15px;
                 margin-right: 15px;
                 padding-right: 40px;
+              }
+
+              @media (max-width: 374px) {
+                height: 80px;
               }
             }
           }
