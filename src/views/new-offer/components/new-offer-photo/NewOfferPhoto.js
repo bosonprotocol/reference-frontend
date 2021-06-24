@@ -24,7 +24,6 @@ function NewOfferPhoto({ inputValueReceiver }) {
       ALLOWED_IMAGES.map((image, index) => (
         <li
           key={index}
-          data-category={image.title}
           className={`${
             isImageActive[index]
               ? "active flex ai-center "
@@ -32,8 +31,7 @@ function NewOfferPhoto({ inputValueReceiver }) {
           }`}
           onClick={(e) => setImage(index, image.imagePath)}
         >
-          <img src={image.imagePath} alt={image.title} id="image-id-test"/>
-          {image.title}
+          <img src={image.imagePath} alt={image.title}/>
         </li>
       ))
     );

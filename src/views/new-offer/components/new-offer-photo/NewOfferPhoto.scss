@@ -6,20 +6,17 @@
     flex-wrap: wrap;
 
     li {
-      margin: 15px 0.75%;
-      padding: 10px;
+      padding: 20px;
       cursor: pointer;
       transition: 0.18s ease-in-out;
-      min-height: 40px;
-      width: 23%;
-      box-sizing: border-box;
+      margin-right: 10%;
       border-radius: 4px;
 
       img {
-        margin-right: 15px;
         transition: 0.18s ease-in-out;
-        padding: 5px;
-        width: 50px;
+        width: 90px;
+        height: 100px;
+        width: 100px;
       }
 
       &:hover {
