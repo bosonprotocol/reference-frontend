@@ -144,7 +144,7 @@ function Home() {
     <>
       {globalContext.state.qrReaderActivated ? <QRCodeScanner /> : null}
       {newUser && (
-        <div className="onboarding-modal flex center" ref={onboardingModalRef}>
+        <div className="onboarding-modal center" ref={onboardingModalRef}>
           <Onboarding completeOnboarding={completeOnboarding} />
         </div>
       )}
