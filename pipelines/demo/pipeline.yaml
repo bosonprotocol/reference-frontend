@@ -10,14 +10,14 @@ resources:
     type: git
     source:
       uri: ((source_repository_url))
-      branch: ((source_repository_branch))
+      branch: demo
       private_key: ((git_ssh_key))
 
   - name: updated-source
     type: git
     source:
       uri: ((source_repository_url))
-      branch: ((source_repository_branch))
+      branch: demo
       private_key: ((git_ssh_key))
 
   - name: node-builder-image
@@ -38,12 +38,12 @@ resources:
       url: ((slack_engineering_webhook_url))
 
 groups:
-  - name: development-hassium
+  - name: demo-copernicium
     jobs:
       - build
       - test
-      - provision-development-hassium-website
-      - provision-development-hassium-content
+      - provision-demo-copernicium-website
+      - provision-demo-copernicium-content
 
 jobs:
   - name: build
@@ -102,7 +102,7 @@ jobs:
     on_error: *on_error
     on_abort: *on_abort
 
-  - name: provision-development-hassium-website
+  - name: provision-demo-copernicium-website
     serial: true
     plan:
       - in_parallel:
@@ -113,34 +113,34 @@ jobs:
           - get: node-builder-image
       - task: provision-website
         image: node-builder-image
-        file: source/pipelines/develop/provision-website/task.yaml
+        file: source/pipelines/demo/provision-website/task.yaml
         params:
           GPG_KEY: ((gpg_key))
-          PROVISIONING_ROLE_ARN: ((development_hassium_provisioning_role_arn))
-          DEPLOYMENT_TYPE: ((development_hassium_deployment_type))
-          DEPLOYMENT_LABEL: ((development_hassium_deployment_label))
+          PROVISIONING_ROLE_ARN: ((demo_copernicium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((demo_copernicium_deployment_type))
+          DEPLOYMENT_LABEL: ((demo_copernicium_deployment_label))
 
     on_success: *on_success
     on_failure: *on_failure
     on_error: *on_error
     on_abort: *on_abort
 
-  - name: provision-development-hassium-content
+  - name: provision-demo-copernicium-content
     plan:
       - in_parallel:
           - get: source
             trigger: true
             passed:
-              - provision-development-hassium-website
+              - provision-demo-copernicium-website
           - get: node-builder-image
       - task: provision-content
         image: node-builder-image
-        file: source/pipelines/develop/provision-content/task.yaml
+        file: source/pipelines/demo/provision-content/task.yaml
         params:
           GPG_KEY: ((gpg_key))
-          PROVISIONING_ROLE_ARN: ((development_hassium_provisioning_role_arn))
-          DEPLOYMENT_TYPE: ((development_hassium_deployment_type))
-          DEPLOYMENT_LABEL: ((development_hassium_deployment_label))
+          PROVISIONING_ROLE_ARN: ((demo_copernicium_provisioning_role_arn))
+          DEPLOYMENT_TYPE: ((demo_copernicium_deployment_type))
+          DEPLOYMENT_LABEL: ((demo_copernicium_deployment_label))
 
     on_success: *on_success
     on_failure: *on_failure
