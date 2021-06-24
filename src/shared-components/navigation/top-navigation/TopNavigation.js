@@ -113,9 +113,11 @@ function TopNavigation() {
         >
           <div className="container">
             <nav className="flex split">
+            {!navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
               <div className="desktop-only">
                 <img src={logo} style={{ height: "40px" }}></img>
               </div>
+            ) : null}
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
                 <div className="flex row float-right-desktop inherit-ml-mobile">
