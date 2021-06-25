@@ -101,10 +101,6 @@ function slide3() {
         <div className="text flex column ai-center">
           <p className="number">3</p>
           <h1>Disclaimer</h1>
-          <p className="ta-center color-secondary">
-            This is placeholder text for where our disclaimer and checkbox for
-            accepting the disclaimer's terms will be.
-          </p>
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
@@ -114,70 +110,20 @@ function slide3() {
       <div className="column-holder animated-column">
         <div className="policy-holder">
           <div className="policy-text color-secondary">
-            <div className="policy-header">ABOUT THIS POLICY</div>
+            <div className="policy-header">
+              UNAUDITED TESTNET ALPHA RELEASE:
+            </div>
             <div className="policy-content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis
-              egestas integer eget aliquet nibh. Nunc consequat interdum varius
-              sit. Nisl suscipit adipiscing bibendum est ultricies integer.
-              Dignissim cras tincidunt lobortis feugiat vivamus. Condimentum
-              mattis pellentesque id nibh tortor id aliquet lectus proin. Sed
-              odio morbi quis commodo. Facilisi cras fermentum odio eu feugiat.
-              Tellus pellentesque eu tincidunt tortor aliquam nulla facilisi
-              cras. Faucibus turpis in eu mi. Placerat duis ultricies lacus sed.
-              Pretium quam vulputate dignissim suspendisse in est ante in nibh.
-              Convallis tellus id interdum velit laoreet. Maecenas pharetra
-              convallis posuere morbi leo urna. Sed libero enim sed faucibus.
-              Elementum facilisis leo vel fringilla est ullamcorper eget. Urna
-              cursus eget nunc scelerisque viverra mauris. Neque vitae tempus
-              quam pellentesque nec nam aliquam. Iaculis urna id volutpat lacus.
-              Fermentum iaculis eu non diam phasellus vestibulum lorem. Risus
-              nullam eget felis eget. Lorem dolor sed viverra ipsum nunc aliquet
-              bibendum enim facilisis. Pulvinar etiam non quam lacus suspendisse
-              faucibus interdum posuere. Quis imperdiet massa tincidunt nunc
-              pulvinar sapien et ligula. Ipsum suspendisse ultrices gravida
-              dictum. Quam id leo in vitae turpis massa sed elementum tempus.
-              Duis at consectetur lorem donec massa sapien faucibus et molestie.
-              Et magnis dis parturient montes nascetur ridiculus mus. Sed
-              elementum tempus egestas sed sed risus. Mauris commodo quis
-              imperdiet massa tincidunt nunc pulvinar sapien et. Nec nam aliquam
-              sem et. Phasellus vestibulum lorem sed risus ultricies tristique.
-              Adipiscing enim eu turpis egestas pretium aenean pharetra magna
-              ac. Nibh venenatis cras sed felis eget. Est placerat in egestas
-              erat imperdiet sed euismod. Diam vel quam elementum pulvinar etiam
-              non. Enim nulla aliquet porttitor lacus luctus accumsan tortor
-              posuere. Ac ut consequat semper viverra nam libero justo laoreet
-              sit. Odio morbi quis commodo odio aenean. Arcu non odio euismod
-              lacinia at. Netus et malesuada fames ac. Habitasse platea dictumst
-              quisque sagittis. Tellus cras adipiscing enim eu. Ac turpis
-              egestas integer eget aliquet nibh praesent tristique magna.
-              Sagittis purus sit amet volutpat consequat mauris nunc. Dictum non
-              consectetur a erat nam at lectus urna duis. Elit sed vulputate mi
-              sit amet mauris commodo quis. Diam quam nulla porttitor massa id
-              neque aliquam vestibulum. Ac orci phasellus egestas tellus rutrum
-              tellus. Tempus quam pellentesque nec nam aliquam sem et tortor
-              consequat. Erat pellentesque adipiscing commodo elit at. Quis
-              varius quam quisque id. Blandit massa enim nec dui nunc. Rhoncus
-              mattis rhoncus urna neque viverra justo nec ultrices dui. Nisl
-              purus in mollis nunc sed id. Nec tincidunt praesent semper
-              feugiat. Fringilla phasellus faucibus scelerisque eleifend donec
-              pretium vulputate. Id aliquet lectus proin nibh nisl condimentum
-              id venenatis. Pellentesque id nibh tortor id. Volutpat ac
-              tincidunt vitae semper. Et netus et malesuada fames ac turpis
-              egestas. Ut consequat semper viverra nam libero justo. Sit amet
-              porttitor eget dolor morbi non arcu risus quis. Egestas fringilla
-              phasellus faucibus scelerisque. In hendrerit gravida rutrum
-              quisque non tellus orci ac auctor. Sed ullamcorper morbi tincidunt
-              ornare massa eget. Consectetur purus ut faucibus pulvinar
-              elementum integer enim neque volutpat. Nam aliquam sem et tortor
-              consequat id. In egestas erat imperdiet sed euismod nisi porta
-              lorem. Enim blandit volutpat maecenas volutpat blandit. Sit amet
-              commodo nulla facilisi nullam vehicula ipsum. Amet nisl suscipit
-              adipiscing bibendum est ultricies integer. Arcu non sodales neque
-              sodales ut etiam sit. Id consectetur purus ut faucibus pulvinar
-              elementum integer. Non arcu risus quis varius quam quisque id diam
-              vel. A erat nam at lectus urna duis. Morbi tincidunt ornare massa
-              eget egestas purus viverra accumsan.
+              Leptonite is still undergoing extensive development before mainnet
+              release. LEPTONITE IS PROVIDED "AS IS" AND "AS AVAILABLE", AT YOUR
+              OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+              <br />
+              Do not send mainnet assets to Leptonite. Your assets will be lost
+              and will be unrecoverable.
+              <br />
+              We will not be liable for any loss, whether such loss is direct,
+              indirect, special or consequential, suffered by any party as a
+              result of their use of Leptonite.
             </div>
           </div>
           <div className="divider"></div>
@@ -202,15 +148,7 @@ function slide3() {
                 </span>
               </span>
               <span className="radio__label color-secondary">
-                I accept these{" "}
-                <a href={"#"} target={"_blank"}>
-                  terms
-                </a>{" "}
-                and{" "}
-                <a href={"#"} target={"_blank"}>
-                  conditions
-                </a>
-                .
+                I've read and accept the disclaimer above
               </span>
             </label>
           </div>
