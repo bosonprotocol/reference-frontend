@@ -12,8 +12,8 @@ function NewOfferPhoto({ inputValueReceiver }) {
   );
 
   const setImage = async (index, path) => {
-    const img = await fetch(path)
-    const imgToBlob = await img.blob()
+    const img = await fetch(path);
+    const imgToBlob = await img.blob();
 
     setIsImageActive(isImageActive.map((x, i) => i === index));
     inputValueReceiver(imgToBlob);
@@ -25,13 +25,11 @@ function NewOfferPhoto({ inputValueReceiver }) {
         <li
           key={index}
           className={`${
-            isImageActive[index]
-              ? "active flex ai-center "
-              : "flex ai-center"
+            isImageActive[index] ? "active flex ai-center " : "flex ai-center"
           }`}
           onClick={(e) => setImage(index, image.imagePath)}
         >
-          <img src={image.imagePath} alt={image.title}/>
+          <img src={image.imagePath} alt={image.title} />
         </li>
       ))
     );
