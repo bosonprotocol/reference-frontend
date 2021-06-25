@@ -38,6 +38,11 @@ function TopNavigation() {
   const { account, connector, chainId } = useWeb3React();
   const query = new URLSearchParams(location.search);
 
+  const onboardingCompletedStep = localStorage.getItem("onboarding-slide");
+  const lastOnboardingSlideIndex = 3;
+  const onboardingCompleted =
+    +onboardingCompletedStep === lastOnboardingSlideIndex;
+
   const navigate = () => {
     if (
       location.pathname === ROUTE.Connect ||
@@ -101,7 +106,8 @@ function TopNavigation() {
   const hideTopNavigation =
     location.pathname === ROUTE.Connect ||
     location.pathname === ROUTE.Activity ||
-    location.pathname === ROUTE.ActivityVouchers;
+    location.pathname === ROUTE.ActivityVouchers ||
+    !onboardingCompleted;
 
   return (
     <div>

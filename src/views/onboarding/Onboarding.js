@@ -304,6 +304,12 @@ function slide4(completeOnboarding) {
 function Onboarding(props) {
   const initialSlide = localStorage.getItem("onboarding-slide");
 
+  if (+initialSlide === 2) {
+    document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+      el.classList.add("swiper-button-disabled");
+    });
+  }
+
   const playSlide = (currentSlide) => {
     const policyAccepted = localStorage.getItem(POLICY_ACCEPTED_KEY);
 
