@@ -114,13 +114,14 @@
               margin-right: 84px;
 
               @media (max-width: 768px) {
+                padding: 50px 0px 10px 0px;
                 margin-left: 15px;
               }
             }
 
             .policy-content {
               height: 250px;
-              overflow: scroll;
+              overflow: auto;
               margin-left: 84px;
               margin-right: 84px;
               padding-right: 40px;
@@ -134,7 +135,7 @@
               }
 
               @media (max-width: 374px) {
-                height: 80px;
+                height: 100px;
               }
             }
           }
