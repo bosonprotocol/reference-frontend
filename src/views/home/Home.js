@@ -23,8 +23,12 @@ import { DEFAULT_FILTER } from "../../constants/Categories";
 function Home() {
   const [productBlocks, setProductBlocks] = useState([]);
   const homepage = useRef();
+
+  const onboardingCompletedStep = localStorage.getItem("onboarding-slide");
+  const lastOnboardingSlideIndex = 3;
+
   const [newUser, setNewUser] = useState(
-    !localStorage.getItem("onboarding-completed")
+    +onboardingCompletedStep < lastOnboardingSlideIndex
   );
   const screensRef = useRef();
   const onboardingModalRef = useRef();
