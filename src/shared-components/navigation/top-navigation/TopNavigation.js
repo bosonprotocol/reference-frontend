@@ -113,9 +113,15 @@ function TopNavigation() {
         >
           <div className="container">
             <nav className="flex split">
-              <div className="desktop-only">
-                <img src={logo} style={{ height: "40px" }}></img>
-              </div>
+              {!navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
+                <div className="desktop-only">
+                  <img
+                    src={logo}
+                    style={{ height: "40px" }}
+                    alt="Leptonite: Powered by Boson Protocol"
+                  ></img>
+                </div>
+              ) : null}
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
                 <div className="flex row float-right-desktop inherit-ml-mobile">
