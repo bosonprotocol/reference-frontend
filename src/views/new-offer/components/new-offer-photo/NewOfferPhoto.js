@@ -1,57 +1,47 @@
-import React, { useContext } from "react";
-
-import { SellerContext, getData } from "../../../../contexts/Seller";
-
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useRef, useState, useEffect } from "react";
 import "./NewOfferPhoto.scss";
+import { ALLOWED_IMAGES } from "../../../../constants/AllowedImageUploads";
 
-import { IconPhoto } from "../../../../shared-components/icons/Icons";
+function NewOfferPhoto({ inputValueReceiver }) {
+  const imageList = useRef();
+  const [list, setList] = useState();
 
-import { NAME } from "../../../../helpers/configs/Dictionary";
+  const [isImageActive, setIsImageActive] = useState(
+    Array.from({ length: ALLOWED_IMAGES.length }, () => false)
+  );
 
-function UploadPhoto({ inputValueReceiver, uploadImageErrorMessage }) {
-  const sellerContext = useContext(SellerContext);
+  const setImage = async (index, path) => {
+    const img = await fetch(path);
+    const imgToBlob = await img.blob();
 
-  const getOfferingData = getData(sellerContext.state.offeringData);
+    setIsImageActive(isImageActive.map((x, i) => i === index));
+    inputValueReceiver(imgToBlob);
+  };
+
+  useEffect(() => {
+    setList(
+      ALLOWED_IMAGES.map((image, index) => (
+        <li
+          key={index}
+          className={`${
+            isImageActive[index] ? "active flex ai-center " : "flex ai-center"
+          }`}
+          onClick={(e) => setImage(index, image.imagePath)}
+        >
+          <img src={image.imagePath} alt={image.title} />
+        </li>
+      ))
+    );
+  }, [isImageActive]);
 
   return (
-    <div className="upload-photo">
-      <div className="step-title">
-        <h1>Photo</h1>
-      </div>
-      <input
-        id="offer-image-upload"
-        type="file"
-        onChange={(e) =>
-          inputValueReceiver(e && e.target ? e.target?.files[0] : null)
-        }
-      />
-      <div
-        className={`image-upload-container flex ${
-          sellerContext.state.offeringData &&
-          (getOfferingData(NAME.IMAGE) ? "uploaded" : "awaiting")
-        }`}
-      >
-        <div
-          className="image-upload input"
-          data-error={uploadImageErrorMessage}
-        >
-          <div className="thumb-container">
-            <img
-              src={getOfferingData(NAME.IMAGE)}
-              className="thumbnail"
-              alt="thmbnail"
-            />
-          </div>
-          <div className="label">
-            <label htmlFor="offer-image-upload" className="flex center column">
-              <IconPhoto />
-              <span>Add photo</span>
-            </label>
-          </div>
-        </div>
+    <div ref={imageList} className="images">
+      <div className="input focus no-border">
+        <ul>{list ? list : null}</ul>
       </div>
     </div>
   );
 }
 
-export default UploadPhoto;
+export default NewOfferPhoto;
