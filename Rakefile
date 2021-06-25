@@ -172,10 +172,10 @@ namespace :app do
 
       sh({
            "NODE_ENV" => environment,
-           "REACT_APP_BACKEND_BASE_URL" => react_app_backend_base_url
-           "REACT_APP_FRONT_END_LOCALSTORAGE_VERSION" => 1.0
-           "CONTENT_WORK_DIRECTORY" => content_work_directory
-           "GENERATE_SOURCEMAP" => false
+           "REACT_APP_BACKEND_BASE_URL" => react_app_backend_base_url,
+           "REACT_APP_FRONT_END_LOCALSTORAGE_VERSION" => "1.0",
+           "CONTENT_WORK_DIRECTORY" => content_work_directory,
+           "GENERATE_SOURCEMAP" => "false"
          }, "npm", "run",
          "build")
   end
