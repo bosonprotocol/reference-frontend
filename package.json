@@ -33,6 +33,7 @@
     "start:local": "env-cmd -f .env.local node scripts/start.js",
     "start:demo": "env-cmd -f .env.demo node scripts/start.js",
     "start:playground": "env-cmd -f .env.playground node scripts/start.js",
+    "build": "node scripts/build.js",
     "build:dev": "env-cmd -f .env.dev node scripts/build.js",
     "build:demo": "env-cmd -f .env.demo node scripts/build.js",
     "build:playground": "env-cmd -f .env.playground node scripts/build.js",

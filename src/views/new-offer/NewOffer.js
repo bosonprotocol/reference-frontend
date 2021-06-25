@@ -141,7 +141,6 @@ function NewOffer() {
     />,
     <FormUploadPhoto
       inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
-      uploadImageErrorMessage={errorMessages[NAME.IMAGE]}
     />,
     <NewOfferGeneral
       titleValueReceiver={createInputValueReceiver(NAME.TITLE)}
