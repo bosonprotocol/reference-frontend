@@ -58,9 +58,13 @@
       display: inherit;
 
       li {
+        display: block;
+        text-align: center;
         width: 100%;
+
         img {
-          width: 42px;
+          width: 60px;
+          height: 60px;
         }
       }
     }
