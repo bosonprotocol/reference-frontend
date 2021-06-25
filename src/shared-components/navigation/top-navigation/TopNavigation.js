@@ -17,6 +17,8 @@ import {
   ROUTE,
 } from "../../../helpers/configs/Dictionary";
 
+import logo from "./../../../assets/boson/leptonite.png";
+
 import "./TopNavigation.scss";
 
 import { IconQR, Arrow } from "../../icons/Icons";
@@ -111,9 +113,18 @@ function TopNavigation() {
         >
           <div className="container">
             <nav className="flex split">
+              {!navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
+                <div className="desktop-only">
+                  <img
+                    src={logo}
+                    style={{ height: "40px" }}
+                    alt="Leptonite: Powered by Boson Protocol"
+                  ></img>
+                </div>
+              ) : null}
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-                <div className="flex row">
+                <div className="flex row float-right-desktop inherit-ml-mobile">
                   <WalletConnection account={account} connector={connector} />
                   {chainId ? (
                     <div className="network-info flex center">
@@ -137,13 +148,15 @@ function TopNavigation() {
 
               {/* QR Reader button */}
               {navigationContext.state.top[AFFMAP.QR_CODE_READER] ? (
-                <Link to={ROUTE.CodeScanner}>
+                <Link
+                  to={ROUTE.CodeScanner}
+                  className="inherit-ml-mobile ml-10-desktop"
+                >
                   <div className="qr-icon" role="button">
                     <IconQR color="#8393A6" noBorder />
                   </div>
                 </Link>
               ) : null}
-
               {/* NewOffer Set */}
               {navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ? (
                 <OfferFlowSet />

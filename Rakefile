@@ -168,12 +168,16 @@ namespace :app do
 
       environment = configuration.environment
       content_work_directory = configuration.content_work_directory
+      react_app_backend_base_url = configuration.react_app_backend_base_url
 
       sh({
            "NODE_ENV" => environment,
-           "CONTENT_WORK_DIRECTORY" => content_work_directory
+           "REACT_APP_BACKEND_BASE_URL" => react_app_backend_base_url,
+           "REACT_APP_FRONT_END_LOCALSTORAGE_VERSION" => "1.0",
+           "CONTENT_WORK_DIRECTORY" => content_work_directory,
+           "GENERATE_SOURCEMAP" => "false"
          }, "npm", "run",
-         "build:dev")
+         "build")
   end
 
   desc 'Publish content for deployment identifier'
