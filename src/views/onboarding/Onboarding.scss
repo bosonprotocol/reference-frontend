@@ -89,7 +89,7 @@
         background-position: left top;
 
         .policy-holder {
-          margin-top: 20%;
+          margin-top: 25%;
           font-family: 'Barlow', sans-serif;
 
           .divider {
@@ -114,13 +114,14 @@
               margin-right: 84px;
 
               @media (max-width: 768px) {
+                padding: 50px 0px 10px 0px;
                 margin-left: 15px;
               }
             }
 
             .policy-content {
-              height: 300px;
-              overflow: scroll;
+              height: 250px;
+              overflow: auto;
               margin-left: 84px;
               margin-right: 84px;
               padding-right: 40px;
@@ -134,7 +135,7 @@
               }
 
               @media (max-width: 374px) {
-                height: 80px;
+                height: 100px;
               }
             }
           }
@@ -161,7 +162,7 @@
               color: var(--color);
               padding: 10px 20px;
               background: black;
-              width: 320px;
+              width: 340px;
               border-radius: 10px;
               opacity: 0.8;
 
