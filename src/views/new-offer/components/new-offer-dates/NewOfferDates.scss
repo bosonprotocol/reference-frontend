@@ -29,10 +29,22 @@
     text-transform: uppercase;
     color: #1C2835;
     margin-left: auto;
-    // margin-right: 8%;
-    // width: calc(100% - 100px);
     width: 80px;
     pointer-events: all;
+    float: right;
+}
+
+.save-button-wrapper {
+    width: 592px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.save-button-footer-position {
+    width: 100%;
+    position: absolute;
+    bottom: 22px;
+    padding-right: 22px;
 }
 
 .field {
