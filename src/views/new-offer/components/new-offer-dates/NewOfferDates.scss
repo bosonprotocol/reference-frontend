@@ -16,14 +16,8 @@
     pointer-events: none;
 }
 .calendar-save-button {
-    position: absolute;
-    bottom: 32px;
-    margin: auto;
     background: #80F0BE;
     border-radius: 8px;
-    left: 22px;
-    right: 22px;
-    width: 80px;
     height: 44px;
     border: none;
     font-family: 'Exo', sans-serif;
@@ -34,8 +28,23 @@
     text-align: center;
     text-transform: uppercase;
     color: #1C2835;
-    width: calc(100% - 44px);
+    margin-left: auto;
+    width: 80px;
     pointer-events: all;
+    float: right;
+}
+
+.save-button-wrapper {
+    width: 592px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.save-button-footer-position {
+    width: 100%;
+    position: absolute;
+    bottom: 22px;
+    padding-right: 22px;
 }
 
 .field {

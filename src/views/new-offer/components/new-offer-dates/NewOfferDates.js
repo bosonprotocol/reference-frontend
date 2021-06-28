@@ -165,19 +165,21 @@ function NewOfferDates({
               className="container calendar-controls"
               hidden={!startDateCalendarOpen && !endDateCalendarOpen}
             >
-              <div className="anchor">
-                <button
-                  className="calendar-save-button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    saveButtonClicked = true;
-                  }}
-                >
-                  SAVE
-                </button>
-                <div className="button square new" role="button">
-                  <Arrow color="#80F0BE" />
+              <div className="save-button-footer-position">
+                <div className="save-button-wrapper">
+                  <button
+                    className="calendar-save-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      saveButtonClicked = true;
+                    }}
+                  >
+                    SAVE
+                  </button>
                 </div>
+              </div>
+              <div className="button square new" role="button">
+                <Arrow color="#80F0BE" />
               </div>
             </div>
           </div>
