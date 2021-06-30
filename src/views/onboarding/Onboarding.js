@@ -8,6 +8,8 @@ import "swiper/swiper.min.css";
 import FakeEscrowTable from "./components/fake-escrow-table/FakeEscrowTable";
 import React from "react";
 
+import logo from "./../../assets/boson/leptonite.svg";
+
 SwiperCore.use([Navigation, Pagination]);
 const POLICY_ACCEPTED_KEY = "policy-accepted";
 
@@ -18,7 +20,8 @@ function slide1() {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -53,7 +56,8 @@ function slide2() {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -92,7 +96,8 @@ function slide3() {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -183,7 +188,8 @@ function slide4(completeOnboarding) {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
