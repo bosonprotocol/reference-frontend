@@ -65,8 +65,8 @@ function slide2() {
           <p className="number">2</p>
           <h1>Boson Protocol escrow code</h1>
           <p className="ta-center color-secondary">
-            The escrow code is governed by the Core Exchange Mechanism which takes
-            deposits from both supplier and buyer to grow trust in a
+            The escrow code is governed by the Core Exchange Mechanism which
+            takes deposits from both supplier and buyer to grow trust in a
             peer-to-peer exchange.
           </p>
         </div>
