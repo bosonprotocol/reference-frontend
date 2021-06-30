@@ -29,10 +29,11 @@ function slide1() {
         </div>
         <div className="text flex column ai-center">
           <p className="number">1</p>
-          <h1>Offer items for sale</h1>
+          <h1>dCommerce</h1>
           <p className="ta-center color-secondary">
-            Create a Boson commitment NFT set to list your item(s) as available
-            for purchase.
+            Leptonite is a reference release of a fully decentralized,
+            peer-to-peer digital marketplace, built on the core Boson Protocol
+            contracts. See the Boson Protocol GitHub for more details.
           </p>
         </div>
         <div className="footer color-secondary">
@@ -64,9 +65,9 @@ function slide2() {
           <p className="number">2</p>
           <h1>Boson Protocol escrow code</h1>
           <p className="ta-center color-secondary">
-            The escrow code is governed by the Core Exchange Mechanism which
-            takes deposits from both supplier and buyer to grow trust in a p2p
-            exchange.
+            The escrow code is governed by the Core Exchange Mechanism which takes
+            deposits from both supplier and buyer to grow trust in a
+            peer-to-peer exchange.
           </p>
         </div>
         <div className="footer color-secondary">
