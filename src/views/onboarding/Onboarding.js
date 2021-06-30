@@ -38,6 +38,7 @@ function slide1() {
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
       <div className="column-holder animated-column-1"></div>
@@ -72,6 +73,7 @@ function slide2() {
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
       <div className="column-holder animated-column">
@@ -105,6 +107,7 @@ function slide3() {
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
 
@@ -206,6 +209,7 @@ function slide4(completeOnboarding) {
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
 

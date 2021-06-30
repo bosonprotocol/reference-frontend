@@ -360,6 +360,17 @@
     font-family: 'Barlow', sans-serif;
     bottom: 36px;
     position: absolute;
+    width: calc(50% - 42px);
+
+    span {
+      float: right;
+      padding-right: 42px;
+
+      @media (max-width: 1002px) {
+        width: 100%;
+        padding: 0;
+      }
+    }
 
     @media (max-width: 768px) {
       width: 100%;
@@ -727,7 +738,7 @@
     }
 
     @media (max-width: 768px) {
-      bottom: 60px;
+      bottom: 80px;
       left: 0;
       right: 0;
     }
