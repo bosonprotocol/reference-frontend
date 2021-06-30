@@ -31,7 +31,7 @@ function FakeEscrowTable(props) {
               alt="Boson Logo"
               className="pe-none boson-logo"
             />
-            Boson Escrow Code
+            Boson Escrow
           </p>
         </div>
         <div className="field flex wrap jc-sb exists">

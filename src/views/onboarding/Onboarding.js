@@ -62,10 +62,10 @@ function slide2() {
         </div>
         <div className="text flex column ai-center">
           <p className="number">2</p>
-          <h1>Boson Protocol escrow code</h1>
+          <h1>Boson Protocol escrow </h1>
           <p className="ta-center color-secondary">
-            The escrow code is governed by the Core Exchange Mechanism which takes
-            deposits from both supplier and buyer to grow trust in a peer-to-peer
+            The escrow is governed by the Core Exchange Mechanism which takes
+            deposits from both supplier and buyer to grow trust in a p2p
             exchange.
           </p>
         </div>
