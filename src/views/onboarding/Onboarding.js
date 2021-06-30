@@ -10,7 +10,6 @@ import React from "react";
 
 import logo from "./../../assets/boson/leptonite.svg";
 
-
 SwiperCore.use([Navigation, Pagination]);
 const POLICY_ACCEPTED_KEY = "policy-accepted";
 
@@ -69,9 +68,9 @@ function slide2() {
           <p className="number">2</p>
           <h1>Boson Protocol escrow code</h1>
           <p className="ta-center color-secondary">
-            The escrow code is governed by the Core Exchange Mechanism which takes
-            deposits from both supplier and buyer to grow trust in a peer-to-peer
-            exchange.
+            The escrow code is governed by the Core Exchange Mechanism which
+            takes deposits from both supplier and buyer to grow trust in a
+            peer-to-peer exchange.
           </p>
         </div>
         <div className="footer color-secondary">
