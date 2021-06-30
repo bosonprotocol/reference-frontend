@@ -122,8 +122,10 @@ function slide3() {
               release. LEPTONITE IS PROVIDED "AS IS" AND "AS AVAILABLE", AT YOUR
               OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
               <br />
+              <br />
               Do not send mainnet assets to Leptonite. Your assets will be lost
               and will be unrecoverable.
+              <br />
               <br />
               We will not be liable for any loss, whether such loss is direct,
               indirect, special or consequential, suffered by any party as a
