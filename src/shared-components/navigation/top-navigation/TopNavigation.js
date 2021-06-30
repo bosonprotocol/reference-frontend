@@ -17,7 +17,6 @@ import {
   ROUTE,
 } from "../../../helpers/configs/Dictionary";
 
-// import logo from "./../../../assets/boson/leptonite.png";
 import logo from "./../../../assets/boson/leptonite.svg";
 
 import "./TopNavigation.scss";

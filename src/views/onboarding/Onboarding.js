@@ -8,7 +8,6 @@ import "swiper/swiper.min.css";
 import FakeEscrowTable from "./components/fake-escrow-table/FakeEscrowTable";
 import React from "react";
 
-// import logo from "./../../../assets/boson/leptonite.svg";
 import logo from "./../../assets/boson/leptonite.svg";
 
 
