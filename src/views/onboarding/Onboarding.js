@@ -303,6 +303,7 @@ function Onboarding(props) {
       const isPolicyAccepted = policyAccepted === "true";
 
       swiper.allowSlideNext = !(swiper.activeIndex === 2 && !isPolicyAccepted);
+      swiper.update();
     }, LOCAL_STORAGE_TIMEOUT_MS);
   };
 
