@@ -66,8 +66,8 @@ function slide2() {
           <h1>Boson Protocol escrow </h1>
           <p className="ta-center color-secondary">
             The escrow is governed by the Core Exchange Mechanism which takes
-            deposits from both supplier and buyer to grow trust in a p2p
-            exchange.
+            deposits from both supplier and buyer to grow trust in a
+            peer-to-peer exchange.
           </p>
         </div>
         <div className="footer color-secondary">
