@@ -33,11 +33,7 @@ function slide1() {
           <p className="ta-center color-secondary">
             Leptonite is a reference release of a fully decentralized,
             peer-to-peer digital marketplace, built on the core Boson Protocol
-            contracts, available on the Rinkeby test network.
-          </p>
-          <p className="ta-center color-secondary">
-            For more information, and to review the code find details on the
-            Boson Protocol GitHub.
+            contracts. See the Boson Protocol GitHub for more details.
           </p>
         </div>
         <div className="footer color-secondary">
