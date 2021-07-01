@@ -143,23 +143,6 @@ export default function NewOfferSubmit() {
         return;
       }
 
-      const created = await createNewVoucherSet(
-        dataArr,
-        bosonRouterContract,
-        bosonTokenContract,
-        account,
-        chainId,
-        library,
-        price_currency,
-        deposits_currency,
-        modalContext,
-        seller_deposit.add(buyer_deposit)
-      );
-
-      if (!created) {
-        return;
-      }
-
       const paymentType = paymentTypeResolver(
         price_currency,
         deposits_currency
@@ -188,6 +171,23 @@ export default function NewOfferSubmit() {
               "Logging of the smart contract event failed. This does not affect creation of your voucher-set.",
           })
         );
+      }
+
+      const created = await createNewVoucherSet(
+        dataArr,
+        bosonRouterContract,
+        bosonTokenContract,
+        account,
+        chainId,
+        library,
+        price_currency,
+        deposits_currency,
+        modalContext,
+        seller_deposit.add(buyer_deposit)
+      );
+
+      if (!created) {
+        return;
       }
 
       setLoading(0);
