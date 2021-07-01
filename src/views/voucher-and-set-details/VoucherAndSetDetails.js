@@ -312,6 +312,23 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
+      const tx = await commitToBuyTransactionCreator(
+        bosonRouterContract,
+        supplyId,
+        voucherSetInfo,
+        price,
+        buyerDeposit,
+        bosonTokenContract,
+        library,
+        account,
+        chainId,
+        modalContext
+      );
+      if (!tx) {
+        setLoading(0);
+        return;
+      }
+
       try {
         const metadata = {
           _holder: account,
@@ -348,23 +365,6 @@ function VoucherAndSetDetails(props) {
               "Logging of the smart contract event failed. This does not affect committing your voucher.",
           })
         );
-      }
-
-      const tx = await commitToBuyTransactionCreator(
-        bosonRouterContract,
-        supplyId,
-        voucherSetInfo,
-        price,
-        buyerDeposit,
-        bosonTokenContract,
-        library,
-        account,
-        chainId,
-        modalContext
-      );
-      if (!tx) {
-        setLoading(0);
-        return;
       }
 
       localStorage.setItem("successMessage", "Commit triggered");
