@@ -15,6 +15,10 @@
 
   .thumbnail {
     background: none !important;
+
+    img {
+      max-height: 355px;
+    }
   }
 
   .product-view.summary h1 {
