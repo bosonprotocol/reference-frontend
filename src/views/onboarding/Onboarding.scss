@@ -65,7 +65,7 @@
         padding-left: 84px;
 
         @media (max-width: 768px) {
-          height: 50%;
+          max-height: 60%;
           padding: 0;
         }
       }
@@ -77,7 +77,7 @@
         background-position: left top;
 
         @media (max-width: 768px) {
-          height: 50%;
+          max-height: 40%;
           background-size: 100%;
         }
       }
@@ -127,7 +127,7 @@
               padding-right: 40px;
 
               @media (max-width: 768px) {
-                height: 140px;
+                height: 85px;
                 overflow: scroll;
                 margin-left: 15px;
                 margin-right: 15px;
@@ -247,7 +247,7 @@
         }
 
         @media (max-width: 768px) {
-          height: 50%;
+          max-height: 40%;
           background-size: 100%;
         }
       }
@@ -580,7 +580,7 @@
       position: absolute;
       left: 0;
       margin: 0 auto;
-      bottom: 92px;
+      bottom: 200px;
       width: 92px;
       height: 44px;
       background-color: #80F0BE;
@@ -682,7 +682,7 @@
           min-height: auto;
 
           @media (max-width: 768px) {
-            height: 60vh;
+            height: 50vh;
             padding: 0 40px;
           }
         }
