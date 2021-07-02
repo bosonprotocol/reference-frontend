@@ -187,13 +187,17 @@ function Home() {
           </div>
           <section className="product-list">
             <div className="container">
-              {!pageLoading
-                ? productBlocks?.length
-                  ? productBlocks.map((block, id) => (
-                      <ProductBlock key={id} {...block} />
-                    ))
-                  : null
-                : loadingPlaceholder}
+              {!pageLoading ? (
+                productBlocks?.length ? (
+                  productBlocks.map((block, id) => (
+                    <ProductBlock key={id} {...block} />
+                  ))
+                ) : (
+                  <div>No vouchers available at the selected location.</div>
+                )
+              ) : (
+                loadingPlaceholder
+              )}
             </div>
           </section>
         </div>
