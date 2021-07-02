@@ -39,6 +39,7 @@ import { validateContractInteraction } from "../../../../helpers/validators/Cont
 import "../../../../styles/PendingButton.scss";
 import PendingButton from "../../../voucher-and-set-details/components/escrow-table/PendingButton";
 import { prepareSingleVoucherSetData } from "../../../../helpers/parsers/VoucherAndSetParsers";
+import PopupMessage from "./../../../../shared-components/popup-message/PopupMessage";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -52,6 +53,7 @@ export default function NewOfferSubmit() {
   const [pending, setPending] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
+  const [popupMessage, setPopupMessage] = useState();
 
   const globalContext = useContext(GlobalContext);
 
@@ -108,6 +110,22 @@ export default function NewOfferSubmit() {
     }
 
     setLoading(1);
+
+    setPopupMessage({
+      text: "Please stay on this page to ensure your transaction processes successfully.",
+      controls: (
+        <div className="flex split buttons-pair">
+          <div
+            className="button primary"
+            style={{ width: "100%" }}
+            role="button"
+            onClick={() => setPopupMessage(false)}
+          >
+            OK
+          </div>
+        </div>
+      ),
+    });
 
     let dataArr = [
       toFixed(new Date(start_date) / 1000, 0),
@@ -260,7 +278,7 @@ export default function NewOfferSubmit() {
       {loading ? <LoadingSpinner /> : null}
       {!redirect ? (
         pending ? (
-          [<PendingButton />]
+          [<PendingButton />, <PopupMessage {...popupMessage} />]
         ) : (
           <ContractInteractionButton
             className="button offer primary"
