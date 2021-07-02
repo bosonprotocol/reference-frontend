@@ -103,7 +103,7 @@ function PickUpLocation() {
                   </li>
                 ))
               ) : (
-                <div>No vouchers available in this location.</div>
+                <div>Search vouchers by a city or a country.</div>
               )}
             </div>
           </div>
