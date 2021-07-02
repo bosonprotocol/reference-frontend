@@ -8,6 +8,8 @@ import "swiper/swiper.min.css";
 import FakeEscrowTable from "./components/fake-escrow-table/FakeEscrowTable";
 import React from "react";
 
+import logo from "./../../assets/boson/leptonite.svg";
+
 SwiperCore.use([Navigation, Pagination]);
 const POLICY_ACCEPTED_KEY = "policy-accepted";
 
@@ -18,7 +20,8 @@ function slide1() {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -29,14 +32,16 @@ function slide1() {
         </div>
         <div className="text flex column ai-center">
           <p className="number">1</p>
-          <h1>Offer items for sale</h1>
+          <h1>dCommerce</h1>
           <p className="ta-center color-secondary">
-            Create a Boson commitment NFT set to list your item(s) as available
-            for purchase.
+            Leptonite is a reference release of a fully decentralized,
+            peer-to-peer digital marketplace, built on the core Boson Protocol
+            contracts. See the Boson Protocol GitHub for more details.
           </p>
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
       <div className="column-holder animated-column-1"></div>
@@ -51,7 +56,8 @@ function slide2() {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -62,15 +68,16 @@ function slide2() {
         </div>
         <div className="text flex column ai-center">
           <p className="number">2</p>
-          <h1>Boson Protocol escrow </h1>
+          <h1>Boson Protocol escrow code</h1>
           <p className="ta-center color-secondary">
-            The escrow is governed by the Core Exchange Mechanism which takes
-            deposits from both supplier and buyer to grow trust in a p2p
-            exchange.
+            The escrow code is governed by the Core Exchange Mechanism which
+            takes deposits from both supplier and buyer to grow trust in a
+            peer-to-peer exchange.
           </p>
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
       <div className="column-holder animated-column">
@@ -89,7 +96,8 @@ function slide3() {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -104,6 +112,7 @@ function slide3() {
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
 
@@ -118,8 +127,10 @@ function slide3() {
               release. LEPTONITE IS PROVIDED "AS IS" AND "AS AVAILABLE", AT YOUR
               OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
               <br />
+              <br />
               Do not send mainnet assets to Leptonite. Your assets will be lost
               and will be unrecoverable.
+              <br />
               <br />
               We will not be liable for any loss, whether such loss is direct,
               indirect, special or consequential, suffered by any party as a
@@ -179,7 +190,8 @@ function slide4(completeOnboarding) {
         <div className="top">
           <div className="logo flex jc-left">
             <img
-              src="images/onboarding/leptonite-main.png"
+              src={logo}
+              style={{ height: "40px" }}
               alt="Leptonite Logo"
               className="pe-none"
             />
@@ -205,6 +217,7 @@ function slide4(completeOnboarding) {
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
         </div>
       </div>
 
@@ -303,6 +316,7 @@ function Onboarding(props) {
       const isPolicyAccepted = policyAccepted === "true";
 
       swiper.allowSlideNext = !(swiper.activeIndex === 2 && !isPolicyAccepted);
+      swiper.update();
     }, LOCAL_STORAGE_TIMEOUT_MS);
   };
 

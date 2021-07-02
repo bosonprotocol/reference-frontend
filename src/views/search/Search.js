@@ -42,6 +42,35 @@ function Search() {
     setVoucherSets([]);
   };
 
+  const SearchBlock = (props) => {
+    function voucherSetBlockBuilder(voucherSet, id) {
+      return (
+        <VoucherSetBlock
+          {...voucherSet}
+          openDetails={true}
+          searchCriteria={
+            searchInput.current.value ? searchInput.current.value : "null"
+          }
+          key={id}
+        />
+      );
+    }
+
+    if (voucherSets.length > 0) {
+      return voucherSets.map((voucherSet, id) =>
+        voucherSetBlockBuilder(voucherSet, id)
+      );
+    } else {
+      if (searchInput?.current?.value === "") {
+        return allVoucherSets.map((voucherSet, id) =>
+          voucherSetBlockBuilder(voucherSet, id)
+        );
+      } else {
+        return <div>No vouchers available.</div>;
+      }
+    }
+  };
+
   useEffect(() => {
     searchInput?.current?.focus();
 
@@ -85,33 +114,7 @@ function Search() {
               </div>
             </div>
             <div className="voucher-set-container">
-              {voucherSets.length > 0
-                ? voucherSets.map((voucherSet, id) => (
-                    <VoucherSetBlock
-                      {...voucherSet}
-                      openDetails={true}
-                      searchCriteria={
-                        searchInput.current.value
-                          ? searchInput.current.value
-                          : "null"
-                      }
-                      key={id}
-                    />
-                  ))
-                : searchInput?.current?.value === ""
-                ? allVoucherSets.map((voucherSet, id) => (
-                    <VoucherSetBlock
-                      {...voucherSet}
-                      openDetails={true}
-                      searchCriteria={
-                        searchInput.current.value
-                          ? searchInput.current.value
-                          : "null"
-                      }
-                      key={id}
-                    />
-                  ))
-                : null}
+              <SearchBlock></SearchBlock>
             </div>
           </div>
         </section>

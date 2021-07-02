@@ -95,14 +95,16 @@ function PickUpLocation() {
               </div>
             </div>
             <div className="city-list">
-              {filteredCities.length > 0
-                ? filteredCities.map((city, id) => (
-                    <li key={id} onClick={() => setSelectedCityAndGoHome(city)}>
-                      <p>{city.name}</p>
-                      <p className="country">{city.country}</p>
-                    </li>
-                  ))
-                : null}
+              {filteredCities.length > 0 ? (
+                filteredCities.map((city, id) => (
+                  <li key={id} onClick={() => setSelectedCityAndGoHome(city)}>
+                    <p>{city.name}</p>
+                    <p className="country">{city.country}</p>
+                  </li>
+                ))
+              ) : (
+                <div>Search vouchers by a city or a country.</div>
+              )}
             </div>
           </div>
         </section>

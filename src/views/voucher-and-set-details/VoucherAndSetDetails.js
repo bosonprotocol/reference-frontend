@@ -329,6 +329,44 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
+      try {
+        const metadata = {
+          _holder: account,
+          _issuer: owner,
+          _tokenIdSupply: supplyId,
+          _correlationId: correlationId,
+        };
+
+        await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+      } catch (e) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message,
+          })
+        );
+        setLoading(0);
+        return;
+      }
+
+      try {
+        const eventData = {
+          name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_DELIVERED,
+          _correlationId: correlationId,
+        };
+        await createEvent(eventData, authData.authToken);
+      } catch (e) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content:
+              "Logging of the smart contract event failed. This does not affect committing your voucher.",
+          })
+        );
+      }
+
       localStorage.setItem("successMessage", "Commit triggered");
       localStorage.setItem("successMessageType", MESSAGE.COMMIT_SUCCESS);
       setTxHashToSupplyId(tx.hash, supplyId);
@@ -344,44 +382,6 @@ function VoucherAndSetDetails(props) {
       );
       setLoading(0);
       return;
-    }
-
-    try {
-      const metadata = {
-        _holder: account,
-        _issuer: owner,
-        _tokenIdSupply: supplyId,
-        _correlationId: correlationId,
-      };
-
-      await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-    } catch (e) {
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message,
-        })
-      );
-      setLoading(0);
-      return;
-    }
-
-    try {
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_DELIVERED,
-        _correlationId: correlationId,
-      };
-      await createEvent(eventData, authData.authToken);
-    } catch (e) {
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content:
-            "Logging of the smart contract event failed. This does not affect committing your voucher.",
-        })
-      );
     }
 
     globalContext.dispatch(Action.reduceVoucherSetQuantity(voucherSetInfo.id));
