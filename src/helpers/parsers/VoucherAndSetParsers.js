@@ -80,15 +80,30 @@ export const prepareSingleVoucherSetData = (voucherSet) => ({
     ? voucherSet.imagefiles[0].url
     : "images/temp/product-block-image-temp.png",
   price: ethers.utils.formatEther(voucherSet.price.$numberDecimal),
+  deposit: ethers.utils.formatEther(voucherSet.buyerDeposit.$numberDecimal),
   qty: voucherSet.qty,
   startDate: voucherSet.startDate,
   category: voucherSet.category,
+  condition: voucherSet.conditions,
+  contact: voucherSet.contact,
   description: voucherSet.description,
   expiryDate: voucherSet.expiryDate,
+  location: voucherSet.location,
+  priceCurrency: voucherSet.priceCurrency,
+  sellerDepositCurrency: voucherSet.sellerDepositCurrency,
+  offeredDate: voucherSet.offeredDate,
+  sellerDeposit: ethers.utils.formatEther(
+    voucherSet.sellerDeposit.$numberDecimal
+  ),
+  txHash: voucherSet.txHash,
   visible: voucherSet.visible,
   currency: voucherSet.currency ? voucherSet._currency : "ETH",
   voucherOwner: voucherSet.voucherOwner,
-  paymentType: voucherSet._paymentType ? voucherSet._paymentType : 1,
+  __v: voucherSet.__v,
+  _tokenIdSupply: voucherSet._tokenIdSupply,
+  paymentType: voucherSet._paymentType
+    ? voucherSet._paymentType
+    : PAYMENT_METHODS.ETHETH,
 });
 
 export const prepareVoucherData = (rawVouchers) => {
