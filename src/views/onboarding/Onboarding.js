@@ -33,7 +33,7 @@ function slide1() {
         <div className="text flex column ai-center">
           <p className="number">1</p>
           <h1>dCommerce</h1>
-          <p className="ta-center color-secondary">
+          <p className="ta-center color-secondary mobile-text-padding">
             Leptonite is a reference release of a fully decentralized,
             peer-to-peer digital marketplace, built on the core Boson Protocol
             contracts. See the Boson Protocol GitHub for more details.
@@ -62,14 +62,14 @@ function slide2() {
               className="pe-none"
             />
           </div>
-          <h2 className="ta-left">
+          <h2 className="ta-left mobile-hide">
             <span>Welcome</span> to Leptonite
           </h2>
         </div>
         <div className="text flex column ai-center">
           <p className="number">2</p>
           <h1>Boson Protocol escrow code</h1>
-          <p className="ta-center color-secondary">
+          <p className="ta-center color-secondary mobile-text-padding">
             The escrow code is governed by the Core Exchange Mechanism which
             takes deposits from both supplier and buyer to grow trust in a
             peer-to-peer exchange.
@@ -81,7 +81,7 @@ function slide2() {
         </div>
       </div>
       <div className="column-holder animated-column">
-        <div className="slide-image center-flex">
+        <div className="slide-image center-flex mobile-fake-escrow-table-padding-top">
           <FakeEscrowTable />
         </div>
       </div>
@@ -102,7 +102,7 @@ function slide3() {
               className="pe-none"
             />
           </div>
-          <h2 className="ta-left">
+          <h2 className="ta-left mobile-hide">
             <span>Welcome</span> to Leptonite
           </h2>
         </div>
@@ -196,14 +196,14 @@ function slide4(completeOnboarding) {
               className="pe-none"
             />
           </div>
-          <h2 className="ta-left">
+          <h2 className="ta-left mobile-hide">
             <span>Welcome</span> to Leptonite
           </h2>
         </div>
         <div className="text flex column ai-center">
           <p className="number">4</p>
           <h1>Redeem</h1>
-          <p className="ta-center color-secondary">
+          <p className="ta-center color-secondary mobile-text-padding">
             When the seller hands over the item, the buyer signs the redemption
             which transfers the funds to the seller.
           </p>
