@@ -64,10 +64,10 @@ function NewOfferBottomNavigation(props) {
 
   const detectInvalidClicks = () => {
     if (buttonRef?.current?.disabled) {
-      buttonRef.current.classList.add("message");
+      buttonRef.current?.classList?.add("message");
 
       setTimeout(() => {
-        buttonRef.current.classList.remove("message");
+        buttonRef.current?.classList?.remove("message");
       }, 2000);
     }
   };
