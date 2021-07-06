@@ -70,7 +70,8 @@ import {
 import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
 import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
 import PendingButton from "./components/escrow-table/PendingButton";
-import NewOfferSubmit from "../new-offer/components/new-offer-submit/NewOfferSubmit";
+
+import { ChainIdError } from "./../../errors/ChainIdError";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -290,6 +291,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       correlationId = (
         await bosonRouterContract.getCorrelationId(account)
       ).toString();
@@ -373,6 +379,7 @@ function VoucherAndSetDetails(props) {
       setRecentlyUsedCorrelationId(correlationId, account);
       setTriggerWaitForTransaction(true);
     } catch (e) {
+      console.log("ERROR", e);
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
