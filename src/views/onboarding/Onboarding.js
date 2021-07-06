@@ -33,7 +33,7 @@ function slide1() {
         <div className="text flex column ai-center">
           <p className="number">1</p>
           <h1>dCommerce</h1>
-          <p className="ta-center color-secondary">
+          <p className="ta-center color-secondary mobile-text-padding">
             Leptonite is a reference release of a fully decentralized,
             peer-to-peer digital marketplace, built on the core Boson Protocol
             contracts. See the Boson Protocol GitHub for more details.
@@ -62,14 +62,14 @@ function slide2() {
               className="pe-none"
             />
           </div>
-          <h2 className="ta-left">
+          <h2 className="ta-left mobile-hide">
             <span>Welcome</span> to Leptonite
           </h2>
         </div>
         <div className="text flex column ai-center">
           <p className="number">2</p>
           <h1>Boson Protocol escrow code</h1>
-          <p className="ta-center color-secondary">
+          <p className="ta-center color-secondary mobile-text-padding">
             The escrow code is governed by the Core Exchange Mechanism which
             takes deposits from both supplier and buyer to grow trust in a
             peer-to-peer exchange.
@@ -81,7 +81,7 @@ function slide2() {
         </div>
       </div>
       <div className="column-holder animated-column">
-        <div className="slide-image center-flex">
+        <div className="slide-image center-flex mobile-fake-escrow-table-padding-top">
           <FakeEscrowTable />
         </div>
       </div>
@@ -89,7 +89,7 @@ function slide2() {
   );
 }
 
-function slide3() {
+function slide4(completeOnboarding) {
   return (
     <>
       <div className="column-holder main-column">
@@ -102,14 +102,23 @@ function slide3() {
               className="pe-none"
             />
           </div>
-          <h2 className="ta-left">
+          <h2 className="ta-left mobile-hide">
             <span>Welcome</span> to Leptonite
           </h2>
         </div>
         <div className="text flex column ai-center">
-          <p className="number">3</p>
+          <p className="number">4</p>
           <h1>Disclaimer</h1>
         </div>
+
+        <div
+          className="primary complete-onboarding"
+          role="button"
+          onClick={completeOnboarding}
+        >
+          START
+        </div>
+
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
           <span>Leptonite is a Rinkeby testnet application</span>
@@ -183,7 +192,7 @@ function handleClick(e) {
   }
 }
 
-function slide4(completeOnboarding) {
+function slide3() {
   return (
     <>
       <div className="column-holder main-column">
@@ -196,24 +205,17 @@ function slide4(completeOnboarding) {
               className="pe-none"
             />
           </div>
-          <h2 className="ta-left">
+          <h2 className="ta-left mobile-hide">
             <span>Welcome</span> to Leptonite
           </h2>
         </div>
         <div className="text flex column ai-center">
-          <p className="number">4</p>
-          <h1>Redeem</h1>
-          <p className="ta-center color-secondary">
+          <p className="number">3</p>
+          <h1>Redemption</h1>
+          <p className="ta-center color-secondary mobile-text-padding">
             When the seller hands over the item, the buyer signs the redemption
             which transfers the funds to the seller.
           </p>
-        </div>
-        <div
-          className="primary complete-onboarding"
-          role="button"
-          onClick={completeOnboarding}
-        >
-          START
         </div>
         <div className="footer color-secondary">
           ©{new Date().getFullYear()} Leptonite.io
@@ -255,7 +257,7 @@ function slide4(completeOnboarding) {
 function Onboarding(props) {
   const initialSlide = localStorage.getItem("onboarding-slide");
 
-  if (+initialSlide === 2) {
+  if (+initialSlide === 3) {
     document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
       el.classList.add("swiper-button-disabled");
     });
@@ -266,13 +268,13 @@ function Onboarding(props) {
 
     const isPolicyAccepted = policyAccepted === "true";
 
-    if (isPolicyAccepted && currentSlide === 2) {
+    if (isPolicyAccepted && currentSlide === 3) {
       document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
         el.classList.remove("swiper-button-disabled");
       });
     }
 
-    if (!isPolicyAccepted && currentSlide === 2) {
+    if (!isPolicyAccepted && currentSlide === 3) {
       document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
         el.classList.add("swiper-button-disabled");
       });
@@ -285,7 +287,7 @@ function Onboarding(props) {
       });
     }
 
-    if (currentSlide < 2) {
+    if (currentSlide < 3) {
       document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
         el.classList.remove("swiper-button-disabled");
       });
@@ -306,6 +308,8 @@ function Onboarding(props) {
       .classList.remove("pause");
 
     localStorage.setItem("onboarding-slide", currentSlide.toString());
+
+    console.log("CURRENT SLIDE", currentSlide);
   };
 
   const allowSlideNextDelayed = (swiper) => {
@@ -315,7 +319,7 @@ function Onboarding(props) {
       const policyAccepted = localStorage.getItem(POLICY_ACCEPTED_KEY);
       const isPolicyAccepted = policyAccepted === "true";
 
-      swiper.allowSlideNext = !(swiper.activeIndex === 2 && !isPolicyAccepted);
+      swiper.allowSlideNext = !(swiper.activeIndex === 3 && !isPolicyAccepted);
       swiper.update();
     }, LOCAL_STORAGE_TIMEOUT_MS);
   };
