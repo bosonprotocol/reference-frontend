@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { GlobalContext, Action } from "../contexts/Global";
 import {
   LoadingContext,
@@ -9,12 +9,17 @@ import {
 import { useWeb3React } from "@web3-react/core";
 import { fetchVoucherSets } from "../helpers/parsers/VoucherAndSetParsers";
 import { getAccountStoredInLocalStorage } from "./authenticate";
+import { useHistory } from "react-router-dom";
 
 function PopulateVouchers() {
   const globalContext = useContext(GlobalContext);
   const loadingContext = useContext(LoadingContext);
 
   const { account } = useWeb3React();
+
+  const history = useHistory();
+
+  const isMounted = useRef(false);
 
   // application init
   useEffect(() => {
@@ -40,6 +45,12 @@ function PopulateVouchers() {
 
     if (localStoredAccountData) {
       loadingContext.dispatch(Toggle.Loading(loadingAccount?.button, 0));
+    }
+
+    if (isMounted.current) {
+      history.push("/");
+    } else {
+      isMounted.current = true;
     }
   }, [account]);
 
