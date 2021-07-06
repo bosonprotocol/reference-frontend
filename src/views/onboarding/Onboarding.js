@@ -211,7 +211,7 @@ function slide3() {
         </div>
         <div className="text flex column ai-center">
           <p className="number">3</p>
-          <h1>Redeem</h1>
+          <h1>Redemption</h1>
           <p className="ta-center color-secondary mobile-text-padding">
             When the seller hands over the item, the buyer signs the redemption
             which transfers the funds to the seller.
