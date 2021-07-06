@@ -92,6 +92,10 @@
           margin-top: 25%;
           font-family: 'Barlow', sans-serif;
 
+          @media (max-height: 800px) {
+            margin-top: 18%;
+          }
+
           .divider {
             height: 1px;
             padding: 20px;
@@ -126,8 +130,16 @@
               margin-right: 84px;
               padding-right: 40px;
 
+              @media (max-height: 800px) {
+                height: 130px !important;
+              }
+
+              @media (max-height: 600px) {
+                height: 85px !important;
+              }
+
               @media (max-width: 768px) {
-                height: 85px;
+                height: 180px;
                 overflow: scroll;
                 margin-left: 15px;
                 margin-right: 15px;
@@ -145,6 +157,10 @@
 
             @media (max-width: 768px) {
               padding-top: 20px !important;
+            }
+
+            @media (max-height: 568px) {
+              padding-top: 0px !important;
             }
 
             :root {
@@ -584,7 +600,7 @@
       position: absolute;
       left: 0;
       margin: 0 auto;
-      bottom: auto;
+      bottom: 18%;
       width: 92px;
       height: 44px;
       background-color: #80F0BE;
