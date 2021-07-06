@@ -27,7 +27,10 @@ function ProductBlock(props) {
       <div className={`product-block ${productType} `} key={keyId}>
         <div
           className={`product-image flex center ${productType}`}
-          style={{ backgroundImage: `url('${image}')` }}
+          style={{
+            backgroundImage: `url('${image}')`,
+            backgroundSize: "contain",
+          }}
         ></div>
         <h3>{title}</h3>
         <div className="price flex ai-center">
