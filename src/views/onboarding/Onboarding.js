@@ -110,7 +110,7 @@ function slide4(completeOnboarding) {
           <p className="number">4</p>
           <h1>Disclaimer</h1>
         </div>
-        
+
         <div
           className="primary complete-onboarding"
           role="button"
