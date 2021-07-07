@@ -18,8 +18,10 @@ import { setTxHashToSupplyId } from "../../utils/BlockchainUtils";
 import { useEffect } from "react";
 import { SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
 
+import { ChainIdError } from "./../../errors/ChainIdError";
+
 function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
-  const { library, account } = useWeb3React();
+  const { library, account, chainId } = useWeb3React();
   const modalContext = useContext(ModalContext);
   const [loading, setLoading] = useState(0);
   const [messageType, setMessageType] = useState(false);
@@ -83,6 +85,11 @@ function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+      
       const tx = await bosonRouterContract.redeem(
         voucherDetails.voucher._tokenIdVoucher
       );
