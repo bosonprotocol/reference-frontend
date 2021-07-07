@@ -46,6 +46,8 @@ export const determineRoleAndStatusOfVoucherResourse = (
       ? STATUS.REFUNDED
       : voucherResource.REDEEMED
       ? STATUS.REDEEMED
+      : voucherResource.EXPIRED
+      ? STATUS.EXPIRED
       : voucherResource.COMMITTED
       ? STATUS.COMMITED
       : !voucherResource?.qty
@@ -54,6 +56,8 @@ export const determineRoleAndStatusOfVoucherResourse = (
       ? STATUS.OFFERED
       : false;
 
+  console.log(voucherResource);
+
   const role = voucherRoles.owner
     ? ROLE.SELLER
     : voucherRoles.holder
@@ -61,9 +65,12 @@ export const determineRoleAndStatusOfVoucherResourse = (
     : ROLE.NON_BUYER_SELLER;
   const status = voucherResource && statusPropagate();
 
+  console.log(role);
+  console.log(status);
+
   // don't show actions if:
   const blockActionConditions = [
-    new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
+    new Date() >= new Date(voucherResource?.EXPIRED), // voucher expired
     new Date() <= new Date(voucherResource?.startDate) && !!voucherDetails, // has future start date and is voucher
     voucherSetDetails?.qty <= 0, // no quantity
     recentlySignedTxHash !== "",
