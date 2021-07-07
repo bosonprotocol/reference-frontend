@@ -40,6 +40,8 @@ import "../../../../styles/PendingButton.scss";
 import PendingButton from "../../../voucher-and-set-details/components/escrow-table/PendingButton";
 import { prepareSingleVoucherSetData } from "../../../../helpers/parsers/VoucherAndSetParsers";
 
+import { ChainIdError } from "../../../../errors/ChainIdError";
+
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
   const [loading, setLoading] = useState(0);
@@ -121,6 +123,11 @@ export default function NewOfferSubmit() {
     let correlationId;
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       correlationId = (
         await bosonRouterContract.getCorrelationId(account)
       ).toString();

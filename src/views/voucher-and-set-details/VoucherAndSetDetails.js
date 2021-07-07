@@ -25,11 +25,7 @@ import {
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
-import {
-  capitalize,
-  formatDate,
-  totalDepositCalcEth,
-} from "../../utils/FormatUtils";
+import { capitalize, formatDate } from "../../utils/FormatUtils";
 import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
@@ -426,6 +422,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(bosonRouterContract, "complain", [
           voucherDetails._tokenIdVoucher,
@@ -464,7 +465,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
       setLoading(0);
@@ -521,6 +522,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(bosonRouterContract, "refund", [
           voucherDetails._tokenIdVoucher,
@@ -559,7 +565,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
       setLoading(0);
@@ -616,6 +622,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(
           bosonRouterContract,
@@ -655,7 +666,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
 
@@ -821,6 +832,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(
           bosonRouterContract,
