@@ -65,9 +65,6 @@ export const determineRoleAndStatusOfVoucherResourse = (
     : ROLE.NON_BUYER_SELLER;
   const status = voucherResource && statusPropagate();
 
-  console.log(role);
-  console.log(status);
-
   // don't show actions if:
   const blockActionConditions = [
     new Date() <= new Date(voucherResource?.startDate) && !!voucherDetails, // has future start date and is voucher
