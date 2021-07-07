@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
 import { ChainLabels, shortenAddress } from "../../utils/BlockchainUtils";
-import { injected, NETWORK_ID, walletconnect } from "../../Connectors";
+import { injected, SUPPORTED_CHAIN_IDS, walletconnect } from "../../Connectors";
 import WalletConnectIcon from "../../assets/wallets/walletconnect.svg";
 import MetaMaskLogo from "../../assets/wallets/metamask.png";
 import WalletConnectLogo from "../../assets/wallets/walletconnect.svg";
@@ -86,10 +86,10 @@ export function WalletConnect({
       const walletConnectDataObject = JSON.parse(walletConnectData);
       if (
         walletConnectDataObject &&
-        walletConnectDataObject.chainId !== NETWORK_ID
+        !SUPPORTED_CHAIN_IDS.includes(walletConnectDataObject.chainId)
       ) {
         // ToDo: Use Global notification
-        console.error("Please use Rinkeby network.");
+        console.error(`Unsupported network (chainID=${walletConnectDataObject.chainId})` );
         return;
       }
     }

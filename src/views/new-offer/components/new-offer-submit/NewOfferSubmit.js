@@ -41,6 +41,7 @@ import PendingButton from "../../../voucher-and-set-details/components/escrow-ta
 import { prepareSingleVoucherSetData } from "../../../../helpers/parsers/VoucherAndSetParsers";
 
 import { ChainIdError } from "../../../../errors/ChainIdError";
+import { SUPPORTED_CHAIN_IDS } from "../../../../Connectors";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -124,7 +125,7 @@ export default function NewOfferSubmit() {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 
