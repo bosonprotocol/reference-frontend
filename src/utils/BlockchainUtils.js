@@ -60,7 +60,8 @@ export const waitForRecentTransactionIfSuchExists = (
   voucherSetDetails,
   setRecentlySignedTxHash,
   setSuccessMessage,
-  setSuccessMessageType
+  setSuccessMessageType,
+  setTriggerWaitForTransaction
 ) => {
   const localStorageList =
     JSON.parse(localStorage.getItem("recentlySignedTxIdToSupplyIdList")) || [];
@@ -88,6 +89,7 @@ export const waitForRecentTransactionIfSuchExists = (
             JSON.stringify(localStorageListWithDeletedTx)
           );
         };
+        setTriggerWaitForTransaction(false);
         await awaitForTx();
 
         setSuccessMessage(localStorage.getItem("successMessage"));

@@ -23,6 +23,11 @@ function BottomNavigation() {
   const voucherControls = navigationContext.state.redemptionFlowControl;
   const navType = navigationContext.state.bottom.type;
 
+  const onboardingCompletedStep = localStorage.getItem("onboarding-slide");
+  const lastOnboardingSlideIndex = 3;
+  const onboardingCompleted =
+    +onboardingCompletedStep === lastOnboardingSlideIndex;
+
   const routing = {
     Home: (
       <div
@@ -71,9 +76,7 @@ function BottomNavigation() {
 
   return (
     <section
-      className={`bottom-navigation ${
-        !globalContext.state.onboardingCompleted ? "d-none" : ""
-      }`}
+      className={`bottom-navigation ${!onboardingCompleted ? "d-none" : ""}`}
     >
       <div className="container">
         <nav className="flex">

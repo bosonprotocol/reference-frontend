@@ -1,11 +1,11 @@
-import { smartContractToUserFriendlyErrorMapping } from "../../constants/ErrorMessages";
+import { SMART_CONTRACT_ERRORS } from "../../constants/ErrorMessages";
 
 export const validateContractInteraction = async (
   contract,
   functionName,
   params
 ) => {
-  let complaintUserFriendlyErrorMessageMaker = () => "";
+  let handleSmartContractError = () => "";
 
   try {
     if (params) {
@@ -17,20 +17,20 @@ export const validateContractInteraction = async (
     console.log(e);
     try {
       const smartContractsErrorMessage = extractErrorMessageFromError(e);
-      complaintUserFriendlyErrorMessageMaker = smartContractToUserFriendlyErrorMapping.get(
+      handleSmartContractError = SMART_CONTRACT_ERRORS.get(
         smartContractsErrorMessage
       );
 
-      if (!complaintUserFriendlyErrorMessageMaker) {
+      if (!handleSmartContractError) {
         throw e;
       }
     } catch (e) {
-      complaintUserFriendlyErrorMessageMaker = () =>
+      handleSmartContractError = () =>
         "Unknown error occurred, please try again later and if the problem persist, see the console for details/contact administrator";
     }
   }
 
-  return complaintUserFriendlyErrorMessageMaker;
+  return handleSmartContractError;
 };
 
 const extractErrorMessageFromError = (e) => {

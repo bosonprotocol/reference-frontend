@@ -1,6 +1,9 @@
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router";
-import { NavigationContext, Action } from "../../../contexts/Navigation";
+import {
+  NavigationContext,
+  NavigationAction,
+} from "../../../contexts/Navigation";
 
 import {
   ROUTE,
@@ -101,31 +104,35 @@ function LocationManager() {
 
     if (pageRoute === ROUTE.NewOffer) {
       navigationContext.dispatch(
-        Action.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)
+        NavigationAction.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)
       );
     } else if (
       (pageRoute === ROUTE.ActivityVouchers || pageRoute === ROUTE.Activity) &&
       !!urlNested
     ) {
       navigationContext.dispatch(
-        Action.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER)
+        NavigationAction.setBottomNavType(BOTTOM_NAV_TYPE.VOUCHER)
       );
     } else {
       navigationContext.dispatch(
-        Action.setBottomNavType(BOTTOM_NAV_TYPE.DEFAULT)
+        NavigationAction.setBottomNavType(BOTTOM_NAV_TYPE.DEFAULT)
       );
     }
 
     if (pageRoute === ROUTE.CodeScanner) {
-      navigationContext.dispatch(Action.displayNavigation(false));
+      navigationContext.dispatch(NavigationAction.displayNavigation(false));
     } else {
-      navigationContext.dispatch(Action.displayNavigation(true));
+      navigationContext.dispatch(NavigationAction.displayNavigation(true));
     }
 
     if (param === "qr" || param === "supply") {
-      navigationContext.dispatch(Action.displayBottomNavigation(false));
+      navigationContext.dispatch(
+        NavigationAction.displayBottomNavigation(false)
+      );
     } else {
-      navigationContext.dispatch(Action.displayBottomNavigation(true));
+      navigationContext.dispatch(
+        NavigationAction.displayBottomNavigation(true)
+      );
     }
 
     // trigger a function that will enable relative affordances to the current page
@@ -141,11 +148,11 @@ function LocationManager() {
     switchLocationMap();
 
     navigationContext.dispatch(
-      Action.bottomNavListSelectedItem(bottomNavActiveLink)
+      NavigationAction.bottomNavListSelectedItem(bottomNavActiveLink)
     );
 
-    navigationContext.dispatch(Action.updateLocation());
-    navigationContext.dispatch(Action.updateAffordances(affordances));
+    navigationContext.dispatch(NavigationAction.updateLocation());
+    navigationContext.dispatch(NavigationAction.updateAffordances(affordances));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);

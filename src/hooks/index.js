@@ -1,57 +1,15 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
-// import { parseBytes32String } from "@ethersproject/strings";
 import copy from "copy-to-clipboard";
 import { isMobile } from "react-device-detect";
-import { NetworkContextName } from "../constants";
+import { NETWORK_CONTEXT_NAME } from "../constants";
 import { injected, walletconnect } from "../Connectors";
-import { parseLocalStorage } from "../utils/FormatUtils";
 import {
   authenticateUser,
   createUnauthenticatedLocalStorageRecord,
   getAccountStoredInLocalStorage,
 } from "./authenticate";
 import { CONNECTOR_TYPES } from "../shared-components/wallet-connect/WalletConnect";
-// import { useDefaultTokenList } from "../redux/lists/hooks";
-// import { useTokenContract, useBytes32TokenContract } from "./useContract";
-
-export function useLocalStorage(key, defaultValue, didChange = []) {
-  const [value, setStateValue] = useState(
-    parseLocalStorage(localStorage[key], key)
-  );
-
-  useEffect(() => {
-    let initialValue = parseLocalStorage(localStorage[key], key);
-    if (initialValue === null) {
-      initialValue = defaultValue;
-    }
-    setStateValue(initialValue);
-    // eslint-disable-next-line
-  }, [didChange]);
-  useEffect(() => {
-    function onStorageUpdate(e) {
-      if (e.detail.key !== key) return;
-      setStateValue(parseLocalStorage(e.detail.value, e.detail.key));
-    }
-
-    window.addEventListener("newStorageValue", onStorageUpdate);
-    return () => {
-      window.removeEventListener("newStorageValue", onStorageUpdate);
-    };
-  }, [key, setStateValue]);
-
-  function setValue(newValue) {
-    newValue = JSON.stringify(newValue);
-    localStorage[key] = newValue;
-    setStateValue(newValue);
-    const e = new CustomEvent("newStorageValue", {
-      detail: { key, value: newValue },
-    });
-    window.dispatchEvent(e);
-  }
-
-  return [value, setValue];
-}
 
 export function usePrevious(value) {
   // The ref object is a generic container whose current property is mutable ...
@@ -136,9 +94,8 @@ export function useInactiveListener(suppress = false) {
           const newAccount = accounts[0];
           createUnauthenticatedLocalStorageRecord(newAccount);
 
-          const localStoredAccountData = getAccountStoredInLocalStorage(
-            account
-          );
+          const localStoredAccountData =
+            getAccountStoredInLocalStorage(account);
           if (!localStoredAccountData.activeToken) {
             await authenticateUser(library, newAccount, chainId);
           }
@@ -190,128 +147,9 @@ export function useCopyClipboard(timeout = 500) {
 
 export function useActiveWeb3React() {
   const context = useWeb3React();
-  const contextNetwork = useWeb3React(NetworkContextName);
+  const contextNetwork = useWeb3React(NETWORK_CONTEXT_NAME);
   return context.active ? context : contextNetwork;
 }
-
-// export function useAllTokens() {
-//     const { chainId } = useActiveWeb3React();
-//     // TODO - store user-added tokens
-//     const userAddedTokens = []; // useUserAddedTokens()
-//     const allTokens = useDefaultTokenList();
-//
-//     return useMemo(() => {
-//         if (!chainId) return {};
-//         return (
-//             userAddedTokens
-//                 // reduce into all ALL_TOKENS filtered by the current chain
-//                 .reduce(
-//                     (tokenMap, token) => {
-//                         tokenMap[token.address] = token;
-//                         return tokenMap;
-//                     },
-//                     // must make a copy because reduce modifies the map, and we do not
-//                     // want to make a copy in every iteration
-//                     { ...allTokens[chainId] }
-//                 )
-//         );
-//     }, [chainId, userAddedTokens, allTokens]);
-// }
-
-// parse a name or symbol from a token response
-// const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
-
-// function parseStringOrBytes32(str, bytes32, defaultValue) {
-//     return str && str.length > 0
-//         ? str
-//         : bytes32 && BYTES32_REGEX.test(bytes32)
-//             ? parseBytes32String(bytes32)
-//             : defaultValue;
-// }
-
-// // undefined if invalid or does not exist
-// // null if loading
-// // otherwise returns the token
-// export function useToken(tokenAddress) {
-//     const { chainId } = useActiveWeb3React();
-//     const tokens = useAllTokens();
-//
-//     const address = isAddress(tokenAddress);
-//
-//     const tokenContract = useTokenContract(address ? address : undefined, false);
-//     const tokenContractBytes32 = useBytes32TokenContract(
-//         address ? address : undefined,
-//         false
-//     );
-//     const token = address ? tokens[address] : undefined;
-//
-//     const tokenName = useSingleCallResult(
-//         token ? undefined : tokenContract,
-//         "name",
-//         undefined,
-//         NEVER_RELOAD
-//     );
-//     const tokenNameBytes32 = useSingleCallResult(
-//         token ? undefined : tokenContractBytes32,
-//         "name",
-//         undefined,
-//         NEVER_RELOAD
-//     );
-//     const symbol = useSingleCallResult(
-//         token ? undefined : tokenContract,
-//         "symbol",
-//         undefined,
-//         NEVER_RELOAD
-//     );
-//     const symbolBytes32 = useSingleCallResult(
-//         token ? undefined : tokenContractBytes32,
-//         "symbol",
-//         undefined,
-//         NEVER_RELOAD
-//     );
-//     const decimals = useSingleCallResult(
-//         token ? undefined : tokenContract,
-//         "decimals",
-//         undefined,
-//         NEVER_RELOAD
-//     );
-//
-//     return useMemo(() => {
-//         if (token) return token;
-//         if (!chainId || !address) return undefined;
-//         if (decimals.loading || symbol.loading || tokenName.loading) return null;
-//         if (decimals.result) {
-//             return new Token(
-//                 chainId,
-//                 address,
-//                 decimals.result[0],
-//                 parseStringOrBytes32(
-//                     symbol.result?.[0],
-//                     symbolBytes32.result?.[0],
-//                     "UNKNOWN"
-//                 ),
-//                 parseStringOrBytes32(
-//                     tokenName.result?.[0],
-//                     tokenNameBytes32.result?.[0],
-//                     "Unknown Token"
-//                 )
-//             );
-//         }
-//         return undefined;
-//     }, [
-//         address,
-//         chainId,
-//         decimals.loading,
-//         decimals.result,
-//         symbol.loading,
-//         symbol.result,
-//         symbolBytes32.result,
-//         token,
-//         tokenName.loading,
-//         tokenName.result,
-//         tokenNameBytes32.result,
-//     ]);
-// }
 
 // modified from https://usehooks.com/useDebounce/
 export function useDebounce(value, delay) {

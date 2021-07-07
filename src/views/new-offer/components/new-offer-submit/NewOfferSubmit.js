@@ -1,5 +1,9 @@
 import React, { useContext, useState } from "react";
-import { createVoucherSet, createEvent } from "../../../../hooks/api";
+import {
+  createVoucherSet,
+  createEvent,
+  getVoucherSetById,
+} from "../../../../hooks/api";
 import {
   useBosonRouterContract,
   useBosonTokenContract,
@@ -30,12 +34,13 @@ import {
 import { toFixed } from "../../../../utils/FormatUtils";
 import { onAttemptToApprove } from "../../../../hooks/approveWithPermit";
 
-import {
-  isCorrelationIdAlreadySent,
-  setRecentlyUsedCorrelationId,
-} from "../../../../utils/DuplicateCorrelationIdGuard";
+import { isCorrelationIdAlreadySent } from "../../../../utils/DuplicateCorrelationIdGuard";
 import { validateContractInteraction } from "../../../../helpers/validators/ContractInteractionValidator";
-import { IconClock } from "../../../../shared-components/icons/Icons";
+import "../../../../styles/PendingButton.scss";
+import PendingButton from "../../../voucher-and-set-details/components/escrow-table/PendingButton";
+import { prepareSingleVoucherSetData } from "../../../../helpers/parsers/VoucherAndSetParsers";
+
+import { ChainIdError } from "../../../../errors/ChainIdError";
 
 export default function NewOfferSubmit() {
   const [redirect, setRedirect] = useState(0);
@@ -118,8 +123,13 @@ export default function NewOfferSubmit() {
     let correlationId;
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       correlationId = (
-        await bosonRouterContract.correlationIds(account)
+        await bosonRouterContract.getCorrelationId(account)
       ).toString();
 
       const correlationIdRecentySent = isCorrelationIdAlreadySent(
@@ -164,7 +174,10 @@ export default function NewOfferSubmit() {
 
       prepareVoucherFormData(correlationId, dataArr, paymentType);
 
-      await createVoucherSet(formData, authData.authToken);
+      const createdVoucherSet = await createVoucherSet(
+        formData,
+        authData.authToken
+      );
 
       try {
         const eventData = {
@@ -184,7 +197,6 @@ export default function NewOfferSubmit() {
         );
       }
 
-      globalContext.dispatch(Action.fetchVoucherSets());
       setLoading(0);
       setPending(true);
       const backButton = document.getElementById("topOfferNavBackButton");
@@ -193,6 +205,9 @@ export default function NewOfferSubmit() {
       }
       await created.wait();
 
+      globalContext.dispatch(
+        Action.addVoucherSet(prepareSingleVoucherSetData(createdVoucherSet))
+      );
       setSuccessMessage("Voucher set published");
       setSuccessMessageType(MESSAGE.NEW_VOUCHER_SET_SUCCESS);
       setRedirectLink(ROUTE.Activity);
@@ -252,32 +267,7 @@ export default function NewOfferSubmit() {
       {loading ? <LoadingSpinner /> : null}
       {!redirect ? (
         pending ? (
-          [
-            <div
-              className="button cancelVoucherSet"
-              role="button"
-              style={{ border: "none" }}
-              disabled
-              onClick={(e) => e.preventDefault()}
-            >
-              <div>
-                <span
-                  style={{ verticalAlign: "middle", display: "inline-block" }}
-                >
-                  <IconClock color={"#E49043"} />
-                </span>
-                <span
-                  style={{
-                    verticalAlign: "middle",
-                    display: "inline-block",
-                    fontSize: "1.1em",
-                  }}
-                >
-                  &nbsp;PENDING
-                </span>
-              </div>
-            </div>,
-          ]
+          [<PendingButton />]
         ) : (
           <ContractInteractionButton
             className="button offer primary"
@@ -327,11 +317,12 @@ const createNewVoucherSet = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderETHETH",
-      [dataArr, { value: txValue }]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderETHETH",
+        [dataArr, { value: txValue }]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({
@@ -367,11 +358,12 @@ const createNewVoucherSet = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderTKNETH",
-      [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderTKNETH",
+        [SMART_CONTRACTS.BosonTokenContractAddress, dataArr, { value: txValue }]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({
@@ -419,20 +411,21 @@ const createNewVoucherSet = async (
       txValue
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderTKNTKNWithPermit",
-      [
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        txValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        dataArr,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderTKNTKNWithPermit",
+        [
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          txValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          dataArr,
+        ]
+      );
     if (
       contractInteractionDryRunErrorMessageMaker({
         action: "Create a new Voucher Set",
@@ -483,19 +476,20 @@ const createNewVoucherSet = async (
       chainId,
       txValue
     );
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestCreateOrderETHTKNWithPermit",
-      [
-        SMART_CONTRACTS.BosonTokenContractAddress,
-        txValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        dataArr,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestCreateOrderETHTKNWithPermit",
+        [
+          SMART_CONTRACTS.BosonTokenContractAddress,
+          txValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          dataArr,
+        ]
+      );
     if (
       contractInteractionDryRunErrorMessageMaker({
         action: "Create a new Voucher Set",

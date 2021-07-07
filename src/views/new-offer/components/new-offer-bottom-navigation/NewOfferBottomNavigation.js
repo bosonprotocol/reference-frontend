@@ -6,12 +6,8 @@ import { NAME } from "../../../../helpers/configs/Dictionary";
 import NewOfferSubmit from "../new-offer-submit/NewOfferSubmit";
 
 function NewOfferBottomNavigation(props) {
-  const {
-    lastScreenBoolean,
-    activeScreen,
-    setActiveScreen,
-    errorMessages,
-  } = props;
+  const { lastScreenBoolean, activeScreen, setActiveScreen, errorMessages } =
+    props;
   const [disabled, setDisabled] = useState(true);
   const buttonRef = useRef();
 
@@ -50,7 +46,7 @@ function NewOfferBottomNavigation(props) {
       );
       if (screenFields[activeScreen]) {
         activeScreenFieldNames.forEach((field) => {
-          if (!getOfferingData(field)) {
+          if (!getOfferingData(field) && field !== NAME.ADDRESS_LINE_TWO) {
             disable = true;
           }
         });
@@ -68,10 +64,10 @@ function NewOfferBottomNavigation(props) {
 
   const detectInvalidClicks = () => {
     if (buttonRef?.current?.disabled) {
-      buttonRef.current.classList.add("message");
+      buttonRef.current?.classList?.add("message");
 
       setTimeout(() => {
-        buttonRef.current.classList.remove("message");
+        buttonRef.current?.classList?.remove("message");
       }, 2000);
     }
   };

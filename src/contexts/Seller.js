@@ -27,12 +27,6 @@ export const Seller = {
     type: DIC.UPDATE_OFFERING_DATA,
     payload: datatObject,
   }),
-  loadOfferingBackup: () => ({
-    type: DIC.LOAD_OFFERING_BACKUP,
-  }),
-  getOfferingProgress: () => ({
-    type: DIC.GET_OFFERING_PROGRESS,
-  }),
   resetOfferingData: () => ({
     type: DIC.RESET_OFFERING_DATA,
   }),

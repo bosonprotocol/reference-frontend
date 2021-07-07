@@ -1,17 +1,25 @@
 import React, { useRef, useContext, useState, useEffect } from "react";
 import "./Search.scss";
 import { GlobalContext } from "../../contexts/Global";
-import { VoucherSetBlock } from "../activity/Activity";
 import { IconHome } from "../../shared-components/icons/Icons";
 import { useLocation } from "react-router";
-import { QUERY_PARAMS, ROUTE } from "../../helpers/configs/Dictionary";
+import { QUERY_PARAMS } from "../../helpers/configs/Dictionary";
+import { VoucherSetBlock } from "../activity/components/OfferedVoucherSets";
+import { useWeb3React } from "@web3-react/core";
 
 function Search() {
   const searchInput = useRef();
   const globalContext = useContext(GlobalContext);
   const [voucherSets, setVoucherSets] = useState([]);
+  const { account } = useWeb3React();
 
-  const allVoucherSets = globalContext.state.allVoucherSets;
+  const allVoucherSets = globalContext.state.allVoucherSets
+    ? !account
+      ? globalContext.state.allVoucherSets
+      : globalContext.state.allVoucherSets.filter(
+          (x) => x.voucherOwner.toLowerCase() !== account.toLowerCase()
+        )
+    : [];
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
 
@@ -26,13 +34,41 @@ function Search() {
       setVoucherSets([]);
       return;
     }
-
     setVoucherSets(filterVoucherSets(allVoucherSets, e));
   };
 
   const clearSearch = () => {
     searchInput.current.value = "";
     setVoucherSets([]);
+  };
+
+  const SearchBlock = (props) => {
+    function voucherSetBlockBuilder(voucherSet, id) {
+      return (
+        <VoucherSetBlock
+          {...voucherSet}
+          openDetails={true}
+          searchCriteria={
+            searchInput.current.value ? searchInput.current.value : "null"
+          }
+          key={id}
+        />
+      );
+    }
+
+    if (voucherSets.length > 0) {
+      return voucherSets.map((voucherSet, id) =>
+        voucherSetBlockBuilder(voucherSet, id)
+      );
+    } else {
+      if (searchInput?.current?.value === "") {
+        return allVoucherSets.map((voucherSet, id) =>
+          voucherSetBlockBuilder(voucherSet, id)
+        );
+      } else {
+        return <div>No vouchers available.</div>;
+      }
+    }
   };
 
   useEffect(() => {
@@ -78,33 +114,7 @@ function Search() {
               </div>
             </div>
             <div className="voucher-set-container">
-              {voucherSets.length > 0
-                ? voucherSets.map((voucherSet, id) => (
-                    <VoucherSetBlock
-                      {...voucherSet}
-                      openDetails={true}
-                      searchCriteria={
-                        searchInput.current.value
-                          ? searchInput.current.value
-                          : "null"
-                      }
-                      key={id}
-                    />
-                  ))
-                : searchInput?.current?.value === ""
-                ? allVoucherSets.map((voucherSet, id) => (
-                    <VoucherSetBlock
-                      {...voucherSet}
-                      openDetails={true}
-                      searchCriteria={
-                        searchInput.current.value
-                          ? searchInput.current.value
-                          : "null"
-                      }
-                      key={id}
-                    />
-                  ))
-                : null}
+              <SearchBlock></SearchBlock>
             </div>
           </div>
         </section>

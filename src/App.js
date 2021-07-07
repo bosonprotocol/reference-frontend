@@ -46,7 +46,7 @@ import {
 } from "./contexts/Loading";
 
 import { useWeb3React } from "@web3-react/core";
-import { NetworkContextName } from "./constants";
+import { NETWORK_CONTEXT_NAME } from "./constants";
 import { network } from "./Connectors";
 
 import ContextModal from "./shared-components/modals/context-modal/ContextModal";
@@ -124,7 +124,7 @@ function App() {
     active: networkActive,
     error: networkError,
     activate: activateNetwork,
-  } = useWeb3React(NetworkContextName);
+  } = useWeb3React(NETWORK_CONTEXT_NAME);
 
   const triedEager = useEagerConnect();
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
@@ -157,7 +157,6 @@ function App() {
     if (!!!+onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
-
     authenticateUser(library, account, chainId);
   }, [account, library, chainId]);
 

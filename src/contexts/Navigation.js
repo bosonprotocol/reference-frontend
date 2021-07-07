@@ -6,8 +6,6 @@ import {
 } from "../helpers/configs/Dictionary";
 import { getData as getContextData } from "../helpers/ContextHelper";
 
-export const MAP = CONTROL;
-
 export const getData = getContextData;
 
 export const NavigationContext = createContext();
@@ -30,7 +28,7 @@ export const NavigationInitialState = {
   displayBottomNavigation: false,
 };
 
-export const Action = {
+export const NavigationAction = {
   updateLocation: (location) => ({
     type: CONTROL.UPDATE_LOCATION,
     payload: location,

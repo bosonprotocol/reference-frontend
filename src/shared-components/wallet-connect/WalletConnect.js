@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
 import { ChainLabels, shortenAddress } from "../../utils/BlockchainUtils";
-// import Modal from "../shared/Modal";
 import { injected, NETWORK_ID, walletconnect } from "../../Connectors";
 import WalletConnectIcon from "../../assets/wallets/walletconnect.svg";
 import MetaMaskLogo from "../../assets/wallets/metamask.png";
@@ -27,47 +26,6 @@ export const CONNECTOR_TYPES = {
   METAMASK: "MetaMask",
   WALLET_CONNECT: "WalletConnect",
 };
-
-export function getWalletTitle({ account, walletView, setWalletView }) {
-  if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-    return <h1 className="account-title">Account</h1>;
-  }
-  if (account && walletView === WALLET_VIEWS.OPTIONS) {
-    return (
-      <button
-        onClick={() => setWalletView(WALLET_VIEWS.ACCOUNT)}
-        className="button primary"
-      >
-        Back
-      </button>
-    );
-  }
-  if (!account) {
-    return <h1 className="account-title">Connect to a wallet</h1>;
-  }
-}
-
-// export default function ModalWalletConnect({ modal, setModal }) {
-//     const context = useWeb3React();
-//     const { account } = context;
-//     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
-//
-//     return (
-//         <Modal
-//             title={ getWalletTitle({ account, walletView, setWalletView }) }
-//             setModal={ setModal }
-//             modal={ modal }
-//         >
-//             <InnerModal isAccount={ account && walletView === WALLET_VIEWS.ACCOUNT }>
-//                 <WalletConnect
-//                     onSuccess={ () => setModal(null) }
-//                     walletView={ walletView }
-//                     setWalletView={ setWalletView }
-//                 />
-//             </InnerModal>
-//         </Modal>
-//     );
-// }
 
 export function WalletConnect({
   onSuccess,
@@ -147,67 +105,69 @@ export function WalletConnect({
 
   return (
     <>
-      {account && active ? (
-        <WalletAccount
-          onWalletConnectAccountChanged={() => {
-            walletConnectAccountChanged();
-          }}
-        />
-      ) : null}
-      <div className="wallets">
-        {!isMobile() ? (
-          !(window.web3 || window.ethereum) ? (
-            <a
-              href={"https://metamask.io/"}
-              target={"_blank"}
-              rel={"noreferrer"}
-            >
+      <div className="wallet-holder">
+        {account && active ? (
+          <WalletAccount
+            onWalletConnectAccountChanged={() => {
+              walletConnectAccountChanged();
+            }}
+          />
+        ) : null}
+        <div className={`wallets ${account && active ? "has-wallet f1" : ""}`}>
+          {!isMobile() ? (
+            !(window.web3 || window.ethereum) ? (
+              <a
+                href={"https://metamask.io/"}
+                target={"_blank"}
+                rel={"noreferrer"}
+              >
+                <WalletListItem
+                  name={CONNECTOR_TYPES.METAMASK}
+                  imageName={MetaMaskLogo}
+                  isActive={false}
+                  onClick={null}
+                  hasWallet={account && active}
+                />
+              </a>
+            ) : (
               <WalletListItem
                 name={CONNECTOR_TYPES.METAMASK}
                 imageName={MetaMaskLogo}
-                isActive={false}
-                onClick={null}
+                isActive={connector === injected && active}
+                hasWallet={account && active}
+                onClick={() => {
+                  onConnectionClicked(CONNECTOR_TYPES.METAMASK);
+                }}
               />
-            </a>
-          ) : (
+            )
+          ) : null}
+          {isMetaMask && isMobile() ? null : (
             <WalletListItem
-              name={CONNECTOR_TYPES.METAMASK}
-              imageName={MetaMaskLogo}
-              isActive={connector === injected && active}
+              name={CONNECTOR_TYPES.WALLET_CONNECT}
+              imageName={WalletConnectLogo}
+              isActive={connector === walletconnect && active}
+              hasWallet={account && active}
               onClick={() => {
-                onConnectionClicked(CONNECTOR_TYPES.METAMASK);
+                // if the user has already tried to connect, manually reset the connector
+                if (connector?.walletConnectProvider?.wc?.uri) {
+                  connector.walletConnectProvider = undefined;
+                }
+                onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT);
               }}
             />
-          )
-        ) : null}
-        {isMetaMask && isMobile() ? null : (
-          <WalletListItem
-            name={CONNECTOR_TYPES.WALLET_CONNECT}
-            imageName={WalletConnectLogo}
-            isActive={connector === walletconnect && active}
-            onClick={() => {
-              // if the user has already tried to connect, manually reset the connector
-              if (connector?.walletConnectProvider?.wc?.uri) {
-                connector.walletConnectProvider = undefined;
-              }
-              onConnectionClicked(CONNECTOR_TYPES.WALLET_CONNECT);
-            }}
-          />
-        )}
+          )}
+        </div>
       </div>
     </>
   );
 }
-
-// function InnerModal({ children, isAccount }) {
-//     return <div className={ "pa4 " + (isAccount ? "pt0" : "") }>{ children }</div>;
-// }
 
 function WalletListItem({
   name,
   imageName,
   onClick,
   isActive,
+  hasWallet,
   imageStyle = {},
 }) {
   return (
@@ -221,22 +181,30 @@ function WalletListItem({
       <div className="wallet-list-item-image-holder">
         <img src={imageName} alt={name + "-" + imageName} style={imageStyle} />
       </div>
-      <div className="list-item-option">{name}</div>
-      <div className="status">
-        {isActive ? (
-          <div className="active-wallet-indicator">
-            <img src="images/wallets/active-wallet.png" alt="Active wallet" />{" "}
-            Connected
-          </div>
-        ) : (
-          <div className={`button gray`} role="button">
-            {!(window.web3 || window.ethereum) &&
-            name === CONNECTOR_TYPES.METAMASK
-              ? "INSTALL"
-              : "CONNECT"}
-          </div>
-        )}
+      <div
+        className={classNames("list-item-option", {
+          "metamask-label": name === CONNECTOR_TYPES.METAMASK,
+        })}
+      >
+        {name}
       </div>
+      {hasWallet ? (
+        <div className="status">
+          {isActive ? (
+            <div className="active-wallet-indicator">
+              <img src="images/wallets/active-wallet.png" alt="Active wallet" />{" "}
+              Connected
+            </div>
+          ) : (
+            <div className={`button gray`} role="button">
+              {!(window.web3 || window.ethereum) &&
+              name === CONNECTOR_TYPES.METAMASK
+                ? "INSTALL"
+                : "CONNECT"}
+            </div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -258,7 +226,9 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
 
   const copyButton = (
     <CopyHelper toCopy={account}>
-      <span style={{ marginLeft: "4px" }}>Copy Address</span>
+      <span style={{ marginLeft: "4px", textTransform: "none" }}>
+        Copy Address
+      </span>
     </CopyHelper>
   );
 
@@ -286,9 +256,11 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     <>
       <div className="connected-wallet">
         <div className="address relative">
-          <div className="netowrk-info flex center">
-            <span className={`net-name`}>{ChainLabels[chainId]}</span>
-          </div>
+          {chainId ? (
+            <div className="network-info flex center">
+              <span className={`net-name`}>{ChainLabels[chainId]}</span>
+            </div>
+          ) : null}
           <div className="url flex ai-center">
             {getStatusIcon()}
             {shortenAddress(account)}
@@ -313,11 +285,6 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
             </div>
           ) : null}
         </div>
-        {/* <div className="control flex split">
-                    <div className="button gray w50">REMOVE</div>
-                    <div className="button gray action w50" role="button"
-                    onClick={ () => setWalletView(WALLET_VIEWS.OPTIONS) }>CHANGE</div>
-                </div> */}
       </div>
     </>
   );

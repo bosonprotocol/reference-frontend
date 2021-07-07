@@ -1,51 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from "react";
 import "./VoucherAndSetDetails.scss";
+import "../../styles/PendingButton.scss";
 import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
-import * as humanizeDuration from "humanize-duration";
 import { HorizontalScrollView } from "rc-horizontal-scroll";
 
 import ShowQR from "../show-qr/ShowQR";
 import "./VoucherAndSetDetails.scss";
 
 import {
-  useVoucherKernalContract,
   useBosonRouterContract,
   useBosonTokenContract,
 } from "../../hooks/useContract";
 import { PAYMENT_METHODS, SMART_CONTRACTS_EVENTS } from "../../hooks/configs";
-import {
-  getVoucherDetails,
-  getPaymentsDetails,
-  commitToBuy,
-  createEvent,
-} from "../../hooks/api";
+import { getVoucherDetails, commitToBuy, createEvent } from "../../hooks/api";
 import { getAccountStoredInLocalStorage } from "../../hooks/authenticate";
 import { onAttemptToApprove } from "../../hooks/approveWithPermit";
 
 import {
   ROLE,
-  OFFER_FLOW_SCENARIO,
-  STATUS,
   ROUTE,
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
 import { capitalize, formatDate } from "../../utils/FormatUtils";
-import {
-  determineCurrentStatusOfVoucher,
-  initVoucherDetails,
-} from "../../helpers/parsers/VoucherAndSetParsers";
+import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
 import { ModalResolver } from "../../contexts/Modal";
 import { ModalContext } from "../../contexts/Modal";
-import { GlobalContext } from "../../contexts/Global";
-import { NavigationContext, Action } from "../../contexts/Navigation";
-
-import ContractInteractionButton from "../../shared-components/contract-interaction/contract-interaction-button/ContractInteractionButton";
+import { Action, GlobalContext } from "../../contexts/Global";
+import { NavigationContext, NavigationAction } from "../../contexts/Navigation";
 import PopupMessage from "../../shared-components/popup-message/PopupMessage";
 import {
   DateTable,
@@ -53,15 +40,11 @@ import {
   TableLocation,
   PriceTable,
   DescriptionBlock,
+  ImageBlock,
 } from "../../shared-components/table-content/TableContent";
 import EscrowTable from "./components/escrow-table/EscrowTable";
-import {
-  IconQRScanner,
-  IconWarning,
-  IconClock,
-} from "../../shared-components/icons/Icons";
+import { IconWarning } from "../../shared-components/icons/Icons";
 
-import { calculateDifferenceInPercentage } from "../../utils/MathUtils";
 import {
   isCorrelationIdAlreadySent,
   setRecentlyUsedCorrelationId,
@@ -73,58 +56,18 @@ import {
 
 import GenericMessage from "../generic-message/GenericMessage";
 import { validateContractInteraction } from "../../helpers/validators/ContractInteractionValidator";
+import { getControlList } from "./ControlListProvider";
+import { useVoucherStatusBlocks } from "../../hooks/useVoucherStatusBlocks";
+import { getEscrowData } from "./EscrowDataProvider";
+import {
+  voucherPlaceholder,
+  voucherSetPlaceholder,
+} from "../../constants/PlaceHolders";
+import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
+import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
+import PendingButton from "./components/escrow-table/PendingButton";
 
-const voucherPlaceholder = (
-  <div className="details-loading">
-    <div className="title is-loading-2"></div>
-    <div className="status-container">
-      <div className="h is-loading-2"></div>
-      <div className="status-chain flex ai-center">
-        <div className="status is-loading-2"></div>
-        <div className="status is-loading-2"></div>
-        <div className="status is-loading-2"></div>
-      </div>
-    </div>
-    <div className="paytable-loading">
-      <div className="h is-loading-2"></div>
-      <div className="header is-loading-2"></div>
-      <div className="table is-loading-2"></div>
-    </div>
-    <div className="image is-loading-2"></div>
-    <div className="description is-loading-2"></div>
-    <div className="table flex split">
-      <div className="left is-loading-2"></div>
-      <div className="right is-loading-2"></div>
-    </div>
-    <div className="table flex split">
-      <div className="left is-loading-2"></div>
-      <div className="right is-loading-2"></div>
-    </div>
-  </div>
-);
-
-const voucherSetPlaceholder = (
-  <div className="details-loading voucher-set">
-    <div className="title is-loading-2"></div>
-    <div className="image is-loading-2"></div>
-    <div className="description is-loading-2"></div>
-    <div className="table flex split">
-      <div className="left is-loading-2"></div>
-      <div className="right is-loading-2"></div>
-    </div>
-    <div className="table l flex split">
-      <div className="left is-loading-2"></div>
-    </div>
-    <div className="table l t flex split">
-      <div className="left is-loading-2"></div>
-      <div className="right is-loading-2"></div>
-    </div>
-    <div className="table l flex split">
-      <div className="left is-loading-2"></div>
-      <div className="right is-loading-2"></div>
-    </div>
-  </div>
-);
+import { ChainIdError } from "./../../errors/ChainIdError";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -133,16 +76,15 @@ function VoucherAndSetDetails(props) {
   const [showQRCode, setShowQRCode] = useState(0);
   const [imageView, setImageView] = useState(0);
   const [pageLoading, setPageLoading] = useState(0);
-  const [pageLoadingPlaceholder, setPageLoadingPlaceholder] = useState(
-    voucherPlaceholder
-  );
+  const [pageLoadingPlaceholder, setPageLoadingPlaceholder] =
+    useState(voucherPlaceholder);
   const voucherId = props.match.params.id;
   const modalContext = useContext(ModalContext);
   const globalContext = useContext(GlobalContext);
   const navigationContext = useContext(NavigationContext);
   const bosonRouterContract = useBosonRouterContract();
   const bosonTokenContract = useBosonTokenContract();
-  const voucherKernalContract = useVoucherKernalContract();
+  const voucherControls = navigationContext.state.redemptionFlowControl;
   const { library, account, chainId } = useWeb3React();
   const history = useHistory();
   const [voucherStatus, setVoucherStatus] = useState();
@@ -163,12 +105,16 @@ function VoucherAndSetDetails(props) {
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageType, setSuccessMessageType] = useState("");
 
-  const [triggerWaitForTransaction, setTriggerWaitForTransaction] = useState(
-    false
-  );
+  const [triggerWaitForTransaction, setTriggerWaitForTransaction] =
+    useState(false);
 
   const voucherSets = globalContext.state.allVoucherSets;
   const voucherSetDetails = voucherSets?.find((set) => set.id === voucherId);
+  const statusBlocks = useVoucherStatusBlocks(
+    voucherDetails,
+    setHideControlButtonsWaitPeriodExpired,
+    true
+  );
 
   const resetSuccessMessage = () => {
     setSuccessMessage("");
@@ -216,8 +162,8 @@ function VoucherAndSetDetails(props) {
 
   // int on index #2 is the X position of the block
   const tablePrices = [
-    ["Payment Price", getProp("price"), currencies[0], 0],
-    false,
+    // ["Payment Price", getProp("price"), currencies[0], 0],
+    // false,
     ["Buyer’s deposit", getProp("deposit"), currencies[1], 1],
     ["Seller’s deposit", getProp("sellerDeposit"), currencies[1], 1],
   ];
@@ -267,27 +213,6 @@ function VoucherAndSetDetails(props) {
     });
   };
 
-  const ViewImageFullScreen = () => (
-    <div
-      className="image-view-overlay flex center"
-      onClick={() => setImageView(0)}
-    >
-      <div className="button-container">
-        <div className="container">
-          <div
-            className="cancel new"
-            onClick={() => {
-              setImageView(0);
-            }}
-          >
-            <span className="icon"></span>
-          </div>
-        </div>
-      </div>
-      <img src={getProp("image")} alt="" />
-    </div>
-  );
-
   useEffect(() => {
     if (library && (voucherDetails || voucherSetDetails)) {
       waitForRecentTransactionIfSuchExists(
@@ -296,483 +221,35 @@ function VoucherAndSetDetails(props) {
         voucherSetDetails,
         setRecentlySignedTxHash,
         setSuccessMessage,
-        setSuccessMessageType
+        setSuccessMessageType,
+        setTriggerWaitForTransaction
       );
     }
   }, [voucherDetails, voucherSetDetails, library, triggerWaitForTransaction]);
-  // assign controlset to statuses
-  const controlList = () => {
-    setDisablePage(0);
-    const CASE = {};
-
-    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]
-    ] = () => (
-      <div
-        className="action button cof"
-        onClick={() =>
-          confirmAction(onCoF, "Are you sure you want to cancel/fault?")
-        }
-        role="button"
-      >
-        Cancel or Fault
-      </div>
-    );
-
-    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.COMMITED]] = () => (
-      <div className="flex dual split">
-        <div
-          className="action button refund"
-          role="button"
-          onClick={() =>
-            confirmAction(onRefund, "Are you sure you want to refund?")
-          }
-        >
-          REFUND
-        </div>
-        <div
-          className="action button redeem"
-          role="button"
-          onClick={() => setShowQRCode(1)}
-        >
-          <IconQRScanner /> REDEEM
-        </div>
-        {/* <Link
-                    to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                </Link> */}
-      </div>
-    );
-
-    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] = () => (
-      <div
-        className="action button complain"
-        role="button"
-        onClick={() =>
-          confirmAction(onComplain, "Are you sure you want to complain?")
-        }
-      >
-        COMPLAIN
-      </div>
-    );
-    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.OFFERED]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.OFFERED]
-    ] = () => (
-      <ContractInteractionButton
-        className="action button commit"
-        handleClick={() => onCommitToBuy()}
-        label={`COMMIT TO BUY ${voucherSetDetails?.price} ${
-          currencyResolver(voucherSetDetails?.paymentType)[0]
-        }`}
-      />
-    );
-
-    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.OFFERED]] = () =>
-      voucherSetDetails &&
-      voucherSetDetails?.qty > 0 &&
-      account?.toLowerCase() ===
-        voucherSetDetails.voucherOwner.toLowerCase() ? (
-        <div
-          className="button cancelVoucherSet"
-          onClick={() =>
-            confirmAction(
-              onCancelOrFaultVoucherSet,
-              "Are you sure you want to cancel the voucher set?"
-            )
-          }
-          role="button"
-        >
-          Void Voucher Set
-        </div>
-      ) : null;
-
-    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.DRAFT]] = CASE[
-      OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DRAFT]
-    ] = CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.DRAFT]] = () => {
-      setTransactionProccessing(transactionProccessing * -1);
-      return (
-        <div
-          className="button cancelVoucherSet"
-          role="button"
-          style={{ border: "none" }}
-          disabled
-          onClick={(e) => e.preventDefault()}
-        >
-          DRAFT: TRANSACTION IS BEING PROCESSED
-        </div>
-      );
-    };
-
-    CASE[OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED]] = () => {
-      setDisablePage(1);
-      setPageLoading(0);
-      return null;
-    };
-
-    return CASE;
-  };
-
-  const determineStatus = ({ checkAuthentication }) => {
-    const voucherResource = voucherDetails
-      ? voucherDetails
-      : voucherSetDetails
-      ? voucherSetDetails
-      : false;
-
-    const voucherRoles = {
-      owner:
-        voucherResource?.voucherOwner?.toLowerCase() ===
-          account?.toLowerCase() && account,
-      holder:
-        voucherResource?.holder?.toLowerCase() === account?.toLowerCase() &&
-        account,
-    };
-
-    const draftStatusCheck = !(
-      voucherResource?._tokenIdVoucher || voucherResource?._tokenIdSupply
-    );
-
-    const statusPropagate = () =>
-      draftStatusCheck
-        ? STATUS.DRAFT
-        : voucherResource.FINALIZED
-        ? STATUS.FINALIZED
-        : voucherResource.CANCELLED
-        ? !voucherResource.COMPLAINED
-          ? STATUS.CANCELLED
-          : STATUS.COMPLANED_CANCELED
-        : voucherResource.COMPLAINED
-        ? STATUS.COMPLAINED
-        : voucherResource.REFUNDED
-        ? STATUS.REFUNDED
-        : voucherResource.REDEEMED
-        ? STATUS.REDEEMED
-        : voucherResource.COMMITTED
-        ? STATUS.COMMITED
-        : !voucherResource?.qty
-        ? STATUS.VIEW_ONLY
-        : !voucherResource.COMMITTED
-        ? STATUS.OFFERED
-        : false;
-
-    const role = voucherRoles.owner
-      ? ROLE.SELLER
-      : voucherRoles.holder
-      ? ROLE.BUYER
-      : ROLE.NON_BUYER_SELLER;
-    const status = voucherResource && statusPropagate();
-
-    // don't show actions if:
-    const blockActionConditions = [
-      new Date() >= new Date(voucherResource?.expiryDate), // voucher expired
-      new Date() <= new Date(voucherResource?.startDate) && !!voucherDetails, // has future start date and is voucher
-      voucherSetDetails?.qty <= 0, // no quantity
-      recentlySignedTxHash !== "",
-      hideControlButtonsWaitPeriodExpired,
-    ];
-
-    if (
-      role === ROLE.NON_BUYER_SELLER &&
-      checkAuthentication &&
-      !voucherSetDetails
-    )
-      return OFFER_FLOW_SCENARIO[ROLE.NON_BUYER_SELLER][STATUS.DISABLED];
-
-    // status: undefined - user that has not logged in
-    return !blockActionConditions.includes(true)
-      ? OFFER_FLOW_SCENARIO[role][status]
-      : undefined;
-  };
 
   const getControlState = () => {
-    const controlResponse = controlList();
+    const controlResponse = getControlList(
+      setDisablePage,
+      setShowQRCode,
+      confirmAction,
+      onCoF,
+      onRefund,
+      onComplain,
+      onCommitToBuy,
+      currencyResolver,
+      voucherSetDetails,
+      onCancelOrFaultVoucherSet,
+      account,
+      setTransactionProccessing,
+      transactionProccessing,
+      setPageLoading,
+      successMessage
+    );
 
     return voucherStatus
       ? controlResponse[voucherStatus] && controlResponse[voucherStatus]()
       : null;
   };
-  const [statusBlocks, setStatusBlocks] = useState(voucherDetails ? [] : false);
-
-  const resolveWaitPeriodStatusBox = async (newStatusBlocks) => {
-    if (
-      voucherDetails &&
-      !voucherDetails.FINALIZED &&
-      voucherDetails._tokenIdVoucher
-    ) {
-      if (voucherDetails.COMPLAINED && voucherDetails.CANCELLED) {
-        return newStatusBlocks;
-      }
-      const voucherStatus = await voucherKernalContract.vouchersStatus(
-        ethers.BigNumber.from(voucherDetails._tokenIdVoucher)
-      );
-      const currentStatus = determineCurrentStatusOfVoucher(voucherDetails);
-
-      const complainPeriod = await voucherKernalContract.complainPeriod();
-      const cancelFaultPeriod = await voucherKernalContract.cancelFaultPeriod();
-
-      const complainPeriodStart = voucherStatus.complainPeriodStart;
-      const cancelFaultPeriodStart = voucherStatus.cancelFaultPeriodStart;
-
-      let waitPeriodStart;
-      let waitPeriod;
-
-      if (currentStatus.status === STATUS.EXPIRED) {
-        waitPeriodStart = voucherDetails.EXPIRED;
-        waitPeriod = complainPeriod;
-      } else if (!voucherDetails.CANCELLED && !voucherDetails.COMPLAINED) {
-        waitPeriodStart = complainPeriodStart;
-        waitPeriod = complainPeriod.add(cancelFaultPeriod);
-      } else if (voucherDetails.COMPLAINED) {
-        waitPeriodStart = cancelFaultPeriodStart;
-        waitPeriod = cancelFaultPeriod;
-      } else if (voucherDetails.CANCELLED) {
-        waitPeriodStart = complainPeriodStart;
-        waitPeriod = complainPeriod;
-      }
-
-      if (
-        (waitPeriod && waitPeriod.gt(ethers.BigNumber.from("0"))) ||
-        currentStatus.status === STATUS.COMMITED
-      ) {
-        const currentBlockTimestamp = (await library.getBlock()).timestamp;
-
-        const start =
-          currentStatus.status === STATUS.COMMITED
-            ? new Date(voucherDetails.startDate)
-            : new Date(
-                +ethers.utils.formatUnits(waitPeriodStart, "wei") * 1000
-              );
-        const end =
-          currentStatus.status === STATUS.COMMITED
-            ? new Date(voucherDetails.expiryDate)
-            : new Date(
-                +ethers.utils.formatUnits(
-                  waitPeriodStart.add(waitPeriod),
-                  "wei"
-                ) * 1000
-              );
-        const now = new Date(currentBlockTimestamp * 1000);
-
-        const timePast = now?.getTime() / 1000 - start?.getTime() / 1000;
-        const timeAvailable =
-          voucherDetails && end?.getTime() / 1000 - start?.getTime() / 1000;
-
-        const diffInPercentage = calculateDifferenceInPercentage(
-          timePast,
-          timeAvailable
-        );
-
-        if (!(currentStatus === STATUS.EXPIRED) && diffInPercentage >= 100) {
-          setHideControlButtonsWaitPeriodExpired(true);
-        }
-        const expiryProgress = voucherDetails && diffInPercentage + "%";
-        document.documentElement.style.setProperty(
-          "--progress-percentage",
-          expiryProgress
-            ? parseInt(diffInPercentage) > 100
-              ? "100%"
-              : expiryProgress
-            : null
-        );
-
-        const statusTitle =
-          currentStatus.status === STATUS.COMMITED
-            ? "Expiration date"
-            : "Wait period";
-        return [
-          ...newStatusBlocks,
-          singleStatusComponent({
-            title: statusTitle,
-            date: end,
-            color: 4,
-            progress: expiryProgress,
-            status: currentStatus.status,
-          }),
-        ];
-      }
-    }
-    return newStatusBlocks;
-  };
-
-  useEffect(() => {
-    if (voucherDetails) {
-      const resolveStatusBlocks = async () => {
-        let newStatusBlocks = [];
-        if (!!voucherDetails) {
-          if (voucherDetails.COMMITTED)
-            newStatusBlocks.push(
-              singleStatusComponent({
-                title: "COMMITED",
-                date: voucherDetails.COMMITTED,
-                color: 1,
-              })
-            );
-          if (voucherDetails.REDEEMED)
-            newStatusBlocks.push(
-              singleStatusComponent({
-                title: "REDEMPTION SIGNED",
-                date: voucherDetails.REDEEMED,
-                color: 2,
-              })
-            );
-          if (voucherDetails.REFUNDED)
-            newStatusBlocks.push(
-              singleStatusComponent({
-                title: "REFUND TRIGGERED",
-                date: voucherDetails.REFUNDED,
-                color: 5,
-              })
-            );
-          if (voucherDetails.COMPLAINED)
-            newStatusBlocks.push(
-              singleStatusComponent({
-                title: "COMPLAINT MADE",
-                date: voucherDetails.COMPLAINED,
-                color: 3,
-              })
-            );
-          if (voucherDetails.CANCELLED)
-            newStatusBlocks.push(
-              singleStatusComponent({
-                title: "CANCEL OR FAULT ADMITTED",
-                date: voucherDetails.CANCELLED,
-                color: 4,
-              })
-            );
-
-          if (newStatusBlocks?.length)
-            newStatusBlocks.sort((a, b) => (a.date > b.date ? 1 : -1));
-
-          if (voucherDetails.FINALIZED) {
-            newStatusBlocks.push(
-              finalStatusComponent(
-                !!voucherDetails.REDEEMED,
-                !!voucherDetails.COMPLAINED,
-                !!voucherDetails.CANCELLED,
-                voucherDetails.FINALIZED
-              )
-            );
-          }
-        }
-        const withWaitPeriodBox = await resolveWaitPeriodStatusBox(
-          newStatusBlocks
-        );
-        setStatusBlocks(withWaitPeriodBox);
-      };
-
-      resolveStatusBlocks();
-    }
-  }, [voucherDetails]);
-
-  const prepareEscrowData = async () => {
-    const payments = await getPayments(voucherDetails, account, modalContext);
-
-    let depositsDistributed;
-    let paymentDistributed;
-
-    if (payments?.distributedAmounts) {
-      depositsDistributed =
-        [
-          ...Object.values(payments?.distributedAmounts.buyerDeposit),
-          ...Object.values(payments?.distributedAmounts.sellerDeposit),
-        ].filter((x) => x.hex !== "0x00").length > 0;
-
-      paymentDistributed =
-        [...Object.values(payments?.distributedAmounts.payment)].filter(
-          (x) => x.hex !== "0x00"
-        ).length > 0;
-    }
-
-    if (!depositsDistributed && voucherDetails.FINALIZED) {
-      setDistributionMessage("Deposits will be distributed in 1 hour");
-    }
-    if (
-      !paymentDistributed &&
-      !voucherDetails.FINALIZED &&
-      (voucherDetails.REDEEMED || voucherDetails.REFUNDED)
-    ) {
-      setDistributionMessage("Payment will be distributed in 1 hour");
-    }
-
-    const getPaymentMatrixSet = (row, column) =>
-      ethers.utils.formatEther(payments?.distributedAmounts[row][column]);
-
-    const tableMatrixSet = (row) => {
-      const positionArray = [];
-
-      if (payments?.distributedAmounts[row]) {
-        positionArray.push(Number(getPaymentMatrixSet(row, "buyer")));
-        positionArray.push(Number(getPaymentMatrixSet(row, "escrow")));
-        positionArray.push(Number(getPaymentMatrixSet(row, "seller")));
-      }
-
-      return positionArray;
-    };
-
-    const tablePositions = {};
-
-    tablePositions.price = tableMatrixSet("payment");
-    tablePositions.buyerDeposit = tableMatrixSet("buyerDeposit");
-    tablePositions.sellerDeposit = tableMatrixSet("sellerDeposit");
-
-    // this is to check if the block should be positioned in the escrow column
-    Object.entries(tablePositions)?.forEach(
-      (entry) =>
-        (tablePositions[entry[0]][1] = entry[1].length
-          ? entry[1]?.reduce((acc, val) => acc + val)
-            ? tablePositions[entry[0]][1]
-            : voucherDetails[entry[0]]
-          : 0)
-    ); // only god can judge me
-
-    return {
-      PAYMENT: {
-        title: "PAYMENT",
-        currency: currencies[0],
-        position: tablePositions.price,
-      },
-      BUYER_DEPOSIT: {
-        title: "BUYER DEPOSIT",
-        currency: currencies[1],
-        position: tablePositions.buyerDeposit,
-      },
-      SELLER_DEPOSIT: {
-        title: "SELLER DEPOSIT",
-        currency: currencies[1],
-        position: tablePositions.sellerDeposit,
-      },
-    };
-  };
-
-  async function getPayments() {
-    if (!account) {
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: "Please connect your wallet account",
-        })
-      );
-      return;
-    }
-
-    const authData = getAccountStoredInLocalStorage(account);
-
-    try {
-      return await getPaymentsDetails(voucherDetails.id, authData.authToken);
-    } catch (e) {
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message,
-        })
-      );
-    }
-  }
 
   async function onCommitToBuy() {
     if (!library || !account) {
@@ -788,7 +265,7 @@ function VoucherAndSetDetails(props) {
 
     const voucherSetInfo = voucherSetDetails;
 
-    if (voucherSetInfo.voucherOwner.toLowerCase() === account.toLowerCase()) {
+    if (voucherSetInfo?.voucherOwner.toLowerCase() === account?.toLowerCase()) {
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
@@ -810,8 +287,13 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       correlationId = (
-        await bosonRouterContract.correlationIds(account)
+        await bosonRouterContract.getCorrelationId(account)
       ).toString();
 
       const correlationIdRecentlySent = isCorrelationIdAlreadySent(
@@ -849,12 +331,51 @@ function VoucherAndSetDetails(props) {
         return;
       }
 
+      try {
+        const metadata = {
+          _holder: account,
+          _issuer: owner,
+          _tokenIdSupply: supplyId,
+          _correlationId: correlationId,
+        };
+
+        await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
+      } catch (e) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content: e.message,
+          })
+        );
+        setLoading(0);
+        return;
+      }
+
+      try {
+        const eventData = {
+          name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_DELIVERED,
+          _correlationId: correlationId,
+        };
+        await createEvent(eventData, authData.authToken);
+      } catch (e) {
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content:
+              "Logging of the smart contract event failed. This does not affect committing your voucher.",
+          })
+        );
+      }
+
       localStorage.setItem("successMessage", "Commit triggered");
       localStorage.setItem("successMessageType", MESSAGE.COMMIT_SUCCESS);
       setTxHashToSupplyId(tx.hash, supplyId);
       setRecentlyUsedCorrelationId(correlationId, account);
       setTriggerWaitForTransaction(true);
     } catch (e) {
+      console.log("ERROR", e);
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
@@ -866,43 +387,7 @@ function VoucherAndSetDetails(props) {
       return;
     }
 
-    try {
-      const metadata = {
-        _holder: account,
-        _issuer: owner,
-        _tokenIdSupply: supplyId,
-        _correlationId: correlationId,
-      };
-
-      await commitToBuy(voucherSetInfo.id, metadata, authData.authToken);
-    } catch (e) {
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message,
-        })
-      );
-      setLoading(0);
-      return;
-    }
-
-    try {
-      const eventData = {
-        name: SMART_CONTRACTS_EVENTS.LOG_VOUCHER_DELIVERED,
-        _correlationId: correlationId,
-      };
-      await createEvent(eventData, authData.authToken);
-    } catch (e) {
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content:
-            "Logging of the smart contract event failed. This does not affect committing your voucher.",
-        })
-      );
-    }
+    globalContext.dispatch(Action.reduceVoucherSetQuantity(voucherSetInfo.id));
 
     setLoading(0);
     setActionPerformed(actionPerformed * -1);
@@ -937,11 +422,15 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "complain",
-        [voucherDetails._tokenIdVoucher]
-      );
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(bosonRouterContract, "complain", [
+          voucherDetails._tokenIdVoucher,
+        ]);
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -970,12 +459,13 @@ function VoucherAndSetDetails(props) {
       localStorage.setItem("successMessage", "Complain triggered");
       localStorage.setItem("successMessageType", MESSAGE.COMPLAIN_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
       setLoading(0);
@@ -1032,11 +522,15 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "refund",
-        [voucherDetails._tokenIdVoucher]
-      );
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(bosonRouterContract, "refund", [
+          voucherDetails._tokenIdVoucher,
+        ]);
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1065,12 +559,13 @@ function VoucherAndSetDetails(props) {
       localStorage.setItem("successMessage", "Refund triggered");
       localStorage.setItem("successMessageType", MESSAGE.REFUND_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
+      setTriggerWaitForTransaction(true);
     } catch (e) {
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
       setLoading(0);
@@ -1127,11 +622,17 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "cancelOrFault",
-        [voucherDetails._tokenIdVoucher]
-      );
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(
+          bosonRouterContract,
+          "cancelOrFault",
+          [voucherDetails._tokenIdVoucher]
+        );
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1157,7 +658,7 @@ function VoucherAndSetDetails(props) {
         voucherDetails._tokenIdVoucher
       );
       setTxHashToSupplyId(tx.hash, voucherDetails._tokenIdVoucher);
-
+      setTriggerWaitForTransaction(true);
       localStorage.setItem("successMessage", "Cancel/fault triggered");
       localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
     } catch (e) {
@@ -1165,7 +666,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
 
@@ -1204,10 +705,28 @@ function VoucherAndSetDetails(props) {
   }
 
   useEffect(() => {
-    setVoucherStatus(determineStatus({ checkAuthentication: false }));
+    setVoucherStatus(
+      determineRoleAndStatusOfVoucherResourse(
+        false,
+        account,
+        voucherDetails,
+        voucherSetDetails,
+        recentlySignedTxHash,
+        hideControlButtonsWaitPeriodExpired
+      )
+    );
 
     const authentication = setTimeout(() => {
-      setVoucherStatus(determineStatus({ checkAuthentication: true }));
+      setVoucherStatus(
+        determineRoleAndStatusOfVoucherResourse(
+          true,
+          account,
+          voucherDetails,
+          voucherSetDetails,
+          recentlySignedTxHash,
+          hideControlButtonsWaitPeriodExpired
+        )
+      );
       setAuthenticationCompleted(1);
     }, 500);
 
@@ -1223,7 +742,17 @@ function VoucherAndSetDetails(props) {
   ]);
 
   useEffect(() => {
-    if (voucherDetails) setEscrowData(prepareEscrowData());
+    if (voucherDetails)
+      setEscrowData(
+        getEscrowData(
+          voucherDetails,
+          account,
+          modalContext,
+          setDistributionMessage,
+          currencies,
+          getAccountStoredInLocalStorage
+        )
+      );
     setControls(getControlState());
   }, [
     voucherStatus,
@@ -1250,37 +779,13 @@ function VoucherAndSetDetails(props) {
   useEffect(() => {
     setTransactionProccessing(transactionProccessing * -1);
     navigationContext.dispatch(
-      Action.setRedemptionControl({
-        controls: controls
-          ? controls
-          : recentlySignedTxHash
-          ? [
-              <div
-                className="button cancelVoucherSet"
-                role="button"
-                style={{ border: "none" }}
-                disabled
-                onClick={(e) => e.preventDefault()}
-              >
-                <div>
-                  <span
-                    style={{ verticalAlign: "middle", display: "inline-block" }}
-                  >
-                    <IconClock color={"#E49043"} />
-                  </span>
-                  <span
-                    style={{
-                      verticalAlign: "middle",
-                      display: "inline-block",
-                      fontSize: "1.1em",
-                    }}
-                  >
-                    &nbsp;PENDING
-                  </span>
-                </div>
-              </div>,
-            ]
-          : null,
+      NavigationAction.setRedemptionControl({
+        controls:
+          controls && !triggerWaitForTransaction
+            ? controls
+            : recentlySignedTxHash || triggerWaitForTransaction
+            ? [<PendingButton />]
+            : null,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1327,11 +832,17 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
-      const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-        bosonRouterContract,
-        "requestCancelOrFaultVoucherSet",
-        [voucherSetDetails._tokenIdSupply]
-      );
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
+      const contractInteractionDryRunErrorMessageMaker =
+        await validateContractInteraction(
+          bosonRouterContract,
+          "requestCancelOrFaultVoucherSet",
+          [voucherSetDetails._tokenIdSupply]
+        );
 
       if (
         contractInteractionDryRunErrorMessageMaker({
@@ -1376,12 +887,11 @@ function VoucherAndSetDetails(props) {
         voucherSetDetails._tokenIdSupply
       );
       setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
-
+      setTriggerWaitForTransaction(true);
       setCancelMessage({
         messageType: MESSAGE.SUCCESS,
         title: "The voucher set was cancelled",
-        text:
-          "The vouchers have been cancelled, except the ones that were committed.",
+        text: "The vouchers have been cancelled, except the ones that were committed.",
         link: ROUTE.Activity + "/" + voucherSetDetails.id + "/details",
         setMessageType: cancelMessageCloseButton,
         subprops: { refresh: true },
@@ -1443,7 +953,6 @@ function VoucherAndSetDetails(props) {
       setPageLoadingPlaceholder(voucherSetPlaceholder);
       setPageLoading(!voucherSetDetails);
     }
-    // setPageLoadingPlaceholder(voucherSetPlaceholder)
   }, []);
 
   return (
@@ -1461,98 +970,157 @@ function VoucherAndSetDetails(props) {
             <ShowQR
               setShowQRCode={setShowQRCode}
               voucherId={voucherDetails?.id}
+              setTriggerWaitForTransaction={setTriggerWaitForTransaction}
             />
           ) : null}
-          {imageView ? <ViewImageFullScreen /> : null}
+          {imageView ? (
+            <FullScreenImage
+              src={getProp("image")}
+              setImageView={setImageView}
+            />
+          ) : null}
           <div className="container erase">
-            <div className="content">
-              <div className="section title">
-                <h1>{getProp("title")}</h1>
+            {!voucherSetDetails &&
+            voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
+            statusBlocks ? (
+              <div className="section status">
+                <h2>Status</h2>
+                <div
+                  className="status-container flex"
+                  id="horizontal-view-container"
+                >
+                  <HorizontalScrollView
+                    items={statusBlocks}
+                    ItemComponent={({ item }) => item.jsx}
+                    defaultSpace="0"
+                    spaceBetweenItems="8px"
+                    moveSpeed={1}
+                  />
+                </div>
               </div>
-              {!voucherSetDetails &&
-              voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
-              statusBlocks ? (
-                <div className="section status">
-                  <h2>Status</h2>
-                  <div
-                    className="status-container flex"
-                    id="horizontal-view-container"
-                  >
-                    <HorizontalScrollView
-                      items={statusBlocks}
-                      ItemComponent={({ item }) => item.jsx}
-                      defaultSpace="0"
-                      spaceBetweenItems="8px"
-                      moveSpeed={1}
-                    />
-                  </div>
-                </div>
-              ) : null}
-              {!voucherSetDetails &&
-              voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
-                <div className="section escrow">
-                  {escrowData ? <EscrowTable escrowData={escrowData} /> : null}
-                </div>
-              ) : null}
+            ) : null}
+            <div className="voucher-column-holder">
+              <div className="voucher-column">
+                <div className="content">
+                  <div className="escrow-controls-holder">
+                    {!voucherSetDetails &&
+                    voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
+                      <div className="section escrow">
+                        {escrowData ? (
+                          <EscrowTable escrowData={escrowData} />
+                        ) : null}
+                      </div>
+                    ) : null}
 
-              {distributionMessage ? (
-                <div className="section depositsWarning flex center">
-                  <IconWarning /> <span> {distributionMessage}</span>{" "}
-                </div>
-              ) : null}
+                    {distributionMessage ? (
+                      <div className="deposits-warning-holder">
+                        <div className="section depositsWarning flex center">
+                          <IconWarning /> <span> {distributionMessage}</span>{" "}
+                        </div>
+                      </div>
+                    ) : null}
 
-              <div className="section info">
-                <div className="section description">
-                  {
-                    <DescriptionBlock
-                      toggleImageView={setImageView}
-                      voucherSetDetails={voucherSetDetails}
-                      getProp={getProp}
-                    />
-                  }
-                </div>
-                <div className="section category"></div>
-                <div className="section general">
-                  {tableLocation ? (
-                    <TableLocation
-                      data={tableLocation}
-                      hasBiggerTitle={false}
-                    />
-                  ) : null}
-                  {getProp("category") ? (
-                    <TableRow data={tableCategory} />
-                  ) : null}
-                  {getProp("condition") ? (
-                    <TableRow data={tableCondition} />
-                  ) : null}
-                </div>
-                {voucherSetDetails ? (
-                  <div className="section price">
-                    {tablePrices.some((item) => item) ? (
-                      <PriceTable
-                        paymentType={paymentType}
-                        data={tablePrices}
-                      />
+                    {!voucherSetDetails && voucherControls?.controls ? (
+                      <div className="section voucher-control">
+                        {voucherControls.controls}
+                      </div>
                     ) : null}
                   </div>
-                ) : null}
-                <div className="section date">
-                  {tableDate.some((item) => item) ? (
-                    <DateTable data={tableDate} />
+
+                  <div className="section info">
+                    <div className="section description">
+                      {
+                        <ImageBlock
+                          toggleImageView={setImageView}
+                          voucherSetDetails={voucherSetDetails}
+                          getProp={getProp}
+                        />
+                      }
+                    </div>
+                  </div>
+                  {voucherSetDetails ? (
+                    <div className="voucher-control-holder">
+                      <div className="voucher-control-column">
+                        <p className="deposit-label">Payment Price</p>
+                        <p className="deposit-value">
+                          {" "}
+                          {`${voucherSetDetails?.price} ${
+                            currencyResolver(voucherSetDetails?.paymentType)[0]
+                          }`}{" "}
+                        </p>
+                      </div>
+                      <div className="voucher-control-column">
+                        {voucherControls?.controls
+                          ? voucherControls.controls
+                          : null}
+                      </div>
+                    </div>
                   ) : null}
+
+                  {voucherSetDetails ? (
+                    <div className="section price">
+                      {tablePrices.some((item) => item) ? (
+                        <PriceTable
+                          paymentType={paymentType}
+                          data={tablePrices}
+                        />
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="voucher-column">
+                <div className="content">
+                  <div className="section title">
+                    <h1>{getProp("title")}</h1>
+                  </div>
+                  <div className="section info additional-info">
+                    <div className="section description">
+                      {
+                        <DescriptionBlock
+                          toggleImageView={setImageView}
+                          voucherSetDetails={voucherSetDetails}
+                          getProp={getProp}
+                        />
+                      }
+                    </div>
+                    <div className="section category">
+                      {getProp("category") ? (
+                        <TableRow data={tableCategory} />
+                      ) : null}
+                      {getProp("condition") ? (
+                        <TableRow data={tableCondition} />
+                      ) : null}
+                    </div>
+                    <div className="section location">
+                      {tableLocation ? (
+                        <TableLocation
+                          data={tableLocation}
+                          hasBiggerTitle={false}
+                        />
+                      ) : null}
+                    </div>
+                    <div className="section date">
+                      {tableDate.some((item) => item) ? (
+                        <DateTable data={tableDate} />
+                      ) : null}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-      ) : (
+      ) : null}
+      {disablePage ? (
         <GenericMessage
           subprops={{ button: "HOME PAGE" }}
           messageType={MESSAGE.LOCKED}
           title="Invalid link"
           link={ROUTE.Home}
+          Í
         />
-      )}
+      ) : null}
 
       {successMessage ? (
         <GenericMessage
@@ -1565,67 +1133,6 @@ function VoucherAndSetDetails(props) {
       ) : null}
     </>
   );
-}
-
-function singleStatusComponent({ title, date, color, progress, status }) {
-  const jsx = (
-    <div key={title} className={`status-block color_${color}`}>
-      <h3 className="status-name">
-        {title}
-        {progress ? <div className="progress"></div> : null}
-      </h3>
-      <p className="status-details">
-        {!progress || (progress && status === STATUS.COMMITED)
-          ? formatDate(date, "string")
-          : `${
-              new Date(date).getTime() - new Date().getTime() > 0
-                ? humanizeDuration(
-                    new Date(date).getTime() - new Date().getTime(),
-                    {
-                      round: true,
-                      largest: 1,
-                    }
-                  )
-                : "Finished"
-            }`}
-      </p>
-    </div>
-  );
-  return { jsx, date };
-}
-
-function finalStatusComponent(
-  hasBeenRedeemed,
-  hasBeenComplained,
-  hasBeenCancelOrFault,
-  expiredDate
-) {
-  const jsx = (
-    <div className={`status-block`}>
-      <div className="final-status-container">
-        {hasBeenRedeemed ? (
-          <h3 className="status-name color_1">REDEMPTION</h3>
-        ) : (
-          <h3 className="status-name color_2">NO REDEMPTION</h3>
-        )}
-        {hasBeenComplained ? (
-          <h3 className="status-name color_3">COMPLAINT</h3>
-        ) : (
-          <h3 className="status-name color_4">NO COMPLAINT</h3>
-        )}
-        {hasBeenCancelOrFault ? (
-          <h3 className="status-name color_5">CANCEL/FAULT</h3>
-        ) : (
-          <h3 className="status-name color_6">NO CANCEL/FAULT</h3>
-        )}
-      </div>
-      <p className="status-details">{`Finalised on ${formatDate(
-        expiredDate,
-        "string"
-      )}`}</p>
-    </div>
-  );
-  return { jsx, date: expiredDate };
 }
 
 export default VoucherAndSetDetails;
@@ -1661,17 +1168,18 @@ const commitToBuyTransactionCreator = async (
       return;
     }
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherETHETH",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        {
-          value: txValue.toString(),
-        },
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherETHETH",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          {
+            value: txValue.toString(),
+          },
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
@@ -1731,20 +1239,21 @@ const commitToBuyTransactionCreator = async (
       tokensDeposit
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherETHTKNWithPermit",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        tokensDeposit.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        { value: txValue },
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherETHTKNWithPermit",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          tokensDeposit.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          { value: txValue },
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
@@ -1795,19 +1304,20 @@ const commitToBuyTransactionCreator = async (
       tokensTxValue
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherTKNTKNSameWithPermit",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        tokensTxValue.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherTKNTKNSameWithPermit",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          tokensTxValue.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })
@@ -1869,20 +1379,21 @@ const commitToBuyTransactionCreator = async (
       tokensDeposit
     );
 
-    const contractInteractionDryRunErrorMessageMaker = await validateContractInteraction(
-      bosonRouterContract,
-      "requestVoucherTKNETHWithPermit",
-      [
-        supplyId,
-        voucherSetInfo.voucherOwner,
-        tokensDeposit.toString(),
-        signature.deadline,
-        signature.v,
-        signature.r,
-        signature.s,
-        { value: txValue.toString() },
-      ]
-    );
+    const contractInteractionDryRunErrorMessageMaker =
+      await validateContractInteraction(
+        bosonRouterContract,
+        "requestVoucherTKNETHWithPermit",
+        [
+          supplyId,
+          voucherSetInfo.voucherOwner,
+          tokensDeposit.toString(),
+          signature.deadline,
+          signature.v,
+          signature.r,
+          signature.s,
+          { value: txValue.toString() },
+        ]
+      );
 
     if (
       contractInteractionDryRunErrorMessageMaker({ action: "Commit", account })

@@ -20,7 +20,7 @@ end
 RakeFly.define_installation_tasks(version: '6.7.2')
 RakeTerraform.define_installation_tasks(
   path: File.join(Dir.pwd, 'vendor', 'terraform'),
-  version: '0.14.7')
+  version: '0.15.4')
 
 task :default => [
   :build_fix,
@@ -168,12 +168,16 @@ namespace :app do
 
       environment = configuration.environment
       content_work_directory = configuration.content_work_directory
+      react_app_backend_base_url = configuration.react_app_backend_base_url
 
       sh({
            "NODE_ENV" => environment,
-           "CONTENT_WORK_DIRECTORY" => content_work_directory
+           "REACT_APP_BACKEND_BASE_URL" => react_app_backend_base_url,
+           "REACT_APP_FRONT_END_LOCALSTORAGE_VERSION" => "1.0",
+           "CONTENT_WORK_DIRECTORY" => content_work_directory,
+           "GENERATE_SOURCEMAP" => "false"
          }, "npm", "run",
-         "build:dev")
+         "build")
   end
 
   desc 'Publish content for deployment identifier'
@@ -324,6 +328,33 @@ namespace :ci do
     end
 
     RakeFly.define_pipeline_tasks(
+      namespace: :demo,
+      argument_names: [
+        :ci_deployment_type,
+        :ci_deployment_label
+      ]
+    ) do |t, args|
+      configuration = configuration
+        .for_scope(args.to_h.merge(role: 'demo-pipeline'))
+      ci_deployment_type = configuration.ci_deployment_identifier
+
+      t.target = configuration.concourse_team
+      t.team = configuration.concourse_team
+      t.pipeline = "reference-frontend-demo"
+
+      t.config = 'pipelines/demo/pipeline.yaml'
+
+      t.vars = configuration.vars
+      t.var_files = [
+        'config/secrets/pipeline/constants.yaml',
+        "config/secrets/pipeline/#{ci_deployment_type}.yaml"
+      ]
+
+      t.non_interactive = true
+      t.home_directory = 'build/fly'
+    end
+
+    RakeFly.define_pipeline_tasks(
       namespace: :builder,
       argument_names: [
         :ci_deployment_type,
@@ -409,6 +440,7 @@ namespace :ci do
     desc "Push all pipelines"
     task :push, [:ci_deployment_type, :ci_deployment_label] do |_, args|
       Rake::Task[:"ci:pipeline:develop:push"].invoke(*args)
+      Rake::Task[:"ci:pipeline:demo:push"].invoke(*args)
       Rake::Task[:"ci:pipeline:builder:push"].invoke(*args)
     end
   end

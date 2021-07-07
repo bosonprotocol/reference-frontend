@@ -1,29 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from "react";
 import "./NewOfferCategory.scss";
-import { categories } from "../../../../PlaceholderAPI";
+import { CATEGORIES } from "../../../../constants/Categories";
 
 function NewOfferCategory({ inputValueReceiver }) {
   const categoryList = useRef();
   const [list, setList] = useState();
 
   const [isCategoryActive, setIsCategoryActive] = useState(
-    Array.from({ length: categories.length }, () => false)
+    Array.from({ length: CATEGORIES.length }, () => false)
   );
 
   const setCategory = (el, id, index) => {
-    setIsCategoryActive((prev) => {
-      prev = prev.map((x) => false);
-      prev[index] = true;
-      return prev;
-    });
-
+    setIsCategoryActive(isCategoryActive.map((x, i) => i === index));
     inputValueReceiver(id);
   };
 
   useEffect(() => {
     setList(
-      categories.map((category, index) => (
+      CATEGORIES.map((category, index) => (
         <li
           key={index}
           data-category={category.title}
@@ -39,7 +34,7 @@ function NewOfferCategory({ inputValueReceiver }) {
         </li>
       ))
     );
-  }, []);
+  }, [isCategoryActive]);
 
   return (
     <div ref={categoryList} className="categories">

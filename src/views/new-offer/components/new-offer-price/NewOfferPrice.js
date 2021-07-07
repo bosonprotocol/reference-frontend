@@ -174,54 +174,6 @@ function NewOfferPrice({
           )
         : null}
       <div className="row">
-        <div className="field">
-          <label htmlFor="offer-buyer-deposit">
-            Buyer’s Deposit Per Voucher
-          </label>
-          <div
-            className="input display-icon relative focus"
-            data-error={buyerDepositErrorMessage ? "" : null}
-          >
-            <div className="currency-icon">
-              <span className={"icons " + priceCurrency}>
-                <div className={CURRENCY.ETH}></div>
-                <div className={CURRENCY.BSN}></div>
-              </span>
-            </div>
-            <div
-              name={NAME.PRICE_SUFFIX}
-              className="pseudo"
-            >{`${buyer} ${depositsCurrency}`}</div>
-            <input
-              id="offer-buyer-deposit"
-              ref={buyersDepositInputRef}
-              style={buyerDepositErrorMessage ? { color: "#FA5B66" } : {}}
-              onWheel={() => buyersDepositInputRef.current.blur()}
-              name={NAME.BUYER_DEPOSIT}
-              onBlur={(e) => removePointOnLoseFocus(e)}
-              onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)}
-            />
-            {depositsPriceLimits[depositsCurrency].max ? (
-              <div className="max">
-                max{" "}
-                {depositsPriceLimits[depositsCurrency]
-                  ? calculateMaxForCurrency(depositsCurrency)
-                  : null}{" "}
-                {depositsCurrency}
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
-      {quantity > 1 && buyerDeposit
-        ? getLimitCalculationsBar(
-            buyerDeposit,
-            quantity,
-            depositsCurrency,
-            buyerDepositErrorMessage
-          )
-        : null}
-      <div className="row">
         <div className="field dual">
           <label htmlFor="offer-seller-deposit">
             Seller’s Deposit Per Voucher
@@ -263,6 +215,54 @@ function NewOfferPrice({
             quantity,
             depositsCurrency,
             sellerDepositErrorMessage
+          )
+        : null}
+      <div className="row">
+        <div className="field">
+          <label htmlFor="offer-buyer-deposit">
+            Buyer’s Deposit Per Voucher
+          </label>
+          <div
+            className="input display-icon relative focus"
+            data-error={buyerDepositErrorMessage ? "" : null}
+          >
+            <div className="currency-icon">
+              <span className={"icons " + depositsCurrency}>
+                <div className={CURRENCY.ETH}></div>
+                <div className={CURRENCY.BSN}></div>
+              </span>
+            </div>
+            <div
+              name={NAME.PRICE_SUFFIX}
+              className="pseudo"
+            >{`${buyer} ${depositsCurrency}`}</div>
+            <input
+              id="offer-buyer-deposit"
+              ref={buyersDepositInputRef}
+              style={buyerDepositErrorMessage ? { color: "#FA5B66" } : {}}
+              onWheel={() => buyersDepositInputRef.current.blur()}
+              name={NAME.BUYER_DEPOSIT}
+              onBlur={(e) => removePointOnLoseFocus(e)}
+              onChange={(e) => updateValueIfValid(e, buyerDepositValueReceiver)}
+            />
+            {depositsPriceLimits[depositsCurrency].max ? (
+              <div className="max">
+                max{" "}
+                {depositsPriceLimits[depositsCurrency]
+                  ? calculateMaxForCurrency(depositsCurrency)
+                  : null}{" "}
+                {depositsCurrency}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      {quantity > 1 && buyerDeposit
+        ? getLimitCalculationsBar(
+            buyerDeposit,
+            quantity,
+            depositsCurrency,
+            buyerDepositErrorMessage
           )
         : null}
     </div>

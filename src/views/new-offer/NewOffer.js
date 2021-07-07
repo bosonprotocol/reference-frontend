@@ -15,7 +15,7 @@ import NewOfferSummary from "./components/new-offer-summary/NewOfferSummary";
 import NewOfferLocation from "./components/new-offer-location/NewOfferLocation";
 
 import { SellerContext, Seller } from "../../contexts/Seller";
-import { NavigationContext, Action } from "../../contexts/Navigation";
+import { NavigationContext, NavigationAction } from "../../contexts/Navigation";
 
 import {
   DEFAULT_COUNTRY_NAME,
@@ -141,7 +141,6 @@ function NewOffer() {
     />,
     <FormUploadPhoto
       inputValueReceiver={createInputValueReceiver(NAME.IMAGE)}
-      uploadImageErrorMessage={errorMessages[NAME.IMAGE]}
     />,
     <NewOfferGeneral
       titleValueReceiver={createInputValueReceiver(NAME.TITLE)}
@@ -232,7 +231,7 @@ function NewOffer() {
 
   useEffect(() => {
     navigationContext.dispatch(
-      Action.setFormNavigation({
+      NavigationAction.setFormNavigation({
         screenController: screenController,
         lastScreenBoolean: lastScreenBoolean,
         activeScreen: activeScreen,

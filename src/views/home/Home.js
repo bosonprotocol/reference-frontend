@@ -4,9 +4,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import "./Home.scss";
 
 import ProductBlock from "./components/product-block/ProductBlock";
-import CardBlock from "./components/card-block/CardBlock";
 import CategoryMenu from "./components/category-menu/CategoryMenu";
-// import ProductListing from "../components/home/ProductListing"
 import Onboarding from "../onboarding/Onboarding";
 import QRCodeScanner from "../../shared-components/qr-code-scanner/QRCodeScanner";
 
@@ -20,13 +18,17 @@ import {
 import { IconHome, IconLocation } from "../../shared-components/icons/Icons";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 import { Link } from "react-router-dom";
-import { DEFAULT_FILTER } from "../../PlaceholderAPI";
+import { DEFAULT_FILTER } from "../../constants/Categories";
 
 function Home() {
   const [productBlocks, setProductBlocks] = useState([]);
   const homepage = useRef();
+
+  const onboardingCompletedStep = localStorage.getItem("onboarding-slide");
+  const lastOnboardingSlideIndex = 3;
+
   const [newUser, setNewUser] = useState(
-    !localStorage.getItem("onboarding-completed")
+    +onboardingCompletedStep < lastOnboardingSlideIndex
   );
   const screensRef = useRef();
   const onboardingModalRef = useRef();
@@ -82,7 +84,6 @@ function Home() {
     if (!onboardingCompleted || localStoredAccountData.activeToken) {
       return;
     }
-
     authenticateUser(library, account, chainId);
   };
 
@@ -147,7 +148,7 @@ function Home() {
     <>
       {globalContext.state.qrReaderActivated ? <QRCodeScanner /> : null}
       {newUser && (
-        <div className="onboarding-modal flex center" ref={onboardingModalRef}>
+        <div className="onboarding-modal center" ref={onboardingModalRef}>
           <Onboarding completeOnboarding={completeOnboarding} />
         </div>
       )}
@@ -186,13 +187,17 @@ function Home() {
           </div>
           <section className="product-list">
             <div className="container">
-              {!pageLoading
-                ? productBlocks?.length
-                  ? productBlocks.map((block, id) => (
-                      <ProductBlock key={id} {...block} />
-                    ))
-                  : null
-                : loadingPlaceholder}
+              {!pageLoading ? (
+                productBlocks?.length ? (
+                  productBlocks.map((block, id) => (
+                    <ProductBlock key={id} {...block} />
+                  ))
+                ) : (
+                  <div>No vouchers available at the selected location.</div>
+                )
+              ) : (
+                loadingPlaceholder
+              )}
             </div>
           </section>
         </div>

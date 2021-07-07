@@ -17,10 +17,8 @@
     font-family: $font-third;
     font-weight: 600;
     font-size: 28px;
-    max-width: 50%;
+    max-width: 100%;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     flex-shrink: 0;
     opacity: 0;
     transition: 0.45s ease-in-out;

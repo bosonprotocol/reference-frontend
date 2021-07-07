@@ -38,12 +38,10 @@ function NewOfferLocation({
   const postcodeInput = useRef();
   const postcodeClear = useRef();
 
-  const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] = useState(
-    false
-  );
-  const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] = useState(
-    false
-  );
+  const [addressOneHasBeenBlurred, setAddressOneHasBeenBlurred] =
+    useState(false);
+  const [addressTwoHasBeenBlurred, setAddressTwoHasBeenBlurred] =
+    useState(false);
   const [postcodeHasBeenBlurred, setPostcodeHasBeenBlurred] = useState(false);
 
   const sellerContext = useContext(SellerContext);
@@ -151,7 +149,7 @@ function NewOfferLocation({
               type="text"
               onBlur={() => setAddressTwoHasBeenBlurred(true)}
               onInput={(e) =>
-                addressLineTwoValueReceiver(e.target ? e.target.value : null)
+                addressLineTwoValueReceiver(e.target ? e.target.value : "")
               }
             />
             <div

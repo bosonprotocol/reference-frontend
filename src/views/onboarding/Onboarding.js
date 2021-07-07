@@ -6,36 +6,45 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/swiper.min.css";
 
 import FakeEscrowTable from "./components/fake-escrow-table/FakeEscrowTable";
+import React from "react";
+
+import logo from "./../../assets/boson/leptonite.svg";
 
 SwiperCore.use([Navigation, Pagination]);
+const POLICY_ACCEPTED_KEY = "policy-accepted";
 
 function slide1() {
   return (
     <>
-      <div className="top">
-        <div className="logo flex jc-center">
-          <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
-            className="pe-none"
-          />
+      <div className="column-holder main-column">
+        <div className="top">
+          <div className="logo flex jc-left">
+            <img
+              src={logo}
+              style={{ height: "40px" }}
+              alt="Leptonite Logo"
+              className="pe-none"
+            />
+          </div>
+          <h2 className="ta-left">
+            <span>Welcome</span> to Leptonite
+          </h2>
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <div className="text flex column ai-center">
+          <p className="number">1</p>
+          <h1>dCommerce</h1>
+          <p className="ta-center color-secondary mobile-text-padding">
+            Leptonite is a reference release of a fully decentralized,
+            peer-to-peer digital marketplace, built on the core Boson Protocol
+            contracts. See the Boson Protocol GitHub for more details.
+          </p>
+        </div>
+        <div className="footer color-secondary">
+          ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
+        </div>
       </div>
-      <div className="slide-image flex center">
-        <img
-          src="images/onboarding/onboarding-slide-1.jpg"
-          alt="Boson Network"
-          className="pe-none"
-        />
-      </div>
-      <div className="text flex column ai-center">
-        <p className="number">1</p>
-        <h1>Offer items for sale</h1>
-        <p className="ta-center color-secondary">
-          Create a Boson commitment NFT set to list your item to be purchased.
-        </p>
-      </div>
+      <div className="column-holder animated-column-1"></div>
     </>
   );
 }
@@ -43,81 +52,207 @@ function slide1() {
 function slide2() {
   return (
     <>
-      <div className="top">
-        <div className="logo flex jc-center">
-          <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
-            className="pe-none"
-          />
+      <div className="column-holder main-column">
+        <div className="top">
+          <div className="logo flex jc-left">
+            <img
+              src={logo}
+              style={{ height: "40px" }}
+              alt="Leptonite Logo"
+              className="pe-none"
+            />
+          </div>
+          <h2 className="ta-left mobile-hide">
+            <span>Welcome</span> to Leptonite
+          </h2>
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <div className="text flex column ai-center">
+          <p className="number">2</p>
+          <h1>Boson Protocol escrow code</h1>
+          <p className="ta-center color-secondary mobile-text-padding">
+            The escrow code is governed by the Core Exchange Mechanism which
+            takes deposits from both supplier and buyer to grow trust in a
+            peer-to-peer exchange.
+          </p>
+        </div>
+        <div className="footer color-secondary">
+          ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
+        </div>
       </div>
-      <div className="slide-image center-flex">
-        <FakeEscrowTable />
-      </div>
-      <div className="text flex column ai-center">
-        <p className="number">2</p>
-        <h1>Boson Protocol escrow </h1>
-        <p className="ta-center color-secondary">
-          The escrow is governed by the Core Exchange Mechanism which takes
-          deposits from both supplier and buyer to grow trust in a p2p
-          exchange. 
-        </p>
+      <div className="column-holder animated-column">
+        <div className="slide-image center-flex mobile-fake-escrow-table-padding-top">
+          <FakeEscrowTable />
+        </div>
       </div>
     </>
   );
 }
 
-function slide3(completeOnboarding) {
+function slide4(completeOnboarding) {
   return (
     <>
-      <div className="top">
-        <div className="logo flex jc-center">
-          <img
-            src="images/boson/boson-logo.png"
-            alt="Boson Protocol Logo"
-            className="pe-none"
-          />
+      <div className="column-holder main-column">
+        <div className="top">
+          <div className="logo flex jc-left">
+            <img
+              src={logo}
+              style={{ height: "40px" }}
+              alt="Leptonite Logo"
+              className="pe-none"
+            />
+          </div>
+          <h2 className="ta-left mobile-hide">
+            <span>Welcome</span> to Leptonite
+          </h2>
         </div>
-        <h2 className="ta-center">Welcome to Boson Protocol</h2>
+        <div className="text flex column ai-center">
+          <p className="number">4</p>
+          <h1>Disclaimer</h1>
+        </div>
+
+        <div
+          className="primary complete-onboarding button-disabled"
+          role="button"
+          onClick={completeOnboarding}
+        >
+          START
+        </div>
+
+        <div className="footer color-secondary">
+          ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
+        </div>
       </div>
-      <div className="slide-image flex center">
-        <div className="qr-display relative">
-          <div className="scan">
-            <div className="phone-bg flex center">
-              <p>Scan the QR code</p>
+
+      <div className="column-holder animated-column">
+        <div className="policy-holder">
+          <div className="policy-text color-secondary">
+            <div className="policy-header">
+              UNAUDITED TESTNET ALPHA RELEASE:
+            </div>
+            <div className="policy-content">
+              Leptonite is still undergoing extensive development before mainnet
+              release. LEPTONITE IS PROVIDED "AS IS" AND "AS AVAILABLE", AT YOUR
+              OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+              <br />
+              <br />
+              Do not send mainnet assets to Leptonite. Your assets will be lost
+              and will be unrecoverable.
+              <br />
+              <br />
+              We will not be liable for any loss, whether such loss is direct,
+              indirect, special or consequential, suffered by any party as a
+              result of their use of Leptonite.
+            </div>
+          </div>
+          <div className="divider"></div>
+          <div className="accept-policy-holder">
+            <label className="checkbox">
+              <span className="checkbox__input">
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  onClick={handleCheckbox}
+                />
+                <span className="checkbox__control">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      fill="none"
+                      stroke="#80F0BE"
+                      strokeWidth="3"
+                      d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                    />
+                  </svg>
+                </span>
+              </span>
+              <span className="radio__label color-secondary">
+                I've read and accept the disclaimer above
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function handleCheckbox(e) {
+  localStorage.setItem(POLICY_ACCEPTED_KEY, e?.target?.checked);
+
+  if (e?.target?.checked) {
+    document.querySelectorAll(`.complete-onboarding`).forEach((el) => {
+      el.classList.remove("button-disabled");
+    });
+  } else {
+    document.querySelectorAll(`.complete-onboarding`).forEach((el) => {
+      el.classList.add("button-disabled");
+    });
+  }
+}
+
+function slide3() {
+  return (
+    <>
+      <div className="column-holder main-column">
+        <div className="top">
+          <div className="logo flex jc-left">
+            <img
+              src={logo}
+              style={{ height: "40px" }}
+              alt="Leptonite Logo"
+              className="pe-none"
+            />
+          </div>
+          <h2 className="ta-left mobile-hide">
+            <span>Welcome</span> to Leptonite
+          </h2>
+        </div>
+        <div className="text flex column ai-center">
+          <p className="number">3</p>
+          <h1>Redemption</h1>
+          <p className="ta-center color-secondary mobile-text-padding">
+            When the seller hands over the item, the buyer signs the redemption
+            which transfers the funds to the seller.
+          </p>
+        </div>
+        <div className="footer color-secondary">
+          ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
+        </div>
+      </div>
+
+      <div className="column-holder animated-column">
+        <div className="slide-image flex center">
+          <div className="qr-display relative">
+            <div className="scan">
+              <div className="phone-bg flex center">
+                <p>Scan the QR code</p>
+                <img
+                  src="images/onboarding/onboarding-slide-3-qr.svg"
+                  alt="QR Code Read"
+                />
+              </div>
+            </div>
+            <div className="show">
               <img
-                src="images/onboarding/onboarding-slide-3-qr.svg"
-                alt="QR Code Read"
+                src="images/onboarding/onboarding-slide-3-show.svg"
+                alt="Show QR Code"
+              />
+            </div>
+            <div className="background">
+              <img
+                src="images/onboarding/onboarding-slide-3-net.svg"
+                alt="Net"
               />
             </div>
           </div>
-          <div className="show">
-            <img
-              src="images/onboarding/onboarding-slide-3-show.svg"
-              alt="Show QR Code"
-            />
-          </div>
-          <div className="background">
-            <img src="images/onboarding/onboarding-slide-3-net.svg" alt="Net" />
-          </div>
         </div>
-      </div>
-      <div className="text flex column ai-center">
-        <p className="number">3</p>
-        <h1>Redeem</h1>
-        <p className="ta-center color-secondary">
-          When handing over the item the buyer signs the redemption to transfers
-          funds to the seller.
-        </p>
-      </div>
-      <div
-        className="button primary"
-        role="button"
-        onClick={completeOnboarding}
-      >
-        START
       </div>
     </>
   );
@@ -126,7 +261,48 @@ function slide3(completeOnboarding) {
 function Onboarding(props) {
   const initialSlide = localStorage.getItem("onboarding-slide");
 
+  if (+initialSlide === 3) {
+    document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+      el.classList.add("swiper-button-disabled");
+    });
+  }
+
   const playSlide = (currentSlide) => {
+    const policyAccepted = localStorage.getItem(POLICY_ACCEPTED_KEY);
+
+    const isPolicyAccepted = policyAccepted === "true";
+
+    if (isPolicyAccepted && currentSlide === 3) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.remove("swiper-button-disabled");
+      });
+    }
+
+    if (!isPolicyAccepted && currentSlide === 3) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.add("swiper-button-disabled");
+      });
+    }
+
+    if (currentSlide === 3) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.add("swiper-button-disabled");
+        el.classList.add("last-slide");
+      });
+    }
+
+    if (currentSlide < 3) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.remove("swiper-button-disabled");
+      });
+    }
+
+    if (currentSlide < 3) {
+      document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
+        el.classList.remove("last-slide");
+      });
+    }
+
     // reactize later
     document.querySelectorAll(`.onboarding [data-slide]`).forEach((slide) => {
       slide.classList.add("pause");
@@ -138,7 +314,19 @@ function Onboarding(props) {
     localStorage.setItem("onboarding-slide", currentSlide.toString());
   };
 
-  const sequence = [slide1, slide2, slide3];
+  const allowSlideNextDelayed = (swiper) => {
+    const LOCAL_STORAGE_TIMEOUT_MS = 200;
+
+    setTimeout(() => {
+      const policyAccepted = localStorage.getItem(POLICY_ACCEPTED_KEY);
+      const isPolicyAccepted = policyAccepted === "true";
+
+      swiper.allowSlideNext = !(swiper.activeIndex === 3 && !isPolicyAccepted);
+      swiper.update();
+    }, LOCAL_STORAGE_TIMEOUT_MS);
+  };
+
+  const sequence = [slide1, slide2, slide3, slide4];
 
   return (
     <section className="onboarding relative">
@@ -156,6 +344,10 @@ function Onboarding(props) {
           observeParents={true}
           onSlideChange={(slider) => playSlide(slider.snapIndex)}
           initialSlide={initialSlide ? initialSlide : 0}
+          onSlideChangeTransitionStart={(swiper) =>
+            allowSlideNextDelayed(swiper)
+          }
+          onClick={(swiper) => allowSlideNextDelayed(swiper)}
         >
           {sequence.map((slide, id) => (
             <SwiperSlide key={id}>
@@ -163,7 +355,7 @@ function Onboarding(props) {
                 data-slide={id}
                 className="container atomic-scoped animate pause"
               >
-                <div className="screen relative flex column jc-sb">
+                <div className="screen relative flex jc-sb">
                   {slide(props.completeOnboarding)}
                 </div>
               </div>

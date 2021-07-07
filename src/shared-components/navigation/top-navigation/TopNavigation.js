@@ -17,6 +17,8 @@ import {
   ROUTE,
 } from "../../../helpers/configs/Dictionary";
 
+import logo from "./../../../assets/boson/leptonite.svg";
+
 import "./TopNavigation.scss";
 
 import { IconQR, Arrow } from "../../icons/Icons";
@@ -35,6 +37,11 @@ function TopNavigation() {
   const location = useLocation();
   const { account, connector, chainId } = useWeb3React();
   const query = new URLSearchParams(location.search);
+
+  const onboardingCompletedStep = localStorage.getItem("onboarding-slide");
+  const lastOnboardingSlideIndex = 3;
+  const onboardingCompleted =
+    +onboardingCompletedStep === lastOnboardingSlideIndex;
 
   const navigate = () => {
     if (
@@ -99,7 +106,8 @@ function TopNavigation() {
   const hideTopNavigation =
     location.pathname === ROUTE.Connect ||
     location.pathname === ROUTE.Activity ||
-    location.pathname === ROUTE.ActivityVouchers;
+    location.pathname === ROUTE.ActivityVouchers ||
+    !onboardingCompleted;
 
   return (
     <div>
@@ -111,13 +119,24 @@ function TopNavigation() {
         >
           <div className="container">
             <nav className="flex split">
+              {!navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
+                <div className="desktop-only">
+                  <img
+                    src={logo}
+                    style={{ height: "40px" }}
+                    alt="Leptonite: Powered by Boson Protocol"
+                  ></img>
+                </div>
+              ) : null}
               {/* Wallet Connection Button */}
               {navigationContext.state.top[AFFMAP.WALLET_CONNECTION] ? (
-                <div className="flex row">
+                <div className="flex row float-right-desktop inherit-ml-mobile">
                   <WalletConnection account={account} connector={connector} />
-                  <div className="netowrk-info flex center">
-                    <span className={`net-name`}>{ChainLabels[chainId]}</span>
-                  </div>
+                  {chainId ? (
+                    <div className="network-info flex center">
+                      <span className={`net-name`}>{ChainLabels[chainId]}</span>
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
 
@@ -135,13 +154,15 @@ function TopNavigation() {
 
               {/* QR Reader button */}
               {navigationContext.state.top[AFFMAP.QR_CODE_READER] ? (
-                <Link to={ROUTE.CodeScanner}>
+                <Link
+                  to={ROUTE.CodeScanner}
+                  className="inherit-ml-mobile ml-10-desktop"
+                >
                   <div className="qr-icon" role="button">
                     <IconQR color="#8393A6" noBorder />
                   </div>
                 </Link>
               ) : null}
-
               {/* NewOffer Set */}
               {navigationContext.state.top[AFFMAP.OFFER_FLOW_SET] ? (
                 <OfferFlowSet />
