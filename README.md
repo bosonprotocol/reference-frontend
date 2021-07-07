@@ -30,8 +30,8 @@ The application architecture is as depicted below. There are various components 
 - `Backend` (details can be found in the [`reference-backend`](https://github.com/bosonprotocol/reference-backend) repository)
     - `Server`
     - `Database`
-    - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization.
-    - `Event Listeners` - This listens for blockchain events and updates the backend accordingly.
+    - `Keepers service` - These are cloud functions which run periodically to trigger certain contract methods such as expiry/finalization. Details can be found [here](https://github.com/bosonprotocol/reference-backend/tree/develop/external/keepers).
+    - `Event Listeners` - This listens for blockchain events and updates the backend accordingly. Details can be found [here](https://github.com/bosonprotocol/reference-backend/tree/develop/external/lambdas).
 - `Smart contracts` (details can be found in the [`contracts`](https://github.com/bosonprotocol/contracts) repository)
 
 [![banner](docs/assets/architecture-diagram.png)](#design-&-architecture)
