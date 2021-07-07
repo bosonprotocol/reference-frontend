@@ -112,7 +112,7 @@ function slide4(completeOnboarding) {
         </div>
 
         <div
-          className="primary complete-onboarding"
+          className="primary complete-onboarding button-disabled"
           role="button"
           onClick={completeOnboarding}
         >
@@ -150,7 +150,7 @@ function slide4(completeOnboarding) {
           <div className="accept-policy-holder">
             <label className="checkbox">
               <span className="checkbox__input">
-                <input type="checkbox" name="checkbox" onClick={handleClick} />
+                <input type="checkbox" name="checkbox" onClick={handleCheckbox} />
                 <span className="checkbox__control">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -178,16 +178,16 @@ function slide4(completeOnboarding) {
   );
 }
 
-function handleClick(e) {
+function handleCheckbox(e) {
   localStorage.setItem(POLICY_ACCEPTED_KEY, e?.target?.checked);
 
   if (e?.target?.checked) {
-    document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
-      el.classList.remove("swiper-button-disabled");
+    document.querySelectorAll(`.complete-onboarding`).forEach((el) => {
+      el.classList.remove("button-disabled");
     });
   } else {
-    document.querySelectorAll(`.swiper-button-next`).forEach((el) => {
-      el.classList.add("swiper-button-disabled");
+    document.querySelectorAll(`.complete-onboarding`).forEach((el) => {
+      el.classList.add("button-disabled");
     });
   }
 }
@@ -308,8 +308,6 @@ function Onboarding(props) {
       .classList.remove("pause");
 
     localStorage.setItem("onboarding-slide", currentSlide.toString());
-
-    console.log("CURRENT SLIDE", currentSlide);
   };
 
   const allowSlideNextDelayed = (swiper) => {
