@@ -150,7 +150,11 @@ function slide4(completeOnboarding) {
           <div className="accept-policy-holder">
             <label className="checkbox">
               <span className="checkbox__input">
-                <input type="checkbox" name="checkbox" onClick={handleCheckbox} />
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  onClick={handleCheckbox}
+                />
                 <span className="checkbox__control">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
