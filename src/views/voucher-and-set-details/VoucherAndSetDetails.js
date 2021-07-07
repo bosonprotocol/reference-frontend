@@ -25,11 +25,7 @@ import {
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
-import {
-  capitalize,
-  formatDate,
-  totalDepositCalcEth,
-} from "../../utils/FormatUtils";
+import { capitalize, formatDate } from "../../utils/FormatUtils";
 import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";
@@ -70,7 +66,8 @@ import {
 import { determineRoleAndStatusOfVoucherResourse } from "./RoleAndStatusCalculator";
 import FullScreenImage from "../../shared-components/full-screen-image/FullScreenImage";
 import PendingButton from "./components/escrow-table/PendingButton";
-import NewOfferSubmit from "../new-offer/components/new-offer-submit/NewOfferSubmit";
+
+import { ChainIdError } from "./../../errors/ChainIdError";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -290,6 +287,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       correlationId = (
         await bosonRouterContract.getCorrelationId(account)
       ).toString();
@@ -373,6 +375,7 @@ function VoucherAndSetDetails(props) {
       setRecentlyUsedCorrelationId(correlationId, account);
       setTriggerWaitForTransaction(true);
     } catch (e) {
+      console.log("ERROR", e);
       modalContext.dispatch(
         ModalResolver.showModal({
           show: true,
@@ -419,6 +422,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(bosonRouterContract, "complain", [
           voucherDetails._tokenIdVoucher,
@@ -457,7 +465,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
       setLoading(0);
@@ -514,6 +522,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(bosonRouterContract, "refund", [
           voucherDetails._tokenIdVoucher,
@@ -552,7 +565,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
       setLoading(0);
@@ -609,6 +622,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(
           bosonRouterContract,
@@ -648,7 +666,7 @@ function VoucherAndSetDetails(props) {
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: e.message + " :233",
+          content: e.message,
         })
       );
 
@@ -814,6 +832,11 @@ function VoucherAndSetDetails(props) {
     setLoading(1);
 
     try {
+      // 4 is Rinkeby chainId. This is a Rinkeby application.
+      if (chainId !== 4) {
+        throw new ChainIdError();
+      }
+
       const contractInteractionDryRunErrorMessageMaker =
         await validateContractInteraction(
           bosonRouterContract,

@@ -59,9 +59,6 @@ export const getControlList = (
       >
         <IconQRScanner /> REDEEM
       </div>
-      {/* <Link
-                    to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                </Link> */}
     </div>
   );
 
