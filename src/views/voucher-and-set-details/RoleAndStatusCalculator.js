@@ -56,8 +56,6 @@ export const determineRoleAndStatusOfVoucherResourse = (
       ? STATUS.OFFERED
       : false;
 
-  console.log(voucherResource);
-
   const role = voucherRoles.owner
     ? ROLE.SELLER
     : voucherRoles.holder
