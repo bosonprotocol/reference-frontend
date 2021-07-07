@@ -25,10 +25,7 @@ import {
   MODAL_TYPES,
   MESSAGE,
 } from "../../helpers/configs/Dictionary";
-import {
-  capitalize,
-  formatDate,
-} from "../../utils/FormatUtils";
+import { capitalize, formatDate } from "../../utils/FormatUtils";
 import { initVoucherDetails } from "../../helpers/parsers/VoucherAndSetParsers";
 
 import LoadingSpinner from "../../shared-components/loading-spinner/LoadingSpinner";

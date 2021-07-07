@@ -89,7 +89,7 @@ function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
       if (chainId !== 4) {
         throw new ChainIdError();
       }
-      
+
       const tx = await bosonRouterContract.redeem(
         voucherDetails.voucher._tokenIdVoucher
       );
