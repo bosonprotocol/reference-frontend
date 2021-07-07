@@ -70,11 +70,9 @@ export const determineRoleAndStatusOfVoucherResourse = (
 
   // don't show actions if:
   const blockActionConditions = [
-    new Date() >= new Date(voucherResource?.EXPIRED), // voucher expired
     new Date() <= new Date(voucherResource?.startDate) && !!voucherDetails, // has future start date and is voucher
     voucherSetDetails?.qty <= 0, // no quantity
     recentlySignedTxHash !== "",
-    hideControlButtonsWaitPeriodExpired,
   ];
 
   if (
