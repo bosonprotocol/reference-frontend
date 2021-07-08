@@ -175,11 +175,11 @@ export const useVoucherStatusBlocks = (
                 extended: extendedStatuses,
               })
             );
-          if (new Date() >= new Date(voucherDetails.expiryDate))
+          if (voucherDetails.EXPIRED)
             newStatusBlocks.push(
               singleStatusComponent({
                 title: "EXPIRY TRIGGERED",
-                date: voucherDetails.expiryDate,
+                date: voucherDetails.EXPIRED,
                 color: 7,
                 extended: extendedStatuses,
               })
@@ -192,7 +192,7 @@ export const useVoucherStatusBlocks = (
               !!voucherDetails.REDEEMED,
               !!voucherDetails.COMPLAINED,
               !!voucherDetails.CANCELLED,
-              !!(new Date() >= new Date(voucherDetails.expiryDate)),
+              !!voucherDetails.EXPIRED,
               voucherDetails.FINALIZED,
               extendedStatuses
             );
