@@ -193,7 +193,7 @@ function Home() {
                     <ProductBlock key={id} {...block} />
                   ))
                 ) : (
-                  <div>No vouchers available at the selected location.</div>
+                  <div>No vouchers available.</div>
                 )
               ) : (
                 loadingPlaceholder
