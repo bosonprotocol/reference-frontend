@@ -66,17 +66,17 @@ export const useVoucherStatusBlocks = (
           currentStatus.status === STATUS.COMMITED
             ? new Date(voucherDetails.startDate)
             : new Date(
-              +ethers.utils.formatUnits(waitPeriodStart, "wei") * 1000
-            );
+                +ethers.utils.formatUnits(waitPeriodStart, "wei") * 1000
+              );
         const end =
           currentStatus.status === STATUS.COMMITED
             ? new Date(voucherDetails.expiryDate)
             : new Date(
-              +ethers.utils.formatUnits(
-                waitPeriodStart.add(waitPeriod),
-                "wei"
-              ) * 1000
-            );
+                +ethers.utils.formatUnits(
+                  waitPeriodStart.add(waitPeriod),
+                  "wei"
+                ) * 1000
+              );
         const now = new Date(currentBlockTimestamp * 1000);
 
         const timePast = now?.getTime() / 1000 - start?.getTime() / 1000;
@@ -234,16 +234,17 @@ function singleStatusComponent({
           <div>
             {!progress || (progress && status === STATUS.COMMITED)
               ? formatDate(date, "string")
-              : `${new Date(date).getTime() - new Date().getTime() > 0
-                ? humanizeDuration(
-                  new Date(date).getTime() - new Date().getTime(),
-                  {
-                    round: true,
-                    largest: 1,
-                  }
-                )
-                : "Finished"
-              }`}
+              : `${
+                  new Date(date).getTime() - new Date().getTime() > 0
+                    ? humanizeDuration(
+                        new Date(date).getTime() - new Date().getTime(),
+                        {
+                          round: true,
+                          largest: 1,
+                        }
+                      )
+                    : "Finished"
+                }`}
           </div>
         ) : null}
       </p>
