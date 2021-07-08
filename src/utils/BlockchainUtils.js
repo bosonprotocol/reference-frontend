@@ -76,23 +76,25 @@ export const waitForRecentTransactionIfSuchExists = (
   if (recentlySignedTxHash) {
     const getTxReceiptAndCheckForCompletion = async () => {
       const receipt = await library.getTransactionReceipt(recentlySignedTxHash);
-      setRecentlySignedTxHash(recentlySignedTxHash);
+      if (!receipt) {
+        setRecentlySignedTxHash(recentlySignedTxHash);
 
-      const awaitForTx = async () => {
-        await library.waitForTransaction(recentlySignedTxHash);
-        const localStorageListWithDeletedTx = localStorageList.filter(
-          (x) => x.txHash !== recentlySignedTxHash
-        );
-        localStorage.setItem(
-          "recentlySignedTxIdToSupplyIdList",
-          JSON.stringify(localStorageListWithDeletedTx)
-        );
-      };
-      setTriggerWaitForTransaction(false);
-      await awaitForTx();
+        const awaitForTx = async () => {
+          await library.waitForTransaction(recentlySignedTxHash);
+          const localStorageListWithDeletedTx = localStorageList.filter(
+            (x) => x.txHash !== recentlySignedTxHash
+          );
+          localStorage.setItem(
+            "recentlySignedTxIdToSupplyIdList",
+            JSON.stringify(localStorageListWithDeletedTx)
+          );
+        };
+        setTriggerWaitForTransaction(false);
+        await awaitForTx();
 
-      setSuccessMessage(localStorage.getItem("successMessage"));
-      setSuccessMessageType(localStorage.getItem("successMessageType"));
+        setSuccessMessage(localStorage.getItem("successMessage"));
+        setSuccessMessageType(localStorage.getItem("successMessageType"));
+      }
     };
     getTxReceiptAndCheckForCompletion();
   }
