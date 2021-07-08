@@ -17,6 +17,7 @@ This reference app may be used as a template for building your own marketplace p
   - [Configuration](#configuration)
   - [Build](#build)
   - [Run](#run)
+- [- Note that you also need to run your own backend, configured to work with these contracts (see instructions in the reference-backend repository)](#--note-that-you-also-need-to-run-your-own-backend-configured-to-work-with-these-contracts-see-instructions-in-the-reference-backend-repository)
   - [Test](#test)
   - [Code Linting & Formatting](#code-linting--formatting)
 - [Contributing](#contributing)
@@ -87,7 +88,7 @@ To fetch dependencies:
 
 ---
 ### Run
-To run the app, execute the following commands from the root directory:
+To run the frontend app connected to the official backend, execute the following commands from the root directory:
 
 ```shell script
 npm install
@@ -97,6 +98,45 @@ npm run start
 A browser window will open at http://localhost:3000/ with a live version of the 
 code. You're all set to edit and have it rerender there.
 
+If you need to run your own backend and want the frontend to connect it:
+- create a ./.env.local file with the following variables:
+  ```
+  REACT_APP_BACKEND_BASE_URL="<your-backend-url>"
+  REACT_APP_FRONT_END_LOCALSTORAGE_VERSION="1.0"
+  GENERATE_SOURCEMAP=false
+  ```
+  Where <your-backend-url> is your backend url (for instance http://localhost:3333)
+
+- Then, run:
+
+  ```shell script
+  npm install
+  npm run start:local
+  ```
+
+If you need to deploy your own versions of the Boson Protocol contracts and want the frontend to connect them:
+- Run ganache GUI or ganache-cli, setting block mining time to 5 second (to be sure the transactions are not going to be validated immediately)
+    ```
+    ganache-cli --mnemonic "one two three four five six seven eight nine ten eleven twelve" --db boson-local --port 8545 --chainId 1337 --blockTime 5
+    ```
+- deploy the contracts locally through Ganache (see instructions in the contracts repository)
+    ```
+    cd /my-repos/BosonProtocol/contracts
+    npm install
+    node_modules\.bin\truffle migrate
+    ```
+- note the addresses of the deployed contracts (or keep your window open)
+- update the contract addresses in the file './src/hooks/configs.js':
+  ```
+  export const SMART_CONTRACTS = {
+    CashierContractAddress: "0xC6fd7b3464Ffb6F3d9328aA77f836E698742B3ce",
+    VoucherKernelContractAddress: "0x7589e53b8a55212Af8b3ad6ef5c31D9c02bFA25F",
+    BosonRouterContractAddress: "0x81554F12c4A47bB420D5e5D51F0a8f9837Fe79C3",
+    BosonTokenContractAddress: "0x518206d7aaD60874c3b2DCFfd342A2cAD828076C",
+    FundLimitsContractAddress: "0xc997BC85206e436bD9e438C5Be04aaa6c679275b",
+  };
+  ```
+- Note that you also need to run your own backend, configured to work with these contracts (see instructions in the reference-backend repository)
 ---
 ### Test
 
