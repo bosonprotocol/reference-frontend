@@ -1039,3 +1039,9 @@
     display: none;
   }
 }
+
+.button-disabled {
+  opacity: 0.2;
+  cursor: auto;
+  pointer-events: none;
+}

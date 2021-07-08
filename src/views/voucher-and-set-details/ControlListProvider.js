@@ -26,6 +26,7 @@ export const getControlList = (
   const CASE = {};
 
   CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMMITED]] =
+    CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.EXPIRED]] =
     CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REFUNDED]] =
     CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.COMPLAINED]] =
     CASE[OFFER_FLOW_SCENARIO[ROLE.SELLER][STATUS.REDEEMED]] =
@@ -59,15 +60,13 @@ export const getControlList = (
       >
         <IconQRScanner /> REDEEM
       </div>
-      {/* <Link
-                    to={ `${ ROUTE.ActivityVouchers }/${ voucherDetails?.id }${ ROUTE.VoucherQRCode }` }>
-                </Link> */}
     </div>
   );
 
   CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REDEEMED]] =
     CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.CANCELLED]] =
     CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.REFUNDED]] =
+    CASE[OFFER_FLOW_SCENARIO[ROLE.BUYER][STATUS.EXPIRED]] =
       () => (
         <div
           className="action button complain"
