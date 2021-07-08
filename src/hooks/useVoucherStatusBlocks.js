@@ -180,7 +180,7 @@ export const useVoucherStatusBlocks = (
               singleStatusComponent({
                 title: "EXPIRY TRIGGERED",
                 date: voucherDetails.EXPIRED,
-                color: 6,
+                color: 7,
                 extended: extendedStatuses,
               })
             );
