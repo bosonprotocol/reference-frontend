@@ -218,6 +218,7 @@ export const prepareVoucherDetails = (rawVoucher) => {
     FINALIZED: rawVoucher.FINALIZED,
     REDEEMED: rawVoucher.REDEEMED,
     REFUNDED: rawVoucher.REFUNDED,
+    EXPIRED: rawVoucher.EXPIRED,
     commitedDate: rawVoucher.COMMITTED,
     image: rawVoucher?.imagefiles[0]?.url,
     _tokenIdVoucher: rawVoucher._tokenIdVoucher,

@@ -175,7 +175,15 @@ export const useVoucherStatusBlocks = (
                 extended: extendedStatuses,
               })
             );
-
+          if (voucherDetails.EXPIRED)
+            newStatusBlocks.push(
+              singleStatusComponent({
+                title: "EXPIRY TRIGGERED",
+                date: voucherDetails.EXPIRED,
+                color: 7,
+                extended: extendedStatuses,
+              })
+            );
           if (newStatusBlocks?.length)
             newStatusBlocks.sort((a, b) => (a.date > b.date ? 1 : -1));
 
@@ -184,6 +192,7 @@ export const useVoucherStatusBlocks = (
               !!voucherDetails.REDEEMED,
               !!voucherDetails.COMPLAINED,
               !!voucherDetails.CANCELLED,
+              !!voucherDetails.EXPIRED,
               voucherDetails.FINALIZED,
               extendedStatuses
             );
@@ -248,6 +257,7 @@ function finalStatusComponent(
   hasBeenRedeemed,
   hasBeenComplained,
   hasBeenCancelOrFault,
+  hasBeenExpired,
   expiredDate,
   extended
 ) {
@@ -258,6 +268,9 @@ function finalStatusComponent(
           <h3 className="status-name color_1">REDEMPTION</h3>
         ) : (
           <h3 className="status-name color_2">NO REDEMPTION</h3>
+        )}
+        {hasBeenExpired && (
+          <h3 className="status-name color_7">EXPIRY TRIGGERED</h3>
         )}
         {hasBeenComplained ? (
           <h3 className="status-name color_3">COMPLAINT</h3>
