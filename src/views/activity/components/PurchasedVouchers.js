@@ -309,7 +309,9 @@ export const SingleVoucherBlock = ({ voucher, voucherSetId, expiryStatus }) => {
           {statusBlocks ? (
             <div className="status">
               <div className="status-container flex">
-                {statusBlocks.map((x, i) => <Fragment key={i}>{x.jsx}</Fragment>)}
+                {statusBlocks.map((x, i) => (
+                  <Fragment key={i}>{x.jsx}</Fragment>
+                ))}
               </div>
             </div>
           ) : null}
