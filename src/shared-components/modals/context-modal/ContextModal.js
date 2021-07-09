@@ -13,6 +13,10 @@ const ContextModal = () => {
     const authData = getAccountStoredInLocalStorage(account);
     if (!authData.activeToken) {
       localStorage.clear();
+      /* 
+        We use window.location.href, because we are unable to access useHistory hook,
+        due to that we out of the scope of the Router.
+      */
       window.location.href = ROUTE.Home;
     }
     modalContext.dispatch(ModalResolver.showModal(false));
