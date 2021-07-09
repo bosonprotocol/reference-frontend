@@ -12,7 +12,6 @@ const ContextModal = () => {
   function hideModal() {
     const authData = getAccountStoredInLocalStorage(account);
     if (!authData.activeToken) {
-      // localStorage.clear();
       localStorage.removeItem("onboarding-completed");
       localStorage.removeItem("onboarding-slide");
       localStorage.removeItem("policy-accepted");
