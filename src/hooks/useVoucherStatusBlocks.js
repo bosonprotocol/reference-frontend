@@ -104,24 +104,25 @@ export const useVoucherStatusBlocks = (
               : expiryProgress
             : null
         );
-
         const statusTitle =
-          currentStatus.status === STATUS.COMMITED
+          currentStatus.status === STATUS.COMMITED && !currentStatus.status
             ? "Expiration date"
             : "Wait period";
-        return [
-          ...newStatusBlocks,
-          singleStatusComponent({
-            title: statusTitle,
-            date: end,
-            color: 4,
-            progress: expiryProgress,
-            status: currentStatus.status,
-            extended: extendedStatuses,
-          }),
-        ];
+
+        const singleStatusComponenRef = singleStatusComponent({
+          title: statusTitle,
+          date: end,
+          color: 4,
+          progress: expiryProgress,
+          status: currentStatus.status,
+          extended: extendedStatuses,
+        });
+        return currentStatus.status === STATUS.EXPIRED
+          ? [...newStatusBlocks]
+          : [...newStatusBlocks, singleStatusComponenRef];
       }
     }
+
     return newStatusBlocks;
   };
 
@@ -204,6 +205,7 @@ export const useVoucherStatusBlocks = (
         const withWaitPeriodBox = await resolveWaitPeriodStatusBox(
           newStatusBlocks
         );
+
         setStatusBlocks(withWaitPeriodBox);
       };
 
