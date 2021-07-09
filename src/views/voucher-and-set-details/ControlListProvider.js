@@ -34,7 +34,7 @@ export const getControlList = (
         <div
           className="action button cof"
           onClick={() =>
-            confirmAction(onCoF, "Are you sure you want to cancel/fault?")
+            confirmAction(onCoF, "Are you sure you want to cancel or fault?")
           }
           role="button"
         >
@@ -97,7 +97,7 @@ export const getControlList = (
         onClick={() =>
           confirmAction(
             onCancelOrFaultVoucherSet,
-            "Are you sure you want to cancel the voucher set?"
+            "Are you sure you want to void the voucher set?"
           )
         }
         role="button"
