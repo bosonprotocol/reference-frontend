@@ -12,7 +12,10 @@ const ContextModal = () => {
   function hideModal() {
     const authData = getAccountStoredInLocalStorage(account);
     if (!authData.activeToken) {
-      localStorage.clear();
+      // localStorage.clear();
+      localStorage.removeItem("onboarding-completed");
+      localStorage.removeItem("onboarding-slide");
+      localStorage.removeItem("policy-accepted");
       window.location.href = ROUTE.Home;
     }
     modalContext.dispatch(ModalResolver.showModal(false));
