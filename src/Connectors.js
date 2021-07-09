@@ -5,7 +5,7 @@ import { NetworkConnector } from "./utils/NetworkConnector";
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
   4: "https://rinkeby.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
-  1337: "http://localhost:8545"
+  1337: "http://localhost:8545",
 };
 
 export const SUPPORTED_CHAIN_IDS = [4, 1337];

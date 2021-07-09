@@ -89,7 +89,9 @@ export function WalletConnect({
         !SUPPORTED_CHAIN_IDS.includes(walletConnectDataObject.chainId)
       ) {
         // ToDo: Use Global notification
-        console.error(`Unsupported network (chainID=${walletConnectDataObject.chainId})` );
+        console.error(
+          `Unsupported network (chainID=${walletConnectDataObject.chainId})`
+        );
         return;
       }
     }
