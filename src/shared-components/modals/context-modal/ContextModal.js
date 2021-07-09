@@ -1,14 +1,22 @@
 import React, { useContext } from "react";
-
 import { ModalContext, ModalResolver } from "../../../contexts/Modal";
-
 import "./ContextModal.scss";
 import { MODAL_TYPES } from "../../../helpers/configs/Dictionary";
-
+import { getAccountStoredInLocalStorage } from "../../../hooks/authenticate";
+import { useWeb3React } from "@web3-react/core";
+import { ROUTE } from "../../../helpers/configs/Dictionary";
 const ContextModal = () => {
   const modalContext = useContext(ModalContext);
+  const { account } = useWeb3React();
 
   function hideModal() {
+    const authData = getAccountStoredInLocalStorage(account);
+    if (!authData.activeToken) {
+      localStorage.removeItem("onboarding-completed");
+      localStorage.removeItem("onboarding-slide");
+      localStorage.removeItem("policy-accepted");
+      window.location.href = ROUTE.Home;
+    }
     modalContext.dispatch(ModalResolver.showModal(false));
   }
 
