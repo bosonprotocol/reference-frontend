@@ -1,5 +1,27 @@
 @import "src/styles/Settings";
 
+@mixin mobile-inactive-item{
+  a {
+    .thumb {
+      width: 100%;
+      height: 100%;
+    }
+    img {
+      object-fit: contain;
+    }
+    .info {
+      flex: 2;
+      overflow: scroll;
+    }
+    .info::-webkit-scrollbar {
+      display: none; 
+    }
+    .status-name{
+      white-space: nowrap;
+    }
+  }
+}
+
 section.activity {
   .page-title {
     margin-top: 21px;
@@ -354,29 +376,11 @@ section.activity {
       }
 
       @media (max-width: 769px) {
+        @include mobile-inactive-item;
         .title-container {
           .title {
             white-space: nowrap;
             width: 250px;
-          }
-        }
-        a {
-          .thumb {
-            width: 100%;
-            height: 100%;
-          }
-          img {
-            object-fit: contain;
-          }
-          .info {
-            flex: 2;
-            overflow: scroll;
-          }
-          .info::-webkit-scrollbar {
-            display: none; 
-          }
-          .status-name{
-            white-space: nowrap;
           }
         }
       }
@@ -408,24 +412,9 @@ section.activity {
 .activity-price {
 
   @media (max-width: 320px) {
+    @include mobile-inactive-item;
     flex-direction: column;
     align-items: flex-start !important;
-    a {
-      .thumb {
-        width: 100%;
-        height: 100%;
-      }
-      img {
-        object-fit: contain;
-      }
-      .info {
-        flex: 2;
-        overflow: scroll;
-      }
-      .status-name{
-        white-space: nowrap;
-      }
-    }
   }
 }
 
@@ -513,23 +502,8 @@ section.activity {
 
 
         @media (max-width: 420px) {
+          @include mobile-inactive-item;
           font-size: 9.5px !important;
-          a {
-            .thumb {
-              width: 100%;
-              height: 100%;
-            }
-            img {
-              object-fit: contain;
-            }
-            .info {
-              flex: 2;
-              overflow: scroll;
-            }
-            .status-name{
-              white-space: nowrap;
-            }
-          }
         }
         &.color {
           &_1 {
