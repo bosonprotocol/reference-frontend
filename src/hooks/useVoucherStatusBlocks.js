@@ -229,7 +229,7 @@ function singleStatusComponent({
         {title}
         {progress && extended ? <div className="progress"></div> : null}
       </h3>
-      <p className="status-details">
+      <div className="status-details">
         {extended ? (
           <div>
             {!progress || (progress && status === STATUS.COMMITED)
@@ -247,7 +247,7 @@ function singleStatusComponent({
                 }`}
           </div>
         ) : null}
-      </p>
+      </div>
     </div>
   );
   return { jsx, date };
