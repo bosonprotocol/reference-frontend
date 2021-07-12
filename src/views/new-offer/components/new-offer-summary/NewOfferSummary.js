@@ -49,19 +49,19 @@ function NewOfferSummary() {
       price_currency && [
         "Payment Price",
         ethers.utils.formatEther(price) +
-          (price_currency == "BSN" ? "BOSON" : price_currency),
+          (price_currency == "BSN" ? " BOSON" : ` ${price_currency}`),
       ],
     buyer_deposit &&
       deposits_currency && [
         `Buyer’s Deposit  x  ${quantity} voucher${quantity > 1 ? "s" : ""}`,
         totalDepositCalcEth(buyer_deposit, quantity) +
-          (deposits_currency == "BSN" ? "BOSON" : deposits_currency),
+          (deposits_currency == "BSN" ? " BOSON" : ` ${deposits_currency}`),
       ],
     seller_deposit &&
       deposits_currency && [
         `Seller’s Deposit  x  ${quantity} voucher${quantity > 1 ? "s" : ""}`,
         totalDepositCalcEth(seller_deposit, quantity) +
-          (deposits_currency == "BSN" ? "BOSON" : deposits_currency),
+          (deposits_currency == "BSN" ? " BOSON" : ` ${deposits_currency}`),
       ],
   ];
 
@@ -90,7 +90,7 @@ function NewOfferSummary() {
               <p className="deposit-label">Deposit to offer</p>
               <p className="deposit-value">
                 {totalDepositCalcEth(seller_deposit, quantity) +
-                  (deposits_currency == "BSN" ? "BOSON" : deposits_currency)}
+                  (deposits_currency == "BSN" ? " BOSON" : ` ${deposits_currency}`)}
               </p>
             </div>
             <div className="offer-action-column">
