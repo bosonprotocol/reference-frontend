@@ -955,6 +955,18 @@ function VoucherAndSetDetails(props) {
     }
   }, []);
 
+  useEffect(() => {
+    const isActionButton = !!controls?.props?.className;
+    const reloadTimeout = setTimeout(() => {
+      if (!isActionButton && voucherSetDetails.qty >= 1) {
+        window.location.reload();
+      }
+    }, 5000);
+    return () => {
+      clearTimeout(reloadTimeout);
+    };
+  }, [controls]);
+
   return (
     <>
       {loading ? <LoadingSpinner /> : null}
