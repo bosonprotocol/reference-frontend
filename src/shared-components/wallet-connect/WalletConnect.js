@@ -232,6 +232,18 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     </CopyHelper>
   );
 
+  const resetTxBlocker = (
+    <div style={{ marginTop: "10%" }}>
+      Advanced
+      <div
+        onClick={localStorage.removeItem("correlationIdMapping")}
+        className={`button change gray`}
+      >
+        Reset Transaction Blocker
+      </div>
+    </div>
+  );
+
   function removeWallet() {
     localStorage.removeItem("walletconnect");
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
@@ -266,6 +278,7 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
             {shortenAddress(account)}
           </div>
           <div className="copy">{copyButton}</div>
+          <div className="copy">{resetTxBlocker}</div>
           {connector === walletconnect ? (
             <div className={`wallet-connect-buttons-wrapper`}>
               <div
