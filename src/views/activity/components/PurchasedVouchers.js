@@ -320,7 +320,7 @@ export const SingleVoucherBlock = ({ voucher, voucherSetId, expiryStatus }) => {
           </div>
           <div className="price flex split">
             <div className="value flex center">
-              {currencyIcon} {price} {currency}
+              {currencyIcon} {price} {currency == "BSN" ? "BOSON" : currency}
             </div>
           </div>
         </div>
