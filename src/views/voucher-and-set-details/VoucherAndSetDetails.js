@@ -886,6 +886,8 @@ function VoucherAndSetDetails(props) {
       const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(
         voucherSetDetails._tokenIdSupply
       );
+      localStorage.setItem("successMessage", "Void triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
       setTriggerWaitForTransaction(true);
       setCancelMessage({
@@ -957,11 +959,21 @@ function VoucherAndSetDetails(props) {
 
   useEffect(() => {
     const isActionButton = !!controls?.props?.className;
-    const reloadTimeout = setTimeout(() => {
-      if (!isActionButton && voucherSetDetails.qty >= 1) {
+    let time = 1;
+    const reloadTimeout = setTimeout((time) => {
+      console.log(recentlySignedTxHash);
+      console.log(triggerWaitForTransaction);
+      if (
+        !isActionButton &&
+        voucherSetDetails?.qty >= 1 &&
+        !recentlySignedTxHash
+      ) {
         window.location.reload();
       }
-    }, 5000);
+      if (time === 1) {
+        time = 5000;
+      }
+    }, time);
     return () => {
       clearTimeout(reloadTimeout);
     };
