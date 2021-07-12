@@ -90,7 +90,9 @@ function NewOfferSummary() {
               <p className="deposit-label">Deposit to offer</p>
               <p className="deposit-value">
                 {totalDepositCalcEth(seller_deposit, quantity) +
-                  (deposits_currency == "BSN" ? " BOSON" : ` ${deposits_currency}`)}
+                  (deposits_currency == "BSN"
+                    ? " BOSON"
+                    : ` ${deposits_currency}`)}
               </p>
             </div>
             <div className="offer-action-column">
