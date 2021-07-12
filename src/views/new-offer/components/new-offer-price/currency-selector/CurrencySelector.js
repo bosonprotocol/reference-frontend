@@ -27,7 +27,7 @@ function CurrencySelector(props) {
         onChange={(e) => handleInputChange(e)}
       >
         <option value={CURRENCY.ETH}>{CURRENCY.ETH}</option>
-        <option value={CURRENCY.BSN}>{CURRENCY.BSN}</option>
+        <option value={CURRENCY.BSN}>BOSON</option>
       </select>
     </span>
   );
