@@ -63,7 +63,7 @@ export const PriceTable = (props) => {
       <div className="text">
         <p className="title">{title}</p>
         <p className="value">
-          {value} {currency}
+          {value} {currency === "BSN" ? "BOSON" : currency}
         </p>
       </div>
     </div>

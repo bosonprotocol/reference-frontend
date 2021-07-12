@@ -1057,7 +1057,13 @@ function VoucherAndSetDetails(props) {
                         <p className="deposit-value">
                           {" "}
                           {`${voucherSetDetails?.price} ${
-                            currencyResolver(voucherSetDetails?.paymentType)[0]
+                            currencyResolver(
+                              voucherSetDetails?.paymentType
+                            )[0] === "BSN"
+                              ? "BOSON"
+                              : currencyResolver(
+                                  voucherSetDetails?.paymentType
+                                )[0]
                           }`}{" "}
                         </p>
                       </div>
@@ -1236,7 +1242,7 @@ const commitToBuyTransactionCreator = async (
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: "You do not have enough BSN to execute this transaction.",
+          content: "You do not have enough BOSON to execute this transaction.",
         })
       );
       return;
@@ -1301,7 +1307,7 @@ const commitToBuyTransactionCreator = async (
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: "You do not have enough BSN to execute this transaction.",
+          content: "You do not have enough BOSON to execute this transaction.",
         })
       );
       return;
@@ -1376,7 +1382,7 @@ const commitToBuyTransactionCreator = async (
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: "You do not have enough BSN to execute this transaction.",
+          content: "You do not have enough BOSON to execute this transaction.",
         })
       );
       return;
