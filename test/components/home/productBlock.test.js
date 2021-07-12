@@ -67,7 +67,7 @@ describe("Component - Product Block - Price/Deposit", () => {
     expect(priceData[0]).toBe(price);
     expect(priceData[1]).toBe("ETH");
     expect(depositData[0]).toBe(deposit);
-    expect(depositData[1]).toBe("BSN");
+    expect(depositData[1]).toBe("BOSON");
   });
 
   it("When payment type 3 - Expect Price:BSN & Deposit:ETH", () => {
@@ -91,7 +91,7 @@ describe("Component - Product Block - Price/Deposit", () => {
     const depositData = depositElement.children[1].data.trim().split(" "); // extract deposit element's value data (amount & currency)
 
     expect(priceData[0]).toBe(price);
-    expect(priceData[1]).toBe("BSN");
+    expect(priceData[1]).toBe("BOSON");
     expect(depositData[0]).toBe(deposit);
     expect(depositData[1]).toBe("ETH");
   });
@@ -117,8 +117,8 @@ describe("Component - Product Block - Price/Deposit", () => {
     const depositData = depositElement.children[1].data.trim().split(" "); // extract deposit element's value data (amount & currency)
 
     expect(priceData[0]).toBe(price);
-    expect(priceData[1]).toBe("BSN");
+    expect(priceData[1]).toBe("BOSON");
     expect(depositData[0]).toBe(deposit);
-    expect(depositData[1]).toBe("BSN");
+    expect(depositData[1]).toBe("BOSON");
   });
 });
