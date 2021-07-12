@@ -307,7 +307,7 @@ function VoucherAndSetDetails(props) {
             show: true,
             type: MODAL_TYPES.GENERIC_ERROR,
             content:
-              "Please wait for your recent transaction to be minted before sending another one.",
+              "Please wait for your recent transaction to be minted before sending another one. If the issue persists go to Wallet -> Advanced.",
           })
         );
         setLoading(0);
