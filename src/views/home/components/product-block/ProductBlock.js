@@ -42,7 +42,7 @@ function ProductBlock(props) {
           ) : (
             <span>
               <IconBsn />
-              {price} BSN{" "}
+              {price} BOSON{" "}
             </span>
           )}
           {depositsCurrency === "ETH" ? (
@@ -51,7 +51,7 @@ function ProductBlock(props) {
             </span>
           ) : (
             <span>
-              <IconDeposit /> {deposit} BSN{" "}
+              <IconDeposit /> {deposit} BOSON{" "}
             </span>
           )}
         </div>
