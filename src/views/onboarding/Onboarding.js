@@ -68,7 +68,7 @@ function slide2() {
         </div>
         <div className="text flex column ai-center">
           <p className="number">2</p>
-          <h1>Boson Protocol escrow code</h1>
+          <h1>Boson Protocol Escrow code</h1>
           <p className="ta-center color-secondary mobile-text-padding">
             The escrow code is governed by the Core Exchange Mechanism which
             takes deposits from both supplier and buyer to grow trust in a
@@ -83,6 +83,68 @@ function slide2() {
       <div className="column-holder animated-column">
         <div className="slide-image center-flex mobile-fake-escrow-table-padding-top">
           <FakeEscrowTable />
+        </div>
+      </div>
+    </>
+  );
+}
+
+function slide3() {
+  return (
+    <>
+      <div className="column-holder main-column">
+        <div className="top">
+          <div className="logo flex jc-left">
+            <img
+              src={logo}
+              style={{ height: "40px" }}
+              alt="Leptonite Logo"
+              className="pe-none"
+            />
+          </div>
+          <h2 className="ta-left mobile-hide">
+            <span>Welcome</span> to Leptonite
+          </h2>
+        </div>
+        <div className="text flex column ai-center">
+          <p className="number">3</p>
+          <h1>Redemption</h1>
+          <p className="ta-center color-secondary mobile-text-padding">
+            When the seller hands over the item, the buyer signs the redemption
+            which transfers the funds to the seller.
+          </p>
+        </div>
+        <div className="footer color-secondary">
+          ©{new Date().getFullYear()} Leptonite.io
+          <span>Leptonite is a Rinkeby testnet application</span>
+        </div>
+      </div>
+
+      <div className="column-holder animated-column">
+        <div className="slide-image flex center">
+          <div className="qr-display relative">
+            <div className="scan">
+              <div className="phone-bg flex center">
+                <p>Scan the QR code</p>
+                <img
+                  src="images/onboarding/onboarding-slide-3-qr.svg"
+                  alt="QR Code Read"
+                />
+              </div>
+            </div>
+            <div className="show">
+              <img
+                src="images/onboarding/onboarding-slide-3-show.svg"
+                alt="Show QR Code"
+              />
+            </div>
+            <div className="background">
+              <img
+                src="images/onboarding/onboarding-slide-3-net.svg"
+                alt="Net"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -194,68 +256,6 @@ function handleCheckbox(e) {
       el.classList.add("button-disabled");
     });
   }
-}
-
-function slide3() {
-  return (
-    <>
-      <div className="column-holder main-column">
-        <div className="top">
-          <div className="logo flex jc-left">
-            <img
-              src={logo}
-              style={{ height: "40px" }}
-              alt="Leptonite Logo"
-              className="pe-none"
-            />
-          </div>
-          <h2 className="ta-left mobile-hide">
-            <span>Welcome</span> to Leptonite
-          </h2>
-        </div>
-        <div className="text flex column ai-center">
-          <p className="number">3</p>
-          <h1>Redemption</h1>
-          <p className="ta-center color-secondary mobile-text-padding">
-            When the seller hands over the item, the buyer signs the redemption
-            which transfers the funds to the seller.
-          </p>
-        </div>
-        <div className="footer color-secondary">
-          ©{new Date().getFullYear()} Leptonite.io
-          <span>Leptonite is a Rinkeby testnet application</span>
-        </div>
-      </div>
-
-      <div className="column-holder animated-column">
-        <div className="slide-image flex center">
-          <div className="qr-display relative">
-            <div className="scan">
-              <div className="phone-bg flex center">
-                <p>Scan the QR code</p>
-                <img
-                  src="images/onboarding/onboarding-slide-3-qr.svg"
-                  alt="QR Code Read"
-                />
-              </div>
-            </div>
-            <div className="show">
-              <img
-                src="images/onboarding/onboarding-slide-3-show.svg"
-                alt="Show QR Code"
-              />
-            </div>
-            <div className="background">
-              <img
-                src="images/onboarding/onboarding-slide-3-net.svg"
-                alt="Net"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
 }
 
 function Onboarding(props) {
