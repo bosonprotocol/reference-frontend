@@ -288,6 +288,11 @@ export const determineCurrentStatusOfVoucher = (voucherDetails) => {
       status: STATUS.CANCELLED,
       date: voucherDetails.CANCELLED,
     });
+  if (voucherDetails.EXPIRED)
+    allStatuses.push({
+      status: STATUS.EXPIRED,
+      date: voucherDetails.EXPIRED,
+    });
   return allStatuses.sort((a, b) => (a.date > b.date ? 1 : -1))[
     allStatuses.length - 1
   ];
