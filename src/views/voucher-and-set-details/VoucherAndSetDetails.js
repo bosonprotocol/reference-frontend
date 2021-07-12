@@ -961,8 +961,6 @@ function VoucherAndSetDetails(props) {
     const isActionButton = !!controls?.props?.className;
     let time = 1;
     const reloadTimeout = setTimeout((time) => {
-      console.log(recentlySignedTxHash);
-      console.log(triggerWaitForTransaction);
       if (
         !isActionButton &&
         voucherSetDetails?.qty >= 1 &&
