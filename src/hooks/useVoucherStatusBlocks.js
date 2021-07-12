@@ -105,7 +105,7 @@ export const useVoucherStatusBlocks = (
             : null
         );
         const statusTitle =
-          currentStatus.status === STATUS.COMMITED && !currentStatus.status
+          currentStatus.status === STATUS.COMMITED
             ? "Expiration date"
             : "Wait period";
 
