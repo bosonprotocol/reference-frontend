@@ -14,7 +14,6 @@ This reference app may be used as a template for building your own marketplace p
 - [Design & Architecture](#design--architecture)
 - [Local Development](#local-development)
   - [Prerequisites](#prerequisites)
-  - [Configuration](#configuration)
   - [Build](#build)
   - [Run](#run)
 - [- Note that you also need to run your own backend, configured to work with these contracts (see instructions in the reference-backend repository)](#--note-that-you-also-need-to-run-your-own-backend-configured-to-work-with-these-contracts-see-instructions-in-the-reference-backend-repository)
@@ -58,13 +57,6 @@ At a minimum, you'll need:
 For instructions on how to get set up with these specific versions:
 * See the [OS X guide](docs/setup/osx.md) if you are on a Mac.
 * See the [Linux guide](docs/setup/linux.md) if you use a Linux distribution.
-
----
-### Configuration
-Prior to running the application, you must set up a `.env` file in the project's root directory with the following environment variables:
- - `REACT_APP_BACKEND_BASE_URL` - This is a URL for the reference backend.
- - `REACT_APP_FRONT_END_LOCALSTORAGE_VERSION` - This is the version of the local storage buster (can be defaulted to "1.0").
- - `GENERATE_SOURCEMAP` - This is a boolean and can be defaulted to false.
 
 ---
 ### Build

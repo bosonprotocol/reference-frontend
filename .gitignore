@@ -22,6 +22,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env.dev
+.env.demo
+.env.playground
 .idea/
 .eslintcache
 eslintcache
