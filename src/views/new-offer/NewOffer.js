@@ -200,7 +200,7 @@ function NewOffer() {
   };
 
   const { account } = useWeb3React();
-
+  const authData = getAccountStoredInLocalStorage(account);
   // check for backup
   useEffect(() => {
     sellerContext.dispatch(
@@ -208,26 +208,26 @@ function NewOffer() {
         ...inputFallback,
       })
     );
-
     triggerInit(init * -1);
 
-    const authData = getAccountStoredInLocalStorage(account);
-
-    if (!authData.activeToken) {
-      history.push(ROUTE.Home);
-
-      modalContext.dispatch(
-        ModalResolver.showModal({
-          show: true,
-          type: MODAL_TYPES.GENERIC_ERROR,
-          content:
-            "Please check your wallet for Signature Request. Once authentication message is signed you can proceed",
-        })
-      );
-    }
-
+    const reloadTimeout = setTimeout((time) => {
+      if (!authData.activeToken) {
+        history.push(ROUTE.Home);
+        modalContext.dispatch(
+          ModalResolver.showModal({
+            show: true,
+            type: MODAL_TYPES.GENERIC_ERROR,
+            content:
+              "Please check your wallet for Signature Request. Once authentication message is signed you can proceed",
+          })
+        );
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(reloadTimeout);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [authData.activeToken]);
 
   useEffect(() => {
     navigationContext.dispatch(

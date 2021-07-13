@@ -355,6 +355,33 @@ namespace :ci do
     end
 
     RakeFly.define_pipeline_tasks(
+      namespace: :production,
+      argument_names: [
+        :ci_deployment_type,
+        :ci_deployment_label
+      ]
+    ) do |t, args|
+      configuration = configuration
+        .for_scope(args.to_h.merge(role: 'tag-pipeline'))
+      ci_deployment_type = configuration.ci_deployment_identifier
+
+      t.target = configuration.concourse_team
+      t.team = configuration.concourse_team
+      t.pipeline = "reference-frontend-production"
+
+      t.config = 'pipelines/tag/pipeline.yaml'
+
+      t.vars = configuration.vars
+      t.var_files = [
+        'config/secrets/pipeline/constants.yaml',
+        "config/secrets/pipeline/#{ci_deployment_type}.yaml"
+      ]
+
+      t.non_interactive = true
+      t.home_directory = 'build/fly'
+    end
+
+    RakeFly.define_pipeline_tasks(
       namespace: :builder,
       argument_names: [
         :ci_deployment_type,
