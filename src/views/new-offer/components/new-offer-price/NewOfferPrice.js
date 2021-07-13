@@ -158,7 +158,7 @@ function NewOfferPrice({
                   {depositsPriceLimits[priceCurrency]
                     ? calculateMaxForCurrency(priceCurrency)
                     : null}{" "}
-                  {priceCurrency}
+                  {priceCurrency == "BSN" ? "BOSON" : priceCurrency}
                 </div>
               ) : null}
             </div>
@@ -202,7 +202,7 @@ function NewOfferPrice({
                   {depositsPriceLimits[depositsCurrency]
                     ? calculateMaxForCurrency(depositsCurrency)
                     : null}{" "}
-                  {depositsCurrency}
+                  {depositsCurrency == "BSN" ? "BOSON" : depositsCurrency}
                 </div>
               ) : null}
             </div>
@@ -251,7 +251,7 @@ function NewOfferPrice({
                 {depositsPriceLimits[depositsCurrency]
                   ? calculateMaxForCurrency(depositsCurrency)
                   : null}{" "}
-                {depositsCurrency}
+                {depositsCurrency == "BSN" ? "BOSON" : depositsCurrency}
               </div>
             ) : null}
           </div>
@@ -278,14 +278,18 @@ const getLimitCalculationsBar = (amount, quantity, currency, errorMessage) => (
         className="field dual"
         style={errorMessage ? { color: "#ACB9C8" } : {}}
       >
-        {`${ethers.utils.formatEther(amount)} ${currency} `}
+        {`${ethers.utils.formatEther(amount)} ${
+          currency == "BSN" ? "BOSON" : currency
+        } `}
       </span>
       <span className="field dual">
         &nbsp; {` x ${quantity} voucher${quantity > 1 ? "s" : ""}`}
       </span>
     </p>
     <p className="field dual" style={{ padding: "15px 13px" }}>
-      {`=    ${totalDepositCalcEth(amount, quantity)} ${currency}`}
+      {`=    ${totalDepositCalcEth(amount, quantity)} ${
+        currency == "BSN" ? "BOSON" : currency
+      }`}
     </p>
   </div>
 );

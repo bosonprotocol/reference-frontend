@@ -245,7 +245,7 @@ export const VoucherSetBlock = (props) => {
             <div className="price flex split activity-price">
               <div className="value flex center">
                 {currencyIcon}
-                {price} {currency}
+                {price} {currency == "BSN" ? "BOSON" : currency}
               </div>
               <div className="quantity">
                 <span className="icon">
