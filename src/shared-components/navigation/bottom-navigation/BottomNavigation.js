@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
 import { ROUTE, BOTTOM_NAV_TYPE } from "../../../helpers/configs/Dictionary";
 import {
   IconHome,
@@ -11,10 +12,12 @@ import { Link } from "react-router-dom";
 import { NavigationContext } from "../../../contexts/Navigation";
 import { GlobalContext } from "../../../contexts/Global";
 import NewOfferBottomNavigation from "../../../views/new-offer/components/new-offer-bottom-navigation/NewOfferBottomNavigation";
+import whitelist from "../../../constants/whitelist";
 
 const selectedColor = "#80F0BE";
 
 function BottomNavigation() {
+  const { account } = useWeb3React();
   const navigationContext = useContext(NavigationContext);
   const globalContext = useContext(GlobalContext);
   const [selected, setSelected] = useState(new Array(5).fill(0));
@@ -73,7 +76,6 @@ function BottomNavigation() {
     setSelected(navigationList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNavitem]);
-
   return (
     <section
       className={`bottom-navigation ${!onboardingCompleted ? "d-none" : ""}`}
@@ -85,7 +87,17 @@ function BottomNavigation() {
               <div className="nav-container flex center">
                 {Object.entries(routing).map((route, i) => (
                   <div key={i} className="link">
-                    <Link key={i} className="def" to={ROUTE[route[0]]}>
+                    <Link
+                      key={i}
+                      style={
+                        route[0] === "NewOffer" &&
+                        !whitelist.includes(account?.toLowerCase())
+                          ? { opacity: 0.5, pointerEvents: "none" }
+                          : {}
+                      }
+                      className="def"
+                      to={ROUTE[route[0]]}
+                    >
                       {route[1]}
                     </Link>
                   </div>
