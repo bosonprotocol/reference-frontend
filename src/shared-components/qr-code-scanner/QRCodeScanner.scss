@@ -1,0 +1,122 @@
+$border-width: clamp(22px, 2.5vw, 50px);
+
+.qr-reader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &::after {
+    content: '';
+    right: 0;
+    bottom: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    position: absolute;
+    width: #{'min(65vw, 65vh)'};
+    height: #{'min(65vw, 65vh)'};
+    background: transparent;
+    box-shadow: 0 0 0px #{'max(100vw, 100vh)'} rgba(0, 0, 0, 0.7);
+  }
+  & > section {
+    padding-top: 100vh !important;
+
+    & > div {
+      right: 0;
+      bottom: 0;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      position: absolute;
+      width: #{'min(65vw, 65vh)'} !important;
+      height: #{'min(65vw, 65vh)'} !important;
+      background: transparent;
+      box-shadow: none !important;
+      border: none !important;
+    }
+  }
+}
+
+.qr-scanner {
+  position: relative;
+
+  .target {
+    position: fixed;
+    width: #{'min(65vw, 65vh)'};
+    height: #{'min(65vw, 65vh)'};
+    right: 0;
+    bottom: 0;
+    top: 50%;
+    left: 50%;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .layer-1,
+    .layer-2 {
+      width: 100%;
+      height: $border-width;
+      position: relative;
+    }
+
+    .layer-1 {
+      &::before {
+        content: '';
+        width: $border-width;
+        height: $border-width;
+        border-top-left-radius: 5px;
+        position: absolute;
+        left: -4px;
+        top: -4px;
+
+        border-left: 4px solid #FFFFFF;
+        border-top: 4px solid #FFFFFF;
+      }
+      &::after {
+        content: '';
+        width: $border-width;
+        height: $border-width;
+        border-top-right-radius: 5px;
+        position: absolute;
+        right: -4px;
+        top: -4px;
+
+        border-right: 4px solid #FFFFFF;
+        border-top: 4px solid #FFFFFF;
+      }
+    }
+    .layer-2 {
+      &::before {
+        content: '';
+        width: $border-width;
+        height: $border-width;
+        border-bottom-left-radius: 5px;
+        position: absolute;
+        left: -4px;
+        bottom: -4px;
+
+        border-left: 4px solid #FFFFFF;
+        border-bottom: 4px solid #FFFFFF;
+      }
+      &::after {
+        content: '';
+        width: $border-width;
+        height: $border-width;
+        border-bottom-right-radius: 5px;
+        position: absolute;
+        right: -4px;
+        bottom: -4px;
+
+        border-right: 4px solid #FFFFFF;
+        border-bottom: 4px solid #FFFFFF;
+      }
+    }
+  }
+}

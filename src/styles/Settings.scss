@@ -1,70 +1,54 @@
 @import "./Colors.scss";
 
-html {
-  font-size: 16px;
-}
-
 // ----- grid -----
-$container: 1150px;
-$container-padding: 20px;
+$container: 1500px;
+$container-padding: 22px;
+$container-padding-big: 26px;
 $container-high-end: 70%;
 
-$sidebar-width: 0;
-$content-full: 100%;
 
 // ----- breakpoints -----
-$screen-desktop: 1440px;
-$screen-tablet: 960px;
-
-// ----- breakpoints for grid drawer -----
-$gd-breakpoints: (
-  "-desktop": $screen-desktop,
-  "-tablet": $screen-tablet,
-);
 
 // ----- padding -----
-$padding-0: 6px;
+$padding-col-side: 6px;
 
 // ----- margin -----
-$margin-1: 10px;
+$margin-safe-gap: 6px;
+$margin-safe-gap-large: 6px;
+
+$margin-gap-small: 3px;
 
 // ----- font-size -----
-$size-1: 12px;
 
 // ----- line-height -----
-$height-1: 1.15;
+$height-small: 1.11;
+$height-regular: 1.43;
 
 // ----- letter-spacing -----
-$spacing-1: 0.05em;
 
 // ----- font-family -----
-$font-primary: "Gilroy", sans-serif;
+$font-primary: 'Exo', sans-serif;
+$font-secondary: 'Barlow', sans-serif;
+$font-third: 'Montserrat', sans-serif;
+$font-fourth: 'Roboto', sans-serif;
 
 // ----- font color -----
-$color-primary: $gray-1;
+$color-primary: $text-1;
+$color-secondary: $text-2;
 
 // ----- font weight -----
 
-// $weight-1: 100; 
-// $weight-2: 200;
-// $weight-3: 300;
-// $weight-4: 400;
-$weight-5: 500;
-// $weight-6: 600;
-// $weight-7: 700;
-
 // ----- background -----
-$background-primary: $white;
-$background-secondary: $darkest-purple;
+$background-primary: var(--background-primary);
 
 // ----- borders -----
-$border-1: 1px solid $black;
 
+// ----- borders-radius -----
+$container-radius: 5px;
 
 // ----- transitions -----
 $ease-flash: 0.05s all ease-in-out;
 $ease-quick: 0.2s all ease-in-out;
-$ease-quick-d: 0.2s 50ms all ease-in-out;
-$ease-slow: 0.35s all ease-in-out;
 
 // ----- shadows -----
+$container-shadow: 1px 1px 45px rgba(0, 0, 0, 0.2);

@@ -9,49 +9,26 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
   max-width: $container;
   margin: 0 auto;
   padding: 0 $container-padding;
-  &.layout {
-    max-width: 1280px;
+  flex: auto;
+  width: 100%;
+
+  &.erase-right {
+    padding-right: 0;
+  }
+  &.erase-left {
+    padding-left: 0;
+  }
+  &.erase {
+    padding: 0;
+  }
+  &.l {
+    padding: 0 $container-padding-big;
   }
 }
 .new-row {
   margin-left: -#{$container-padding};
   margin-right: -#{$container-padding};
 }
-
-
-// flex standard
-.flex {
-  display: flex;
-}
-
-// col grid
-.col-grid {
-  display: flex;
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  max-width: 100%;
-
-  .sidebar {
-    flex: 0 0 $sidebar-width;
-    max-width: $sidebar-width;
-    padding-left: $padding-1;
-    padding-right: $padding-1;
-  }
-  .content {
-    flex: 0 0 calc(100% - #{$sidebar-width});
-    max-width: calc(100% - #{$sidebar-width});
-    padding-left: $padding-1;
-    padding-right: $padding-1;
-  }
-
-}
-
-.content {
-  flex: 0 0 $content-full;
-  max-width: $content-full;
-}
-
 
 // ----------------------------------------------------------------
 // DEFINE GRID
@@ -60,7 +37,10 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 
 //flex
 @mixin flex-grid($selector) {
-  .flex {
+  .flex,
+  &.bind {
+    display: flex;
+
     &.inline#{$selector} {
       display: inline-flex;
     }
@@ -97,6 +77,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     &.jc-sb#{$selector} {
       justify-content: space-between;
     }
+    &.jc-sa#{$selector} {
+      justify-content: space-around;
+    }
     &.jc-start#{$selector} {
       justify-content: flex-start;
     }
@@ -106,15 +89,31 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     &.jc-stretch#{$selector} {
       justify-content: stretch;
     }
+    &.exists {
+      flex: 1;
+    }
+    &.center {
+      align-items: center;
+      justify-content: center;
+    }
+    &.split {
+      align-items: center;
+      justify-content: space-between;
+    }
+    &.no-shrink {
+      flex-shrink: 0;
+    }
   }
 }
 
 //col-grid
 @mixin col-grid($selector) {
   .col-grid {
+    display: flex;
+
     .side-padding#{$selector} {
-      padding-left: $padding-1;
-      padding-right: $padding-1;
+      padding-left: $padding-col-side;
+      padding-right: $padding-col-side;
     }
     .col-1#{$selector} {
       flex: 0 0 100%;
@@ -123,52 +122,55 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     .col-2#{$selector} {
       flex: 0 0 50%;
       max-width: 50%;
+
+      &.reduce-1 {
+        max-width: calc(50% - #{$margin-gap-small});
+      }
     }
     .col-3#{$selector} {
       flex: 0 0 calc(100% / 3);
       max-width: calc(100% / 3);
-  
+
       &.rest {
         flex: 0 0 calc(100% - (100% / 3));
         max-width: calc(100% - (100% / 3));
+      }
+      &.reduce-1 {
+        max-width: calc((100% / 3) - #{$margin-gap-small});
       }
     }
     .col-4#{$selector} {
       flex: 0 0 25%;
       max-width: 25%;
-  
+
       &.rest {
         flex: 0 0 75%;
         max-width: 75%;
+      }
+      &.reduce-1 {
+        max-width: calc(25% - #{$margin-gap-small});
       }
     }
     .col-5#{$selector} {
       flex: 0 0 20%;
       max-width: 20%;
-  
+
       &.rest {
         flex: 0 0 80%;
         max-width: 80%;
+      }
+      &.reduce-1 {
+        max-width: calc(20% - #{$margin-gap-small});
       }
     }
     .col-6#{$selector} {
       flex: 0 0 calc(100% - (100% / 6));
       max-width: calc(100% - (100% / 6));
+
+      &.reduce-1 {
+        max-width: calc((100% - (100% / 6)) - #{$margin-gap-small});
+      }
     }
-  }
-}
-
-//gap
-@mixin gap($selector) {
-  .gap#{$selector} {
-    margin-top: $margin-1;    
-  }
-  .gap-small#{$selector} {
-    margin-top: $margin-2;
-  }
-
-  .gap-large#{$selector} {
-    margin-top: $margin-3;
   }
 }
 
@@ -184,7 +186,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
     width: calc(100% / 3);
   }
   .w25#{$selector} {
-    width: 25;
+    width: 25%;
   }
   .w20#{$selector} {
     width: 20%;
@@ -195,22 +197,22 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 }
 
 @mixin max-width($selector) {
-  .max-w100#{$selector} {
+  .mw100#{$selector} {
     max-width: 100%;
   }
-  .max-w50#{$selector} {
+  .mw50#{$selector} {
     max-width: 50%;
   }
-  .max-w33#{$selector} {
+  .mw33#{$selector} {
     max-width: calc(100% / 3);
   }
-  .max-w25#{$selector} {
-    max-width: 25;
+  .mw25#{$selector} {
+    max-width: 25%;
   }
-  .max-w20#{$selector} {
+  .mw20#{$selector} {
     max-width: 20%;
   }
-  .max-w10#{$selector} {
+  .mw10#{$selector} {
     max-width: 10%;
   }
 }
@@ -218,7 +220,7 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 //other
 @mixin d-none($selector) {
   .d-none#{$selector} {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -226,11 +228,11 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 @mixin pad-last($selector) {
   &.pad-last {
     & > *:last-child {
-      margin-left: $margin-0;
+      margin-left: $margin-safe-gap;
     }
     &.bigger {
       & > *:last-child {
-        margin-left: $margin-1;
+        margin-left: $margin-safe-gap-large;
       }
     }
   }
@@ -241,26 +243,12 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
 // CUSTOM SETTINGS
 // ----------------------------------------------------------------
 
-.relative {
-  position: relative;
+.grow {
+  flex-grow: 1;
 }
 
-.image,
-img {
-  &.auto {
-    height: auto;
-
-    img {
-      height: auto;
-    }
-  }
-  &.full {
-    max-width: 100%;
-
-    img {
-      max-width: 100%;
-    }
-  }
+.relative {
+  position: relative;
 }
 
 .ls-none {
@@ -276,6 +264,31 @@ img {
   text-decoration: none;
 }
 
+.h-100 {
+  height: 100%;
+}
+
+.ta-center {
+  text-align: center;
+}
+
+.atomic-scoped {
+  img:not(.def) {
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+
+    &.full {
+      width: 100%;
+    }
+  }
+}
+
+.o-hidden {
+  overflow: hidden;
+}
+
 
 // ----------------------------------------------------------------
 // DRAW GRID
@@ -287,19 +300,6 @@ img {
 @include col-grid($load-default);
 @include flex-grid($load-default);
 @include pad-last($load-default);
-// @include gap($load-default);
-
-// @each $selector, $break-point in $gd-breakpoints {
-//   @media screen and(max-width: $break-point) {
-
-//     @include d-none(#{$selector});
-//     @include width(#{$selector});
-//     @include max-width(#{$selector});
-//     @include col-grid(#{$selector});
-//     @include flex-grid(#{$selector});
-//     @include gap(#{$selector});    
-//   }
-// }
 
 // ----------------------------------------------------------------
 // END OF DOCUMENT - GRID SETTINGS

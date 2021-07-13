@@ -1,0 +1,50 @@
+// init animations
+
+.home {
+  // before
+  .product-list {
+    .product-block.animate {
+      opacity: 0;
+      transition: 0.45s ease-in-out;
+    }
+  }
+  // turned off
+  // .card-list {
+  //   .card-block.animate {
+  //     img {
+  //       transform: translateX(-15px);
+  //       opacity: 0;
+  //       transition: 0.45s ease-in-out;
+  //     }
+  //   }
+  // }
+  .home-products {
+    .product-block.animate {
+      opacity: 0;
+      transition: 0.45s ease-in-out;
+    }
+  }
+
+  // play
+  &.init {
+    .product-list {
+      .product-block {
+        opacity: 1;
+      }
+    }
+    // turned off
+    // .card-list {
+    //   .card-block.animate {
+    //     img {
+    //       transform: translateX(0);
+    //       opacity: 1;
+    //     }
+    //   }
+    // }
+    .home-products {
+      .product-block.animate {
+        opacity: 1;
+      }
+    }
+  }
+}

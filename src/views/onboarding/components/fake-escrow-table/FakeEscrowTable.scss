@@ -1,0 +1,189 @@
+@import "src/styles/Settings";
+@use "sass:map";
+
+.diagram-content {
+  &.slide-2 {
+    width: 100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  &.commited {
+    .col-4 {
+      .slot {
+        background-color: rgba(255, 255, 255, 0.02);
+        border: 1px dashed rgba(255, 255, 255, 0.08);
+
+        .block {
+          &::after,
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+    .buyer {
+      .slot {
+        .block {
+          background-color: rgba(#34465A, 1);
+          transform: translateX(calc(-100% - 10px));
+          border-radius: 8px;
+        }
+      }
+    }
+    .seller {
+      .slot {
+        .block {
+          background-color: rgba(#34465A, 1);
+          transform: translateX(calc(100% + 10px));
+          border-radius: 8px;
+        }
+      }
+    }
+    .field {
+      .slot {
+        border: none;
+      }
+    }
+  }
+  .title {
+    margin-bottom: 8px;
+
+    @media (max-width: 374px) {
+      height: 44px;
+    }
+    p {
+      text-align: center;
+    }
+  }
+  .slot {
+    background-color: rgba($labels-background, 0.5);
+    border-radius: 8px;
+    width: calc(100% - 3px);
+    position: relative;
+    padding: 7px 11px;
+    height: 54px;
+
+    @media (max-width: 374px) {
+      height: 46px;
+    }
+
+    .block {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    &:not(.empty) + .slot {
+      margin-top: 6px;
+    }
+
+    p {
+      text-align: center;
+      &.name {
+        font-size: 12px;
+
+        @media (max-width: 374px) {
+          font-size: 11px;
+        }
+      }
+      &.value {
+        font-size: 14px;
+
+        @media (max-width: 374px) {
+          font-size: 11px;
+        }
+      }
+    }
+    &.non {
+      opacity: 0;
+    }
+  }
+
+  .seller {
+    z-index: 2;
+    .slot {
+      .block {
+        &::after {
+          content: '';
+          background-image: url('../../../../assets/icons/diagram-arrow.svg');
+          display: slot;
+          position: absolute;
+          top: calc(50% - 9px);
+          right: -15px;
+          background-repeat: no-repeat;
+          width: 17px;
+          height: 20px;
+          z-index: 2;
+          // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        p.value {
+          &.value {
+            color: $labels-accent-1;
+          }
+        }
+      }
+    }
+  }
+  .buyer {
+    z-index: 2;
+    .slot {
+      .block {
+        &::before {
+          content: '';
+          background-image: url('../../../../assets/icons/diagram-arrow-2.svg');
+          display: slot;
+          position: absolute;
+          top: calc(50% - 9px);
+          left: -15px;
+          background-repeat: no-repeat;
+          width: 17px;
+          height: 20px;
+          z-index: 2;
+          // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        p.value {
+          &.value {
+            color: $labels-accent-2;
+          }
+        }
+      }
+    }
+  }
+
+  .field {
+    background-color: rgba($labels-background, 0.5);
+    border-radius: 8px;
+    width: calc(100% - 3px);
+    z-index: 1;
+    border: 1px solid rgba($accent, 0);
+    // position: relative;
+
+    .slot {
+      width: calc(50% - 3px);
+      height: calc(50% - 3px);
+
+      @media (max-width: 374px) {
+        height: 46px;
+      }
+
+      background: rgba($white, 0.02);
+      border: 1px dashed rgba($white, 0.08);
+
+      &:nth-child(3),
+      &:nth-child(4) {
+        align-self: flex-end;
+
+        @media (max-width: 374px) {
+          margin-top: 6px;
+        }
+      }
+    }
+  }
+}

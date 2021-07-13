@@ -1,0 +1,43 @@
+---
+region: "eu-west-2"
+
+development_group: "bsn"
+
+component: "reference-frontend"
+deployment_identifier: "%{deployment_type}-%{deployment_label}"
+
+source_repository_name: "bosonprotocol/reference-frontend"
+source_repository_url: "git@github.com:%{hiera('source_repository_name')}.git"
+source_repository_branch: "develop"
+
+storage_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hiera('deployment_identifier')}-storage"
+website_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hiera('deployment_identifier')}-content"
+
+storage_bucket_encryption: "AES256"
+
+admin_role_name: "cross-account-admin-role"
+
+rdm_management_account_id: "031036423983"
+
+bsn_parent_account_id: "915981965568"
+bsn_development_potassium_account_id: "384010198059"
+bsn_production_lutetium_account_id: "371854298993"
+
+bsn_parent_account_admin_role: "arn:aws:iam::%{hiera('bsn_parent_account_id')}:role/%{hiera('admin_role_name')}"
+
+non_standard_mime_types:
+  font/woff2:
+    - woff2
+  application/manifest+json:
+    - webmanifest
+
+max_ages:
+  image/jpeg: 300
+  image/png: 300
+  image/gif: 300
+  image/svg+xml: 300
+  text/html: 0
+  text/css: 300
+  application/javascript: 300
+  application/font-woff: 2592000
+  font/woff2: 2592000

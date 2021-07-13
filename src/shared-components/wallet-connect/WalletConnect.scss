@@ -1,0 +1,133 @@
+@import "src/styles/Settings";
+
+.account-title {
+  text-align: center;
+  font-family: $font-third;
+  padding: 20px;
+}
+
+.wallet-list-item {
+  display: flex;
+
+  border: 1px solid #2D3743;
+  background-color: #12161B;
+  flex-basis: 50%;
+  margin: 5px;
+  border-radius: 8px;
+  height: 202px;
+  justify-content: center;
+  align-items: center;
+
+  &:not(.active-connector) {
+    cursor: pointer;
+  }
+
+  .list-item-option {
+    margin-top: 70px;
+    margin-left: -92px;
+    min-width: 100px;
+    text-align: center;
+    font-size: 20px;
+
+    &.metamask-label {
+      margin-left: -77px;
+    }
+
+    .active-wallet-indicator {
+      margin-right: 8px;
+    }
+  }
+
+  .status {
+    .button {
+      min-width: 101px;
+    }
+  }
+
+  .wallet-list-item-image-holder {
+    margin-left: 30px;
+    margin-bottom: 15px;
+
+    img {
+      //height: 28px;
+      width: 54px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    height: 54px;
+    justify-content: normal;
+    border: none;
+
+    .list-item-option {
+      margin: 0;
+      font-size: 16px;
+      text-align: left;
+
+      &.metamask-label {
+        margin: 0;
+      }
+    }
+
+    .wallet-list-item-image-holder {
+      margin: 0;
+      padding: 25px;
+
+      img {
+        width: 22px;
+      }
+    }
+  }
+}
+
+.connected-account {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+
+  .connected-with {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .connected-account-address-holder {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+
+    .connected-account-address {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.address {
+  .network-info {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background: #192028;
+    border-radius: 4px;
+
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #F08D1A;
+  }
+
+  .net-name::first-letter {
+    text-transform: uppercase;
+  }
+}

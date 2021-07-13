@@ -1,0 +1,3111 @@
+{
+  "contractName": "FundLimitsOracle",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_newLimit",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_triggeredBy",
+          "type": "address"
+        }
+      ],
+      "name": "LogETHLimitChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_newLimit",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_triggeredBy",
+          "type": "address"
+        }
+      ],
+      "name": "LogTokenLimitChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_newLimit",
+          "type": "uint256"
+        }
+      ],
+      "name": "setETHLimit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_newLimit",
+          "type": "uint256"
+        }
+      ],
+      "name": "setTokenLimit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getETHLimit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getTokenLimit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_newLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_triggeredBy\",\"type\":\"address\"}],\"name\":\"LogETHLimitChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_newLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_triggeredBy\",\"type\":\"address\"}],\"name\":\"LogTokenLimitChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getETHLimit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenAddress\",\"type\":\"address\"}],\"name\":\"getTokenLimit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_newLimit\",\"type\":\"uint256\"}],\"name\":\"setETHLimit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_newLimit\",\"type\":\"uint256\"}],\"name\":\"setTokenLimit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"getTokenLimit(address)\":{\"params\":{\"_tokenAddress\":\"Address of the token which will be update.\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"setETHLimit(uint256)\":{\"params\":{\"_newLimit\":\"New limit which will be set.\"}},\"setTokenLimit(address,uint256)\":{\"params\":{\"_newLimit\":\"New limit which will be set. It must comply to the decimals of the token, so the limit is set in the correct decimals.\",\"_tokenAddress\":\"Address of the token which will be updated.\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"Contract for managing maximum allowed funds to be escrowed. The purpose is to limit the total funds locked in escrow in the initial stages of the protocol.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getETHLimit()\":{\"notice\":\"Get the maximum allowed ETH limit to set as price of voucher, buyer deposit or seller deposit.\"},\"getTokenLimit(address)\":{\"notice\":\"Get the maximum allowed token limit for the specified Token.\"},\"setETHLimit(uint256)\":{\"notice\":\"Set new limit for ETH. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\"},\"setTokenLimit(address,uint256)\":{\"notice\":\"Set new limit for a token. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/FundLimitsOracle.sol\":\"FundLimitsOracle\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":10},\"remappings\":[]},\"sources\":{\"/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/FundLimitsOracle.sol\":{\"keccak256\":\"0xf68a2a41a3e67d3b083335b6a27bbbad9a994ab78bcb7a8c1391549796a3147c\",\"license\":\"LGPL-3.0-or-later\",\"urls\":[\"bzz-raw://2f0a276df9d8238bc9f9e26cd6489fead3f4710bd64fda5b711c5b933c2338a6\",\"dweb:/ipfs/QmRH8rbMcuWp3iMGuD4U3z9ijmHW6r7Vfq71LeU8S4qwRh\"]},\"/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/interfaces/IFundLimitsOracle.sol\":{\"keccak256\":\"0xa3e03a58b63266cc88f7f26429941aff56a61d086c98fdfb09efa82a4cf7f51c\",\"license\":\"LGPL-3.0-or-later\",\"urls\":[\"bzz-raw://6a742feffefc4a9b70ec761aae636e935ebca9ee853e5b81b7802b17aaca2bc4\",\"dweb:/ipfs/Qmb584QNfQqq2NZR7wL7HxkYgf3G6wXt8Vxs76FCYdnuWw\"]},\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0x549c5343ad9f7e3f38aa4c4761854403502574bbc15b822db2ce892ff9b79da7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://19c0dfbf7bb7744af0c03156e372d0096e0d07de8805ead7722243b8b42276a3\",\"dweb:/ipfs/QmPEFDvi6mJZ3sVii3uBs3CQzAARXPFwCKiHG5zkiCmC4V\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x8d3cb350f04ff49cfb10aef08d87f19dcbaecc8027b0bed12f3275cd12f38cf0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ded47ec7c96750f9bd04bbbc84f659992d4ba901cb7b532a52cd468272cf378f\",\"dweb:/ipfs/QmfBrGtQP7rZEqEg6Wz6jh2N2Kukpj1z5v3CGWmAqrzm96\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50600061001b610076565b600080546001600160a01b0319166001600160a01b0383169081178255604051929350917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350670de0b6b3a764000060015561007a565b3390565b61057d806100896000396000f3fe608060405234801561001057600080fd5b506004361061006d5760003560e01c80630f878aed146100725780635a860c871461008c578063715018a6146100b25780638695332f146100bc5780638da5cb5b146100d9578063bc017637146100fd578063f2fde38b14610129575b600080fd5b61007a61014f565b60408051918252519081900360200190f35b61007a600480360360208110156100a257600080fd5b50356001600160a01b0316610155565b6100ba610170565b005b6100ba600480360360208110156100d257600080fd5b503561020a565b6100e16102be565b604080516001600160a01b039092168252519081900360200190f35b6100ba6004803603604081101561011357600080fd5b506001600160a01b0381351690602001356102cd565b6100ba6004803603602081101561013f57600080fd5b50356001600160a01b03166103ed565b60015490565b6001600160a01b031660009081526002602052604090205490565b6101786104dd565b6001600160a01b03166101896102be565b6001600160a01b0316146101d2576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b600080546040516001600160a01b0390911690600080516020610528833981519152908390a3600080546001600160a01b0319169055565b6102126104dd565b6001600160a01b03166102236102be565b6001600160a01b03161461026c576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b60018190557f9462735486103805dd471af708689460124c6d5016a7b7f897f887cf7020c5218161029b6102be565b604080519283526001600160a01b0390911660208301528051918290030190a150565b6000546001600160a01b031690565b6102d56104dd565b6001600160a01b03166102e66102be565b6001600160a01b03161461032f576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b816001600160a01b038116610383576040805162461bcd60e51b8152602060048201526015602482015274494e56414c49445f544f4b454e5f4144445245535360581b604482015290519081900360640190fd5b6001600160a01b03831660009081526002602052604090208290557f6a209be2fe222988596b5f4dd242289077f0f05402d2f1848a97da68c2353894826103c86102be565b604080519283526001600160a01b0390911660208301528051918290030190a1505050565b6103f56104dd565b6001600160a01b03166104066102be565b6001600160a01b03161461044f576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b6001600160a01b0381166104945760405162461bcd60e51b81526004018080602001828103825260268152602001806104e26026913960400191505060405180910390fd5b600080546040516001600160a01b038085169392169160008051602061052883398151915291a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b339056fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65728be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0a26469706673582212200e7a317b0ea8ce2a1098c7db3cb2980aa2c525bb90233802ab2423651e5658fb64736f6c63430007010033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061006d5760003560e01c80630f878aed146100725780635a860c871461008c578063715018a6146100b25780638695332f146100bc5780638da5cb5b146100d9578063bc017637146100fd578063f2fde38b14610129575b600080fd5b61007a61014f565b60408051918252519081900360200190f35b61007a600480360360208110156100a257600080fd5b50356001600160a01b0316610155565b6100ba610170565b005b6100ba600480360360208110156100d257600080fd5b503561020a565b6100e16102be565b604080516001600160a01b039092168252519081900360200190f35b6100ba6004803603604081101561011357600080fd5b506001600160a01b0381351690602001356102cd565b6100ba6004803603602081101561013f57600080fd5b50356001600160a01b03166103ed565b60015490565b6001600160a01b031660009081526002602052604090205490565b6101786104dd565b6001600160a01b03166101896102be565b6001600160a01b0316146101d2576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b600080546040516001600160a01b0390911690600080516020610528833981519152908390a3600080546001600160a01b0319169055565b6102126104dd565b6001600160a01b03166102236102be565b6001600160a01b03161461026c576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b60018190557f9462735486103805dd471af708689460124c6d5016a7b7f897f887cf7020c5218161029b6102be565b604080519283526001600160a01b0390911660208301528051918290030190a150565b6000546001600160a01b031690565b6102d56104dd565b6001600160a01b03166102e66102be565b6001600160a01b03161461032f576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b816001600160a01b038116610383576040805162461bcd60e51b8152602060048201526015602482015274494e56414c49445f544f4b454e5f4144445245535360581b604482015290519081900360640190fd5b6001600160a01b03831660009081526002602052604090208290557f6a209be2fe222988596b5f4dd242289077f0f05402d2f1848a97da68c2353894826103c86102be565b604080519283526001600160a01b0390911660208301528051918290030190a1505050565b6103f56104dd565b6001600160a01b03166104066102be565b6001600160a01b03161461044f576040805162461bcd60e51b81526020600482018190526024820152600080516020610508833981519152604482015290519081900360640190fd5b6001600160a01b0381166104945760405162461bcd60e51b81526004018080602001828103825260268152602001806104e26026913960400191505060405180910390fd5b600080546040516001600160a01b038085169392169160008051602061052883398151915291a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b339056fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65728be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0a26469706673582212200e7a317b0ea8ce2a1098c7db3cb2980aa2c525bb90233802ab2423651e5658fb64736f6c63430007010033",
+  "sourceMap": "358:2388:3:-:0;;;803:51;;;;;;;;;-1:-1:-1;867:17:21;887:12;:10;:12::i;:::-;909:6;:18;;-1:-1:-1;;;;;;909:18:21;-1:-1:-1;;;;;909:18:21;;;;;;;942:43;;909:18;;-1:-1:-1;909:18:21;942:43;;909:6;;942:43;-1:-1:-1;839:7:3;828:8;:18;358:2388;;598:104:26;685:10;598:104;:::o;358:2388:3:-;;;;;;;",
+  "deployedSourceMap": "358:2388:3:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2290:98;;;:::i;:::-;;;;;;;;;;;;;;;;2563:180;;;;;;;;;;;;;;;;-1:-1:-1;2563:180:3;-1:-1:-1;;;;;2563:180:3;;:::i;1700:145:21:-;;;:::i;:::-;;1163:161:3;;;;;;;;;;;;;;;;-1:-1:-1;1163:161:3;;:::i;1068:85:21:-;;;:::i;:::-;;;;-1:-1:-1;;;;;1068:85:21;;;;;;;;;;;;;;1800:277:3;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;1800:277:3;;;;;;;;:::i;1994:240:21:-;;;;;;;;;;;;;;;;-1:-1:-1;1994:240:21;-1:-1:-1;;;;;1994:240:21;;:::i;2290:98:3:-;2372:8;;2290:98;:::o;2563:180::-;-1:-1:-1;;;;;2709:26:3;2677:7;2709:26;;;:11;:26;;;;;;;2563:180::o;1700:145:21:-;1291:12;:10;:12::i;:::-;-1:-1:-1;;;;;1280:23:21;:7;:5;:7::i;:::-;-1:-1:-1;;;;;1280:23:21;;1272:68;;;;;-1:-1:-1;;;1272:68:21;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1272:68:21;;;;;;;;;;;;;;;1806:1:::1;1790:6:::0;;1769:40:::1;::::0;-1:-1:-1;;;;;1790:6:21;;::::1;::::0;-1:-1:-1;;;;;;;;;;;1769:40:21;1806:1;;1769:40:::1;1836:1;1819:19:::0;;-1:-1:-1;;;;;;1819:19:21::1;::::0;;1700:145::o;1163:161:3:-;1291:12:21;:10;:12::i;:::-;-1:-1:-1;;;;;1280:23:21;:7;:5;:7::i;:::-;-1:-1:-1;;;;;1280:23:21;;1272:68;;;;;-1:-1:-1;;;1272:68:21;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1272:68:21;;;;;;;;;;;;;;;1242:8:3::1;:20:::0;;;1278:38:::1;1253:9:::0;1308:7:::1;:5;:7::i;:::-;1278:38;::::0;;;;;-1:-1:-1;;;;;1278:38:3;;::::1;;::::0;::::1;::::0;;;;;;;;;::::1;1163:161:::0;:::o;1068:85:21:-;1114:7;1140:6;-1:-1:-1;;;;;1140:6:21;1068:85;:::o;1800:277:3:-;1291:12:21;:10;:12::i;:::-;-1:-1:-1;;;;;1280:23:21;:7;:5;:7::i;:::-;-1:-1:-1;;;;;1280:23:21;;1272:68;;;;;-1:-1:-1;;;1272:68:21;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1272:68:21;;;;;;;;;;;;;;;1944:13:3;-1:-1:-1;;;;;723:26:3;::::1;715:60;;;::::0;;-1:-1:-1;;;715:60:3;;::::1;;::::0;::::1;::::0;::::1;::::0;;;;-1:-1:-1;;;715:60:3;;;;;;;;;;;;;::::1;;-1:-1:-1::0;;;;;1975:26:3;::::2;;::::0;;;:11:::2;:26;::::0;;;;:38;;;2029:40:::2;2004:9:::0;2061:7:::2;:5;:7::i;:::-;2029:40;::::0;;;;;-1:-1:-1;;;;;2029:40:3;;::::2;;::::0;::::2;::::0;;;;;;;;;::::2;1350:1:21::1;1800:277:3::0;;:::o;1994:240:21:-;1291:12;:10;:12::i;:::-;-1:-1:-1;;;;;1280:23:21;:7;:5;:7::i;:::-;-1:-1:-1;;;;;1280:23:21;;1272:68;;;;;-1:-1:-1;;;1272:68:21;;;;;;;;;;;;;-1:-1:-1;;;;;;;;;;;1272:68:21;;;;;;;;;;;;;;;-1:-1:-1;;;;;2082:22:21;::::1;2074:73;;;;-1:-1:-1::0;;;2074:73:21::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2183:6;::::0;;2162:38:::1;::::0;-1:-1:-1;;;;;2162:38:21;;::::1;::::0;2183:6;::::1;::::0;-1:-1:-1;;;;;;;;;;;2162:38:21;::::1;2210:6;:17:::0;;-1:-1:-1;;;;;;2210:17:21::1;-1:-1:-1::0;;;;;2210:17:21;;;::::1;::::0;;;::::1;::::0;;1994:240::o;598:104:26:-;685:10;598:104;:::o",
+  "source": "// SPDX-License-Identifier: LGPL-3.0-or-later\r\npragma solidity 0.7.1;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\r\nimport \"./interfaces/IFundLimitsOracle.sol\";\r\n\r\n/**\r\n * @title Contract for managing maximum allowed funds to be escrowed.\r\n * The purpose is to limit the total funds locked in escrow in the initial stages of the protocol.\r\n */\r\n\r\ncontract FundLimitsOracle is Ownable, IFundLimitsOracle {\r\n    uint256 private ethLimit;\r\n    mapping(address => uint256) private tokenLimits;\r\n\r\n    event LogETHLimitChanged(uint256 _newLimit, address _triggeredBy);\r\n\r\n    event LogTokenLimitChanged(uint256 _newLimit, address _triggeredBy);\r\n\r\n    modifier notZeroAddress(address tokenAddress) {\r\n        require(tokenAddress != address(0), \"INVALID_TOKEN_ADDRESS\");\r\n        _;\r\n    }\r\n\r\n    constructor() {\r\n        ethLimit = 1 ether;\r\n    }\r\n\r\n    /**\r\n     * @notice Set new limit for ETH. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\r\n     * @param _newLimit New limit which will be set.\r\n     */\r\n    function setETHLimit(uint256 _newLimit) external override onlyOwner {\r\n        ethLimit = _newLimit;\r\n        emit LogETHLimitChanged(_newLimit, owner());\r\n    }\r\n\r\n    /**\r\n     * @notice Set new limit for a token. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\r\n     * @param _tokenAddress Address of the token which will be updated.\r\n     * @param _newLimit New limit which will be set. It must comply to the decimals of the token, so the limit is set in the correct decimals.\r\n     */\r\n    function setTokenLimit(address _tokenAddress, uint256 _newLimit)\r\n        external\r\n        override\r\n        onlyOwner\r\n        notZeroAddress(_tokenAddress)\r\n    {\r\n        tokenLimits[_tokenAddress] = _newLimit;\r\n        emit LogTokenLimitChanged(_newLimit, owner());\r\n    }\r\n\r\n    // // // // // // // //\r\n    // GETTERS\r\n    // // // // // // // //\r\n\r\n    /**\r\n     * @notice Get the maximum allowed ETH limit to set as price of voucher, buyer deposit or seller deposit.\r\n     */\r\n    function getETHLimit() external view override returns (uint256) {\r\n        return ethLimit;\r\n    }\r\n\r\n    /**\r\n     * @notice Get the maximum allowed token limit for the specified Token.\r\n     * @param _tokenAddress Address of the token which will be update.\r\n     */\r\n    function getTokenLimit(address _tokenAddress)\r\n        external\r\n        view\r\n        override\r\n        returns (uint256)\r\n    {\r\n        return tokenLimits[_tokenAddress];\r\n    }\r\n}\r\n",
+  "sourcePath": "E:/Ludo/Documents/Developpement/BOSON/contracts/contracts/FundLimitsOracle.sol",
+  "ast": {
+    "absolutePath": "/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/FundLimitsOracle.sol",
+    "exportedSymbols": {
+      "FundLimitsOracle": [
+        6130
+      ]
+    },
+    "id": 6131,
+    "license": "LGPL-3.0-or-later",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 6009,
+        "literals": [
+          "solidity",
+          "0.7",
+          ".1"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "47:22:3"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
+        "file": "@openzeppelin/contracts/access/Ownable.sol",
+        "id": 6010,
+        "nodeType": "ImportDirective",
+        "scope": 6131,
+        "sourceUnit": 10495,
+        "src": "73:52:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/interfaces/IFundLimitsOracle.sol",
+        "file": "./interfaces/IFundLimitsOracle.sol",
+        "id": 6011,
+        "nodeType": "ImportDirective",
+        "scope": 6131,
+        "sourceUnit": 9300,
+        "src": "127:44:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 6013,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 10494,
+              "src": "387:7:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$10494",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 6014,
+            "nodeType": "InheritanceSpecifier",
+            "src": "387:7:3"
+          },
+          {
+            "baseName": {
+              "id": 6015,
+              "name": "IFundLimitsOracle",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 9299,
+              "src": "396:17:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IFundLimitsOracle_$9299",
+                "typeString": "contract IFundLimitsOracle"
+              }
+            },
+            "id": 6016,
+            "nodeType": "InheritanceSpecifier",
+            "src": "396:17:3"
+          }
+        ],
+        "contractDependencies": [
+          9299,
+          10494,
+          11459
+        ],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 6012,
+          "nodeType": "StructuredDocumentation",
+          "src": "175:179:3",
+          "text": " @title Contract for managing maximum allowed funds to be escrowed.\n The purpose is to limit the total funds locked in escrow in the initial stages of the protocol."
+        },
+        "fullyImplemented": true,
+        "id": 6130,
+        "linearizedBaseContracts": [
+          6130,
+          9299,
+          10494,
+          11459
+        ],
+        "name": "FundLimitsOracle",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 6018,
+            "mutability": "mutable",
+            "name": "ethLimit",
+            "nodeType": "VariableDeclaration",
+            "scope": 6130,
+            "src": "421:24:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 6017,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "421:7:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 6022,
+            "mutability": "mutable",
+            "name": "tokenLimits",
+            "nodeType": "VariableDeclaration",
+            "scope": 6130,
+            "src": "452:47:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 6021,
+              "keyType": {
+                "id": 6019,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "460:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "452:27:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 6020,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "471:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "anonymous": false,
+            "id": 6028,
+            "name": "LogETHLimitChanged",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 6027,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6024,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6028,
+                  "src": "533:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6023,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "533:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6026,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_triggeredBy",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6028,
+                  "src": "552:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6025,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "552:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "532:41:3"
+            },
+            "src": "508:66:3"
+          },
+          {
+            "anonymous": false,
+            "id": 6034,
+            "name": "LogTokenLimitChanged",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 6033,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6030,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6034,
+                  "src": "609:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6029,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "609:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6032,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_triggeredBy",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6034,
+                  "src": "628:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6031,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "628:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "608:41:3"
+            },
+            "src": "582:68:3"
+          },
+          {
+            "body": {
+              "id": 6049,
+              "nodeType": "Block",
+              "src": "704:91:3",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 6044,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 6039,
+                          "name": "tokenAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 6036,
+                          "src": "723:12:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "arguments": [
+                            {
+                              "hexValue": "30",
+                              "id": 6042,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "747:1:3",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "id": 6041,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "739:7:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": {
+                              "id": 6040,
+                              "name": "address",
+                              "nodeType": "ElementaryTypeName",
+                              "src": "739:7:3",
+                              "typeDescriptions": {}
+                            }
+                          },
+                          "id": 6043,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "739:10:3",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        },
+                        "src": "723:26:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "hexValue": "494e56414c49445f544f4b454e5f41444452455353",
+                        "id": 6045,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "751:23:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_0bf8b111ec96677a725e54d2bf034db3cecae98926c9d489195a44f6b469681c",
+                          "typeString": "literal_string \"INVALID_TOKEN_ADDRESS\""
+                        },
+                        "value": "INVALID_TOKEN_ADDRESS"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_0bf8b111ec96677a725e54d2bf034db3cecae98926c9d489195a44f6b469681c",
+                          "typeString": "literal_string \"INVALID_TOKEN_ADDRESS\""
+                        }
+                      ],
+                      "id": 6038,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "715:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 6046,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "715:60:3",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6047,
+                  "nodeType": "ExpressionStatement",
+                  "src": "715:60:3"
+                },
+                {
+                  "id": 6048,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "786:1:3"
+                }
+              ]
+            },
+            "id": 6050,
+            "name": "notZeroAddress",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6037,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6036,
+                  "mutability": "mutable",
+                  "name": "tokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6050,
+                  "src": "682:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6035,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "682:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "681:22:3"
+            },
+            "src": "658:137:3",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6057,
+              "nodeType": "Block",
+              "src": "817:37:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6055,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6053,
+                      "name": "ethLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6018,
+                      "src": "828:8:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "31",
+                      "id": 6054,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "839:7:3",
+                      "subdenomination": "ether",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1000000000000000000_by_1",
+                        "typeString": "int_const 1000000000000000000"
+                      },
+                      "value": "1"
+                    },
+                    "src": "828:18:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6056,
+                  "nodeType": "ExpressionStatement",
+                  "src": "828:18:3"
+                }
+              ]
+            },
+            "id": 6058,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6051,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "814:2:3"
+            },
+            "returnParameters": {
+              "id": 6052,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "817:0:3"
+            },
+            "scope": 6130,
+            "src": "803:51:3",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "baseFunctions": [
+              9292
+            ],
+            "body": {
+              "id": 6077,
+              "nodeType": "Block",
+              "src": "1231:93:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6069,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6067,
+                      "name": "ethLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6018,
+                      "src": "1242:8:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 6068,
+                      "name": "_newLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6061,
+                      "src": "1253:9:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1242:20:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6070,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1242:20:3"
+                },
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 6072,
+                        "name": "_newLimit",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6061,
+                        "src": "1297:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 6073,
+                          "name": "owner",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 10429,
+                          "src": "1308:5:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                            "typeString": "function () view returns (address)"
+                          }
+                        },
+                        "id": 6074,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1308:7:3",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 6071,
+                      "name": "LogETHLimitChanged",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6028,
+                      "src": "1278:18:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_address_$returns$__$",
+                        "typeString": "function (uint256,address)"
+                      }
+                    },
+                    "id": 6075,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1278:38:3",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6076,
+                  "nodeType": "EmitStatement",
+                  "src": "1273:43:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6059,
+              "nodeType": "StructuredDocumentation",
+              "src": "862:295:3",
+              "text": " @notice Set new limit for ETH. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\n @param _newLimit New limit which will be set."
+            },
+            "functionSelector": "8695332f",
+            "id": 6078,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 6065,
+                "modifierName": {
+                  "id": 6064,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 10443,
+                  "src": "1221:9:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1221:9:3"
+              }
+            ],
+            "name": "setETHLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6063,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "1212:8:3"
+            },
+            "parameters": {
+              "id": 6062,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6061,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6078,
+                  "src": "1184:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6060,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1184:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1183:19:3"
+            },
+            "returnParameters": {
+              "id": 6066,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1231:0:3"
+            },
+            "scope": 6130,
+            "src": "1163:161:3",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "baseFunctions": [
+              9278
+            ],
+            "body": {
+              "id": 6104,
+              "nodeType": "Block",
+              "src": "1964:113:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6096,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "id": 6092,
+                        "name": "tokenLimits",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6022,
+                        "src": "1975:11:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 6094,
+                      "indexExpression": {
+                        "id": 6093,
+                        "name": "_tokenAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6081,
+                        "src": "1987:13:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1975:26:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 6095,
+                      "name": "_newLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6083,
+                      "src": "2004:9:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1975:38:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6097,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1975:38:3"
+                },
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 6099,
+                        "name": "_newLimit",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6083,
+                        "src": "2050:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 6100,
+                          "name": "owner",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 10429,
+                          "src": "2061:5:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                            "typeString": "function () view returns (address)"
+                          }
+                        },
+                        "id": 6101,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2061:7:3",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 6098,
+                      "name": "LogTokenLimitChanged",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6034,
+                      "src": "2029:20:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_address_$returns$__$",
+                        "typeString": "function (uint256,address)"
+                      }
+                    },
+                    "id": 6102,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2029:40:3",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6103,
+                  "nodeType": "EmitStatement",
+                  "src": "2024:45:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6079,
+              "nodeType": "StructuredDocumentation",
+              "src": "1332:462:3",
+              "text": " @notice Set new limit for a token. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\n @param _tokenAddress Address of the token which will be updated.\n @param _newLimit New limit which will be set. It must comply to the decimals of the token, so the limit is set in the correct decimals."
+            },
+            "functionSelector": "bc017637",
+            "id": 6105,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 6087,
+                "modifierName": {
+                  "id": 6086,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 10443,
+                  "src": "1910:9:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1910:9:3"
+              },
+              {
+                "arguments": [
+                  {
+                    "id": 6089,
+                    "name": "_tokenAddress",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 6081,
+                    "src": "1944:13:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 6090,
+                "modifierName": {
+                  "id": 6088,
+                  "name": "notZeroAddress",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6050,
+                  "src": "1929:14:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_address_$",
+                    "typeString": "modifier (address)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1929:29:3"
+              }
+            ],
+            "name": "setTokenLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6085,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "1892:8:3"
+            },
+            "parameters": {
+              "id": 6084,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6081,
+                  "mutability": "mutable",
+                  "name": "_tokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6105,
+                  "src": "1823:21:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6080,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1823:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6083,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6105,
+                  "src": "1846:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6082,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1846:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1822:42:3"
+            },
+            "returnParameters": {
+              "id": 6091,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1964:0:3"
+            },
+            "scope": 6130,
+            "src": "1800:277:3",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "baseFunctions": [
+              9298
+            ],
+            "body": {
+              "id": 6114,
+              "nodeType": "Block",
+              "src": "2354:34:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6112,
+                    "name": "ethLimit",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 6018,
+                    "src": "2372:8:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 6111,
+                  "id": 6113,
+                  "nodeType": "Return",
+                  "src": "2365:15:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6106,
+              "nodeType": "StructuredDocumentation",
+              "src": "2161:123:3",
+              "text": " @notice Get the maximum allowed ETH limit to set as price of voucher, buyer deposit or seller deposit."
+            },
+            "functionSelector": "0f878aed",
+            "id": 6115,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getETHLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6108,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "2327:8:3"
+            },
+            "parameters": {
+              "id": 6107,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2310:2:3"
+            },
+            "returnParameters": {
+              "id": 6111,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6110,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6115,
+                  "src": "2345:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6109,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2345:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2344:9:3"
+            },
+            "scope": 6130,
+            "src": "2290:98:3",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "baseFunctions": [
+              9286
+            ],
+            "body": {
+              "id": 6128,
+              "nodeType": "Block",
+              "src": "2691:52:3",
+              "statements": [
+                {
+                  "expression": {
+                    "baseExpression": {
+                      "id": 6124,
+                      "name": "tokenLimits",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6022,
+                      "src": "2709:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 6126,
+                    "indexExpression": {
+                      "id": 6125,
+                      "name": "_tokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6118,
+                      "src": "2721:13:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "2709:26:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 6123,
+                  "id": 6127,
+                  "nodeType": "Return",
+                  "src": "2702:33:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6116,
+              "nodeType": "StructuredDocumentation",
+              "src": "2396:161:3",
+              "text": " @notice Get the maximum allowed token limit for the specified Token.\n @param _tokenAddress Address of the token which will be update."
+            },
+            "functionSelector": "5a860c87",
+            "id": 6129,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getTokenLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6120,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "2650:8:3"
+            },
+            "parameters": {
+              "id": 6119,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6118,
+                  "mutability": "mutable",
+                  "name": "_tokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6129,
+                  "src": "2586:21:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6117,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2586:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2585:23:3"
+            },
+            "returnParameters": {
+              "id": 6123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6122,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6129,
+                  "src": "2677:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6121,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2677:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2676:9:3"
+            },
+            "scope": 6130,
+            "src": "2563:180:3",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 6131,
+        "src": "358:2388:3"
+      }
+    ],
+    "src": "47:2701:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/FundLimitsOracle.sol",
+    "exportedSymbols": {
+      "FundLimitsOracle": [
+        6130
+      ]
+    },
+    "id": 6131,
+    "license": "LGPL-3.0-or-later",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 6009,
+        "literals": [
+          "solidity",
+          "0.7",
+          ".1"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "47:22:3"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
+        "file": "@openzeppelin/contracts/access/Ownable.sol",
+        "id": 6010,
+        "nodeType": "ImportDirective",
+        "scope": 6131,
+        "sourceUnit": 10495,
+        "src": "73:52:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/E/Ludo/Documents/Developpement/BOSON/contracts/contracts/interfaces/IFundLimitsOracle.sol",
+        "file": "./interfaces/IFundLimitsOracle.sol",
+        "id": 6011,
+        "nodeType": "ImportDirective",
+        "scope": 6131,
+        "sourceUnit": 9300,
+        "src": "127:44:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 6013,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 10494,
+              "src": "387:7:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$10494",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 6014,
+            "nodeType": "InheritanceSpecifier",
+            "src": "387:7:3"
+          },
+          {
+            "baseName": {
+              "id": 6015,
+              "name": "IFundLimitsOracle",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 9299,
+              "src": "396:17:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IFundLimitsOracle_$9299",
+                "typeString": "contract IFundLimitsOracle"
+              }
+            },
+            "id": 6016,
+            "nodeType": "InheritanceSpecifier",
+            "src": "396:17:3"
+          }
+        ],
+        "contractDependencies": [
+          9299,
+          10494,
+          11459
+        ],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 6012,
+          "nodeType": "StructuredDocumentation",
+          "src": "175:179:3",
+          "text": " @title Contract for managing maximum allowed funds to be escrowed.\n The purpose is to limit the total funds locked in escrow in the initial stages of the protocol."
+        },
+        "fullyImplemented": true,
+        "id": 6130,
+        "linearizedBaseContracts": [
+          6130,
+          9299,
+          10494,
+          11459
+        ],
+        "name": "FundLimitsOracle",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 6018,
+            "mutability": "mutable",
+            "name": "ethLimit",
+            "nodeType": "VariableDeclaration",
+            "scope": 6130,
+            "src": "421:24:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 6017,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "421:7:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 6022,
+            "mutability": "mutable",
+            "name": "tokenLimits",
+            "nodeType": "VariableDeclaration",
+            "scope": 6130,
+            "src": "452:47:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 6021,
+              "keyType": {
+                "id": 6019,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "460:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "452:27:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 6020,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "471:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "anonymous": false,
+            "id": 6028,
+            "name": "LogETHLimitChanged",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 6027,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6024,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6028,
+                  "src": "533:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6023,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "533:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6026,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_triggeredBy",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6028,
+                  "src": "552:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6025,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "552:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "532:41:3"
+            },
+            "src": "508:66:3"
+          },
+          {
+            "anonymous": false,
+            "id": 6034,
+            "name": "LogTokenLimitChanged",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 6033,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6030,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6034,
+                  "src": "609:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6029,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "609:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6032,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_triggeredBy",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6034,
+                  "src": "628:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6031,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "628:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "608:41:3"
+            },
+            "src": "582:68:3"
+          },
+          {
+            "body": {
+              "id": 6049,
+              "nodeType": "Block",
+              "src": "704:91:3",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 6044,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 6039,
+                          "name": "tokenAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 6036,
+                          "src": "723:12:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "arguments": [
+                            {
+                              "hexValue": "30",
+                              "id": 6042,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "747:1:3",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "id": 6041,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "739:7:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": {
+                              "id": 6040,
+                              "name": "address",
+                              "nodeType": "ElementaryTypeName",
+                              "src": "739:7:3",
+                              "typeDescriptions": {}
+                            }
+                          },
+                          "id": 6043,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "739:10:3",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        },
+                        "src": "723:26:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "hexValue": "494e56414c49445f544f4b454e5f41444452455353",
+                        "id": 6045,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "751:23:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_0bf8b111ec96677a725e54d2bf034db3cecae98926c9d489195a44f6b469681c",
+                          "typeString": "literal_string \"INVALID_TOKEN_ADDRESS\""
+                        },
+                        "value": "INVALID_TOKEN_ADDRESS"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_0bf8b111ec96677a725e54d2bf034db3cecae98926c9d489195a44f6b469681c",
+                          "typeString": "literal_string \"INVALID_TOKEN_ADDRESS\""
+                        }
+                      ],
+                      "id": 6038,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "715:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 6046,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "715:60:3",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6047,
+                  "nodeType": "ExpressionStatement",
+                  "src": "715:60:3"
+                },
+                {
+                  "id": 6048,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "786:1:3"
+                }
+              ]
+            },
+            "id": 6050,
+            "name": "notZeroAddress",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6037,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6036,
+                  "mutability": "mutable",
+                  "name": "tokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6050,
+                  "src": "682:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6035,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "682:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "681:22:3"
+            },
+            "src": "658:137:3",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6057,
+              "nodeType": "Block",
+              "src": "817:37:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6055,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6053,
+                      "name": "ethLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6018,
+                      "src": "828:8:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "31",
+                      "id": 6054,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "839:7:3",
+                      "subdenomination": "ether",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1000000000000000000_by_1",
+                        "typeString": "int_const 1000000000000000000"
+                      },
+                      "value": "1"
+                    },
+                    "src": "828:18:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6056,
+                  "nodeType": "ExpressionStatement",
+                  "src": "828:18:3"
+                }
+              ]
+            },
+            "id": 6058,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6051,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "814:2:3"
+            },
+            "returnParameters": {
+              "id": 6052,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "817:0:3"
+            },
+            "scope": 6130,
+            "src": "803:51:3",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "baseFunctions": [
+              9292
+            ],
+            "body": {
+              "id": 6077,
+              "nodeType": "Block",
+              "src": "1231:93:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6069,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6067,
+                      "name": "ethLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6018,
+                      "src": "1242:8:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 6068,
+                      "name": "_newLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6061,
+                      "src": "1253:9:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1242:20:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6070,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1242:20:3"
+                },
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 6072,
+                        "name": "_newLimit",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6061,
+                        "src": "1297:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 6073,
+                          "name": "owner",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 10429,
+                          "src": "1308:5:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                            "typeString": "function () view returns (address)"
+                          }
+                        },
+                        "id": 6074,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1308:7:3",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 6071,
+                      "name": "LogETHLimitChanged",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6028,
+                      "src": "1278:18:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_address_$returns$__$",
+                        "typeString": "function (uint256,address)"
+                      }
+                    },
+                    "id": 6075,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1278:38:3",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6076,
+                  "nodeType": "EmitStatement",
+                  "src": "1273:43:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6059,
+              "nodeType": "StructuredDocumentation",
+              "src": "862:295:3",
+              "text": " @notice Set new limit for ETH. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\n @param _newLimit New limit which will be set."
+            },
+            "functionSelector": "8695332f",
+            "id": 6078,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 6065,
+                "modifierName": {
+                  "id": 6064,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 10443,
+                  "src": "1221:9:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1221:9:3"
+              }
+            ],
+            "name": "setETHLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6063,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "1212:8:3"
+            },
+            "parameters": {
+              "id": 6062,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6061,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6078,
+                  "src": "1184:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6060,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1184:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1183:19:3"
+            },
+            "returnParameters": {
+              "id": 6066,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1231:0:3"
+            },
+            "scope": 6130,
+            "src": "1163:161:3",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "baseFunctions": [
+              9278
+            ],
+            "body": {
+              "id": 6104,
+              "nodeType": "Block",
+              "src": "1964:113:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6096,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "id": 6092,
+                        "name": "tokenLimits",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6022,
+                        "src": "1975:11:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 6094,
+                      "indexExpression": {
+                        "id": 6093,
+                        "name": "_tokenAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6081,
+                        "src": "1987:13:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1975:26:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 6095,
+                      "name": "_newLimit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6083,
+                      "src": "2004:9:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1975:38:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6097,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1975:38:3"
+                },
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 6099,
+                        "name": "_newLimit",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6083,
+                        "src": "2050:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 6100,
+                          "name": "owner",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 10429,
+                          "src": "2061:5:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                            "typeString": "function () view returns (address)"
+                          }
+                        },
+                        "id": 6101,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2061:7:3",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 6098,
+                      "name": "LogTokenLimitChanged",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6034,
+                      "src": "2029:20:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_address_$returns$__$",
+                        "typeString": "function (uint256,address)"
+                      }
+                    },
+                    "id": 6102,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2029:40:3",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6103,
+                  "nodeType": "EmitStatement",
+                  "src": "2024:45:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6079,
+              "nodeType": "StructuredDocumentation",
+              "src": "1332:462:3",
+              "text": " @notice Set new limit for a token. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit.\n @param _tokenAddress Address of the token which will be updated.\n @param _newLimit New limit which will be set. It must comply to the decimals of the token, so the limit is set in the correct decimals."
+            },
+            "functionSelector": "bc017637",
+            "id": 6105,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 6087,
+                "modifierName": {
+                  "id": 6086,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 10443,
+                  "src": "1910:9:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1910:9:3"
+              },
+              {
+                "arguments": [
+                  {
+                    "id": 6089,
+                    "name": "_tokenAddress",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 6081,
+                    "src": "1944:13:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 6090,
+                "modifierName": {
+                  "id": 6088,
+                  "name": "notZeroAddress",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6050,
+                  "src": "1929:14:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_address_$",
+                    "typeString": "modifier (address)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1929:29:3"
+              }
+            ],
+            "name": "setTokenLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6085,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "1892:8:3"
+            },
+            "parameters": {
+              "id": 6084,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6081,
+                  "mutability": "mutable",
+                  "name": "_tokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6105,
+                  "src": "1823:21:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6080,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1823:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6083,
+                  "mutability": "mutable",
+                  "name": "_newLimit",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6105,
+                  "src": "1846:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6082,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1846:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1822:42:3"
+            },
+            "returnParameters": {
+              "id": 6091,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1964:0:3"
+            },
+            "scope": 6130,
+            "src": "1800:277:3",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "baseFunctions": [
+              9298
+            ],
+            "body": {
+              "id": 6114,
+              "nodeType": "Block",
+              "src": "2354:34:3",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6112,
+                    "name": "ethLimit",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 6018,
+                    "src": "2372:8:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 6111,
+                  "id": 6113,
+                  "nodeType": "Return",
+                  "src": "2365:15:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6106,
+              "nodeType": "StructuredDocumentation",
+              "src": "2161:123:3",
+              "text": " @notice Get the maximum allowed ETH limit to set as price of voucher, buyer deposit or seller deposit."
+            },
+            "functionSelector": "0f878aed",
+            "id": 6115,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getETHLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6108,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "2327:8:3"
+            },
+            "parameters": {
+              "id": 6107,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2310:2:3"
+            },
+            "returnParameters": {
+              "id": 6111,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6110,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6115,
+                  "src": "2345:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6109,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2345:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2344:9:3"
+            },
+            "scope": 6130,
+            "src": "2290:98:3",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "baseFunctions": [
+              9286
+            ],
+            "body": {
+              "id": 6128,
+              "nodeType": "Block",
+              "src": "2691:52:3",
+              "statements": [
+                {
+                  "expression": {
+                    "baseExpression": {
+                      "id": 6124,
+                      "name": "tokenLimits",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6022,
+                      "src": "2709:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 6126,
+                    "indexExpression": {
+                      "id": 6125,
+                      "name": "_tokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6118,
+                      "src": "2721:13:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "2709:26:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 6123,
+                  "id": 6127,
+                  "nodeType": "Return",
+                  "src": "2702:33:3"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6116,
+              "nodeType": "StructuredDocumentation",
+              "src": "2396:161:3",
+              "text": " @notice Get the maximum allowed token limit for the specified Token.\n @param _tokenAddress Address of the token which will be update."
+            },
+            "functionSelector": "5a860c87",
+            "id": 6129,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getTokenLimit",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6120,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "2650:8:3"
+            },
+            "parameters": {
+              "id": 6119,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6118,
+                  "mutability": "mutable",
+                  "name": "_tokenAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6129,
+                  "src": "2586:21:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6117,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2586:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2585:23:3"
+            },
+            "returnParameters": {
+              "id": 6123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6122,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6129,
+                  "src": "2677:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6121,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2677:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2676:9:3"
+            },
+            "scope": 6130,
+            "src": "2563:180:3",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 6131,
+        "src": "358:2388:3"
+      }
+    ],
+    "src": "47:2701:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.7.1+commit.f4a555be.Emscripten.clang"
+  },
+  "networks": {
+    "4": {
+      "events": {
+        "0x9462735486103805dd471af708689460124c6d5016a7b7f897f887cf7020c521": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_newLimit",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_triggeredBy",
+              "type": "address"
+            }
+          ],
+          "name": "LogETHLimitChanged",
+          "type": "event"
+        },
+        "0x6a209be2fe222988596b5f4dd242289077f0f05402d2f1848a97da68c2353894": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_newLimit",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_triggeredBy",
+              "type": "address"
+            }
+          ],
+          "name": "LogTokenLimitChanged",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xf0DF1077b2412cf5251fc1303e9d080c55d6FB68",
+      "transactionHash": "0x92588c73ea709e503784dfecdad3b06df7ad5e7b162a7b5610db366ad4304beb"
+    },
+    "5777": {
+      "events": {
+        "0x9462735486103805dd471af708689460124c6d5016a7b7f897f887cf7020c521": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_newLimit",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_triggeredBy",
+              "type": "address"
+            }
+          ],
+          "name": "LogETHLimitChanged",
+          "type": "event",
+          "signature": "0x9462735486103805dd471af708689460124c6d5016a7b7f897f887cf7020c521"
+        },
+        "0x6a209be2fe222988596b5f4dd242289077f0f05402d2f1848a97da68c2353894": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_newLimit",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_triggeredBy",
+              "type": "address"
+            }
+          ],
+          "name": "LogTokenLimitChanged",
+          "type": "event",
+          "signature": "0x6a209be2fe222988596b5f4dd242289077f0f05402d2f1848a97da68c2353894"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0xc997BC85206e436bD9e438C5Be04aaa6c679275b",
+      "transactionHash": "0xf8434ed35ff1bde84d94517303ae8a9c9339f920c86c1709a6709c46243ed3a3"
+    }
+  },
+  "schemaVersion": "3.0.22",
+  "updatedAt": "2021-07-07T10:31:41.266Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "getTokenLimit(address)": {
+        "params": {
+          "_tokenAddress": "Address of the token which will be update."
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "setETHLimit(uint256)": {
+        "params": {
+          "_newLimit": "New limit which will be set."
+        }
+      },
+      "setTokenLimit(address,uint256)": {
+        "params": {
+          "_newLimit": "New limit which will be set. It must comply to the decimals of the token, so the limit is set in the correct decimals.",
+          "_tokenAddress": "Address of the token which will be updated."
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "Contract for managing maximum allowed funds to be escrowed. The purpose is to limit the total funds locked in escrow in the initial stages of the protocol.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "getETHLimit()": {
+        "notice": "Get the maximum allowed ETH limit to set as price of voucher, buyer deposit or seller deposit."
+      },
+      "getTokenLimit(address)": {
+        "notice": "Get the maximum allowed token limit for the specified Token."
+      },
+      "setETHLimit(uint256)": {
+        "notice": "Set new limit for ETH. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit."
+      },
+      "setTokenLimit(address,uint256)": {
+        "notice": "Set new limit for a token. It's used while seller tries to create a voucher. The limit is determined by a voucher set. Voucher price * quantity, seller deposit * quantity, buyer deposit * qty must be below the limit."
+      }
+    },
+    "version": 1
+  }
+}

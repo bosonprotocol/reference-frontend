@@ -1,0 +1,26 @@
+{
+  "hosting": {
+    "public": "./build/content/local",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [ {
+      "source": "**/*",
+      "headers": [ {
+        "key": "X-Frame-Options",
+        "value": "deny"
+      }, {
+        "key": "Content-Security-Policy",
+        "value": "frame-ancestors 'none'"
+      } ]
+    } ]
+  }
+}

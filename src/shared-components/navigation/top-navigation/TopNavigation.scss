@@ -1,0 +1,66 @@
+@import "src/styles/Settings";
+
+.top-navigation {
+  nav {
+    width: 100%;
+
+    & > * + * {
+      margin-left: 45px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .search {
+      svg {
+        margin-right: 15px;
+      }
+
+      p {
+        font-family: $font-third;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+.network-info {
+  display: flex;
+  padding: 6px 12px;
+  margin-left: 10px;
+  background: #192028;
+  border-radius: 4px;
+  font-family: 'Exo', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #F08D1A;
+}
+
+
+.desktop-only {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.float-right-desktop {
+  @media (min-width: 769px) {
+    margin-left: auto !important;
+  }
+}
+
+.inherit-ml-mobile {
+  @media (max-width: 768px) {
+    margin-left: inherit !important;
+  }
+}
+
+.ml-10-desktop {
+  @media (min-width: 769px) {
+    margin-left: 10px !important;
+  }
+}
