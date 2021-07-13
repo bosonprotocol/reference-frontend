@@ -5,7 +5,6 @@ environment: "production" # use full asset pipeline for all deployed environment
 parent_role_arn: "%{hiera('bsn_parent_account_admin_role')}"
 
 content_work_directory: "build/content/%{hiera('deployment_identifier')}"
-react_app_backend_base_url: "https://reference-backend-bsn-production-oganesson.bsn-production-lutetium.bosonprotocol.io"
 
 parent_domain_name: "bosonprotocol.io"
 primary_domain_name: "bsn-production-lutetium.%{hiera('parent_domain_name')}"
