@@ -154,7 +154,7 @@ namespace :app do
       .map { |k, v| [k.to_s, v] }
       .to_h
 
-    sh(environment, 'npm', 'run', 'start')
+    sh(environment, 'npm', 'run', 'start:local')
   end
 
   desc 'Build content for deployment identifier'
