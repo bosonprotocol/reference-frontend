@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import QRCode from "qrcode.react";
+import { SUPPORTED_CHAIN_IDS } from "../../Connectors";
 
 import "../../styles/StaticPage.scss";
 
@@ -86,7 +87,7 @@ function ShowQR({ voucherId, setShowQRCode, setTriggerWaitForTransaction }) {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 

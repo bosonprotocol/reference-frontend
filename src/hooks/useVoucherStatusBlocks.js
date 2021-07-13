@@ -235,7 +235,7 @@ function singleStatusComponent({
       </h3>
       <div className="status-details">
         {extended ? (
-          <div>
+          <p>
             {!progress || (progress && status === STATUS.COMMITED)
               ? formatDate(date, "string")
               : `${
@@ -249,7 +249,7 @@ function singleStatusComponent({
                       )
                     : "Finished"
                 }`}
-          </div>
+          </p>
         ) : null}
       </div>
     </div>

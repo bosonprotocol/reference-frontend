@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 import { useWeb3React } from "@web3-react/core";
 import * as ethers from "ethers";
 import { HorizontalScrollView } from "rc-horizontal-scroll";
+import { SUPPORTED_CHAIN_IDS } from "../../Connectors";
 
 import ShowQR from "../show-qr/ShowQR";
 import "./VoucherAndSetDetails.scss";
@@ -288,7 +289,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 
@@ -423,7 +424,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 
@@ -523,7 +524,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 
@@ -623,7 +624,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 
@@ -833,7 +834,7 @@ function VoucherAndSetDetails(props) {
 
     try {
       // 4 is Rinkeby chainId. This is a Rinkeby application.
-      if (chainId !== 4) {
+      if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
         throw new ChainIdError();
       }
 

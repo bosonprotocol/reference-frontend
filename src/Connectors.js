@@ -4,13 +4,11 @@ import { NetworkConnector } from "./utils/NetworkConnector";
 
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
-  1: "https://mainnet.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
   4: "https://rinkeby.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
-  5: "https://goerli.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
-  42: "https://kovan.infura.io/v3/653584f4572b4aa894dfa26281f834f2",
+  1337: "http://localhost:8545",
 };
 
-export const NETWORK_ID = 4;
+export const SUPPORTED_CHAIN_IDS = [4, 1337];
 
 // rinkeby
 export const network = new NetworkConnector({
@@ -18,7 +16,7 @@ export const network = new NetworkConnector({
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 100],
+  supportedChainIds: SUPPORTED_CHAIN_IDS,
 });
 
 // rinkeby
