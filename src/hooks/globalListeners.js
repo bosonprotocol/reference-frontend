@@ -10,6 +10,7 @@ import { useWeb3React } from "@web3-react/core";
 import { fetchVoucherSets } from "../helpers/parsers/VoucherAndSetParsers";
 import { getAccountStoredInLocalStorage } from "./authenticate";
 import { useHistory } from "react-router-dom";
+import { ROUTE } from "../helpers/configs/Dictionary";
 
 function PopulateVouchers() {
   const globalContext = useContext(GlobalContext);
@@ -48,7 +49,7 @@ function PopulateVouchers() {
     }
 
     if (isMounted.current) {
-      history.push("/");
+      history.push(ROUTE.Home);
     } else {
       isMounted.current = true;
     }

@@ -307,7 +307,7 @@ function VoucherAndSetDetails(props) {
             show: true,
             type: MODAL_TYPES.GENERIC_ERROR,
             content:
-              "Please wait for your recent transaction to be minted before sending another one.",
+              "Please wait for your recent transaction to be minted before sending another one. If the issue persists go to Wallet -> Advanced.",
           })
         );
         setLoading(0);
@@ -886,6 +886,8 @@ function VoucherAndSetDetails(props) {
       const tx = await bosonRouterContract.requestCancelOrFaultVoucherSet(
         voucherSetDetails._tokenIdSupply
       );
+      localStorage.setItem("successMessage", "Void triggered");
+      localStorage.setItem("successMessageType", MESSAGE.COF_SUCCESS);
       setTxHashToSupplyId(tx.hash, voucherSetDetails._tokenIdSupply);
       setTriggerWaitForTransaction(true);
       setCancelMessage({
@@ -954,6 +956,26 @@ function VoucherAndSetDetails(props) {
       setPageLoading(!voucherSetDetails);
     }
   }, []);
+
+  useEffect(() => {
+    const isActionButton = !!controls?.props?.className;
+    let time = 1;
+    const reloadTimeout = setTimeout((time) => {
+      if (
+        !isActionButton &&
+        voucherSetDetails?.qty >= 1 &&
+        !recentlySignedTxHash
+      ) {
+        window.location.reload();
+      }
+      if (time === 1) {
+        time = 5000;
+      }
+    }, time);
+    return () => {
+      clearTimeout(reloadTimeout);
+    };
+  }, [controls]);
 
   return (
     <>
@@ -1045,7 +1067,13 @@ function VoucherAndSetDetails(props) {
                         <p className="deposit-value">
                           {" "}
                           {`${voucherSetDetails?.price} ${
-                            currencyResolver(voucherSetDetails?.paymentType)[0]
+                            currencyResolver(
+                              voucherSetDetails?.paymentType
+                            )[0] === "BSN"
+                              ? "BOSON"
+                              : currencyResolver(
+                                  voucherSetDetails?.paymentType
+                                )[0]
                           }`}{" "}
                         </p>
                       </div>
@@ -1224,7 +1252,7 @@ const commitToBuyTransactionCreator = async (
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: "You do not have enough BSN to execute this transaction.",
+          content: "You do not have enough BOSON to execute this transaction.",
         })
       );
       return;
@@ -1289,7 +1317,7 @@ const commitToBuyTransactionCreator = async (
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: "You do not have enough BSN to execute this transaction.",
+          content: "You do not have enough BOSON to execute this transaction.",
         })
       );
       return;
@@ -1364,7 +1392,7 @@ const commitToBuyTransactionCreator = async (
         ModalResolver.showModal({
           show: true,
           type: MODAL_TYPES.GENERIC_ERROR,
-          content: "You do not have enough BSN to execute this transaction.",
+          content: "You do not have enough BOSON to execute this transaction.",
         })
       );
       return;

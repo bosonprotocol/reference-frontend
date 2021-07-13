@@ -85,7 +85,9 @@ const EscrowRow = (props) => {
             <div
               key={index}
               className={`cell val position_${index + 1} color_${color}`}
-            >{`${exponentToDecimal(block)} ${currency}`}</div>
+            >{`${exponentToDecimal(block)} ${
+              currency === "BSN" ? "BOSON" : currency
+            }`}</div>
           ) : null
         )}
         <div className="cell"></div>
