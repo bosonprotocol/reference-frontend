@@ -80,17 +80,7 @@ To fetch dependencies:
 
 ---
 ### Run
-To run the frontend app connected to the official backend, execute the following commands from the root directory:
-
-```shell script
-npm install
-npm run start
-```
-
-A browser window will open at http://localhost:3000/ with a live version of the 
-code. You're all set to edit and have it rerender there.
-
-If you need to run your own backend and want the frontend to connect it:
+To run the frontend app connected to a local backend, execute the following commands from the root directory:
 - create a ./.env.local file with the following variables:
   ```
   REACT_APP_BACKEND_BASE_URL="<your-backend-url>"
