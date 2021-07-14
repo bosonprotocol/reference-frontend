@@ -36,7 +36,7 @@ export const ALLOWED_IMAGES = [
     title: "Jewelry",
   },
   {
-    imagePath: "images/restricted-image-uploads/shirt.png",
+    imagePath: "images/restricted-image-uploads/boson-shirt.png",
     title: "Shirt",
   },
   {
