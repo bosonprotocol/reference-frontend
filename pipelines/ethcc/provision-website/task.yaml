@@ -6,4 +6,4 @@ inputs:
 
 run:
   dir: /source
-  path: ./pipelines/demo/provision-website/task.sh
+  path: ./pipelines/ethcc/provision-website/task.sh
