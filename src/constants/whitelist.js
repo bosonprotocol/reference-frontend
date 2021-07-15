@@ -1,4 +1,8 @@
-const whitelist = ["0x6967d7AcD1EC5f210E9590666498e0cC5D13a843"].map((v) =>
-  v.toLowerCase()
-);
+const whitelist = [
+  "0xb46C82997eE9C9f0bFDEe0A6F8D9CD0033a02184",
+  "0x3c9cf890B3E9c5F137B3447A7B03F60e5cC8606c",
+  "0x126474B1CB7De159219c2CbbB4EAE6743016ac1e",
+  "0x61d643010cAc069A88ABDB1660605D55B9Dfbc4F",
+  "0x56D666158C3B8A594F4992382F658dEC622E48B3",
+].map((v) => v.toLowerCase());
 module.exports = whitelist;
