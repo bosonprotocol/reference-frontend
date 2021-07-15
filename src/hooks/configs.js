@@ -1,10 +1,9 @@
 export const SMART_CONTRACTS = {
-  // TODO replace with EthCC contract addresses - below are Dev contracts for testing
-  CashierContractAddress: "0x0ab0Fec353C6653F2eD05b5E5ceb4fB27c7d7902",
-  VoucherKernelContractAddress: "0x469eF8b9F583920318Ce3dd095A0402A4b061bb0",
-  BosonRouterContractAddress: "0xf7EEBa6c7a4eC07735b4AcaC8f8AF608f9Ecb8Cf",
-  BosonTokenContractAddress: "0x5c70A0c47440128eAAA66801B0ec04E9d8C3a570",
-  FundLimitsContractAddress: "0x4eAe795e9d4F0a5f33B952B2750c9a64BB6D3453",
+  CashierContractAddress: "0x0bfF7B7A04C1eB19DeA63f0FF4D884914edB61E8",
+  VoucherKernelContractAddress: "0x82a33733c2f8696F7fd61D0874351cbb8Ea61EBc",
+  BosonRouterContractAddress: "0x29C9361920785F4B2175Ba61c177cEdC6A99542A",
+  BosonTokenContractAddress: "0x1b48e27D7ABaDf2f5A5f14975Cb9D4E457dF5111",
+  FundLimitsContractAddress: "0x4d827187dD0df5bF02575d24E5586e765511596e",
 };
 
 export const SMART_CONTRACTS_EVENTS = {
