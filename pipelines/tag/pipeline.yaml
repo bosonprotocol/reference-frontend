@@ -18,13 +18,6 @@ resources:
       tag_filter: v*
       private_key: ((git_ssh_key))
 
-  - name: updated-source
-    type: git-tag
-    source:
-      uri: ((source_repository_url))
-      tag_filter: v*
-      private_key: ((git_ssh_key))
-
   - name: node-builder-image
     type: docker-image
     source:
@@ -93,14 +86,10 @@ jobs:
             trigger: true
             passed:
               - build
-          - get: updated-source
           - get: node-builder-image
       - task: test
         image: node-builder-image
         file: source/pipelines/shared/coverage/task.yaml
-      - put: updated-source
-        params:
-          repository: source
 
     on_success: *on_success
     on_failure: *on_failure
