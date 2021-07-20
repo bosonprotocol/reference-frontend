@@ -51,6 +51,7 @@ function Routes() {
           <Route exact path={ROUTE.CodeScanner} component={QRScanner} />
           <Route exact strict path={ROUTE.Connect} component={ConnectWallet} />
           <Route exact path={ROUTE.Home} component={Home} />
+          <Route exact path={ROUTE.Docs} component={Docs} />
           <Route path="/onboarding" component={OnboardingReset} />{" "}
           {/* delete on prod */}
           <Route path={ROUTE.NewOffer} component={NewOffer} />
@@ -80,7 +81,6 @@ function Routes() {
           <Route path={ROUTE.ActivityVouchers} component={PurchasedVouchers} />
           <Route path={ROUTE.Search} component={Search} />
           <Route path={ROUTE.PickUpLocation} component={PickUpLocation} />
-          <Route exact path={ROUTE.Docs} component={Docs} />
           <Route component={NotFound} />
         </Switch>
         <BottomNavigation />

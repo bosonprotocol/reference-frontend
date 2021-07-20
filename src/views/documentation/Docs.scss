@@ -1,0 +1,23 @@
+@import "../../styles/Colors.scss"; 
+
+.container-docs {
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 60%;
+    font-size: 16px;
+    h1 {
+        font-size: 34px;
+    }
+    p {
+        margin: 50px 0 0 0;
+        .rinkeby{
+            margin-top: 100px;
+        }
+    }
+    p:nth-child(2) {
+        margin: 25px 0 0 0;
+    }
+    em { 
+        color: $docs-italic
+    }
+}
