@@ -23,7 +23,7 @@ import Search from "./views/search/Search";
 import PickUpLocation from "./views/pick-up-location/PickUpLocation";
 import { OfferedVoucherSets } from "./views/activity/components/OfferedVoucherSets";
 import { PurchasedVouchers } from "./views/activity/components/PurchasedVouchers";
-import Docs  from "./views/documentation/Docs";
+import Docs from "./views/documentation/Docs";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
@@ -39,9 +39,11 @@ function Routes() {
   return (
     // class - dark|light; (default: dark)
     <div
-      className={`emulate-mobile theme ${!displayBottomNav ? "no-bottom" : ""
-        } ${!displayNav ? "disabled" : ""} ${displayBackButton || isHomePage ? "" : "hideTopNavigation"
-        }`}
+      className={`emulate-mobile theme ${
+        !displayBottomNav ? "no-bottom" : ""
+      } ${!displayNav ? "disabled" : ""} ${
+        displayBackButton || isHomePage ? "" : "hideTopNavigation"
+      }`}
     >
       <Router>
         <LocationManager />

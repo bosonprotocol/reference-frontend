@@ -19,6 +19,7 @@ import { IconHome, IconLocation } from "../../shared-components/icons/Icons";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 import { Link } from "react-router-dom";
 import { DEFAULT_FILTER } from "../../constants/Categories";
+import Footer from "../../shared-components/footer/Footer";
 
 function Home() {
   const [productBlocks, setProductBlocks] = useState([]);
@@ -201,6 +202,7 @@ function Home() {
             </div>
           </section>
         </div>
+        <Footer route={ROUTE.Home} />
       </div>
     </>
   );

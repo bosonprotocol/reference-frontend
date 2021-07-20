@@ -167,3 +167,7 @@ export const QUERY_PARAMS = {
   VOUCHER_SET_ID: "voucherSetId",
   EMPTY: "null",
 };
+
+export const FOOTER = {
+  DOCS_PORTAL: "Documentation Portal",
+};

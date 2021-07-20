@@ -1,23 +1,44 @@
 @import "../../styles/Colors.scss"; 
 
 .container-docs {
+
     margin: 0 auto;
     margin-top: 100px;
-    width: 60%;
+    width: 70%;
     font-size: 16px;
+
+    @media (max-width: 768px) {
+        width: 85%;
+        text-align: justify;
+        font-size: 14px;
+    }
+
     h1 {
         font-size: 34px;
+        @media (max-width: 768px) {
+            font-size: 27px;
+            text-align: center;
+         }
     }
+
     p {
         margin: 50px 0 0 0;
+
         .rinkeby{
             margin-top: 100px;
         }
+
     }
+
     p:nth-child(2) {
         margin: 25px 0 0 0;
     }
-    em { 
-        color: $docs-italic
+
+    .italic { 
+        font-style: italic;
+        color: $docs-italic;
+        @media (max-width: 768px) {
+            text-align: center;
+         }
     }
 }
