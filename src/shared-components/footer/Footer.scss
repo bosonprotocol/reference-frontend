@@ -7,44 +7,60 @@ footer {
     justify-content: center;
     left: 0;
     bottom: 0;
-    width: 100%;
-    height: 125px;
+    width: 60%;
+    height: 65px;
     text-align: center;
     font-weight: 400;
     color: $docs-portal-color;
     margin-bottom: 0;
-    
+    margin-left: 20%;
+    margin-right: 20%;
+
     @media (max-width: 768px) {
         height: 100px;
+        flex-flow: column;
+        width: 100%;
+        margin: 0;
     }
     
     p { 
-        width: 70%;
-        margin: 0 auto;
+        flex: 1;
         font-size: 16px;
-        padding: 20px 0 20px 20px;
+        padding: 20px 0 20px 0;
         text-align: right;
         border-top: 1px solid $border-docs-color;
+
         @media (max-width: 768px) {
-            width: 85%;
+            width: 100%;
             text-align: center;
+            border: 0;
         }
                     
         a {
             text-decoration: underline;
         }
+
+        &.reserved-rights{
+            text-align: left;
+            @media (max-width: 768px) {
+                order: 2;
+                text-align: center;
+                padding: 0px 15px;
+            }
+        }
     }
 
     &.footer-home{
         position: relative;
-        margin-top: 100px;
         bottom: 0px;
         max-width: 1500px;
         margin: 0 auto;
         padding: 0 22px;
         width: 100%;
         @media (max-width: 768px) {
+            height: 150px;
             flex-flow: column;
+            margin-top: 15px;
         }
 
         p {
@@ -54,22 +70,64 @@ footer {
             flex: 1;
             
             @media (max-width: 768px) {
-                order: 1;
                 text-align: center;
             }
-
-            &.reserved-rights{
-                text-align: left;
-
-                @media (max-width: 768px) {
-                    order: 2;
-                    text-align: center;
-                }
-            }
         }
+
         span:nth-child(1){
             cursor: pointer;
        }
+
+       .reserved-rights {
+        @media (max-width: 768px) {
+            padding: 0px 15px;
+        }
+
+       }
+    }
+
+    .links-container{
+        flex: 1.2;
+        display: flex;
+        flex-flow: row;
+        a {
+            text-decoration: none;
+        }
+        &.first {
+            flex: 1;
+            display: flex;
+            flex-flow: row;
+            padding-left: 0;
+            padding-right: 0;
+            p {
+                flex: 1;
+                @media (max-width: 768px) {
+                    padding: 0;
+                    text-align: left;
+                }
+            }
+            @media (max-width: 768px) {
+                flex-flow: column;
+            }
+        }
+        &.second {
+            flex: 1;
+            display: flex;
+            flex-flow: row;
+            padding-left: 0;
+            padding-right: 0;
+            p {
+                flex: 1;
+                @media (max-width: 768px) {
+                    padding: 0;
+                    text-align: right;
+                }  
+                flex-flow: column;
+            }
+            @media (max-width: 768px) {
+                flex-flow: column;
+            }
+        }
     }
 
     .ref {
@@ -77,4 +135,3 @@ footer {
     }
 
 }
-
