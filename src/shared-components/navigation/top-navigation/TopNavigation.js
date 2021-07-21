@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { useHistory, useLocation } from "react-router";
+import { Route, useHistory, useLocation } from "react-router";
 
 import { Link } from "react-router-dom";
 
@@ -109,6 +109,12 @@ function TopNavigation() {
     location.pathname === ROUTE.ActivityVouchers ||
     !onboardingCompleted;
 
+  const onClickHomeRedirect = () => {
+    if (location.pathname === ROUTE.Docs) {
+      history.push(ROUTE.Home);
+    }
+  };
+
   return (
     <div>
       {hideTopNavigation ? null : (
@@ -125,6 +131,10 @@ function TopNavigation() {
                     src={logo}
                     style={{ height: "40px" }}
                     alt="Leptonite: Powered by Boson Protocol"
+                    onClick={onClickHomeRedirect}
+                    className={
+                      location.pathname === ROUTE.Docs && "cursor-pointer-logo"
+                    }
                   ></img>
                 </div>
               ) : null}
