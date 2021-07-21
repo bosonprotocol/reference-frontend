@@ -51,12 +51,14 @@ footer {
     }
 
     &.footer-home{
-        position: relative;
-        bottom: 0px;
+        position: fixed;
+        bottom: 75px;
+        width: 100%;
+        color: white;
         max-width: 1500px;
-        margin: 0 auto;
         padding: 0 22px;
         width: 100%;
+        margin-top: 50px;
         @media (max-width: 768px) {
             height: 150px;
             flex-flow: column;
