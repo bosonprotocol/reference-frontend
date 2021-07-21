@@ -1,7 +1,15 @@
 import "./Docs.scss";
 import Footer from "../../shared-components/footer/Footer";
+import { useEffect } from "react/cjs/react.development";
 
-function Docs() {
+function Docs({ docsPage }) {
+  useEffect(() => {
+    docsPage(true);
+    return () => {
+      docsPage(false);
+    };
+  }, []);
+
   return (
     <section className="container-docs">
       <div className="main">

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AFFMAP, ROUTE } from "./helpers/configs/Dictionary";
@@ -27,23 +27,28 @@ import Docs from "./views/documentation/Docs";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
+  const isDocsPage = useRef(false);
   const displayNav = navigationContext.state.displayNavigation;
   const displayBottomNav = navigationContext.state.displayBottomNavigation;
   const displayBackButton =
     navigationContext.state.top[AFFMAP.BACK_BUTTON] ||
     navigationContext.state.top[AFFMAP.OFFER_FLOW_SET];
   const isHomePage = navigationContext.state.bottom.mainNavigationItem === 0;
+  const docsPage = (bool) => {
+    isDocsPage.current = bool;
+  };
 
   useExpiredTokenInterceptor();
 
   return (
     // class - dark|light; (default: dark)
+
     <div
       className={`emulate-mobile theme ${
         !displayBottomNav ? "no-bottom" : ""
       } ${!displayNav ? "disabled" : ""} ${
         displayBackButton || isHomePage ? "" : "hideTopNavigation"
-      }`}
+      } ${isDocsPage.current ? "docs" : ""}`}
     >
       <Router>
         <LocationManager />
@@ -53,7 +58,14 @@ function Routes() {
           <Route exact path={ROUTE.CodeScanner} component={QRScanner} />
           <Route exact strict path={ROUTE.Connect} component={ConnectWallet} />
           <Route exact path={ROUTE.Home} component={Home} />
-          <Route exact path={ROUTE.Docs} component={Docs} />
+          ``
+          <Route
+            exact
+            path={ROUTE.Docs}
+            component={() => {
+              return <Docs docsPage={docsPage} />;
+            }}
+          />
           <Route path="/onboarding" component={OnboardingReset} />{" "}
           {/* delete on prod */}
           <Route path={ROUTE.NewOffer} component={NewOffer} />

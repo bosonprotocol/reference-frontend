@@ -106,7 +106,7 @@ function LocationManager() {
     const pageRoute = "/" + location.pathname.split("/")[1];
     const urlNested = location.pathname.split("/")[2];
     const param = location.pathname.split("/")[3];
-    console.log(pageRoute);
+
     if (pageRoute === ROUTE.NewOffer) {
       navigationContext.dispatch(
         NavigationAction.setBottomNavType(BOTTOM_NAV_TYPE.OFFER)
