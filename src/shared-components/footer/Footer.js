@@ -25,55 +25,61 @@ function Footer({ route }) {
 
   return (
     <footer className={FOOTER_DATA.Class}>
-      <p className="reserved-rights">©2021 BApp.</p>
-      {route === ROUTE.Home ? (
-        <div className="links-container">
-          <div className="links-container first">
-            <p onClick={onRedirect}>
-              <span>{FOOTER_DATA.ATagText}</span>
-            </p>
-            <p>
-              <a
-                className="ref"
-                href={FOOTER_DATA.Twitter}
-                target={FOOTER_DATA.Target}
-              >
-                Twitter
-              </a>
-            </p>
+      <div>
+        <p className="reserved-rights">©2021 BApp.</p>
+        {route === ROUTE.Home ? (
+          <div className="links-container">
+            <div className="links-container first">
+              <p onClick={onRedirect}>
+                <span>{FOOTER_DATA.ATagText}</span>
+              </p>
+              <p>
+                <a
+                  className="ref"
+                  href={FOOTER_DATA.Twitter}
+                  target={FOOTER_DATA.Target}
+                >
+                  Twitter
+                </a>
+              </p>
+            </div>
+            <div className="links-container second">
+              <p>
+                <a
+                  className="ref"
+                  href={FOOTER_DATA.Github}
+                  target={FOOTER_DATA.Target}
+                >
+                  Github
+                </a>
+              </p>
+              <p>
+                <a
+                  className="ref"
+                  href={FOOTER_DATA.Medium}
+                  target={FOOTER_DATA.Target}
+                >
+                  Medium
+                </a>
+              </p>
+            </div>
           </div>
-          <div className="links-container second">
-            <p>
-              <a
-                className="ref"
-                href={FOOTER_DATA.Github}
-                target={FOOTER_DATA.Target}
-              >
-                Github
-              </a>
-            </p>
-            <p>
-              <a
-                className="ref"
-                href={FOOTER_DATA.Medium}
-                target={FOOTER_DATA.Target}
-              >
-                Medium
-              </a>
-            </p>
-          </div>
-        </div>
-      ) : route === ROUTE.Home ? (
-        <p onClick={onRedirect}>
-          <span>{FOOTER_DATA.ATagText}</span>
-        </p>
-      ) : (
-        <p>
-          <a className="ref" href={FOOTER_DATA.Ref} target={FOOTER_DATA.Target}>
-            {FOOTER_DATA.ATagText}
-          </a>
-        </p>
-      )}
+        ) : route === ROUTE.Home ? (
+          <p onClick={onRedirect}>
+            <span>{FOOTER_DATA.ATagText}</span>
+          </p>
+        ) : (
+          <p>
+            <a
+              className="ref"
+              href={FOOTER_DATA.Ref}
+              target={FOOTER_DATA.Target}
+            >
+              {FOOTER_DATA.ATagText}
+            </a>
+          </p>
+        )}
+      </div>
     </footer>
   );
 }
