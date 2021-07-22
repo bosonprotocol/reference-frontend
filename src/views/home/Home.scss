@@ -1,9 +1,7 @@
-.home {
-  padding-bottom: 55px;
+@import "../../styles/Mixins.scss";
 
-  @media (min-width: 961px) {
-    padding-bottom: 112px;
-  }
+.home {
+  @include screen-margin-bottom();
 
   header {
     margin-top: 60px;
@@ -11,7 +9,7 @@
 
   .product-list {
     margin-top: 30px;
-
+    
     .container {
       display: flex;
       flex-direction: row;

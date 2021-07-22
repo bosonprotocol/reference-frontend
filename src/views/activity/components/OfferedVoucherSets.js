@@ -18,6 +18,7 @@ import {
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../helpers/configs/Dictionary";
+import Footer from "../../../shared-components/footer/Footer";
 
 import "./../Activity.scss";
 
@@ -185,6 +186,7 @@ function OfferedView(props) {
             </Tabs>
           }
         </div>
+        <Footer />
       </section>
     </>
   );
