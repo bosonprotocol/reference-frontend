@@ -202,7 +202,7 @@ function Home() {
             </div>
           </section>
         </div>
-        <Footer route={ROUTE.Home} />
+        <Footer />
       </div>
     </>
   );

@@ -38,7 +38,6 @@ footer {
                     
         span {
             cursor: pointer;
-            text-decoration: underline;
         }
 
         &.reserved-rights{
@@ -76,10 +75,6 @@ footer {
                 border-top: 0;
                 padding:  22px 0px;
                 flex: 1;
-                
-                > span {
-                    text-decoration: none;
-                }
         
                 @media (max-width: 768px) {
                     text-align: center;
