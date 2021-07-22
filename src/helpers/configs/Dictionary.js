@@ -169,5 +169,6 @@ export const QUERY_PARAMS = {
 };
 
 export const FOOTER = {
-  DOCS_PORTAL: "Documentation Portal",
+  DOCS: "Documentation",
+  LEPTONITE_APP: "Leptonite app",
 };
