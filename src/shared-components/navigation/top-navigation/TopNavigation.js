@@ -110,9 +110,9 @@ function TopNavigation() {
     !onboardingCompleted;
 
   const onClickHomeRedirect = () => {
-    if (location.pathname === ROUTE.Docs) {
-      history.push(ROUTE.Home);
-    }
+    location.pathname === ROUTE.Home
+      ? window.location.reload()
+      : history.push(ROUTE.Home);
   };
 
   return (
@@ -126,12 +126,11 @@ function TopNavigation() {
           <div className="container">
             <nav className="flex split">
               {!navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
-                <div className="desktop-only">
+                <div onClick={onClickHomeRedirect} className="desktop-only">
                   <img
                     src={logo}
                     style={{ height: "40px" }}
                     alt="Leptonite: Powered by Boson Protocol"
-                    onClick={onClickHomeRedirect}
                     className={
                       location.pathname === ROUTE.Docs && "cursor-pointer-logo"
                     }
