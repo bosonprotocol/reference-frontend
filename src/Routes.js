@@ -58,7 +58,6 @@ function Routes() {
           <Route exact path={ROUTE.CodeScanner} component={QRScanner} />
           <Route exact strict path={ROUTE.Connect} component={ConnectWallet} />
           <Route exact path={ROUTE.Home} component={Home} />
-          ``
           <Route
             exact
             path={ROUTE.Docs}

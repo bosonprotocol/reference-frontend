@@ -170,5 +170,5 @@ export const QUERY_PARAMS = {
 
 export const FOOTER = {
   DOCS: "Documentation",
-  LEPTONITE_APP: "Leptonite app",
+  LEPTONITE_APP: "Leptonite",
 };

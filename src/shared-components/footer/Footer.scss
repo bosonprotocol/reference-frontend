@@ -1,7 +1,6 @@
 @import "../../styles/Colors.scss";
 
 footer {
-  
    > div {
     display: flex;
     flex-flow: row wrap;
@@ -37,7 +36,8 @@ footer {
             border: 0;
         }
                     
-        a {
+        span {
+            cursor: pointer;
             text-decoration: underline;
         }
 
@@ -50,7 +50,6 @@ footer {
             }
         }
     }
-  
     }
 
     &.footer-home{
@@ -60,7 +59,7 @@ footer {
         right: 0;
         padding-top: 15px;
         z-index: 10;
-    
+
         > div {
             bottom: 75px;
             max-width: 1500px;
@@ -78,19 +77,21 @@ footer {
                 padding:  22px 0px;
                 flex: 1;
                 
+                > span {
+                    text-decoration: none;
+                }
+        
                 @media (max-width: 768px) {
                     text-align: center;
                 }
             }
     
-            span:nth-child(1){
-                cursor: pointer;
-           }
-    
            .reserved-rights {
+
             @media (max-width: 768px) {
                 padding: 0px 15px;
             }
+
            }
 
         }
@@ -99,9 +100,7 @@ footer {
             flex: 0.8;
             display: flex;
             flex-flow: row;
-            a {
-                text-decoration: none;
-            }
+            
             &.first {
                 flex: 1;
                 display: flex;
@@ -110,6 +109,7 @@ footer {
                 padding-right: 0;
                 p {
                     flex: 1;
+
                     @media (max-width: 768px) {
                         padding: 0;
                         text-align: left;
@@ -118,7 +118,7 @@ footer {
                 p:nth-child(1){
                     white-space: nowrap;
                 }
-                
+
                 @media (max-width: 768px) {
                     flex-flow: column;
                 }
@@ -131,12 +131,14 @@ footer {
                 padding-right: 0;
                 p {
                     flex: 1;
+
                     @media (max-width: 768px) {
                         padding: 0;
                         text-align: right;
                     }  
                     flex-flow: column;
                 }
+
                 @media (max-width: 768px) {
                     flex-flow: column;
                 }
@@ -147,5 +149,4 @@ footer {
     .ref {
         color: $docs-portal-color;
     }
-
 }
