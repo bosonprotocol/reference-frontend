@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useLocation } from "react-router";
+import { Route, useLocation } from "react-router";
 import {
   NavigationContext,
   NavigationAction,
@@ -26,6 +26,7 @@ let bottomLinksMap = {
   [ROUTE.NewOffer]: 2,
   [ROUTE.Activity]: 3,
   [ROUTE.Connect]: 4,
+  [ROUTE.Docs]: 5,
 };
 let bottomNavActiveLink = -1;
 
@@ -72,7 +73,11 @@ callLocationAttributes[ROUTE.ActivityVouchers] = (nested) => {
     bottomNavActiveLink = bottomLinksMap[ROUTE.ActivityVouchers];
   }
 };
-
+callLocationAttributes[ROUTE.Docs] = () => {
+  enableControl(controlset_3);
+  updateBackgroundColor(bgColorBlack);
+  bottomNavActiveLink = bottomLinksMap[ROUTE.Docs];
+};
 // page not matching any
 callLocationAttributes[ROUTE.Default] = () => {
   updateBackgroundColor(bgColorPrimary);
@@ -135,6 +140,11 @@ function LocationManager() {
       );
     }
 
+    if (pageRoute === ROUTE.Docs) {
+      navigationContext.dispatch(
+        NavigationAction.displayBottomNavigation(false)
+      );
+    }
     // trigger a function that will enable relative affordances to the current page
     return callLocationAttributes[pageRoute]
       ? callLocationAttributes[pageRoute](urlNested, param)

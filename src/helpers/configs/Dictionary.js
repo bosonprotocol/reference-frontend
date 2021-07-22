@@ -59,6 +59,7 @@ export const ROUTE = {
   Details: "/details",
   Search: "/search",
   PickUpLocation: "/pick-up-location",
+  Docs: "/docs",
 };
 
 export const BOTTOM_NAV_TYPE = {
@@ -165,4 +166,9 @@ export const QUERY_PARAMS = {
   SEARCH_CRITERIA: "searchCriteria",
   VOUCHER_SET_ID: "voucherSetId",
   EMPTY: "null",
+};
+
+export const FOOTER = {
+  DOCS: "Documentation",
+  LEPTONITE_APP: "Leptonite",
 };

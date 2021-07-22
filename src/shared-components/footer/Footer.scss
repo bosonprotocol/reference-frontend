@@ -1,0 +1,147 @@
+@import "../../styles/Colors.scss";
+
+footer {
+   > div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    left: 0;
+    bottom: 0;
+    width: 60%;
+    height: 65px;
+    text-align: center;
+    font-weight: 400;
+    margin: 0 auto;
+    flex: auto;
+    width: 100%;
+    color: $docs-portal-color;
+
+    @media (max-width: 768px) {
+        height: 100px;
+        flex-flow: column;
+        width: 100%;
+        margin: 0;
+    }
+    
+    p { 
+        flex: 1;
+        font-size: 16px;
+        padding: 20px 0 20px 0;
+        text-align: right;
+        border-top: 1px solid $border-docs-color;
+
+        @media (max-width: 768px) {
+            width: 100%;
+            text-align: center;
+            border: 0;
+        }
+                    
+        span {
+            cursor: pointer;
+        }
+
+        &.reserved-rights{
+            text-align: left;
+            @media (max-width: 768px) {
+                order: 2;
+                text-align: center;
+                padding: 0px 15px;
+            }
+        }
+    }
+    }
+
+    &.footer-home{
+        position: absolute;
+        left: 0;
+        bottom: 75px;
+        right: 0;
+        padding-top: 15px;
+        z-index: 10;
+
+        > div {
+            bottom: 75px;
+            max-width: 1500px;
+            padding: 0 22px;
+            margin-top: 50px;
+            @media (max-width: 768px) {
+                height: 150px;
+                flex-flow: column;
+                margin-top: 15px;
+            }
+    
+            p {
+                width: 100%;
+                border-top: 0;
+                padding:  22px 0px;
+                flex: 1;
+        
+                @media (max-width: 768px) {
+                    text-align: center;
+                }
+            }
+    
+           .reserved-rights {
+
+            @media (max-width: 768px) {
+                padding: 0px 15px;
+            }
+
+           }
+
+        }
+    
+        .links-container{
+            flex: 0.8;
+            display: flex;
+            flex-flow: row;
+            
+            &.first {
+                flex: 1;
+                display: flex;
+                flex-flow: row;
+                padding-left: 0;
+                padding-right: 0;
+                p {
+                    flex: 1;
+
+                    @media (max-width: 768px) {
+                        padding: 0;
+                        text-align: left;
+                    }
+                }
+                p:nth-child(1){
+                    white-space: nowrap;
+                }
+
+                @media (max-width: 768px) {
+                    flex-flow: column;
+                }
+            }
+            &.second {
+                flex: 1;
+                display: flex;
+                flex-flow: row;
+                padding-left: 0;
+                padding-right: 0;
+                p {
+                    flex: 1;
+
+                    @media (max-width: 768px) {
+                        padding: 0;
+                        text-align: right;
+                    }  
+                    flex-flow: column;
+                }
+
+                @media (max-width: 768px) {
+                    flex-flow: column;
+                }
+            }
+        }
+    }
+
+    .ref {
+        color: $docs-portal-color;
+    }
+}

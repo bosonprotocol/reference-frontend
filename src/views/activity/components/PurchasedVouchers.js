@@ -22,6 +22,7 @@ import QRCode from "qrcode.react";
 import "./../Activity.scss";
 import { formatDate } from "../../../utils/FormatUtils";
 import { useVoucherStatusBlocks } from "../../../hooks/useVoucherStatusBlocks";
+import Footer from "../../../shared-components/footer/Footer";
 
 export function PurchasedVouchers({ title, voucherSetId, block }) {
   const [accountVouchers, setAccountVouchers] = useState(undefined);
@@ -186,6 +187,7 @@ function PurchasedView(props) {
             </Tabs>
           }
         </div>
+        <Footer />
       </section>
     </>
   );

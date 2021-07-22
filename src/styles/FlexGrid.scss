@@ -1,5 +1,5 @@
 @import "./Settings.scss";
-
+@import "./Mixins.scss";
 $load-default: ''; // default grid key - example: class="flex column-$load-default w50-$load-default"
 
 // ----------------------------------------------------------------
@@ -283,6 +283,9 @@ $load-default: ''; // default grid key - example: class="flex column-$load-defau
       width: 100%;
     }
   }
+ 
+  @include screen-margin-bottom();
+
 }
 
 .o-hidden {

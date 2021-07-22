@@ -110,6 +110,11 @@ h2:not(.def) {
     padding-top: 100px;
     padding-bottom: 81px;
   }
+  &.docs{
+    padding-top: 100px;
+    padding-bottom: 0px;
+    overflow: visible;
+  }
 
   width: 100%;
   max-width: 100vw;

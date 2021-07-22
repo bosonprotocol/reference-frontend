@@ -8,8 +8,9 @@ import {
 import { useEagerConnect } from "../../hooks";
 import { NETWORK_CONTEXT_NAME } from "../../constants";
 import { network } from "../../Connectors";
-
+import Footer from "../../shared-components/footer/Footer";
 import "./Connect-Wallet.scss";
+import { ROUTE } from "../../helpers/configs/Dictionary";
 
 const ACTION = {
   GET_DATA: {
@@ -67,6 +68,7 @@ export default function ConnectWallet() {
         <h1>Wallet</h1>
         {ConnectedWallet}
       </div>
+      <Footer />
     </section>
   );
 }
