@@ -181,8 +181,8 @@ function App() {
             <WalletContext.Provider value={walletContextValue}>
               <NavigationContext.Provider value={navigationContextValue}>
                 <LoadingContext.Provider value={loadingContextValue}>
-                  <Routes />
-                  <ContextModal />
+                    <Routes />
+                    <ContextModal />
                 </LoadingContext.Provider>
               </NavigationContext.Provider>
             </WalletContext.Provider>

@@ -1,16 +1,9 @@
 import "./Docs.scss";
 import Footer from "../../shared-components/footer/Footer";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect, useContext } from "react/cjs/react.development";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 
-function Docs({ docsPage }) {
-  useEffect(() => {
-    docsPage(true);
-    return () => {
-      docsPage(false);
-    };
-  }, []);
-
+function Docs() {
   return (
     <section className="container-docs">
       <div className="main">
@@ -107,7 +100,7 @@ function Docs({ docsPage }) {
           </li>
         </ul>
         <h2>Versioning</h2>
-        <p>
+        <p>x
           Version 0.1.0 of the Leptonite application works with version 0.1.0 of
           the Boson Protocol smart contracts. See the{" "}
           <a href="#repositories">Repositories</a> section below.
@@ -222,7 +215,7 @@ function Docs({ docsPage }) {
         </p>
         <p className="info-helpful">Was this information helpful?</p>
       </div>
-      <Footer route={ROUTE.Docs} />
+      <Footer current={ROUTE.Docs} />
     </section>
   );
 }

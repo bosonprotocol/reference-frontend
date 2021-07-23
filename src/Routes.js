@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AFFMAP, ROUTE } from "./helpers/configs/Dictionary";
@@ -27,16 +27,23 @@ import Docs from "./views/documentation/Docs";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
-  const isDocsPage = useRef(false);
   const displayNav = navigationContext.state.displayNavigation;
   const displayBottomNav = navigationContext.state.displayBottomNavigation;
   const displayBackButton =
     navigationContext.state.top[AFFMAP.BACK_BUTTON] ||
     navigationContext.state.top[AFFMAP.OFFER_FLOW_SET];
   const isHomePage = navigationContext.state.bottom.mainNavigationItem === 0;
-  const docsPage = (bool) => {
-    isDocsPage.current = bool;
-  };
+
+  {/* 
+    The last update on classlist, which we use to set our screen classes is 'displayBottomNav || isHomePage ? "" : "docs"',
+    where we set "docs" class if we are currently on "/docs", in order to decrease 'margin-bottom' for the main screen."
+   */}
+  const setScreenClassList = `
+    emulate-mobile theme ${!displayBottomNav ? "no-bottom" : ""} 
+    ${!displayNav ? "disabled" : ""} 
+    ${displayBackButton || isHomePage ? "" : "hideTopNavigation"} 
+    ${displayBottomNav || isHomePage ? "" : "docs"}
+    `;
 
   useExpiredTokenInterceptor();
 
@@ -44,11 +51,7 @@ function Routes() {
     // class - dark|light; (default: dark)
 
     <div
-      className={`emulate-mobile theme ${
-        !displayBottomNav ? "no-bottom" : ""
-      } ${!displayNav ? "disabled" : ""} ${
-        displayBackButton || isHomePage ? "" : "hideTopNavigation"
-      } ${isDocsPage.current ? "docs" : ""}`}
+      className={setScreenClassList}
     >
       <Router>
         <LocationManager />
@@ -58,13 +61,6 @@ function Routes() {
           <Route exact path={ROUTE.CodeScanner} component={QRScanner} />
           <Route exact strict path={ROUTE.Connect} component={ConnectWallet} />
           <Route exact path={ROUTE.Home} component={Home} />
-          <Route
-            exact
-            path={ROUTE.Docs}
-            component={() => {
-              return <Docs docsPage={docsPage} />;
-            }}
-          />
           <Route path="/onboarding" component={OnboardingReset} />{" "}
           {/* delete on prod */}
           <Route path={ROUTE.NewOffer} component={NewOffer} />
@@ -94,6 +90,7 @@ function Routes() {
           <Route path={ROUTE.ActivityVouchers} component={PurchasedVouchers} />
           <Route path={ROUTE.Search} component={Search} />
           <Route path={ROUTE.PickUpLocation} component={PickUpLocation} />
+          <Route path={ROUTE.Docs} component={Docs} />
           <Route component={NotFound} />
         </Switch>
         <BottomNavigation />
