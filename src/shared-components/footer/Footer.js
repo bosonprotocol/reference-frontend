@@ -2,13 +2,13 @@ import { useHistory } from "react-router";
 import { ROUTE, FOOTER } from "../../helpers/configs/Dictionary";
 import "./Footer.scss";
 
-function Footer({ route }) {
+function Footer({ current }) {
   const history = useHistory();
-
+  
   const FOOTER_DATA = {
     TextHome: FOOTER.DOCS,
     TextDocs: FOOTER.LEPTONITE_APP,
-    Class: route === ROUTE.Docs ? "" : "footer-home",
+    Class: current === ROUTE.Docs ? "" : "footer-home",
   };
 
   const onRedirect = (e) => {
@@ -17,11 +17,12 @@ function Footer({ route }) {
       : history.push(ROUTE.Home);
   };
 
+
   return (
     <footer className={FOOTER_DATA.Class}>
       <div>
         <p className="reserved-rights">©2021 BApp.</p>
-        {route === ROUTE.Docs ? (
+        {current === ROUTE.Docs ? (
           <p onClick={onRedirect}>
             <span>{FOOTER_DATA.TextDocs}</span>
           </p>

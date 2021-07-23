@@ -59,7 +59,7 @@ export const ROUTE = {
   Details: "/details",
   Search: "/search",
   PickUpLocation: "/pick-up-location",
-  Docs: "/docs",
+  Docs: "/documentation",
 };
 
 export const BOTTOM_NAV_TYPE = {
