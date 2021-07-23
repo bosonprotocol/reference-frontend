@@ -4,7 +4,7 @@ import "./Footer.scss";
 
 function Footer({ current }) {
   const history = useHistory();
-  
+
   const FOOTER_DATA = {
     TextHome: FOOTER.DOCS,
     TextDocs: FOOTER.LEPTONITE_APP,
@@ -16,7 +16,6 @@ function Footer({ current }) {
       ? history.push(ROUTE.Docs)
       : history.push(ROUTE.Home);
   };
-
 
   return (
     <footer className={FOOTER_DATA.Class}>
