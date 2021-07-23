@@ -100,9 +100,9 @@ function Docs() {
           </li>
         </ul>
         <h2>Versioning</h2>
-        <p>x
-          Version 0.1.0 of the Leptonite application works with version 0.1.0 of
-          the Boson Protocol smart contracts. See the{" "}
+        <p>
+          x Version 0.1.0 of the Leptonite application works with version 0.1.0
+          of the Boson Protocol smart contracts. See the{" "}
           <a href="#repositories">Repositories</a> section below.
         </p>
         <h2>Development setup</h2>

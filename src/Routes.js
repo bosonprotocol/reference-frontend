@@ -34,10 +34,12 @@ function Routes() {
     navigationContext.state.top[AFFMAP.OFFER_FLOW_SET];
   const isHomePage = navigationContext.state.bottom.mainNavigationItem === 0;
 
-  {/* 
+  {
+    /* 
     The last update on classlist, which we use to set our screen classes is 'displayBottomNav || isHomePage ? "" : "docs"',
     where we set "docs" class if we are currently on "/docs", in order to decrease 'margin-bottom' for the main screen."
-   */}
+   */
+  }
   const setScreenClassList = `
     emulate-mobile theme ${!displayBottomNav ? "no-bottom" : ""} 
     ${!displayNav ? "disabled" : ""} 
@@ -50,9 +52,7 @@ function Routes() {
   return (
     // class - dark|light; (default: dark)
 
-    <div
-      className={setScreenClassList}
-    >
+    <div className={setScreenClassList}>
       <Router>
         <LocationManager />
         <TopNavigation />
