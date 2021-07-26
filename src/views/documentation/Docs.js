@@ -1,6 +1,5 @@
 import "./Docs.scss";
 import Footer from "../../shared-components/footer/Footer";
-import { useEffect, useContext } from "react/cjs/react.development";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 
 function Docs() {
