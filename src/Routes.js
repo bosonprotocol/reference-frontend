@@ -36,8 +36,8 @@ function Routes() {
 
   {
     /* 
-    The last update on classlist, which we use to set our screen classes is 'displayBottomNav || isHomePage ? "" : "docs"',
-    where we set "docs" class if we are currently on "/docs", in order to decrease 'margin-bottom' for the main screen."
+    'displayBottomNav || isHomePage ? "" : "docs"' is the class, which we use if we are 
+     currently on "/docs", in order to decrease 'margin-bottom' for the main screen."
    */
   }
   const setScreenClassList = `
