@@ -1,16 +1,8 @@
 import "./Docs.scss";
 import Footer from "../../shared-components/footer/Footer";
-import { useEffect } from "react/cjs/react.development";
 import { ROUTE } from "../../helpers/configs/Dictionary";
 
-function Docs({ docsPage }) {
-  useEffect(() => {
-    docsPage(true);
-    return () => {
-      docsPage(false);
-    };
-  }, []);
-
+function Docs() {
   return (
     <section className="container-docs">
       <div className="main">
@@ -222,7 +214,7 @@ function Docs({ docsPage }) {
         </p>
         <p className="info-helpful">Was this information helpful?</p>
       </div>
-      <Footer route={ROUTE.Docs} />
+      <Footer current={ROUTE.Docs} />
     </section>
   );
 }

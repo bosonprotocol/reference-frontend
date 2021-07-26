@@ -131,9 +131,6 @@ function TopNavigation() {
                     src={logo}
                     style={{ height: "40px" }}
                     alt="Leptonite: Powered by Boson Protocol"
-                    className={
-                      location.pathname === ROUTE.Docs && "cursor-pointer-logo"
-                    }
                   ></img>
                 </div>
               ) : null}
