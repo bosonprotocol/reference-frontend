@@ -35,6 +35,13 @@ $input-background: rgba($white, 0.03);
 $input-color: $white;
 $dots-2: #C4C4C4;
 
+// Documentation
+$docs-italic: #C3CDD8;
+$border-docs-color: #364353;
+$docs-portal-color: #C1C7CE;
+$docs-code-color:rgba(96, 97, 198, 0.5);
+$docs-code-text: #80F0BE;
+
 :export {
   accent: $accent;
 }
