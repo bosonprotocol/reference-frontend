@@ -70,6 +70,9 @@ import PendingButton from "./components/escrow-table/PendingButton";
 
 import { ChainIdError } from "./../../errors/ChainIdError";
 
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import Chat from "./components/chat/Chat";
+
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
   const [voucherDetails, setVoucherDetails] = useState(null);
@@ -134,8 +137,8 @@ function VoucherAndSetDetails(props) {
     voucherSetDetails
       ? voucherSetDetails[prop]
       : voucherDetails
-      ? voucherDetails[prop]
-      : null;
+        ? voucherDetails[prop]
+        : null;
 
   useEffect(() => {
     if (recentlySignedTxHash) {
@@ -785,8 +788,8 @@ function VoucherAndSetDetails(props) {
           controls && !triggerWaitForTransaction
             ? controls
             : recentlySignedTxHash || triggerWaitForTransaction
-            ? [<PendingButton />]
-            : null,
+              ? [<PendingButton />]
+              : null,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -984,163 +987,179 @@ function VoucherAndSetDetails(props) {
       {cancelMessage ? <GenericMessage {...cancelMessage} /> : null}
       {<PopupMessage {...popupMessage} />}
       {pageLoading ? pageLoadingPlaceholder : null}
-      {!disablePage ? (
-        <section
-          className="voucher-details no-bg"
-          style={{ display: !pageLoading ? "block" : "none" }}
-        >
-          {showQRCode ? (
-            <ShowQR
-              setShowQRCode={setShowQRCode}
-              voucherId={voucherDetails?.id}
-              setTriggerWaitForTransaction={setTriggerWaitForTransaction}
-            />
-          ) : null}
-          {imageView ? (
-            <FullScreenImage
-              src={getProp("image")}
-              setImageView={setImageView}
-            />
-          ) : null}
-          <div className="container erase">
-            {!voucherSetDetails &&
-            voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
-            statusBlocks ? (
-              <div className="section status">
-                <h2>Status</h2>
-                <div
-                  className="status-container flex"
-                  id="horizontal-view-container"
+      {
+       
+        <Tabs>
+          <TabList>
+            <Tab>{"Overview"}</Tab>
+            <Tab>{"Chat"}</Tab>
+          </TabList>
+          <>
+            <TabPanel>
+              {!disablePage ? (
+                <section
+                  className="voucher-details no-bg"
+                  style={{ display: !pageLoading ? "block" : "none" }}
                 >
-                  <HorizontalScrollView
-                    items={statusBlocks}
-                    ItemComponent={({ item }) => item.jsx}
-                    defaultSpace="0"
-                    spaceBetweenItems="8px"
-                    moveSpeed={1}
-                  />
-                </div>
-              </div>
-            ) : null}
-            <div className="voucher-column-holder">
-              <div className="voucher-column">
-                <div className="content">
-                  <div className="escrow-controls-holder">
+                  {showQRCode ? (
+                    <ShowQR
+                      setShowQRCode={setShowQRCode}
+                      voucherId={voucherDetails?.id}
+                      setTriggerWaitForTransaction={setTriggerWaitForTransaction}
+                    />
+                  ) : null}
+                  {imageView ? (
+                    <FullScreenImage
+                      src={getProp("image")}
+                      setImageView={setImageView}
+                    />
+                  ) : null}
+                  <div className="container erase">
                     {!voucherSetDetails &&
-                    voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
-                      <div className="section escrow">
-                        {escrowData ? (
-                          <EscrowTable escrowData={escrowData} />
-                        ) : null}
-                      </div>
-                    ) : null}
-
-                    {distributionMessage ? (
-                      <div className="deposits-warning-holder">
-                        <div className="section depositsWarning flex center">
-                          <IconWarning /> <span> {distributionMessage}</span>{" "}
+                      voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
+                      statusBlocks ? (
+                      <div className="section status">
+                        <h2>Status</h2>
+                        <div
+                          className="status-container flex"
+                          id="horizontal-view-container"
+                        >
+                          <HorizontalScrollView
+                            items={statusBlocks}
+                            ItemComponent={({ item }) => item.jsx}
+                            defaultSpace="0"
+                            spaceBetweenItems="8px"
+                            moveSpeed={1}
+                          />
                         </div>
                       </div>
                     ) : null}
+                    <div className="voucher-column-holder">
+                      <div className="voucher-column">
+                        <div className="content">
+                          <div className="escrow-controls-holder">
+                            {!voucherSetDetails &&
+                              voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER ? (
+                              <div className="section escrow">
+                                {escrowData ? (
+                                  <EscrowTable escrowData={escrowData} />
+                                ) : null}
+                              </div>
+                            ) : null}
 
-                    {!voucherSetDetails && voucherControls?.controls ? (
-                      <div className="section voucher-control">
-                        {voucherControls.controls}
-                      </div>
-                    ) : null}
-                  </div>
+                            {distributionMessage ? (
+                              <div className="deposits-warning-holder">
+                                <div className="section depositsWarning flex center">
+                                  <IconWarning /> <span> {distributionMessage}</span>{" "}
+                                </div>
+                              </div>
+                            ) : null}
 
-                  <div className="section info">
-                    <div className="section description">
-                      {
-                        <ImageBlock
-                          toggleImageView={setImageView}
-                          voucherSetDetails={voucherSetDetails}
-                          getProp={getProp}
-                        />
-                      }
-                    </div>
-                  </div>
-                  {voucherSetDetails ? (
-                    <div className="voucher-control-holder">
-                      <div className="voucher-control-column">
-                        <p className="deposit-label">Payment Price</p>
-                        <p className="deposit-value">
-                          {" "}
-                          {`${voucherSetDetails?.price} ${
-                            currencyResolver(
-                              voucherSetDetails?.paymentType
-                            )[0] === "BSN"
-                              ? "BOSON"
-                              : currencyResolver(
-                                  voucherSetDetails?.paymentType
-                                )[0]
-                          }`}{" "}
-                        </p>
-                      </div>
-                      <div className="voucher-control-column">
-                        {voucherControls?.controls
-                          ? voucherControls.controls
-                          : null}
-                      </div>
-                    </div>
-                  ) : null}
+                            {!voucherSetDetails && voucherControls?.controls ? (
+                              <div className="section voucher-control">
+                                {voucherControls.controls}
+                              </div>
+                            ) : null}
+                          </div>
 
-                  {voucherSetDetails ? (
-                    <div className="section price">
-                      {tablePrices.some((item) => item) ? (
-                        <PriceTable
-                          paymentType={paymentType}
-                          data={tablePrices}
-                        />
-                      ) : null}
+                          <div className="section info">
+                            <div className="section description">
+                              {
+                                <ImageBlock
+                                  toggleImageView={setImageView}
+                                  voucherSetDetails={voucherSetDetails}
+                                  getProp={getProp}
+                                />
+                              }
+                            </div>
+                          </div>
+                          {voucherSetDetails ? (
+                            <div className="voucher-control-holder">
+                              <div className="voucher-control-column">
+                                <p className="deposit-label">Payment Price</p>
+                                <p className="deposit-value">
+                                  {" "}
+                                  {`${voucherSetDetails?.price} ${currencyResolver(
+                                    voucherSetDetails?.paymentType
+                                  )[0] === "BSN"
+                                    ? "BOSON"
+                                    : currencyResolver(
+                                      voucherSetDetails?.paymentType
+                                    )[0]
+                                    }`}{" "}
+                                </p>
+                              </div>
+                              <div className="voucher-control-column">
+                                {voucherControls?.controls
+                                  ? voucherControls.controls
+                                  : null}
+                              </div>
+                            </div>
+                          ) : null}
+
+                          {voucherSetDetails ? (
+                            <div className="section price">
+                              {tablePrices.some((item) => item) ? (
+                                <PriceTable
+                                  paymentType={paymentType}
+                                  data={tablePrices}
+                                />
+                              ) : null}
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="voucher-column">
+                        <div className="content">
+                          <div className="section title">
+                            <h1>{getProp("title")}</h1>
+                          </div>
+                          <div className="section info additional-info">
+                            <div className="section description">
+                              {
+                                <DescriptionBlock
+                                  toggleImageView={setImageView}
+                                  voucherSetDetails={voucherSetDetails}
+                                  getProp={getProp}
+                                />
+                              }
+                            </div>
+                            <div className="section category">
+                              {getProp("category") ? (
+                                <TableRow data={tableCategory} />
+                              ) : null}
+                              {getProp("condition") ? (
+                                <TableRow data={tableCondition} />
+                              ) : null}
+                            </div>
+                            <div className="section location">
+                              {tableLocation ? (
+                                <TableLocation
+                                  data={tableLocation}
+                                  hasBiggerTitle={false}
+                                />
+                              ) : null}
+                            </div>
+                            <div className="section date">
+                              {tableDate.some((item) => item) ? (
+                                <DateTable data={tableDate} />
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  ) : null}
-                </div>
-              </div>
-              <div className="voucher-column">
-                <div className="content">
-                  <div className="section title">
-                    <h1>{getProp("title")}</h1>
                   </div>
-                  <div className="section info additional-info">
-                    <div className="section description">
-                      {
-                        <DescriptionBlock
-                          toggleImageView={setImageView}
-                          voucherSetDetails={voucherSetDetails}
-                          getProp={getProp}
-                        />
-                      }
-                    </div>
-                    <div className="section category">
-                      {getProp("category") ? (
-                        <TableRow data={tableCategory} />
-                      ) : null}
-                      {getProp("condition") ? (
-                        <TableRow data={tableCondition} />
-                      ) : null}
-                    </div>
-                    <div className="section location">
-                      {tableLocation ? (
-                        <TableLocation
-                          data={tableLocation}
-                          hasBiggerTitle={false}
-                        />
-                      ) : null}
-                    </div>
-                    <div className="section date">
-                      {tableDate.some((item) => item) ? (
-                        <DateTable data={tableDate} />
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
+                </section>
+              ) : null}
+            </TabPanel>
+            <TabPanel>
+              <Chat />
+            </TabPanel>
+          </>
+        </Tabs>
+      }
+
       {disablePage ? (
         <GenericMessage
           subprops={{ button: "HOME PAGE" }}

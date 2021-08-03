@@ -730,3 +730,39 @@
     }
   }
 }
+
+
+div {
+  .react-tabs {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 22px;
+    flex: auto;
+    width: 100%;
+    ul[role="tablist"] {
+      border-bottom: 1px solid #212C36;
+  
+      li {
+        width: 50%;
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 111.4%;
+        /* identical to box height, or 18px */
+  
+        padding: 12px;
+  
+        text-align: center;
+  
+        &.react-tabs__tab--selected {
+          background: none;
+          border: none;
+          color: #fff;
+          border-radius: 0;
+          border-bottom: 2px solid #80F0BE;
+        }
+      }
+    }
+  }
+}
