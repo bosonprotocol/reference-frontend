@@ -1,11 +1,11 @@
 import Blockies from 'react-blockies';
 
-const Identicon = ({ address }) => {
+const Identicon = ({ address, size }) => {
     return (
         <Blockies
             className="icon"
             seed={address}
-            size={10}
+            size={size}
         />
     )
 }
