@@ -114,4 +114,27 @@ export const createEvent = async (data, token) => {
   return expectedEvent.data.eventId;
 };
 
+export const chatSendMessage = async (data, token) => {
+  const result = await axiosInstance.post(
+    `/chat/${data.voucherId}/send`,
+    data,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  return result.data;
+};
+
+export const getChatHistory = async (data, token) => {
+  const result = await axiosInstance.get(
+    `/chat/${data.voucherId}/${data.address}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  return result;
+};
+
 // toDo

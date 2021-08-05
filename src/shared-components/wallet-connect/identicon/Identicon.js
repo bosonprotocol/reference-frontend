@@ -17,7 +17,6 @@ export default function Identicon() {
   return <div className="" ref={ref} />;
 }
 
-
 export function IdenticonChat({ account }) {
   const ref = useRef();
 
@@ -30,4 +29,3 @@ export function IdenticonChat({ account }) {
 
   return <div className="" ref={ref} />;
 }
-
