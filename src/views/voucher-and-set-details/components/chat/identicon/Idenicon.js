@@ -1,7 +1,7 @@
 import Blockies from "react-blockies";
 
-const Identicon = ({ address }) => {
-  return <Blockies className="icon" seed={address} size={10} />;
+const Identicon = ({ address, size }) => {
+  return <Blockies className="icon" seed={address} size={size} />;
 };
 
 export default Identicon;

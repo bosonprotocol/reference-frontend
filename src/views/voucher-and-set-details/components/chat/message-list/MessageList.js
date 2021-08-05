@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import Identicon from "../identicon/Idenicon";
 import { useWeb3React } from "@web3-react/core";
-import { useEffect } from "react/cjs/react.development";
+import { useState, useEffect } from "react/cjs/react.development";
 
 function Chat({ data }) {
   {
@@ -12,14 +12,18 @@ function Chat({ data }) {
   }
 
   const { account } = useWeb3React();
+  const [iconSize, setIconSize] = useState(5);
 
+  const updateDimensions = () => {
+    window.innerWidth <= 768 ? setIconSize(5) : setIconSize(10);
+  };
   const newDataInstance = data.slice(0);
 
-  newDataInstance.forEach((msg, i) => {
-    if (msg.account === account) {
-      newDataInstance[i].account = "self";
-    }
-  });
+  useEffect(() => {
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   return (
     <ol className="chat">
@@ -34,27 +38,27 @@ function Chat({ data }) {
           newDataInstance[index]?.account ||
           lastMessageDay === currentMessageDay ||
           index === 0 ? (
-          <Fragment>
-            <li key={index} className={message.account}>
-              <div className="avatar">
-                <Identicon address={data[index].account} />
-              </div>
-              <div className="msg">
-                <p className="address">
-                  <span>0x2..24b</span>
-                </p>
-                <p>{newDataInstance[index]?.message}</p>
-                <time>{time}</time>
-              </div>
-            </li>
-          </Fragment>
+          <li
+            key={index}
+            className={message.account == account ? "self" : "other"}
+          >
+            <Identicon address={data[index].account} size={iconSize} />
+            <div className="msg">
+              <p className="address">
+                <span>0x2..24b</span>
+              </p>
+              <p>{newDataInstance[index]?.message}</p>
+              <time>{time}</time>
+            </div>
+          </li>
         ) : (
           <Fragment>
             <div className="day">Mon</div>
-            <li key={index} className={message.account}>
-              <div className="avatar">
-                <Identicon address={data[index].account} />
-              </div>
+            <li
+              key={index}
+              className={message.account == account ? "self" : "other"}
+            >
+              <Identicon address={data[index].account} size={iconSize} />
               <div className="msg">
                 <p className="address">
                   <span>0x2..24b</span>
