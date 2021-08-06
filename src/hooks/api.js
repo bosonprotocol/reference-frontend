@@ -123,6 +123,7 @@ export const chatSendMessage = async (data, token) => {
     }
   );
 
+  console.log(result);
   return result.data;
 };
 
@@ -136,5 +137,3 @@ export const getChatHistory = async (data, token) => {
 
   return result;
 };
-
-// toDo
