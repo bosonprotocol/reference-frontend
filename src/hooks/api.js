@@ -123,7 +123,6 @@ export const chatSendMessage = async (data, token) => {
     }
   );
 
-  console.log(result);
   return result.data;
 };
 
