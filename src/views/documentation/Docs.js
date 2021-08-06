@@ -7,12 +7,8 @@ function Docs() {
     <section className="container-docs">
       <div className="main">
         <h1>Introduction to Leptonite</h1>
-        <p className="italic">
-          Description below provided by Frontend Operator, not Boson Protocol
-        </p>
         <p>
-          The Leptonite application can be accessed{" "}
-          <a href="https://www.leptonite.io">here</a>. Leptonite is a reference
+          Leptonite is a reference
           release of a peer-to-peer digital marketplace app built on top of
           Boson Protocol. The app enables users to connect their wallets and
           list a set of items for sale as well as discover products that can be
@@ -108,11 +104,11 @@ function Docs() {
         <p>
           In order to contribute to the Leptonite application or further develop
           your own forked copy of the Leptonite application, you will need to
-          set up a local development environemnt. This section explains how to
+          set up a local development environment. This section explains how to
           do that. These instructions assume a working knowledge of git and
           GitHub.
         </p>
-        <h3>Repositories</h3>
+        <h3 id="repositories">Repositories</h3>
         <p>
           By default, v0.1.0 of the reference application points to v0.1.0 of
           the Boson Protocol smart contracts deployed to the Rinkeby testnet.
@@ -212,7 +208,6 @@ function Docs() {
           receive their commitment NFT. To avoid this issue, please do not close
           the Leptonite application while confirming a MetaMask transaction.
         </p>
-        <p className="info-helpful">Was this information helpful?</p>
       </div>
       <Footer current={ROUTE.Docs} />
     </section>
