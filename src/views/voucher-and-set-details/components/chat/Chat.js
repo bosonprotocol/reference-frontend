@@ -1,98 +1,142 @@
-import React, { useState } from "react";
-import { chatSendMessage, getChatHistory } from "../../../../hooks/api";
+import React, { useEffect, useState, useRef } from "react";
 import MessageList from "./message-list/MessageList";
 import "./Chat.scss";
 import { Arrow } from "../../../../shared-components/icons/Icons";
-import { useEffect, useRef } from "react/cjs/react.development";
 import { useWeb3React } from "@web3-react/core";
+
+import { getThread } from "../../../../hooks/api";
 import { getAccountStoredInLocalStorage } from "../../../../hooks/authenticate";
+import io from "socket.io-client";
+
+const NEW_CHAT_MESSAGE_EVENT = "message";
+const SOCKET_SERVER_URL = "http://localhost:4000";
+
 
 function Chat(voucherDetails) {
-  const [text, setText] = useState("");
-  const [data, setData] = useState([]);
-  const voucherId = Object.values(voucherDetails)[0];
-  const { account } = useWeb3React();
+    const [text, setText] = useState("");
+    const [roomId, setRoomId] = useState('');
+    const { account } = useWeb3React();
+    const messagesEndRef = useRef();
+    const voucherId = Object.values(voucherDetails)[0];
+    const socketRef = useRef();
 
-  const messagesEndRef = useRef();
+    const [messages, setMessages] = useState([]);
+    const [thread, setThread] = useState('');
+    const authData = getAccountStoredInLocalStorage(account);
 
-  const authData = getAccountStoredInLocalStorage(account);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
-  };
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
+    }, [messages]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [data]);
+    useEffect(() => {
+        setRoomId([voucherId, account].join(","));
+        return (() => {
+            setText('')
+        })
+    }, [voucherId, account]);
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (authData.authToken) {
-        getHistory();
-      }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    useEffect(() => {
+        console.log('CONNECT')
 
-  useEffect(() => {
-    if (authData.authToken) {
-      getHistory();
-    }
-  }, [authData.authToken]);
+        getSlackThreadData();
+        WSConnection();
+        return () => {
+            // Destroys the socket connection 
+            socketRef.current.disconnect(true);
+            // Destroys the socket reference when the connection is closed
+            socketRef.current.off('connection', () => { });
+          
+        };
+    }, [socketRef, thread, voucherId, account]);
 
-  const getHistory = async () => {
-    let requestData = {
-      address: account,
-      voucherId: voucherId,
+    const onType = (e) => { setText(e.target.value) };
+
+    const onSend = async (e) => {
+        e.preventDefault();
+
+        if (text === '') return;
+
+        const requestData = {
+            address: account,
+            voucherId: voucherId,
+            message: text,
+        };
+
+        if (!thread && requestData.message) {
+
+            getSlackThreadData();
+            WSConnection();
+
+        } else {
+
+             socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
+                ...requestData,
+                senderId:  socketRef.current.id,
+            });
+
+        }
+
+        setText("");
     };
-    const chatHistory = await getChatHistory(
-      requestData,
-      authData.authToken
-    ).catch((e) => console.log(e));
 
-    if (chatHistory) {
-      setData(chatHistory.data);
+
+    const getSlackThreadData = async () => {
+        const response = await getThread({ address: account, voucherId: voucherId, }, authData.authToken);
+        setThread(response.data.metadataExists);
     }
-  };
 
-  const onType = (e) => {
-    setText(e.target.value);
-  };
+    const WSConnection = async () => {
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+        const ioParams = {
+            transports: ['websocket'],
+            upgrade: false,
+            query: {
+                roomId: roomId,
+                address: account,
+                voucherId: voucherId,
+                message: text,
+            }
+        }
 
-    const requestData = {
-      address: account,
-      voucherId: voucherId,
-      message: text,
-    };
-    await chatSendMessage(requestData, authData.authToken);
+        // Creates a WebSocket connection
+         socketRef.current = io(SOCKET_SERVER_URL, ioParams);
 
-    setText("");
-  };
+        // Listens for incoming messages
+         socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (messages) => {
+            setMessages(messages);
+        });
 
-  return (
-    <section className="chat" ref={messagesEndRef}>
-      <MessageList data={data} />
-      <form className="chat-form" onSubmit={onSubmit}>
-        <input
-          className="textarea"
-          type="text"
-          placeholder="Type"
-          value={text}
-          onInput={onType}
-        />
-        <div
-          className="button square new"
-          role="button"
-          id="topNavBackButton"
-          onClick={onSubmit}
-        >
-          <Arrow color="#80F0BE" />
-        </div>
-      </form>
-    </section>
-  );
+        // Listens for incoming messages
+         socketRef.current.off(NEW_CHAT_MESSAGE_EVENT, () => {
+            setMessages();
+        });
+
+        // Listens for disconnection from server
+         socketRef.current.on('disconnect', () => { console.log('DISCONNECTED') });
+    }
+
+    return (
+        <section className="chat" ref={messagesEndRef}>
+            <MessageList data={messages} />
+            <form className="chat-form" onSubmit={onSend}>
+                <input
+                    className="textarea"
+                    type="text"
+                    placeholder="Type"
+                    value={text}
+                    onInput={onType}
+                />
+                <div
+                    className="button square new"
+                    role="button"
+                    id="topNavBackButton"
+                    onClick={onSend}
+                >
+                    <Arrow color="#80F0BE" />
+                </div>
+            </form>
+        </section>
+    );
 }
 
 export default Chat;
