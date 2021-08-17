@@ -8,11 +8,11 @@ function Docs() {
       <div className="main">
         <h1>Introduction to Leptonite</h1>
         <p>
-          Leptonite is a reference
-          release of a peer-to-peer digital marketplace app built on top of
-          Boson Protocol. The app enables users to connect their wallets and
-          list a set of items for sale as well as discover products that can be
-          purchased in a decentralised way using Boson Protocol.
+          Leptonite is a reference release of a peer-to-peer digital marketplace
+          app built on top of Boson Protocol. The app enables users to connect
+          their wallets and list a set of items for sale as well as discover
+          products that can be purchased in a decentralised way using Boson
+          Protocol.
         </p>
         <p>
           The application also demonstrates Boson’s novel game theoretic
