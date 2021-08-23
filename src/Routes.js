@@ -23,6 +23,7 @@ import Search from "./views/search/Search";
 import PickUpLocation from "./views/pick-up-location/PickUpLocation";
 import { OfferedVoucherSets } from "./views/activity/components/OfferedVoucherSets";
 import { PurchasedVouchers } from "./views/activity/components/PurchasedVouchers";
+import Docs from "./views/documentation/Docs";
 
 function Routes() {
   const navigationContext = useContext(NavigationContext);
@@ -33,17 +34,25 @@ function Routes() {
     navigationContext.state.top[AFFMAP.OFFER_FLOW_SET];
   const isHomePage = navigationContext.state.bottom.mainNavigationItem === 0;
 
+  {
+    /* 
+    'displayBottomNav || isHomePage ? "" : "docs"' is the class, which we use if we are 
+     currently on "/docs", in order to decrease 'margin-bottom' for the main screen."
+   */
+  }
+  const setScreenClassList = `
+    emulate-mobile theme ${!displayBottomNav ? "no-bottom" : ""} 
+    ${!displayNav ? "disabled" : ""} 
+    ${displayBackButton || isHomePage ? "" : "hideTopNavigation"} 
+    ${displayBottomNav || isHomePage ? "" : "docs"}
+    `;
+
   useExpiredTokenInterceptor();
 
   return (
     // class - dark|light; (default: dark)
-    <div
-      className={`emulate-mobile theme ${
-        !displayBottomNav ? "no-bottom" : ""
-      } ${!displayNav ? "disabled" : ""} ${
-        displayBackButton || isHomePage ? "" : "hideTopNavigation"
-      }`}
-    >
+
+    <div className={setScreenClassList}>
       <Router>
         <LocationManager />
         <TopNavigation />
@@ -81,6 +90,7 @@ function Routes() {
           <Route path={ROUTE.ActivityVouchers} component={PurchasedVouchers} />
           <Route path={ROUTE.Search} component={Search} />
           <Route path={ROUTE.PickUpLocation} component={PickUpLocation} />
+          <Route path={ROUTE.Docs} component={Docs} />
           <Route component={NotFound} />
         </Switch>
         <BottomNavigation />

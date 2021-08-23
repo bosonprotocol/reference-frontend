@@ -73,3 +73,15 @@
     }
   }
 }
+
+@mixin screen-margin-bottom ($margin: 100px){
+  padding-bottom: $margin;
+
+  @media (min-width: 961px) {
+    padding-bottom: 112px;
+  }
+
+  @media (max-width: 768px) {
+    padding-bottom: 200px;
+  }
+}

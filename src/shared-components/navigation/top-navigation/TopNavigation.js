@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { useHistory, useLocation } from "react-router";
+import { Route, useHistory, useLocation } from "react-router";
 
 import { Link } from "react-router-dom";
 
@@ -109,6 +109,12 @@ function TopNavigation() {
     location.pathname === ROUTE.ActivityVouchers ||
     !onboardingCompleted;
 
+  const onClickHomeRedirect = () => {
+    location.pathname === ROUTE.Home
+      ? window.location.reload()
+      : history.push(ROUTE.Home);
+  };
+
   return (
     <div>
       {hideTopNavigation ? null : (
@@ -120,7 +126,7 @@ function TopNavigation() {
           <div className="container">
             <nav className="flex split">
               {!navigationContext.state.top[AFFMAP.BACK_BUTTON] ? (
-                <div className="desktop-only">
+                <div onClick={onClickHomeRedirect} className="desktop-only">
                   <img
                     src={logo}
                     style={{ height: "40px" }}
