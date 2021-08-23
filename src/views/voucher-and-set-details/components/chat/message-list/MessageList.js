@@ -1,16 +1,21 @@
 import { Fragment } from "react";
 import Identicon from "../identicon/Idenicon";
 import { useWeb3React } from "@web3-react/core";
-import { useState, useEffect } from "react/cjs/react.development";
+import { useState, useEffect, useRef } from "react/cjs/react.development";
 import { shortenAddress } from "../../../../../utils/BlockchainUtils";
 
 function Chat({ data }) {
   const { account } = useWeb3React();
   const [iconSize, setIconSize] = useState(5);
+  const messagesEndRef = useRef();
 
   const updateDimensions = () => {
     window.innerWidth <= 768 ? setIconSize(5) : setIconSize(10);
   };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, [data]);
 
   useEffect(() => {
     updateDimensions();
@@ -20,12 +25,10 @@ function Chat({ data }) {
 
   return (
     <ol className="chat">
-      {data.map((message, index) => {
-        const lastMessageDay = data[index - 1]?.timestamp
-          .split("T")[0]
-          .split("-")[2];
-        const currentMessageDay = message.timestamp.split("T")[0].split("-")[2];
-        const time = message.timestamp.split("T")[1].slice(0, 5);
+      {data?.map((message, index) => {
+        const lastMessageDay = data[index - 1]?.timestamp?.split("T")[0].split("-")[2];
+        const currentMessageDay = message?.timestamp?.split("T")[0].split("-")[2];
+        const time = message?.timestamp?.split("T")[1].slice(0, 5);
 
         return data[index - 1]?.account !== data[index]?.account ||
           lastMessageDay === currentMessageDay ||
@@ -72,6 +75,7 @@ function Chat({ data }) {
           </Fragment>
         );
       })}
+      <div ref={messagesEndRef} />
     </ol>
   );
 }

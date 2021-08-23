@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import MessageList from "./message-list/MessageList";
 import "./Chat.scss";
 import { Arrow } from "../../../../shared-components/icons/Icons";
 import { useWeb3React } from "@web3-react/core";
-
 import { getThread } from "../../../../hooks/api";
 import { getAccountStoredInLocalStorage } from "../../../../hooks/authenticate";
 import io from "socket.io-client";
@@ -12,14 +11,16 @@ import { useHistory } from "react-router";
 const NEW_CHAT_MESSAGE_EVENT = "message";
 const SOCKET_SERVER_URL = "http://localhost:4000";
 
-
 function Chat(voucherDetails) {
-    const history = useHistory();
-    const accountChanged = useRef(false);
     const [text, setText] = useState("");
     const [roomId, setRoomId] = useState("");
+    const [loading, setLoading] = useState(true);
+    const isAccountChangedRef = useRef(false);
+    const isMountedRef = useRef(false);
+    const isInitialMessageRef = useRef(true);
+    const inputRef = useRef(null);
+    const history = useHistory();
     const { account } = useWeb3React();
-    const messagesEndRef = useRef();
     const voucherId = Object.values(voucherDetails)[0];
     const socketRef = useRef();
     const [messages, setMessages] = useState([]);
@@ -27,36 +28,56 @@ function Chat(voucherDetails) {
     const authData = getAccountStoredInLocalStorage(account);
 
     useEffect(() => {
-        if(accountChanged.current){
+
+        if (socketRef?.current?.connected) {
+            setLoading(false);
+            inputRef.current?.focus();
+        } else if (isMountedRef) {
+            setTimeout(() => {
+                setLoading(false);
+                inputRef.current?.focus();
+            }, 750);
+        }
+
+    }, [socketRef?.current?.connected])
+
+    useEffect(() => {
+        if (isAccountChangedRef.current) {
             history.push('/');
-        } else  {
-            accountChanged.current = true;
+        } else {
+            isAccountChangedRef.current = true;
         }
     }, [account]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
-    }, [messages]);
-
-    useEffect(() => {
         setRoomId([voucherId, account].join(","));
-        disconnect()
-        setText('');
+        isInitialMessageRef.current = true;
+        disconnect();
     }, [voucherId, account]);
 
     useEffect(() => {
-        console.log('CONNECT')
-        getSlackThreadData();
-        WSConnection();
-        return () => { disconnect() };
-    }, [socketRef, thread, voucherId, account]);
+
+        if (isMountedRef.current && thread) {
+            WSConnection();
+        } else {
+            isMountedRef.current = true;
+            getSlackThreadData();
+            WSConnection();
+        }
+
+        return () => {
+            disconnect();
+            setText('');
+        };
+
+    }, [thread, voucherId, account]);
 
     const onType = (e) => { setText(e.target.value) };
 
     const onSend = async (e) => {
         e.preventDefault();
-
-        if (text === '') return;
+        console.log('send')
+        if (text === '' || !socketRef?.current?.connected) return;
 
         const requestData = {
             address: account,
@@ -64,23 +85,18 @@ function Chat(voucherDetails) {
             message: text,
         };
 
-        if (!thread && requestData.message) {
-
-            getSlackThreadData();
+        if (!thread && requestData.message && isInitialMessageRef.current) {
             WSConnection();
-
+            setLoading(true);
         } else {
-
             socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
                 ...requestData,
                 senderId: socketRef.current.id,
             });
-
         }
 
         setText("");
     };
-
 
     const getSlackThreadData = async () => {
         const response = await getThread({ address: account, voucherId: voucherId, }, authData.authToken);
@@ -105,12 +121,21 @@ function Chat(voucherDetails) {
 
         // Listens for incoming messages
         socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (messages) => {
-            setMessages(messages);
+            console.log(messages)
+
+            if (messages.length === 1) {
+                setMessages((previousMessages => [...previousMessages, ...messages]));
+            } else {
+                setMessages(messages);
+            }
+
+            inputRef.current?.focus();
+            isInitialMessageRef.current = false;
         });
 
         // Listens for incoming messages
         socketRef.current.off(NEW_CHAT_MESSAGE_EVENT, () => {
-            setMessages();
+            setMessages('');
         });
 
         // Listens for disconnection from server
@@ -119,16 +144,19 @@ function Chat(voucherDetails) {
 
     const disconnect = () => {
         // Destroys the socket connection 
-        socketRef?.current?.disconnect(true);
+        socketRef?.current?.close()
         // Destroys the socket reference when the connection is closed
         socketRef?.current?.off('connection', () => { });
     }
+
     return (
-        <section className="chat" ref={messagesEndRef}>
+        <section className="chat">
             <MessageList data={messages} />
-            <form className="chat-form" onSubmit={onSend}>
+            <form className="chat-form" onSubmit={onSend} >
                 <input
+                    ref={inputRef}
                     className="textarea"
+                    disabled={loading}
                     type="text"
                     placeholder="Type"
                     value={text}
