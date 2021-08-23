@@ -96,7 +96,7 @@ function Docs() {
         </ul>
         <h2>Versioning</h2>
         <p>
-          Version 0.1.0 of the Leptonite application works with version 0.1.0 of
+          Version 0.1.x of the Leptonite application works with version 0.1.0 of
           the Boson Protocol smart contracts. See the{" "}
           <a href="#repositories">Repositories</a> section below.
         </p>
@@ -110,7 +110,7 @@ function Docs() {
         </p>
         <h3 id="repositories">Repositories</h3>
         <p>
-          By default, v0.1.0 of the reference application points to v0.1.0 of
+          By default, v0.1.x of the reference application points to v0.1.0 of
           the Boson Protocol smart contracts deployed to the Rinkeby testnet.
         </p>
         <p>
@@ -120,7 +120,7 @@ function Docs() {
         </p>
         <ul>
           <li>
-            <a href="https://github.com/bosonprotocol/reference-frontend/releases/tag/v0.1.0">
+            <a href="https://github.com/bosonprotocol/reference-frontend/releases/tag/v0.1.1">
               reference-frontend
             </a>
           </li>
