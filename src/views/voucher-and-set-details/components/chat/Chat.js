@@ -168,7 +168,7 @@ function Chat(voucherDetails) {
                     className="textarea"
                     disabled={loading}
                     type="text"
-                    placeholder="Type"
+                    placeholder="Write a message..."
                     value={text}
                     onInput={onType}
                 />

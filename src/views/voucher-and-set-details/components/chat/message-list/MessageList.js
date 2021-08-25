@@ -33,7 +33,7 @@ function Chat({ data }) {
         const minutes = renderedTimestamp[1];
         const hourForTimezone = hourFromDB - (new Date().getTimezoneOffset() / 60);
         const time = `${hourForTimezone}:${minutes}`;
-   
+
         return data[index - 1]?.account !== data[index]?.account ||
           lastMessageDay === currentMessageDay ||
           index === 0 ? (
@@ -44,12 +44,12 @@ function Chat({ data }) {
             {message.type == "BUYER" ? (
               <Identicon address={account} size={iconSize} />
             ) : (
-              ""
+              <p className="BSN" />
             )}
             <div className="msg">
               <p className="address">
                 <span>
-                  {message.type == "BUYER" ? shortenAddress(account) : "SELLER"}
+                  {message.type == "BUYER" ? shortenAddress(account) : "SUPPORT"}
                 </span>
               </p>
               <p>{data[index]?.message}</p>
@@ -69,7 +69,7 @@ function Chat({ data }) {
                   <span>
                     {message.type == "BUYER"
                       ? shortenAddress(account)
-                      : "SELLER"}
+                      : "SUPPORT"}
                   </span>
                 </p>
                 <p>{message?.message}</p>

@@ -217,14 +217,19 @@
     width: 100%;
     height: 50px;
     z-index: 99;
-    background: #fafafa;
     border: none;
     outline: none;
-    padding-left: 55px;
-    padding-right: 55px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 65px;
+    width: 80%;
+    left: 10%;
+    right: 10%;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(218, 241, 231);
+    border-radius: 7.69px;
 
     @media (max-width: 768px) {
         padding-left: 5px;
@@ -235,6 +240,7 @@
         border: 0;
         flex: 4;
         color: #666;
+        background-color: rgb(218, 241, 231);
         font-weight: 400;
     }
     
@@ -242,4 +248,12 @@
         -webkit-transform: scaleX(-1);
         transform: scaleX(-1);
     }
+}
+
+.BSN {
+    background-image: url('../../../../assets/boson/icon-bsn.png');
+    background-repeat: no-repeat;
+    width: 17.5px;
+    height: 17.5px;
+    background-position: center;
 }
