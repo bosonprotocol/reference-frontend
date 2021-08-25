@@ -41,6 +41,13 @@
     margin-top: 60px;
     margin-bottom: 5px;
 
+    ol {
+        width: 85%;
+        margin-left: 7.5%;
+        margin-right: 7.5%;
+    }
+    
+
     li {
         padding: 0.5rem;
         overflow: hidden;
@@ -223,9 +230,9 @@
     justify-content: space-between;
     align-items: center;
     height: 65px;
-    width: 80%;
-    left: 10%;
-    right: 10%;
+    width: 70%;
+    left: 15%;
+    right: 15%;
     padding-left: 20px;
     padding-right: 20px;
     background-color: rgb(218, 241, 231);
