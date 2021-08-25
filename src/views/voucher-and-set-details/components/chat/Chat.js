@@ -8,6 +8,7 @@ import { getAccountStoredInLocalStorage } from "../../../../hooks/authenticate";
 import io from "socket.io-client";
 import { useHistory } from "react-router";
 
+
 const NEW_CHAT_MESSAGE_EVENT = "message";
 const SOCKET_SERVER_URL = "http://localhost:4000";
 
@@ -76,7 +77,7 @@ function Chat(voucherDetails) {
 
     const onSend = async (e) => {
         e.preventDefault();
-        console.log('send')
+
         if (text === '' || !socketRef?.current?.connected) return;
 
         const requestData = {

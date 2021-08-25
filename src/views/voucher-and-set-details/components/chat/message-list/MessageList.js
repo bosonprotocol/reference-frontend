@@ -3,6 +3,7 @@ import Identicon from "../identicon/Idenicon";
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect, useRef } from "react/cjs/react.development";
 import { shortenAddress } from "../../../../../utils/BlockchainUtils";
+import PortalIcon from "../portalIcon/PortalIcon";
 
 function Chat({ data }) {
   const { account } = useWeb3React();
@@ -44,12 +45,12 @@ function Chat({ data }) {
             {message.type == "BUYER" ? (
               <Identicon address={account} size={iconSize} />
             ) : (
-              <p className="BSN" />
+              <PortalIcon />
             )}
             <div className="msg">
               <p className="address">
                 <span>
-                  {message.type == "BUYER" ? shortenAddress(account) : "SUPPORT"}
+                  {message.type == "BUYER" ? shortenAddress(account) : "PORTAL SUPPORT"}
                 </span>
               </p>
               <p>{data[index]?.message}</p>
@@ -69,7 +70,7 @@ function Chat({ data }) {
                   <span>
                     {message.type == "BUYER"
                       ? shortenAddress(account)
-                      : "SUPPORT"}
+                      : "PORTAL SUPPORT"}
                   </span>
                 </p>
                 <p>{message?.message}</p>
