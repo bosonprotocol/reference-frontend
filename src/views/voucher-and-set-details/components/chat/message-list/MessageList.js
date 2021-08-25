@@ -28,8 +28,12 @@ function Chat({ data }) {
       {data?.map((message, index) => {
         const lastMessageDay = data[index - 1]?.timestamp?.split("T")[0].split("-")[2];
         const currentMessageDay = message?.timestamp?.split("T")[0].split("-")[2];
-        const time = message?.timestamp?.split("T")[1].slice(0, 5);
-
+        const renderedTimestamp = message?.timestamp?.split("T")[1].slice(0, 5).split(":")
+        const hourFromDB = Number(renderedTimestamp[0]);
+        const minutes = renderedTimestamp[1];
+        const hourForTimezone = hourFromDB - (new Date().getTimezoneOffset() / 60);
+        const time = `${hourForTimezone}:${minutes}`;
+   
         return data[index - 1]?.account !== data[index]?.account ||
           lastMessageDay === currentMessageDay ||
           index === 0 ? (
@@ -38,7 +42,7 @@ function Chat({ data }) {
             className={message.type == "BUYER" ? "self" : "other"}
           >
             {message.type == "BUYER" ? (
-              <Identicon address={data[index].account} size={iconSize} />
+              <Identicon address={account} size={iconSize} />
             ) : (
               ""
             )}
@@ -68,7 +72,7 @@ function Chat({ data }) {
                       : "SELLER"}
                   </span>
                 </p>
-                <p>{data[index]?.message}</p>
+                <p>{message?.message}</p>
                 <time>{time}</time>
               </div>
             </li>
@@ -81,4 +85,4 @@ function Chat({ data }) {
 }
 
 export default Chat;
-//
+

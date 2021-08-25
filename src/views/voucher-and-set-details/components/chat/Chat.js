@@ -121,11 +121,21 @@ function Chat(voucherDetails) {
 
         // Listens for incoming messages
         socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (messages) => {
-            console.log(messages)
 
             if (messages.length === 1) {
-                setMessages((previousMessages => [...previousMessages, ...messages]));
+                // Render first message in order to remove the link directing to the URL of the voucher
+                setMessages((previousMessages => {
+                    if (previousMessages[0] && (previousMessages[0].message.split('\n').length > 1)) {
+                        previousMessages[0].message = previousMessages[0]?.message?.split('\n')[1];
+                    } else if (!previousMessages[0]) {
+                        messages[0].message = messages[0]?.message?.split('\n')[1];
+                    }
+                    return [...previousMessages, ...messages]
+                }));
+
             } else {
+                // Render first message in order to remove the link directing to the URL of the voucher
+                messages[0].message = messages[0]?.message.split('\n')[1];
                 setMessages(messages);
             }
 
