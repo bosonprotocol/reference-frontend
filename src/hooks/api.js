@@ -124,3 +124,10 @@ export const getThread = async (data, token) => {
 
   return result;
 };
+
+export const getSellerWhitelist = async (token) => {
+  const whitelist = await axiosInstance.get(`/sheets/whitelist`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return whitelist.data;
+};

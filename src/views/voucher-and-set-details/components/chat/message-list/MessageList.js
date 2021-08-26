@@ -3,7 +3,7 @@ import Identicon from "../../icons/identicon/Idenicon";
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect, useRef } from "react/cjs/react.development";
 import { shortenAddress } from "../../../../../utils/BlockchainUtils";
-import PortalIcon from "../portalIcon/PortalIcon";
+import PortalIcon from "../../icons/portalIcon/PortalIcon";
 
 function Chat({ data }) {
   const { account } = useWeb3React();

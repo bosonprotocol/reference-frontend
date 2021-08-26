@@ -73,7 +73,7 @@ import { ChainIdError } from "./../../errors/ChainIdError";
 
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Chat from "./components/chat/Chat";
-import BetaIcon from "./components/chat/betaIcon/BetaIcon";
+import BetaIcon from "./components/icons/betaIcon/BetaIcon";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -142,8 +142,8 @@ function VoucherAndSetDetails(props) {
     voucherSetDetails
       ? voucherSetDetails[prop]
       : voucherDetails
-        ? voucherDetails[prop]
-        : null;
+      ? voucherDetails[prop]
+      : null;
 
   useEffect(() => {
     if (recentlySignedTxHash) {
@@ -795,8 +795,8 @@ function VoucherAndSetDetails(props) {
           controls && !triggerWaitForTransaction
             ? controls
             : recentlySignedTxHash || triggerWaitForTransaction
-              ? [<PendingButton />]
-              : null,
+            ? [<PendingButton />]
+            : null,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -999,7 +999,9 @@ function VoucherAndSetDetails(props) {
           {showChat && (
             <TabList>
               <Tab>Overview</Tab>
-              <Tab>Chat <BetaIcon/></Tab>
+              <Tab>
+                Chat <BetaIcon />
+              </Tab>
             </TabList>
           )}
 
@@ -1024,8 +1026,8 @@ function VoucherAndSetDetails(props) {
                 ) : null}
                 <div className="container erase">
                   {!voucherSetDetails &&
-                    voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
-                    statusBlocks ? (
+                  voucherStatus?.split(":")[0] !== ROLE.NON_BUYER_SELLER &&
+                  statusBlocks ? (
                     <div className="section status">
                       <h2>Status</h2>
                       <div
@@ -1047,7 +1049,7 @@ function VoucherAndSetDetails(props) {
                       <div className="content">
                         <div className="escrow-controls-holder">
                           {!voucherSetDetails &&
-                            voucherStatus?.split(":")[0] !==
+                          voucherStatus?.split(":")[0] !==
                             ROLE.NON_BUYER_SELLER ? (
                             <div className="section escrow">
                               {escrowData ? (
@@ -1089,14 +1091,15 @@ function VoucherAndSetDetails(props) {
                               <p className="deposit-label">Payment Price</p>
                               <p className="deposit-value">
                                 {" "}
-                                {`${voucherSetDetails?.price} ${currencyResolver(
-                                  voucherSetDetails?.paymentType
-                                )[0] === "BSN"
-                                  ? "BOSON"
-                                  : currencyResolver(
+                                {`${voucherSetDetails?.price} ${
+                                  currencyResolver(
                                     voucherSetDetails?.paymentType
-                                  )[0]
-                                  }`}{" "}
+                                  )[0] === "BSN"
+                                    ? "BOSON"
+                                    : currencyResolver(
+                                        voucherSetDetails?.paymentType
+                                      )[0]
+                                }`}{" "}
                               </p>
                             </div>
                             <div className="voucher-control-column">
@@ -1164,10 +1167,11 @@ function VoucherAndSetDetails(props) {
             ) : null}
           </TabPanel>
 
-          {showChat && (<TabPanel>
-            <Chat voucherId={voucherId} />
-          </TabPanel>)}
-
+          {showChat && (
+            <TabPanel>
+              <Chat voucherId={voucherId} />
+            </TabPanel>
+          )}
         </Tabs>
       }
 

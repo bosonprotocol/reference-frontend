@@ -1,17 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { ROUTE, BOTTOM_NAV_TYPE } from "../../../helpers/configs/Dictionary";
-import { IconHome, IconBuyer, IconWallet } from "../../icons/Icons";
+import {
+  IconHome,
+  IconBuyer,
+  IconWallet,
+  IconSeller,
+  IconNewOffer,
+} from "../../icons/Icons";
 import { Link } from "react-router-dom";
 import { NavigationContext } from "../../../contexts/Navigation";
 import { GlobalContext } from "../../../contexts/Global";
 import NewOfferBottomNavigation from "../../../views/new-offer/components/new-offer-bottom-navigation/NewOfferBottomNavigation";
-import whitelist from "../../../constants/whitelist";
+import { getSellerWhitelist } from "../../../hooks/api";
+import { getAccountStoredInLocalStorage } from "../../../hooks/authenticate";
+let whitelist = [];
 
 const selectedColor = "#80F0BE";
 
 function BottomNavigation() {
   const { account } = useWeb3React();
+
+  const authData = getAccountStoredInLocalStorage(account);
+  getSellerWhitelist(authData.authToken).then((value) => {
+    whitelist = value;
+  });
+
   const navigationContext = useContext(NavigationContext);
   const globalContext = useContext(GlobalContext);
   const [selected, setSelected] = useState(new Array(5).fill(0));
@@ -47,13 +61,13 @@ function BottomNavigation() {
     //     <IconNewOffer color={selected[2] && selectedColor} /> Sell
     //   </div>
     // ),
-    // Activity: (
-    //   <div
-    //     className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
-    //   >
-    //     <IconSeller color={selected[3] && selectedColor} /> Offered
-    //   </div>
-    // ),
+    Activity: (
+      <div
+        className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
+      >
+        <IconSeller color={selected[3] && selectedColor} /> Offers
+      </div>
+    ),
     Connect: (
       <div
         className={`set flex column ai-center ${selected[4] ? "selected" : ""}`}
@@ -81,7 +95,11 @@ function BottomNavigation() {
             <div className="default-nav w100 flex center">
               <div className="nav-container flex center">
                 {Object.entries(routing).map((route, i) => {
-                  if (route[0] !== "Connect") {
+                  if (
+                    route[0] !== "Connect" &&
+                    route[0] !== "ActivityVouchers" &&
+                    route[0] !== "Activity"
+                  ) {
                     return (
                       <div key={i} className="link">
                         <Link key={i} className="def" to={ROUTE[route[0]]}>
@@ -91,13 +109,25 @@ function BottomNavigation() {
                     );
                   } else {
                     if (whitelist.includes(account?.toLowerCase())) {
-                      return (
-                        <div key={i} className="link">
-                          <Link key={i} className="def" to={ROUTE[route[0]]}>
-                            {route[1]}
-                          </Link>
-                        </div>
-                      );
+                      if (route[0] === "Connect" || route[0] === "Activity") {
+                        return (
+                          <div key={i} className="link">
+                            <Link key={i} className="def" to={ROUTE[route[0]]}>
+                              {route[1]}
+                            </Link>
+                          </div>
+                        );
+                      }
+                    } else {
+                      if (route[0] === "ActivityVouchers") {
+                        return (
+                          <div key={i} className="link">
+                            <Link key={i} className="def" to={ROUTE[route[0]]}>
+                              {route[1]}
+                            </Link>
+                          </div>
+                        );
+                      }
                     }
                   }
                 })}

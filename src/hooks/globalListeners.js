@@ -11,7 +11,9 @@ import { fetchVoucherSets } from "../helpers/parsers/VoucherAndSetParsers";
 import { getAccountStoredInLocalStorage } from "./authenticate";
 import { useHistory } from "react-router-dom";
 import { ROUTE } from "../helpers/configs/Dictionary";
-import whitelist from "../constants/whitelist";
+import { getSellerWhitelist } from "./api";
+
+let whitelist = [];
 
 function PopulateVouchers() {
   const globalContext = useContext(GlobalContext);
@@ -27,6 +29,13 @@ function PopulateVouchers() {
   useEffect(() => {
     fetchVoucherSets().then((result) => {
       globalContext.dispatch(Action.allVoucherSets(result));
+    });
+
+    const authData = getAccountStoredInLocalStorage(account);
+
+    getSellerWhitelist(authData.authToken).then((value) => {
+      whitelist = value;
+      console.log(whitelist);
     });
   }, [globalContext.state.fetchVoucherSets]);
 

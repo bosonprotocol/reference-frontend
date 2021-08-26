@@ -22,26 +22,26 @@ function slide1() {
             <img
               src={logo}
               style={{ height: "40px" }}
-              alt="Leptonite Logo"
+              alt="Portal Logo"
               className="pe-none"
             />
           </div>
           <h2 className="ta-left">
-            <span>Welcome</span> to Leptonite
+            <span>Welcome</span> to Portal
           </h2>
         </div>
         <div className="text flex column ai-center">
           <p className="number">1</p>
-          <h1>dCommerce</h1>
+          <h1>Purpose</h1>
           <p className="ta-center color-secondary mobile-text-padding">
-            Leptonite is a reference release of a fully decentralized,
-            peer-to-peer digital marketplace, built on the core Boson Protocol
-            contracts. See the Boson Protocol GitHub for more details.
+            This is a demo version of Portal aimed at showcasing the chat
+            feature and the seller flow. The "DCL Scene" page mimics the
+            browsing and commit functionality which will exist in DCL.
           </p>
         </div>
         <div className="footer color-secondary">
-          ©{new Date().getFullYear()} Leptonite.io
-          <span>Leptonite is a Rinkeby testnet application</span>
+          ©{new Date().getFullYear()} Portal
+          <span>Portal is a Rinkeby testnet application</span>
         </div>
       </div>
       <div className="column-holder animated-column-1"></div>
@@ -58,26 +58,25 @@ function slide2() {
             <img
               src={logo}
               style={{ height: "40px" }}
-              alt="Leptonite Logo"
+              alt="Portal Logo"
               className="pe-none"
             />
           </div>
           <h2 className="ta-left mobile-hide">
-            <span>Welcome</span> to Leptonite
+            <span>Welcome</span> to Portal
           </h2>
         </div>
         <div className="text flex column ai-center">
           <p className="number">2</p>
-          <h1>Boson Protocol Escrow code</h1>
+          <h1>Chat Feature</h1>
           <p className="ta-center color-secondary mobile-text-padding">
-            The escrow code is governed by the Core Exchange Mechanism which
-            takes deposits from both supplier and buyer to grow trust in a
-            peer-to-peer exchange.
+            Buyers can communicate with the Portal Support team by selecting the
+            relevant voucher and opening the "Chat" tab.
           </p>
         </div>
         <div className="footer color-secondary">
-          ©{new Date().getFullYear()} Leptonite.io
-          <span>Leptonite is a Rinkeby testnet application</span>
+          ©{new Date().getFullYear()} Portal
+          <span>Portal is a Rinkeby testnet application</span>
         </div>
       </div>
       <div className="column-holder animated-column">
@@ -98,25 +97,27 @@ function slide3() {
             <img
               src={logo}
               style={{ height: "40px" }}
-              alt="Leptonite Logo"
+              alt="Portal Logo"
               className="pe-none"
             />
           </div>
           <h2 className="ta-left mobile-hide">
-            <span>Welcome</span> to Leptonite
+            <span>Welcome</span> to Portal
           </h2>
         </div>
         <div className="text flex column ai-center">
           <p className="number">3</p>
-          <h1>Redemption</h1>
+          <h1>Seller Flow</h1>
           <p className="ta-center color-secondary mobile-text-padding">
-            When the seller hands over the item, the buyer signs the redemption
-            which transfers the funds to the seller.
+            Sellers have access to an admin console where they can create
+            voucher sets from draft product listings (google sheet). They can
+            also update the status of an order (e.g. to Delivered).
+            Prerequisite: ensure your wallet is in the whitelist (google sheet).
           </p>
         </div>
         <div className="footer color-secondary">
-          ©{new Date().getFullYear()} Leptonite.io
-          <span>Leptonite is a Rinkeby testnet application</span>
+          ©{new Date().getFullYear()} Portal
+          <span>Portal is a Rinkeby testnet application</span>
         </div>
       </div>
 
@@ -160,12 +161,12 @@ function slide4(completeOnboarding) {
             <img
               src={logo}
               style={{ height: "40px" }}
-              alt="Leptonite Logo"
+              alt="Portal Logo"
               className="pe-none"
             />
           </div>
           <h2 className="ta-left mobile-hide">
-            <span>Welcome</span> to Leptonite
+            <span>Welcome</span> to Portal
           </h2>
         </div>
         <div className="text flex column ai-center">
@@ -182,8 +183,8 @@ function slide4(completeOnboarding) {
         </div>
 
         <div className="footer color-secondary">
-          ©{new Date().getFullYear()} Leptonite.io
-          <span>Leptonite is a Rinkeby testnet application</span>
+          ©{new Date().getFullYear()} Portal
+          <span>Portal is a Rinkeby testnet application</span>
         </div>
       </div>
 
