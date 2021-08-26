@@ -11,6 +11,7 @@ import { fetchVoucherSets } from "../helpers/parsers/VoucherAndSetParsers";
 import { getAccountStoredInLocalStorage } from "./authenticate";
 import { useHistory } from "react-router-dom";
 import { ROUTE } from "../helpers/configs/Dictionary";
+import whitelist from "../constants/whitelist";
 
 function PopulateVouchers() {
   const globalContext = useContext(GlobalContext);
@@ -52,6 +53,15 @@ function PopulateVouchers() {
       history.push(ROUTE.Home);
     } else {
       isMounted.current = true;
+    }
+
+    // if url includes "/sell" or "/voucher-sets" AND if seller isn't in whitelist THEN send home
+    if (
+      (window.location.href.includes("/sell") ||
+        window.location.href.includes("/voucher-sets")) &&
+      !whitelist.includes(account.toLowerCase())
+    ) {
+      history.push(ROUTE.Home);
     }
   }, [account]);
 

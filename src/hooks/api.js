@@ -118,7 +118,7 @@ export const getThread = async (data, token) => {
   const result = await axiosInstance.get(
     `/chat/${data.voucherId}/${data.address}`,
     {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     }
   );
 

@@ -234,14 +234,13 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     </CopyHelper>
   );
 
-  const resetTxBlocker = (
+  const getDraftListingsButton = (
     <div style={{ marginTop: "10%" }}>
-      Advanced
       <div
         onClick={localStorage.removeItem("correlationIdMapping")}
         className={`button change gray`}
       >
-        Reset Transaction Blocker
+        Get Draft Product Listings
       </div>
     </div>
   );
@@ -270,35 +269,8 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     <>
       <div className="connected-wallet">
         <div className="address relative">
-          {chainId ? (
-            <div className="network-info flex center">
-              <span className={`net-name`}>{ChainLabels[chainId]}</span>
-            </div>
-          ) : null}
-          <div className="url flex ai-center">
-            {getStatusIcon()}
-            {shortenAddress(account)}
-          </div>
-          <div className="copy">{copyButton}</div>
-          <div className="copy">{resetTxBlocker}</div>
-          {connector === walletconnect ? (
-            <div className={`wallet-connect-buttons-wrapper`}>
-              <div
-                className={`button gray`}
-                role="button"
-                onClick={removeWallet}
-              >
-                Remove
-              </div>
-              <div
-                className={`button change gray`}
-                role="button"
-                onClick={changeWalletConnectedWithWalletConnect}
-              >
-                Change
-              </div>
-            </div>
-          ) : null}
+          <div className="url flex ai-center">Draft Product Listings</div>
+          <div className="copy">{getDraftListingsButton}</div>
         </div>
       </div>
     </>

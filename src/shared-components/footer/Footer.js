@@ -20,15 +20,13 @@ function Footer({ current }) {
   return (
     <footer className={FOOTER_DATA.Class}>
       <div>
-        <p className="reserved-rights">©2021 BApp.</p>
+        <p className="reserved-rights">©2021 Portal.</p>
         {current === ROUTE.Docs ? (
           <p onClick={onRedirect}>
             <span>{FOOTER_DATA.TextDocs}</span>
           </p>
         ) : (
-          <p onClick={onRedirect}>
-            <span>{FOOTER_DATA.TextHome}</span>
-          </p>
+          <p onClick={onRedirect}>{/*<span>{FOOTER_DATA.TextHome}</span>*/}</p>
         )}
       </div>
     </footer>

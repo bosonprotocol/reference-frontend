@@ -27,12 +27,20 @@ function Chat({ data }) {
   return (
     <ol className="chat">
       {data?.map((message, index) => {
-        const lastMessageDay = data[index - 1]?.timestamp?.split("T")[0].split("-")[2];
-        const currentMessageDay = message?.timestamp?.split("T")[0].split("-")[2];
-        const renderedTimestamp = message?.timestamp?.split("T")[1].slice(0, 5).split(":")
+        const lastMessageDay = data[index - 1]?.timestamp
+          ?.split("T")[0]
+          .split("-")[2];
+        const currentMessageDay = message?.timestamp
+          ?.split("T")[0]
+          .split("-")[2];
+        const renderedTimestamp = message?.timestamp
+          ?.split("T")[1]
+          .slice(0, 5)
+          .split(":");
         const hourFromDB = Number(renderedTimestamp[0]);
         const minutes = renderedTimestamp[1];
-        const hourForTimezone = hourFromDB - (new Date().getTimezoneOffset() / 60);
+        const hourForTimezone =
+          hourFromDB - new Date().getTimezoneOffset() / 60;
         const time = `${hourForTimezone}:${minutes}`;
 
         return data[index - 1]?.account !== data[index]?.account ||
@@ -50,7 +58,9 @@ function Chat({ data }) {
             <div className="msg">
               <p className="address">
                 <span>
-                  {message.type == "BUYER" ? shortenAddress(account) : "PORTAL SUPPORT"}
+                  {message.type == "BUYER"
+                    ? shortenAddress(account)
+                    : "PORTAL SUPPORT"}
                 </span>
               </p>
               <p>{data[index]?.message}</p>
@@ -86,4 +96,3 @@ function Chat({ data }) {
 }
 
 export default Chat;
-
