@@ -57,6 +57,12 @@
         padding: 0.5rem;
         overflow: hidden;
         display: flex;
+        svg{
+            @media (max-width: 768px) {
+                width: 22px;
+                height: 22px;
+            }
+        }
     }
 
     canvas {
@@ -269,7 +275,5 @@
 .BSN {
     background-image: url('../../../../assets/boson/icon-bsn.png');
     background-repeat: no-repeat;
-    width: 17.5px;
-    height: 17.5px;
     background-position: center;
 }
