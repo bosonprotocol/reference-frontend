@@ -277,3 +277,16 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
+.beta{
+    width: 40px;
+    height: 14px;
+    .st0{
+        fill-rule: evenodd;
+        fill: #00FF85;
+        clip-rule: evenodd;
+    }
+    .st1{
+        fill: #293849;
+    }
+}

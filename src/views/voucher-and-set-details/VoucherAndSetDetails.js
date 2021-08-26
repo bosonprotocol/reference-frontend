@@ -73,6 +73,7 @@ import { ChainIdError } from "./../../errors/ChainIdError";
 
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Chat from "./components/chat/Chat";
+import BetaIcon from "./components/chat/betaIcon/BetaIcon";
 
 function VoucherAndSetDetails(props) {
   const [loading, setLoading] = useState(0);
@@ -998,7 +999,7 @@ function VoucherAndSetDetails(props) {
           {showChat && (
             <TabList>
               <Tab>Overview</Tab>
-              <Tab>Chat</Tab>
+              <Tab>Chat <BetaIcon/></Tab>
             </TabList>
           )}
 

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import Identicon from "../identicon/Idenicon";
+import Identicon from "../../icons/identicon/Idenicon";
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect, useRef } from "react/cjs/react.development";
 import { shortenAddress } from "../../../../../utils/BlockchainUtils";
