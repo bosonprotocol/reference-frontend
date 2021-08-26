@@ -35,7 +35,7 @@ function PopulateVouchers() {
 
     getSellerWhitelist(authData.authToken).then((value) => {
       whitelist = value;
-      console.log(whitelist);
+      console.log(`Seller Whitelist: ${whitelist}`);
     });
   }, [globalContext.state.fetchVoucherSets]);
 

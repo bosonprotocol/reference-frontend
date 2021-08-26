@@ -131,3 +131,13 @@ export const getSellerWhitelist = async (token) => {
   });
   return whitelist.data;
 };
+
+export const getDraftProductListings = async (token) => {
+  const draftListings = await axiosInstance.get(
+    `/sheets/product-listings/drafts`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return draftListings.data;
+};

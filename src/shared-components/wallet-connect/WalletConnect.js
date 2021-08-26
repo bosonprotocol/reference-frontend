@@ -14,6 +14,7 @@ import "./WalletConnect.scss";
 import { WalletContext } from "../../contexts/Wallet";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { isMobile } from "@walletconnect/utils";
+import { getDraftProductListings } from "../../hooks/api";
 
 export const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -234,12 +235,14 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     </CopyHelper>
   );
 
+  const getDraftListings = async () => {
+    const draftListings = await getDraftProductListings();
+    console.log(draftListings);
+  };
+
   const getDraftListingsButton = (
     <div style={{ marginTop: "10%" }}>
-      <div
-        onClick={localStorage.removeItem("correlationIdMapping")}
-        className={`button change gray`}
-      >
+      <div onClick={getDraftListings} className={`button change gray`}>
         Get Draft Product Listings
       </div>
     </div>
