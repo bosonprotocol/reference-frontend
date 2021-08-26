@@ -45,6 +45,11 @@
         width: 85%;
         margin-left: 7.5%;
         margin-right: 7.5%;
+        @media (max-width: 768px) {
+            width: 97%;
+            margin-left: 1.5%;
+            margin-right: 1.5%;
+        }
     }
     
 
@@ -239,6 +244,10 @@
     border-radius: 7.69px;
 
     @media (max-width: 768px) {
+        width: 95%;
+        left: 2.5%;
+        right: 2.5%;
+        height: 60px;
         padding-left: 5px;
         padding-right: 5px;
     }
