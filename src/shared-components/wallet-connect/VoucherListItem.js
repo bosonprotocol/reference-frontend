@@ -9,7 +9,6 @@ export function VoucherListItem({ voucher }) {
   const [disputed, setDisputed] = useState(false);
 
   function renderStatusOrNot(status) {
-    return "27-Aug-2021";
     if (!status) {
       return "N/A";
     }
