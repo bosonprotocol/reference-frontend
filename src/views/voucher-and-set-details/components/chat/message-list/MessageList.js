@@ -27,7 +27,6 @@ function Chat({ data }) {
   return (
     <ol className="chat">
       {data?.map((message, index) => {
-        console.log(message)
         const lastMessageDay = data[index - 1]?.timestamp
           ?.split("T")[0]
           .split("-")[2];
