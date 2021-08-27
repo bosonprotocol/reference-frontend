@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { useWeb3React } from "@web3-react/core";
 import { usePrevious } from "../../hooks";
-import { ChainLabels, shortenAddress } from "../../utils/BlockchainUtils";
 import { injected, SUPPORTED_CHAIN_IDS, walletconnect } from "../../Connectors";
 import WalletConnectIcon from "../../assets/wallets/walletconnect.svg";
-import MetaMaskLogo from "../../assets/wallets/metamask.png";
 import WalletConnectLogo from "../../assets/wallets/walletconnect.svg";
+import MetaMaskLogo from "../../assets/wallets/metamask.png";
 import Identicon from "./identicon/Identicon";
 import CopyHelper from "../../helpers/CopyHelper";
 import "./WalletConnect.scss";
@@ -17,6 +16,7 @@ import { isMobile } from "@walletconnect/utils";
 import { getDraftProductListings } from "../../hooks/api";
 import { useState } from "react/cjs/react.development";
 import ItemsListingModal from "../items-listing-modal/ItemsListingModal";
+import { AllVouchers } from "./AllVouchers";
 
 export const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -163,6 +163,7 @@ export function WalletConnect({
           )}
         </div>
       </div>
+      <AllVouchers />
     </>
   );
 }

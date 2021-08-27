@@ -38,6 +38,15 @@ export const getVouchers = async (token) => {
   return allVouchers.data;
 };
 
+export const getAllVouchers = async () => {
+  const allVouchers = await axiosInstance.get(`/vouchers/public`, {});
+
+  if (!allVouchers.data || !allVouchers.data.vouchers) {
+    return [];
+  }
+  return allVouchers.data.vouchers;
+};
+
 export const getVoucherDetails = async (voucherId, token) => {
   const voucherDetails = await axiosInstance.get(
     `/vouchers/${voucherId}/voucher-details`,
