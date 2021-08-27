@@ -15,6 +15,8 @@ import { WalletContext } from "../../contexts/Wallet";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { isMobile } from "@walletconnect/utils";
 import { getDraftProductListings } from "../../hooks/api";
+import { useState } from "react/cjs/react.development";
+import ItemsListingModal from "../items-listing-modal/ItemsListingModal";
 
 export const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -201,7 +203,7 @@ function WalletListItem({
           ) : (
             <div className={`button gray`} role="button">
               {!(window.web3 || window.ethereum) &&
-              name === CONNECTOR_TYPES.METAMASK
+                name === CONNECTOR_TYPES.METAMASK
                 ? "INSTALL"
                 : "CONNECT"}
             </div>
@@ -214,6 +216,12 @@ function WalletListItem({
 
 function WalletAccount({ onWalletConnectAccountChanged }) {
   const { account, connector, chainId, activate, deactivate } = useWeb3React();
+  const [showModal, setModal] = useState(false);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (!showModal) setItems([])
+  }, showModal)
 
   function getStatusIcon() {
     if (connector === injected) {
@@ -235,14 +243,22 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     </CopyHelper>
   );
 
+  // Get all items from the listing
   const getDraftListings = async () => {
     const draftListings = await getDraftProductListings();
-    console.log(draftListings);
+    setItems(draftListings);
+    return draftListings;
   };
 
+  // Get button which opens the modal with the items from the listing
   const getDraftListingsButton = (
     <div style={{ marginTop: "10%" }}>
-      <div onClick={getDraftListings} className={`button change gray`}>
+      <div
+        onClick={() => {
+          setModal(true)
+          items.length === 0 && !showModal ? getDraftListings() : null
+        }}
+        className={`button change gray`}>
         Get Draft Product Listings
       </div>
     </div>
@@ -274,6 +290,7 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
         <div className="address relative">
           <div className="url flex ai-center">Draft Product Listings</div>
           <div className="copy">{getDraftListingsButton}</div>
+          <div> {showModal && <ItemsListingModal items={items} setModal={setModal} />}</div>
         </div>
       </div>
     </>
