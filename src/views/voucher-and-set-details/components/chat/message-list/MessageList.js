@@ -27,6 +27,7 @@ function Chat({ data }) {
   return (
     <ol className="chat">
       {data?.map((message, index) => {
+        console.log(message)
         const lastMessageDay = data[index - 1]?.timestamp
           ?.split("T")[0]
           .split("-")[2];
@@ -72,9 +73,13 @@ function Chat({ data }) {
             <div className="day">{currentMessageDay}</div>
             <li
               key={index}
-              className={message.account == account ? "self" : "other"}
+              className={message.type == "BUYER" ? "self" : "other"}
             >
-              <Identicon address={data[index].account} size={iconSize} />
+              {message.type == "BUYER" ? (
+                <Identicon address={account} size={iconSize} />
+              ) : (
+                <PortalIcon />
+              )}
               <div className="msg">
                 <p className="address">
                   <span>
