@@ -2,7 +2,7 @@ import { shortenAddress } from "../../utils/BlockchainUtils";
 import { IconSuccessSmall } from "../icons/Icons";
 import { formatDate } from "../../utils/FormatUtils";
 import { useState } from "react";
-import '../wallet-connect/WalletConnect.scss';
+import "../wallet-connect/WalletConnect.scss";
 import { useEffect, useRef } from "react/cjs/react.development";
 
 export function VoucherListItem({ voucher }) {
@@ -14,25 +14,26 @@ export function VoucherListItem({ voucher }) {
   const initialParams = {
     dispatched: !!voucher.DISPATCHED,
     delivered: !!voucher.DELIVERED,
-    disputed: !!voucher.DISPUTED
+    disputed: !!voucher.DISPUTED,
   };
 
   const currentParams = {
     dispatched,
     delivered,
-    disputed
+    disputed,
   };
 
   useEffect(() => {
-    if ((initialParams?.dispatched !== currentParams?.dispatched)
-      || (initialParams?.delivered !== currentParams?.delivered)
-      || (initialParams?.disputed !== currentParams?.disputed)
+    if (
+      initialParams?.dispatched !== currentParams?.dispatched ||
+      initialParams?.delivered !== currentParams?.delivered ||
+      initialParams?.disputed !== currentParams?.disputed
     ) {
       setStatus(true);
     } else {
       setStatus(false);
     }
-  }, [dispatched, delivered, disputed])
+  }, [dispatched, delivered, disputed]);
 
   function renderStatusOrNot(status) {
     if (!status) {
@@ -43,11 +44,9 @@ export function VoucherListItem({ voucher }) {
 
   function renderButtonText(state, value) {
     if (!value) {
-      return 'Null';
+      return "Null";
     }
-    return (
-      <IconSuccessSmall />
-    );
+    return <IconSuccessSmall />;
   }
 
   if (!voucher) {
@@ -65,29 +64,40 @@ export function VoucherListItem({ voucher }) {
       <td>{renderStatusOrNot(voucher.FINALIZED)}</td>
       <td>{renderStatusOrNot(voucher.REDEEMED)}</td>
       <td>{renderStatusOrNot(voucher.REFUNDED)}</td>
-      <td className='customizable' onClick={() => {
-        setDispatched((prevValue) => {
-          return !prevValue;
-        })
-      }}>{renderButtonText('Dispatched', dispatched)}</td>
-      <td className='customizable' onClick={() => {
-        setDelivered((prevValue) => {
-          return !prevValue;
-        })
-      }}>{renderButtonText('Delivered', delivered)}</td>
-      <td className='customizable' onClick={() => {
-        setDisputed((prevValue) => {
-          return !prevValue;
-        })
-      }}>{renderButtonText('Disputed', disputed)}</td>
-      <td className='td-save'>
-        <button
-          className='button'
-          role='button'
-          disabled={!statusChanged}
-        >
+      <td
+        className="customizable"
+        onClick={() => {
+          setDispatched((prevValue) => {
+            return !prevValue;
+          });
+        }}
+      >
+        {renderButtonText("Dispatched", dispatched)}
+      </td>
+      <td
+        className="customizable"
+        onClick={() => {
+          setDelivered((prevValue) => {
+            return !prevValue;
+          });
+        }}
+      >
+        {renderButtonText("Delivered", delivered)}
+      </td>
+      <td
+        className="customizable"
+        onClick={() => {
+          setDisputed((prevValue) => {
+            return !prevValue;
+          });
+        }}
+      >
+        {renderButtonText("Disputed", disputed)}
+      </td>
+      <td className="td-save">
+        <button className="button" role="button" disabled={!statusChanged}>
           SAVE
-            </button>
+        </button>
       </td>
     </tr>
   );

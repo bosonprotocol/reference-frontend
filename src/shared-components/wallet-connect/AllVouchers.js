@@ -2,6 +2,7 @@ import { getAllVouchers } from "../../hooks/api";
 import React, { useEffect, useState } from "react";
 import "./AllVouchers.scss";
 import { VoucherListItem } from "./VoucherListItem";
+import BetaIcon from "../../views/voucher-and-set-details/components/icons/betaIcon/BetaIcon";
 
 export function AllVouchers() {
   const [vouchers, setVouchers] = useState([]);
@@ -15,11 +16,13 @@ export function AllVouchers() {
   }, []);
 
   return (
-    <div className='all-vouchers-container'>
-      <h1>Vouchers</h1>
-      <table className='all-vouchers-table'>
+    <div className="all-vouchers-container">
+      <h1>
+        Manage Orders <BetaIcon />
+      </h1>
+      <table className="all-vouchers-table">
         <thead>
-          <tr >
+          <tr>
             <th>Voucher ID</th>
             <th>Owner</th>
             <th>Cancelled</th>
@@ -33,7 +36,7 @@ export function AllVouchers() {
             <th>Delivered</th>
             <th>Disputed</th>
           </tr>
-        </ thead>
+        </thead>
         <tbody>
           {vouchers.map((voucher) => {
             return <VoucherListItem voucher={voucher} />;

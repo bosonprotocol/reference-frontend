@@ -65,7 +65,7 @@ export default function ConnectWallet() {
   return (
     <section className="connect activity">
       <div className="container l">
-        <h1>Wallet</h1>
+        <h1>Admin Console</h1>
         {ConnectedWallet}
       </div>
       <Footer />

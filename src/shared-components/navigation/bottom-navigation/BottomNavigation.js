@@ -61,13 +61,13 @@ function BottomNavigation() {
     //     <IconNewOffer color={selected[2] && selectedColor} /> Sell
     //   </div>
     // ),
-    Activity: (
-      <div
-        className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
-      >
-        <IconSeller color={selected[3] && selectedColor} /> Offers
-      </div>
-    ),
+    // Activity: (
+    //   <div
+    //     className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
+    //   >
+    //     <IconSeller color={selected[3] && selectedColor} /> Offers
+    //   </div>
+    // ),
     Connect: (
       <div
         className={`set flex column ai-center ${selected[4] ? "selected" : ""}`}

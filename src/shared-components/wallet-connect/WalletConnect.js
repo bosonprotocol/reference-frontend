@@ -17,6 +17,7 @@ import { getDraftProductListings } from "../../hooks/api";
 import { useState } from "react/cjs/react.development";
 import ItemsListingModal from "../items-listing-modal/ItemsListingModal";
 import { AllVouchers } from "./AllVouchers";
+import BetaIcon from "../../views/voucher-and-set-details/components/icons/betaIcon/BetaIcon";
 
 export const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -204,7 +205,7 @@ function WalletListItem({
           ) : (
             <div className={`button gray`} role="button">
               {!(window.web3 || window.ethereum) &&
-                name === CONNECTOR_TYPES.METAMASK
+              name === CONNECTOR_TYPES.METAMASK
                 ? "INSTALL"
                 : "CONNECT"}
             </div>
@@ -221,8 +222,8 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (!showModal) setItems([])
-  }, showModal)
+    if (!showModal) setItems([]);
+  }, showModal);
 
   function getStatusIcon() {
     if (connector === injected) {
@@ -256,10 +257,13 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     <div style={{ marginTop: "10%" }}>
       <div
         onClick={() => {
-          setModal(true)
-          items.length === 0 && !showModal ? getDraftListings() : null
+          setModal(true);
+          if (items.length === 0 && !showModal) {
+            getDraftListings();
+          }
         }}
-        className={`button change gray`}>
+        className={`button change gray`}
+      >
         Get Draft Product Listings
       </div>
     </div>
@@ -289,9 +293,16 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     <>
       <div className="connected-wallet">
         <div className="address relative">
-          <div className="url flex ai-center">Draft Product Listings</div>
+          <div className="url flex ai-center">
+            Manage Draft Listings <BetaIcon />
+          </div>
           <div className="copy">{getDraftListingsButton}</div>
-          <div> {showModal && <ItemsListingModal items={items} setModal={setModal} />}</div>
+          <div>
+            {" "}
+            {showModal && (
+              <ItemsListingModal items={items} setModal={setModal} />
+            )}
+          </div>
         </div>
       </div>
     </>
