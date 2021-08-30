@@ -264,7 +264,7 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
         }}
         className={`button change gray`}
       >
-        Get Draft Product Listings
+        Manage Drafts
       </div>
     </div>
   );

@@ -25,13 +25,13 @@ export function AllVouchers() {
           <tr>
             <th>Voucher ID</th>
             <th>Owner</th>
-            <th>Cancelled</th>
             <th>Committed</th>
-            <th>Complained</th>
-            <th>Expired</th>
-            <th>Finalized</th>
-            <th>Redeemed</th>
             <th>Refunded</th>
+            <th>Redeemed</th>
+            <th>Complained</th>
+            <th>Finalized</th>
+            <th>Expired</th>
+            <th>Cancelled</th>
             <th>Dispatched</th>
             <th>Delivered</th>
             <th>Disputed</th>
