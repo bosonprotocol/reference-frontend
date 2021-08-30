@@ -6,35 +6,33 @@ import { Fragment } from 'react';
 function FormData({ item }) {
     const itemEntries = Object.entries(item);
 
-    return <Fragment>
-        {/* <section className='seller-category'>
-            <img
-                src="./images/categories/electronics.png"
-                alt="Leptonite Architecture"
-            />
-            <div className="wrapper">
-                <div className="header">
-                    <div className="header-title"></div>
-                </div>
-                <div className="ist">
-                    <button className="list-item"></button>
-                    <button className="list-item"></button>
-                    <button className="list-item"></button>
-                </div>
-            </div>
-        </section> */}
+    const rowOfItems = () => {
+        let rows = [];
+        for (let i = 0; i < itemEntries.length; i += 2) {
+            rows.push(<div className='row'>
+                {itemEntries[i] && <div>
+                    <span>{itemEntries[i][0]}</span>
+                    <input disabled='true' value={itemEntries[i][1]} />
+                </div>}
+                {itemEntries[i + 1] && <div>
+                    <span>{itemEntries[i + 1][0]}</span>
+                    <input disabled='true' value={itemEntries[i + 1][1]} />
+                </div>}
+            </div >)
+        }
+        return rows;
+    }
 
-        <form className='item-form'>
-            {
-                itemEntries?.map((entry) =>
-                    <div>
-                        <span>{entry[0]}</span>
-                        <input disabled='true' value={entry[1]} />
-                    </div>
-                )
-            }
-            <button className='button' role='button'>OFFER</button>
-        </form>
+    return <Fragment>
+        <section className='item-form'>
+            {itemEntries && rowOfItems()}
+            <button
+                className='button'
+                role='button'
+            >
+                CREATE OFFER
+            </button>
+        </section>
     </Fragment>
 }
 

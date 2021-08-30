@@ -9,7 +9,6 @@ import io from "socket.io-client";
 import { useHistory } from "react-router";
 
 const NEW_CHAT_MESSAGE_EVENT = "message";
-const SOCKET_SERVER_URL = "http://localhost:4000";
 
 function Chat(voucherDetails) {
   const [text, setText] = useState("");
@@ -117,7 +116,7 @@ function Chat(voucherDetails) {
     };
 
     // Creates a WebSocket connection
-    socketRef.current = io(SOCKET_SERVER_URL, ioParams);
+    socketRef.current = io(process.env.REACT_APP_WS_BASE_URL, ioParams);
 
     // Listens for incoming messages
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (messages) => {

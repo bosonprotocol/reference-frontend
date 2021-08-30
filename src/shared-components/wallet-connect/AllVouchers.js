@@ -15,13 +15,31 @@ export function AllVouchers() {
   }, []);
 
   return (
-    <div className="all-vouchers-container">
+    <div className='all-vouchers-container'>
       <h1>Vouchers</h1>
-      <div className="flex" style={{ gridGap: "20px" }}>
-        {vouchers.map((voucher) => {
-          return <VoucherListItem voucher={voucher} />;
-        })}
-      </div>
+      <table className='all-vouchers-table'>
+        <thead>
+          <tr >
+            <th>Voucher ID</th>
+            <th>Owner</th>
+            <th>Cancelled</th>
+            <th>Committed</th>
+            <th>Complained</th>
+            <th>Expired</th>
+            <th>Finalized</th>
+            <th>Redeemed</th>
+            <th>Refunded</th>
+            <th>Dispatched</th>
+            <th>Delivered</th>
+            <th>Disputed</th>
+          </tr>
+        </ thead>
+        <tbody>
+          {vouchers.map((voucher) => {
+            return <VoucherListItem voucher={voucher} />;
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

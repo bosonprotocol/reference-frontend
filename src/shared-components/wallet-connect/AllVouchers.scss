@@ -1,93 +1,60 @@
 .all-vouchers-container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10%;
-  margin-bottom: 200px;
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 450px;
+  h1 {
+    margin: 15px;
+  }
+  margin-bottom: 100px;
 }
 
-.voucher-item {
-  border: 1px solid #2D3743;
-  border-radius: 8px;
-  margin-top: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  grid-gap: 20px;
+.all-vouchers-container::-webkit-scrollbar-thumb {
+  background-color:  #2D3743;
+  border-radius: 20px;
+}
+.all-vouchers-table {
+  margin-top: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
   width: 100%;
-
-  .field {
-    margin-bottom: 10px;
-
-    .field-name {
-      color: #8798AB;
-    }
+  border-radius: 7.69px;
+  
+  thead {
+    border-radius: 7.69px;
   }
-
-  .voucher-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  th {
+    background-color: #2D3743;
+    color: #ffffff;
+    text-align: center;
+    padding: 8px;
+  }
+  tr {
+    border-radius: 7.69px;
+  }
+  tr:hover{
+    background-color: #13191F;
+  }
+  td {
+    padding: 4px;
     text-align: center;
   }
-
-  .voucher-item-status {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    text-align: center;
-    grid-gap: 10px;
+}
+.td-save{
+  button{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 0;
+    width: 80px;
+    height: 35px;
+    background: #15bb9d;
   }
-
-  .voucher-item-actions {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    grid-gap: 10px;
-
-    .voucher-item-button {
-      display: flex;
-      align-items: center;
-      grid-gap: 5px;
-      width: 100%;
-      height: 50px;
-      justify-content: center;
-    }
-
-    .selected {
-      background: black;
-      cursor: default;
-    }
+  svg {
+    width: 20px;
+    height: 20px;
   }
 }
 
-@media (min-width: 768px) {
-  .voucher-item {
-    flex-direction: column;
-    width: 50%;
-
-    .voucher-header {
-      flex-direction: row;
-      justify-content: space-around;
-    }
-
-    .voucher-item-status {
-      text-align: left;
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .field {
-      margin-bottom: 0px;
-    }
-
-    .voucher-item-actions {
-      flex-direction: row;
-      justify-content: space-between;
-      grid-gap: 0;
-
-      .voucher-item-button {
-        width: 150px;
-        flex-direction: row;
-      }
-    }
-  }
+.customizable:hover {
+  background-color:  #16806c;
+  cursor: pointer;
 }
