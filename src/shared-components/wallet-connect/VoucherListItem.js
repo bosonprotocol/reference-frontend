@@ -1,5 +1,6 @@
 import { shortenAddress } from "../../utils/BlockchainUtils";
 import { IconSuccessSmall } from "../icons/Icons";
+import PopupMessage from "../../shared-components/popup-message/PopupMessage";
 import { formatDate } from "../../utils/FormatUtils";
 import { useState } from "react";
 import "../wallet-connect/WalletConnect.scss";
@@ -10,6 +11,7 @@ export function VoucherListItem({ voucher }) {
   const [delivered, setDelivered] = useState(!!voucher.DELIVERED);
   const [disputed, setDisputed] = useState(!!voucher.DISPUTED);
   const [statusChanged, setStatus] = useState(false);
+  const [popupMessage, setPopupMessage] = useState();
 
   const initialParams = {
     dispatched: !!voucher.DISPATCHED,
@@ -55,6 +57,7 @@ export function VoucherListItem({ voucher }) {
 
   return (
     <tr>
+      {<PopupMessage {...popupMessage} />}
       <td>
         <a href={`http://localhost:3001/vouchers/${voucher._id}/details`}>
           {voucher._id}
@@ -102,7 +105,34 @@ export function VoucherListItem({ voucher }) {
         {renderButtonText("Disputed", disputed)}
       </td>
       <td className="td-save">
-        <button className="button" role="button" disabled={!statusChanged}>
+        <button
+          className="button"
+          role="button"
+          disabled={!statusChanged}
+          onClick={() =>
+            setPopupMessage({
+              // toDo insert message here
+              text: 'message',
+              controls: (
+                <div className="flex split button-pair">
+                  <div
+                    className="button gray"
+                    role="button"
+                    onClick={() => setPopupMessage(false)}
+                  >
+                    BACK
+                      </div>
+                  <div
+                    className="button primary"
+                    role="button"
+                    onClick={() => console.log('CONFIRM')}
+                  >
+                    CONFIRM
+                   </div>
+                </div>
+              ),
+            })}
+        >
           SAVE
         </button>
       </td>

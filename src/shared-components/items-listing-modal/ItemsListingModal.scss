@@ -12,7 +12,7 @@
     bottom: 20%;
     border-radius: 7.69px;
 
-    .item-form{
+    .item-form { 
         column-count: 2;
         margin-top: 3%;
         width: 90%;
@@ -24,14 +24,14 @@
         align-items: center;
         padding: 10px;
 
-        div{
+        article {
             display: flex;
             flex-flow: row;
             width: 100%;
             justify-content: space-between;
             margin: 0;
             margin-top: 8px;
-            input{
+            input {
                 flex: 1;
                 border: 0;
                 width: 150px;
@@ -41,7 +41,7 @@
                 border-radius: 7.69px;  
                 margin-right: 10px; 
             }
-            span{
+            span {
                 flex: 1;
                 width: 75px;
                 height: 32px;
@@ -52,11 +52,13 @@
                 margin-left: 10px; 
             }
         }
-        button{
-            border: 0;
-            width: 200px;
-            margin-top: 60px;
-            background: #15bb9d;
+        .button { 
+            &.create-offer {
+                border: 0;
+                width: 200px;
+                margin-top: 60px;
+                background: #15bb9d;
+            }
         }
     }
 
