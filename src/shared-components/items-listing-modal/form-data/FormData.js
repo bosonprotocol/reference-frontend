@@ -11,7 +11,7 @@ function FormData({ item }) {
     const [popupMessage, setPopupMessage] = useState();
 
     const itemEntries = Object.entries(item);
-
+    console.log('backup')
     const rowOfItems = () => {
         let rows = [];
         for (let i = 0; i < itemEntries.length; i += 2) {
