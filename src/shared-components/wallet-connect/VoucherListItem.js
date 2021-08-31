@@ -37,14 +37,14 @@ export function VoucherListItem({ voucher }) {
 
   function renderStatusOrNot(status) {
     if (!status) {
-      return "N/A";
+      return "-";
     }
     return formatDate(status, "string");
   }
 
   function renderButtonText(state, value) {
     if (!value) {
-      return "Null";
+      return <IconSuccessSmall color={"#D3D3D3"} opacity={"0.25"} />;
     }
     return <IconSuccessSmall />;
   }
@@ -55,17 +55,22 @@ export function VoucherListItem({ voucher }) {
 
   return (
     <tr>
-      <td>{voucher._id}</td>
+      <td>
+        <a href={`http://localhost:3001/vouchers/${voucher._id}/details`}>
+          {voucher._id}
+        </a>
+      </td>
       <td>{shortenAddress(voucher.voucherOwner)}</td>
-      <td>{renderStatusOrNot(voucher.CANCELLED)}</td>
       <td>{renderStatusOrNot(voucher.COMMITTED)}</td>
-      <td>{renderStatusOrNot(voucher.COMPLAINED)}</td>
-      <td>{renderStatusOrNot(voucher.EXPIRED)}</td>
-      <td>{renderStatusOrNot(voucher.FINALIZED)}</td>
-      <td>{renderStatusOrNot(voucher.REDEEMED)}</td>
       <td>{renderStatusOrNot(voucher.REFUNDED)}</td>
+      <td>{renderStatusOrNot(voucher.REDEEMED)}</td>
+      <td>{renderStatusOrNot(voucher.COMPLAINED)}</td>
+      <td>{renderStatusOrNot(voucher.FINALIZED)}</td>
+      <td>{renderStatusOrNot(voucher.EXPIRED)}</td>
+      <td>{renderStatusOrNot(voucher.CANCELLED)}</td>
       <td
         className="customizable"
+        style={{ verticalAlign: "bottom" }}
         onClick={() => {
           setDispatched((prevValue) => {
             return !prevValue;
@@ -76,6 +81,7 @@ export function VoucherListItem({ voucher }) {
       </td>
       <td
         className="customizable"
+        style={{ verticalAlign: "bottom" }}
         onClick={() => {
           setDelivered((prevValue) => {
             return !prevValue;
@@ -86,6 +92,7 @@ export function VoucherListItem({ voucher }) {
       </td>
       <td
         className="customizable"
+        style={{ verticalAlign: "bottom" }}
         onClick={() => {
           setDisputed((prevValue) => {
             return !prevValue;

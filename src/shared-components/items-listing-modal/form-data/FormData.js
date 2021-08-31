@@ -2,6 +2,10 @@
 import "../ItemsListingModal.scss";
 import "../../wallet-connect/WalletConnect.scss";
 import { Fragment } from "react";
+import ContextModal from "../../modals/context-modal/ContextModal";
+import PopupMessage from "../../popup-message/PopupMessage";
+import GenericMessage from "../../../views/generic-message/GenericMessage";
+import { MESSAGE } from "../../../helpers/configs/Dictionary";
 
 function FormData({ item }) {
   const itemEntries = Object.entries(item);
@@ -14,17 +18,26 @@ function FormData({ item }) {
         itemEntries[i][0] !== "Creation Status"
       ) {
         rows.push(
-          <div className="row">
+          <div className="row" style={{ width: "90%" }}>
             {itemEntries[i] && (
-              <div>
+              <div style={{ fontSize: "calc(0.6vw + 0.6vh)" }}>
                 <span>{itemEntries[i][0]}</span>
-                <input disabled="true" value={itemEntries[i][1]} />
+                <input
+                  style={{ marginLeft: "-20%" }}
+                  disabled="true"
+                  value={itemEntries[i][1]}
+                />
               </div>
             )}
+            <div style={{ width: "25%" }}></div>
             {itemEntries[i + 1] && (
-              <div>
+              <div style={{ fontSize: "calc(0.6vw + 0.6vh)" }}>
                 <span>{itemEntries[i + 1][0]}</span>
-                <input disabled="true" value={itemEntries[i + 1][1]} />
+                <input
+                  style={{ marginLeft: "-20%" }}
+                  disabled="true"
+                  value={itemEntries[i + 1][1]}
+                />
               </div>
             )}
           </div>
