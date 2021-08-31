@@ -27,12 +27,12 @@ function Chat({ data }) {
   return (
     <ol className="chat">
       {data?.map((message, index) => {
-        let lastMessageDay = Number(data[index - 1]?.timestamp
-          ?.split("T")[0]
-          .split("-")[2]);
-        let currentMessageDay = Number(message?.timestamp
-          ?.split("T")[0]
-          .split("-")[2]);
+        let lastMessageDay = Number(
+          data[index - 1]?.timestamp?.split("T")[0].split("-")[2]
+        );
+        let currentMessageDay = Number(
+          message?.timestamp?.split("T")[0].split("-")[2]
+        );
         const renderedTimestamp = message?.timestamp
           ?.split("T")[1]
           .slice(0, 5)
@@ -41,9 +41,8 @@ function Chat({ data }) {
         const hourFromDB = Number(renderedTimestamp[0]);
         const minutes = renderedTimestamp[1];
         // Get the minutes which are before or after the central timezone and render them into hours
-        const timezoneMinutes = Number(- new Date().getTimezoneOffset() / 60);
-        const hourForTimezone =
-          hourFromDB + timezoneMinutes;
+        const timezoneMinutes = Number(-new Date().getTimezoneOffset() / 60);
+        const hourForTimezone = hourFromDB + timezoneMinutes;
         const time = `${hourForTimezone}:${minutes}`;
 
         return data[index - 1]?.account !== data[index]?.account ||
@@ -72,7 +71,9 @@ function Chat({ data }) {
           </li>
         ) : (
           <Fragment>
-            <div className="day">{message?.timestamp?.split("T")[0].replaceAll('-', '/')}</div>
+            <div className="day">
+              {message?.timestamp?.split("T")[0].replaceAll("-", "/")}
+            </div>
             <li
               key={index}
               className={message.type == "BUYER" ? "self" : "other"}

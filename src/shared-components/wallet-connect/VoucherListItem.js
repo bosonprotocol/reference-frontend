@@ -111,27 +111,21 @@ export function VoucherListItem({ voucher }) {
           disabled={!statusChanged}
           onClick={() =>
             setPopupMessage({
-              // toDo insert message here
-              text: 'message',
+              text: "This will update the order record in the backend with the relevant status.",
               controls: (
                 <div className="flex split button-pair">
-                  <div
-                    className="button gray"
-                    role="button"
-                    onClick={() => setPopupMessage(false)}
-                  >
-                    BACK
-                      </div>
+                  <div className="button gray" />
                   <div
                     className="button primary"
                     role="button"
-                    onClick={() => console.log('CONFIRM')}
+                    onClick={() => setPopupMessage(false)}
                   >
-                    CONFIRM
-                   </div>
+                    Close
+                  </div>
                 </div>
               ),
-            })}
+            })
+          }
         >
           SAVE
         </button>
