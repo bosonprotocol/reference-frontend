@@ -27,20 +27,23 @@ function Chat({ data }) {
   return (
     <ol className="chat">
       {data?.map((message, index) => {
-        const lastMessageDay = data[index - 1]?.timestamp
+        let lastMessageDay = Number(data[index - 1]?.timestamp
           ?.split("T")[0]
-          .split("-")[2];
-        const currentMessageDay = message?.timestamp
+          .split("-")[2]);
+        let currentMessageDay = Number(message?.timestamp
           ?.split("T")[0]
-          .split("-")[2];
+          .split("-")[2]);
         const renderedTimestamp = message?.timestamp
           ?.split("T")[1]
           .slice(0, 5)
           .split(":");
+
         const hourFromDB = Number(renderedTimestamp[0]);
         const minutes = renderedTimestamp[1];
+        // Get the minutes which are before or after the central timezone and render them into hours
+        const timezoneMinutes = Number(- new Date().getTimezoneOffset() / 60);
         const hourForTimezone =
-          hourFromDB - new Date().getTimezoneOffset() / 60;
+          hourFromDB + timezoneMinutes;
         const time = `${hourForTimezone}:${minutes}`;
 
         return data[index - 1]?.account !== data[index]?.account ||
@@ -69,7 +72,7 @@ function Chat({ data }) {
           </li>
         ) : (
           <Fragment>
-            <div className="day">{currentMessageDay}</div>
+            <div className="day">{message?.timestamp?.split("T")[0].replaceAll('-', '/')}</div>
             <li
               key={index}
               className={message.type == "BUYER" ? "self" : "other"}
