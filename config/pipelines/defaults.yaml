@@ -9,6 +9,10 @@ development_hassium_provisioning_role_arn: "arn:aws:iam::%{hiera('bsn_developmen
 development_hassium_deployment_type: "bsn-development"
 development_hassium_deployment_label: "hassium"
 
+poc_sposite_provisioning_role_arn: "arn:aws:iam::%{hiera('bsn_development_potassium_account_id')}:role/cross-account-admin-role"
+poc_sposite_deployment_type: "bsn-poc"
+poc_sposite_deployment_label: "sposite"
+
 demo_copernicium_provisioning_role_arn: "arn:aws:iam::%{hiera('bsn_development_potassium_account_id')}:role/cross-account-admin-role"
 demo_copernicium_deployment_type: "bsn-demo"
 demo_copernicium_deployment_label: "copernicium"
