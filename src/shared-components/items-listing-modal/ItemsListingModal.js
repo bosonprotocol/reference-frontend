@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { Arrow } from "../icons/Icons";
 import FormData from "./form-data/FormData";
-import "./ItemsListingModal.scss";
 
+import "./ItemsListingModal.scss";
+ 
 function ItemsListingModal({ items, setModal }) {
   const [index, setIndex] = useState(0);
 
