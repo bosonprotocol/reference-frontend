@@ -2,10 +2,7 @@
 import "../ItemsListingModal.scss";
 import "../../wallet-connect/WalletConnect.scss";
 import { useState, Fragment } from "react";
-import ContextModal from "../../modals/context-modal/ContextModal";
 import PopupMessage from "../../popup-message/PopupMessage";
-import GenericMessage from "../../../views/generic-message/GenericMessage";
-import { MESSAGE } from "../../../helpers/configs/Dictionary";
 import ImagesGallery from "./images-gallery/ImagesGallery";
 
 function FormData({ item }) {
@@ -53,10 +50,13 @@ function FormData({ item }) {
     return (
         <Fragment>
             <section className="item-form">
+                <div className="form-header">Manage Draft Listing: #{itemEntries[0][1]}</div>
+
                 {itemEntries && rowOfItems()}
 
                 {<PopupMessage {...popupMessage} />}
 
+                <div className="image-upload-header">Image Upload</div>
                 <ImagesGallery />
 
                 <button

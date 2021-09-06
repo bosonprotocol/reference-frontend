@@ -97,6 +97,16 @@
     }
 }
 
+.form-header {
+    margin-bottom: 2%;
+    font-size: calc(1vw + 1vh);
+}
+
+.image-upload-header {
+    margin-top: 2%;
+    margin-bottom: -2.5%;
+    font-size: calc(0.6vw + 0.6vh);
+}
 
 .items-listing-background::-webkit-scrollbar-track {
     height: 100%;

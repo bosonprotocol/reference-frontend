@@ -18,6 +18,7 @@ import { useState } from "react/cjs/react.development";
 import ItemsListingModal from "../items-listing-modal/ItemsListingModal";
 import { AllVouchers } from "./AllVouchers";
 import BetaIcon from "../../views/voucher-and-set-details/components/icons/betaIcon/BetaIcon";
+import FileUpload from "./FileUpload";
 
 export const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -252,9 +253,18 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
     return draftListings;
   };
 
+  // const uploadDraftListings = async () => {
+  //
+  //   // implement file explorer open
+  //   // user selects csv file
+  //   // try parse
+  //   // test header row matches expected
+  //   // read into items (same format as return of getDraftProductListings)
+  // };
+
   // Get button which opens the modal with the items from the listing
   const getDraftListingsButton = (
-    <div style={{ marginTop: "10%" }}>
+    <div style={{ marginTop: "10%", width: "100%" }}>
       <div
         onClick={() => {
           setModal(true);
@@ -297,6 +307,7 @@ function WalletAccount({ onWalletConnectAccountChanged }) {
             Manage Draft Listings <BetaIcon />
           </div>
           <div className="copy">{getDraftListingsButton}</div>
+          {/*<FileUpload />*/}
           <div>
             {" "}
             {showModal && (

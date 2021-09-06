@@ -45,7 +45,6 @@ function ImagesGallery() {
 
   return (
     <section className="images-listing-modal" onClick={() => setTarget(true)}>
-
       {
         images.map((image, index) => {
           return <div

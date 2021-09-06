@@ -54,20 +54,20 @@ function BottomNavigation() {
         <IconBuyer color={selected[1] && selectedColor} /> Orders
       </div>
     ),
-    // NewOffer: (
-    //   <div
-    //     className={`set flex column ai-center ${selected[2] ? "selected" : ""}`}
-    //   >
-    //     <IconNewOffer color={selected[2] && selectedColor} /> Sell
-    //   </div>
-    // ),
-    // Activity: (
-    //   <div
-    //     className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
-    //   >
-    //     <IconSeller color={selected[3] && selectedColor} /> Offers
-    //   </div>
-    // ),
+    NewOffer: (
+      <div
+        className={`set flex column ai-center ${selected[2] ? "selected" : ""}`}
+      >
+        <IconNewOffer color={selected[2] && selectedColor} /> Sell
+      </div>
+    ),
+    Activity: (
+      <div
+        className={`set flex column ai-center ${selected[3] ? "selected" : ""}`}
+      >
+        <IconSeller color={selected[3] && selectedColor} /> Offers
+      </div>
+    ),
     Connect: (
       <div
         className={`set flex column ai-center ${selected[4] ? "selected" : ""}`}
@@ -98,7 +98,9 @@ function BottomNavigation() {
                   if (
                     route[0] !== "Connect" &&
                     route[0] !== "ActivityVouchers" &&
-                    route[0] !== "Activity"
+                    route[0] !== "Activity" &&
+                      route[0] !== "NewOffer" &&
+                      route[0] !== "Home"
                   ) {
                     return (
                       <div key={i} className="link">
@@ -119,7 +121,7 @@ function BottomNavigation() {
                         );
                       }
                     } else {
-                      if (route[0] === "ActivityVouchers") {
+                      if (route[0] === "ActivityVouchers" || route[0] === "Home") {
                         return (
                           <div key={i} className="link">
                             <Link key={i} className="def" to={ROUTE[route[0]]}>
