@@ -99,8 +99,8 @@ function BottomNavigation() {
                     route[0] !== "Connect" &&
                     route[0] !== "ActivityVouchers" &&
                     route[0] !== "Activity" &&
-                      route[0] !== "NewOffer" &&
-                      route[0] !== "Home"
+                    route[0] !== "NewOffer" &&
+                    route[0] !== "Home"
                   ) {
                     return (
                       <div key={i} className="link">
@@ -121,7 +121,10 @@ function BottomNavigation() {
                         );
                       }
                     } else {
-                      if (route[0] === "ActivityVouchers" || route[0] === "Home") {
+                      if (
+                        route[0] === "ActivityVouchers" ||
+                        route[0] === "Home"
+                      ) {
                         return (
                           <div key={i} className="link">
                             <Link key={i} className="def" to={ROUTE[route[0]]}>

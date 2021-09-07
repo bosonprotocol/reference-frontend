@@ -59,6 +59,14 @@
                 margin-top: 30px;
                 background: #15bb9d;
             }
+
+            &.upload-images {
+                width: 200px;
+                margin-top: 40px;
+                background: #192028;
+                border: solid 1px #15bb9d;
+                color: #15bb9d;
+            }
         }
     }
 
@@ -166,7 +174,7 @@
     box-sizing: border-box;
     height: 200px;
     width: 90%;
-    margin-top: 30px;
+    margin-top: -25px;
     overflow-x: auto;
     .images-listing-modal {
         display: flex;

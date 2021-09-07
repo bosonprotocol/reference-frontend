@@ -19,18 +19,20 @@ function ImagesGallery({ images, setImages }) {
   }, [target]);
 
   const arrowPressKey = ({ key }) => {
-    if (key === 'ArrowRight') {
+    if (key === "ArrowRight") {
       onNext();
-    } else if (key === 'ArrowLeft') {
+    } else if (key === "ArrowLeft") {
       onPrevious();
-    } else if (key === 'Backspace') {
+    } else if (key === "Backspace") {
       onDelete();
     }
-  }
+  };
 
   const onNext = () => {
     setIndex((prevIndex) => {
-      return prevIndex < images.length - 1 ? (prevIndex += 1) : images.length - 1;
+      return prevIndex < images.length - 1
+        ? (prevIndex += 1)
+        : images.length - 1;
     });
   };
 
@@ -49,29 +51,21 @@ function ImagesGallery({ images, setImages }) {
   return (
     <section className="container-images">
       <section className="images-listing-modal" onClick={() => setTarget(true)}>
-        {
-          images.map((element, index) => {
-            return <div className={`box ${selectedIndex === index && 'selected'}`}>
-              {element.split(':')[0] === 'blob' ?
+        {images.map((element, index) => {
+          return (
+            <div className={`box ${selectedIndex === index && "selected"}`}>
+              {element.split(":")[0] === "blob" ? (
                 <img
-                  className='image'
+                  className="image"
                   src={element}
                   onClick={() => setIndex(index)}
                 />
-                :
-                <div
-                  className='image'
-                  src={element}
-                  onClick={() => setIndex(index)}
-                >
-                  {element}
-                </div>
-              }
+              ) : null}
             </div>
-          })
-        }
+          );
+        })}
       </section>
-    </section >
+    </section>
   );
 }
 

@@ -4,7 +4,7 @@ import { Arrow } from "../icons/Icons";
 import FormData from "./form-data/FormData";
 
 import "./ItemsListingModal.scss";
- 
+
 function ItemsListingModal({ items, setModal }) {
   const [index, setIndex] = useState(0);
 
