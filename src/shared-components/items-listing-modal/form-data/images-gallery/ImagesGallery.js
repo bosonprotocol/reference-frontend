@@ -3,10 +3,9 @@ import "../../ItemsListingModal.scss";
 import "../../../wallet-connect/WalletConnect.scss";
 import { useState, useEffect } from "react";
 
-function ImagesGallery() {
-  const [index, setIndex] = useState(0);
+function ImagesGallery({ images, setImages }) {
+  const [selectedIndex, setIndex] = useState(0);
   const [target, setTarget] = useState(false);
-  const images = [1, 2, 3, 4, 5];
 
   useEffect(() => {
     if (!target) return;
@@ -15,19 +14,17 @@ function ImagesGallery() {
 
     return () => {
       window.removeEventListener("keyup", arrowPressKey);
-      setTarget(false)
+      setTarget(false);
     };
   }, [target]);
-
-  useEffect(() => {
-    console.log(index)
-  }, [index])
 
   const arrowPressKey = ({ key }) => {
     if (key === 'ArrowRight') {
       onNext();
     } else if (key === 'ArrowLeft') {
       onPrevious();
+    } else if (key === 'Backspace') {
+      onDelete();
     }
   }
 
@@ -43,19 +40,38 @@ function ImagesGallery() {
     });
   };
 
+  const onDelete = () => {
+    setImages((images) => {
+      return images.splice(1, selectedIndex);
+    });
+  };
+
   return (
-    <section className="images-listing-modal" onClick={() => setTarget(true)}>
-      {
-        images.map((image, index) => {
-          return <div
-            className='image'
-            onClick={() => setIndex(index)}
-          >{index + 1}</div>
-        })
-      }
-
-
-    </section>
+    <section className="container-images">
+      <section className="images-listing-modal" onClick={() => setTarget(true)}>
+        {
+          images.map((element, index) => {
+            return <div className={`box ${selectedIndex === index && 'selected'}`}>
+              {element.split(':')[0] === 'blob' ?
+                <img
+                  className='image'
+                  src={element}
+                  onClick={() => setIndex(index)}
+                />
+                :
+                <div
+                  className='image'
+                  src={element}
+                  onClick={() => setIndex(index)}
+                >
+                  {element}
+                </div>
+              }
+            </div>
+          })
+        }
+      </section>
+    </section >
   );
 }
 

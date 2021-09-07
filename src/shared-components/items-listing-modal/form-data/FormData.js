@@ -4,11 +4,13 @@ import "../../wallet-connect/WalletConnect.scss";
 import { useState, Fragment } from "react";
 import PopupMessage from "../../popup-message/PopupMessage";
 import ImagesGallery from "./images-gallery/ImagesGallery";
+import { useEffect, useRef } from "react/cjs/react.development";
 
 function FormData({ item }) {
     const [popupMessage, setPopupMessage] = useState();
-
     const itemEntries = Object.entries(item);
+    const fileInput = useRef();
+    const [images, setImages] = useState(['PRODUCT PHOTO']);
 
     const rowOfItems = () => {
         let rows = [];
@@ -47,6 +49,21 @@ function FormData({ item }) {
         return rows;
     };
 
+    const handleClick = () => {
+        fileInput.current.click();
+    };
+
+    const handleChange = event => {
+        const renderImages = (files) => {
+            return files.map(f => URL.createObjectURL(f));
+        }
+        if (event?.target?.files[0]) {
+            setImages((previousImages) => {
+                return [...previousImages, ...renderImages(Array.from(event.target.files))]
+            });
+        }
+    };
+
     return (
         <Fragment>
             <section className="item-form">
@@ -56,8 +73,22 @@ function FormData({ item }) {
 
                 {<PopupMessage {...popupMessage} />}
 
-                <div className="image-upload-header">Image Upload</div>
-                <ImagesGallery />
+                <input
+                    className="inputfile"
+                    type='file'
+                    multiple
+                    ref={fileInput}
+                    onChange={handleChange}
+                />
+
+                <button
+                    className="image-upload-header"
+                    onClick={handleClick}
+                >
+                    Create Listing
+                </button>
+
+                <ImagesGallery images={images} setImages={setImages} />
 
                 <button
                     className="button create-offer"
