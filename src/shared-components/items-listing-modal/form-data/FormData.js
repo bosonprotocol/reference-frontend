@@ -4,13 +4,13 @@ import "../../wallet-connect/WalletConnect.scss";
 import { useState, Fragment } from "react";
 import PopupMessage from "../../popup-message/PopupMessage";
 import ImagesGallery from "./images-gallery/ImagesGallery";
-import { useEffect, useRef } from "react/cjs/react.development";
+import { useRef } from "react/cjs/react.development";
 
 function FormData({ item }) {
   const [popupMessage, setPopupMessage] = useState();
   const itemEntries = Object.entries(item);
   const fileInput = useRef();
-  const [images, setImages] = useState(["PRODUCT PHOTO"]);
+  const [images, setImages] = useState([]);
 
   const rowOfItems = () => {
     let rows = [];
