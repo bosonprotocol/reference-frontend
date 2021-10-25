@@ -50,7 +50,7 @@
     "tests:coverage:badge": "coverage-badge-creator"
   },
   "dependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "7.15.5",
     "@ethersproject/abi": "^5.0.9",
     "@ethersproject/address": "^5.0.8",
     "@ethersproject/constants": "^5.0.7",
