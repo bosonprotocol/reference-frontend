@@ -138,7 +138,7 @@
     "react-hook-form": "^6.13.1",
     "react-masonry-css": "^1.0.14",
     "react-qr-reader": "^2.2.1",
-    "react-refresh": "^0.8.3",
+    "react-refresh": "^0.11.0",
     "react-router-dom": "^5.2.0",
     "react-tabs": "^3.1.2",
     "redux-localstorage-simple": "^2.3.1",
