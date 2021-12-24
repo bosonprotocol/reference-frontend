@@ -29,6 +29,7 @@ jobs:
   deploy:
     name: Publish to CDN
     runs-on: ubuntu-latest
+    needs: [build-and-test]
     if: ${{ github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v2
