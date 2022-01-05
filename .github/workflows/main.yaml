@@ -1,0 +1,65 @@
+name: Build and Deploy leptonite.io
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          cache: 'npm'
+      - run: npm install
+      - run: npm run app:lint
+      - run: npm run app:format
+      - run: npm run tests:lint
+      - run: npm run tests:format
+      - run: npm run tests:unit:coverage
+      - run: npm run tests:coverage:badge
+
+  deploy:
+    name: Publish to CDN
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          cache: 'npm'
+      - run: npm install
+      - name: Build content
+        id: build
+        run: npm run build
+        env:
+          NODE_ENV: production
+          REACT_APP_BACKEND_BASE_URL: https://api.leptonite.io
+          REACT_APP_FRONT_END_LOCALSTORAGE_VERSION: 1.0
+          CONTENT_WORK_DIRECTORY: build/content
+          GENERATE_SOURCEMAP: false
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2
+      - run: aws s3 sync ./build/content s3://$BUCKET --delete
+        env:
+          BUCKET: ${{ secrets.S3_CONTENT_BUCKET }}
+      - run: aws cloudfront create-invalidation --distribution-id $CDN_ID --paths "/*"
+        env:
+          CDN_ID: ${{ secrets.CDN_ID }}
